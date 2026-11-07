@@ -74,11 +74,15 @@
   "data": {
     "supported_analyses": [
       "SNV",
-      "FUSION"
+      "CNV",
+      "FUSION",
+      "OTHER"
     ],
     "enabled_analyses": [
       "SNV",
-      "FUSION"
+      "CNV",
+      "FUSION",
+      "OTHER"
     ],
     "analyses": [
       {
@@ -96,24 +100,16 @@
                 "label": "Gen"
               },
               {
-                "key": "chromosome",
-                "label": "Kromosom"
+                "key": "hgvs_p",
+                "label": "HGVS protein"
               },
               {
-                "key": "exon",
-                "label": "Exon"
+                "key": "vaf",
+                "label": "VAF (%)"
               },
               {
-                "key": "variant",
-                "label": "HGVS"
-              },
-              {
-                "key": "af",
-                "label": "VAF"
-              },
-              {
-                "key": "tier",
-                "label": "Tier"
+                "key": "hotspot",
+                "label": "Hotspot"
               },
               {
                 "key": "classification",
@@ -123,17 +119,296 @@
             "rows": [
               {
                 "gene": "BRAF",
-                "chromosome": "7",
-                "exon": "15",
-                "variant": "p.Val600Glu",
-                "af": "24%",
-                "tier": "I",
-                "classification": "Tier I"
+                "hgvs_p": "p.Val600Glu",
+                "vaf": 24,
+                "hotspot": true,
+                "classification": "Reviewed synthetic classification"
+              },
+              {
+                "gene": "EXAMPLE2",
+                "hgvs_p": "p.(Example34del)",
+                "vaf": 18,
+                "hotspot": false,
+                "classification": "Reviewed synthetic classification"
               }
             ],
             "empty_text": "Inga rapporterbara resultat",
-            "emphasis_column": "classification",
-            "emphasis_value": "Tier I"
+            "emphasis_column": null,
+            "emphasis_value": null
+          }
+        ],
+        "details": [
+          {
+            "key": "snv-details",
+            "title": "Detekterade mutationer",
+            "page_break_before": false,
+            "kind": "details",
+            "records": [
+              {
+                "key": "braf",
+                "title": "BRAF: p.Val600Glu",
+                "fields": [
+                  {
+                    "label": "Gen",
+                    "value": "BRAF",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Typ",
+                    "value": "SNV",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Transcript",
+                    "value": "NM_004333.6",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Consequence",
+                    "value": "missense_variant",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "HGVS cDNA",
+                    "value": "c.1799T>A",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "HGVS protein",
+                    "value": "p.Val600Glu",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Chromosome",
+                    "value": "7",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Position",
+                    "value": 140753336,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "VAF (%)",
+                    "value": 24,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Hotspot",
+                    "value": true,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Klassificering",
+                    "value": "Reviewed synthetic classification",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  }
+                ]
+              },
+              {
+                "key": "indel",
+                "title": "EXAMPLE2: p.(Example34del)",
+                "fields": [
+                  {
+                    "label": "Gen",
+                    "value": "EXAMPLE2",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Typ",
+                    "value": "INDEL",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Transcript",
+                    "value": "DEMO_TRANSCRIPT",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Consequence",
+                    "value": "inframe_deletion",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "HGVS cDNA",
+                    "value": "c.100_102del",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "HGVS protein",
+                    "value": "p.(Example34del)",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Chromosome",
+                    "value": "1",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Position",
+                    "value": 100100,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "VAF (%)",
+                    "value": 18,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Hotspot",
+                    "value": false,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Klassificering",
+                    "value": "Reviewed synthetic classification",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  }
+                ]
+              }
+            ],
+            "fields_per_row": 3,
+            "empty_text": "Inga rapporterbara resultat"
+          }
+        ]
+      },
+      {
+        "name": "CNV",
+        "parameters": [],
+        "sections": [
+          {
+            "key": "cnvs",
+            "title": "Kliniskt relevanta kopietalsförändringar",
+            "page_break_before": false,
+            "kind": "table",
+            "columns": [
+              {
+                "key": "gene",
+                "label": "Gen"
+              },
+              {
+                "key": "copy_number",
+                "label": "Kopietal"
+              },
+              {
+                "key": "classification",
+                "label": "Klassificering"
+              }
+            ],
+            "rows": [
+              {
+                "gene": "EXAMPLE1",
+                "copy_number": 6,
+                "classification": "Reviewed synthetic classification"
+              }
+            ],
+            "empty_text": "Inga rapporterbara resultat",
+            "emphasis_column": null,
+            "emphasis_value": null
+          }
+        ],
+        "details": [
+          {
+            "key": "cnv-details",
+            "title": "Detekterade kopietalsförändringar",
+            "page_break_before": false,
+            "kind": "details",
+            "records": [
+              {
+                "key": "cnv-1",
+                "title": "EXAMPLE1",
+                "fields": [
+                  {
+                    "label": "Gen",
+                    "value": "EXAMPLE1",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Förändring",
+                    "value": "Gain",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Kopietal",
+                    "value": 6,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "CNV-kvot",
+                    "value": 3.1,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Locus",
+                    "value": "chr1:100000-200000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Klassificering",
+                    "value": "Reviewed synthetic classification",
+                    "full_width": true,
+                    "format": "plain",
+                    "emphasis": false
+                  }
+                ]
+              }
+            ],
+            "fields_per_row": 3,
+            "empty_text": "Inga rapporterbara resultat"
           }
         ]
       },
@@ -143,28 +418,236 @@
         "sections": [
           {
             "key": "fusions",
-            "title": "Fusioner",
+            "title": "Detekterade fusioner",
             "page_break_before": false,
             "kind": "table",
             "columns": [
               {
-                "key": "fusion",
-                "label": "Fusion"
+                "key": "genes_exons",
+                "label": "Gener (exoner)"
               },
               {
-                "key": "tier",
+                "key": "locus",
+                "label": "Locus"
+              },
+              {
+                "key": "classification",
                 "label": "Klassificering"
               }
             ],
             "rows": [
               {
-                "fusion": "EML4::ALK",
-                "tier": "Tier II"
+                "genes_exons": "EML4(13)::ALK(20)",
+                "locus": "chr2:42400000;chr2:29400000",
+                "classification": "Reviewed synthetic classification"
               }
             ],
             "empty_text": "Inga rapporterbara resultat",
             "emphasis_column": null,
             "emphasis_value": null
+          }
+        ],
+        "details": [
+          {
+            "key": "fusion-details",
+            "title": "Detaljerade fusionsresultat",
+            "page_break_before": false,
+            "kind": "details",
+            "records": [
+              {
+                "key": "fusion-1",
+                "title": "EML4(13)::ALK(20)",
+                "fields": [
+                  {
+                    "label": "Variant-ID",
+                    "value": "DEMO-FUSION-001",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Gener (exoner)",
+                    "value": "EML4(13)::ALK(20)",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Locus",
+                    "value": "chr2:42400000;chr2:29400000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Oncomine-drivargen",
+                    "value": "ALK",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Fusionstyp",
+                    "value": "RNA fusion",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Stödjande läsningar",
+                    "value": 37,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Unika molekyler",
+                    "value": 18,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Brytpunkt 5′",
+                    "value": "chr2:42400000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Brytpunkt 3′",
+                    "value": "chr2:29400000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Klassificering",
+                    "value": "Reviewed synthetic classification",
+                    "full_width": true,
+                    "format": "plain",
+                    "emphasis": false
+                  }
+                ]
+              }
+            ],
+            "fields_per_row": 3,
+            "empty_text": "Inga rapporterbara resultat"
+          }
+        ]
+      },
+      {
+        "name": "OTHER",
+        "parameters": [],
+        "sections": [
+          {
+            "key": "others",
+            "title": "Övriga kliniskt relevanta fynd",
+            "page_break_before": false,
+            "kind": "table",
+            "columns": [
+              {
+                "key": "gene",
+                "label": "Gen"
+              },
+              {
+                "key": "source_type",
+                "label": "Källtyp"
+              },
+              {
+                "key": "source_class",
+                "label": "Variantklass"
+              },
+              {
+                "key": "classification",
+                "label": "Klassificering"
+              }
+            ],
+            "rows": [
+              {
+                "gene": "EXAMPLE3",
+                "source_type": "Imbalance",
+                "source_class": "RNA",
+                "classification": "Reviewed synthetic classification"
+              }
+            ],
+            "empty_text": "Inga rapporterbara resultat",
+            "emphasis_column": null,
+            "emphasis_value": null
+          }
+        ],
+        "details": [
+          {
+            "key": "other-details",
+            "title": "Detaljer för övriga fynd",
+            "page_break_before": false,
+            "kind": "details",
+            "records": [
+              {
+                "key": "other-1",
+                "title": "EXAMPLE3: Imbalance",
+                "fields": [
+                  {
+                    "label": "Gen",
+                    "value": "EXAMPLE3",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Källtyp",
+                    "value": "Imbalance",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Variantklass",
+                    "value": "RNA",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Locus",
+                    "value": "chr3:100000-200000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Obalansvärde",
+                    "value": 2.1,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "P-värde för obalans",
+                    "value": 0.01,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Brytpunktsintervall",
+                    "value": "100000-200000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Klassificering",
+                    "value": "Reviewed synthetic classification",
+                    "full_width": true,
+                    "format": "plain",
+                    "emphasis": false
+                  }
+                ]
+              }
+            ],
+            "fields_per_row": 3,
+            "empty_text": "Inga rapporterbara resultat"
           }
         ]
       }
@@ -172,7 +655,53 @@
     "summary": "Exempel på granskad slutsats. Endast för demonstration.",
     "summary_format": "plain",
     "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "",
+    "references": "Example reference supplied by the application; demonstration only.",
+    "supporting_sections": [
+      {
+        "key": "covered-genes",
+        "title": "Analyserade gener",
+        "page_break_before": false,
+        "kind": "table",
+        "columns": [
+          {
+            "key": "gene",
+            "label": "Gen"
+          }
+        ],
+        "rows": [
+          {
+            "gene": "BRAF"
+          },
+          {
+            "gene": "EXAMPLE1"
+          },
+          {
+            "gene": "EXAMPLE2"
+          },
+          {
+            "gene": "EXAMPLE3"
+          },
+          {
+            "gene": "EML4"
+          },
+          {
+            "gene": "ALK"
+          }
+        ],
+        "empty_text": "Inga rapporterbara resultat",
+        "emphasis_column": null,
+        "emphasis_value": null
+      },
+      {
+        "key": "classification-description",
+        "title": "Klassificeringsbeskrivning",
+        "page_break_before": false,
+        "kind": "text",
+        "text": "Synthetic classification description supplied by the application.",
+        "format": "plain",
+        "conclusion": false
+      }
+    ],
     "assay": [
       {
         "label": "Assay",

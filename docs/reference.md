@@ -58,7 +58,7 @@ and ordered `fields: list[FieldValue]` (empty by default).
 
 ### Analysis and sections
 
-`Analysis(name, parameters=[], sections=[])` groups prepared sections for one analysis.
+`Analysis(name, parameters=[], sections=[], details=[])` groups prepared sections for one analysis.
 Section keys must be unique within a built document. All sections have `key`, `title` and
 `page_break_before=False`.
 
@@ -66,11 +66,29 @@ Section keys must be unique within a built document. All sections have `key`, `t
 | --- | --- |
 | `TextSection` | `text`; `format="plain"` or `"markdown"`; `conclusion=False` |
 | `TableSection` | Nonempty `columns: list[Column]`; `rows=[]`; `empty_text`; optional `emphasis_column`/`emphasis_value` |
+| `DetailSection` | `records: list[DetailRecord]=[]`; `fields_per_row=3` (1, 2 or 3); `empty_text` |
+| `CLLSequenceSection` | `kind="cll_sequences"`; nonempty `sequences: list[CLLSequence]` with unique identifiers |
 | `ImageSection` | Embedded `source` data URI; `caption=""` |
 
 `Column(key, label)` declares a table column. Row keys must be declared columns.
-`ReportSection` is the discriminated union of the three section types; JSON uses `kind`
-values `text`, `table` and `image`.
+`ReportSection` is the discriminated union of the five section types; JSON uses `kind`
+values `text`, `table`, `details`, `cll_sequences` and `image`.
+
+`DetailRecord(key, title, fields)` defines a finding card with a nonempty ordered list of
+`DetailField` values. Record keys must be unique within a detail section.
+`DetailField(label, value, full_width=False, format="plain", emphasis=False)` accepts the
+same scalar values as `FieldValue`. Markdown and full-width fields occupy their own row;
+long comments can continue across PDF pages. Genexus renders compact fields first, then
+full-width fields, matching its configured source layout.
+
+`CLLSequenceSection` renders the dedicated grouped CLL Genie sequence layout. See
+[CLL Genie inputs](integration.md#cll-genie) for the typed gene, identity, functionality,
+indel, junction and read-count fields. This section is automatically built by
+`CLLGenieReport`; normalized snapshots retain its full prepared sequence data.
+
+Analysis `sections` and parameters precede the summary; enabled analyses' `details` follow
+it. The method description, `supporting_sections` and references follow the details.
+The application supplies clinical values, classifications, labels and commentary.
 
 ### Branding
 

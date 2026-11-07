@@ -70,6 +70,43 @@ load external images. `ImageSection` accepts an embedded raster/static SVG plot.
 Supply each enabled analysis in `analyses`, even when its result table is empty.
 `supported_analyses` describes assay capability; it does not automatically enable sections.
 
+## Add detailed findings
+
+Attach detail sections to `Analysis.details` to show per-finding cards after the yellow
+conclusion. Use them for SNVs/INDELs, CNVs, DNA/RNA fusions, biomarkers or other prepared
+clinical results. Genexus has its own template that batches compact fields before full-width rows.
+CLL Genie uses a separate grouped sequence table built from the typed `CLLSequence`
+fields; see [application inputs](integration.md#cll-genie). `CLLSequence.details` is for
+additional full-width rows after the standard sequence fields.
+
+```python
+from smd_reports import DetailField, DetailRecord, DetailSection
+
+analysis.details = [DetailSection(
+    key="snv-details", title="Variant details", fields_per_row=3,
+    records=[DetailRecord(
+        key="braf-1", title="BRAF p.Val600Glu",
+        fields=[
+            DetailField(label="Gene", value="BRAF"),
+            DetailField(label="Transcript", value="NM_004333.6"),
+            DetailField(label="VAF", value="24%"),
+            DetailField(label="Classification", value="Reviewed example",
+                        full_width=True, emphasis=True),
+            DetailField(label="Comment", value="**Synthetic** reviewed interpretation.",
+                        full_width=True, format="markdown"),
+        ],
+    )],
+)]
+```
+
+Fields retain their declared order within each layout group. Choose one, two or three key/value pairs per row;
+full-width fields interrupt compact rows. Comments accept sanitized Markdown and continue
+across pages. The library does not infer clinical meaning or generate conditional text.
+
+Use `data.supporting_sections` for covered-gene tables, classification explanations and
+other material after the method description. `ImageSection` can carry application-supplied
+CNV or clonality plots, including in `Analysis.details`.
+
 ## Configure presentation
 
 ```python
@@ -84,7 +121,8 @@ config = ReportConfig(
 ```
 
 If `section_order` is provided, it must name every selected analysis section and generated
-`parameters-ANALYSIS` section exactly once. Summary, description and references follow.
+`parameters-ANALYSIS` section exactly once. The summary follows, then enabled analyses’ details, the method description,
+`supporting_sections` and references.
 Application-specific generated tables also have their builder-defined ordering.
 
 Language controls built-in labels, boolean display and page numbering. Supply clinical

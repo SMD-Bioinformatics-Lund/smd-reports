@@ -62,11 +62,14 @@ def main():
                 field["label"] = labels[field["label"]]
                 if field["label"] == "Sample type":
                     field["value"] = "Synthetic sample"
+            english["data"]["run"][0]["label"] = "Run"
             for analysis in english["data"]["analyses"]:
                 for section in analysis["sections"]:
                     section["title"] = {
                         "snvs": "Clinically relevant SNVs and small INDELs",
                         "fusions": "Fusions",
+                        "cnvs": "Copy-number alterations",
+                        "others": "Other clinically relevant findings",
                     }[section["key"]]
                     section["empty_text"] = "No reportable results"
                     for column in section["columns"]:
@@ -79,7 +82,62 @@ def main():
                             "chromosome": "Chromosome",
                             "exon": "Exon",
                             "classification": "Classification",
+                            "copy": "Copy number",
+                            "hgvs_p": "HGVS protein",
+                            "vaf": "VAF (%)",
+                            "hotspot": "Hotspot",
+                            "copy_number": "Copy number",
+                            "genes_exons": "Genes (exons)",
+                            "locus": "Locus",
+                            "source_type": "Source type",
+                            "source_class": "Variant class",
                         }[column["key"]]
+            # Clinical text and labels are explicitly provided in the example adapter.
+            detail_labels = {
+                "Gen": "Gene",
+                "Typ": "Type",
+                "Transkript": "Transcript",
+                "Konsekvens": "Consequence",
+                "Kromosom": "Chromosome",
+                "Klassificering": "Classification",
+                "Kommentar": "Comment",
+                "Kopietal": "Copy number",
+                "Storlek": "Size",
+                "Prober": "Probes",
+                "5′ gen": "5′ gene",
+                "3′ gen": "3′ gene",
+                "Effekt": "Effect",
+                "Förändring": "Change",
+                "CNV-kvot": "CNV ratio",
+                "Gener (exoner)": "Genes (exons)",
+                "Oncomine-drivargen": "Oncomine driver gene",
+                "Fusionstyp": "Fusion type",
+                "Stödjande läsningar": "Supporting reads",
+                "Unika molekyler": "Unique molecules",
+                "Brytpunkt 5′": "5′ breakpoint",
+                "Brytpunkt 3′": "3′ breakpoint",
+                "Källtyp": "Source type",
+                "Variantklass": "Variant class",
+                "Obalansvärde": "Imbalance score",
+                "P-värde för obalans": "Imbalance p-value",
+                "Brytpunktsintervall": "Breakpoint range",
+                "5′ brytpunkt": "5′ breakpoint",
+                "3′ brytpunkt": "3′ breakpoint",
+            }
+            for analysis in english["data"]["analyses"]:
+                for section in analysis["details"]:
+                    section["title"] = {
+                        "snv-details": "Detected mutations",
+                        "cnv-details": "Detected copy-number alterations",
+                        "fusion-details": "Detailed fusion results",
+                        "other-details": "Details of other findings",
+                    }[section["key"]]
+                    for record in section["records"]:
+                        for field in record["fields"]:
+                            field["label"] = detail_labels.get(field["label"], field["label"])
+            english["data"]["supporting_sections"][0]["title"] = "Analyzed genes"
+            english["data"]["supporting_sections"][0]["columns"][0]["label"] = "Gene"
+            english["data"]["supporting_sections"][1]["title"] = "Classification description"
             (args.output / "genexus-en.json").write_text(
                 json.dumps(english, ensure_ascii=False, indent=2) + "\n",
                 encoding="utf-8",

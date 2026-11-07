@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Farmakogenetisk analysrapport - DEMO-REPORT-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:plugin_version" content="1.0.0"><meta name="smd-reports:schema_version" content="1"><meta name="smd-reports:template_version" content="1.6.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
+<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:plugin_version" content="1.0.0"><meta name="smd-reports:schema_version" content="1"><meta name="smd-reports:template_version" content="1.7.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
   font-style: normal;
@@ -82,6 +82,23 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .snv-summary th:nth-child(6) { width: 8%; }
 .snv-summary th:nth-child(7) { width: 25%; }
 .emphasis { font-weight: 600; }
+.finding-detail { margin: 6px 0 12px; }
+.report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
+.report_variant th, .report_variant td { padding: 2px 4px; border: 1px solid var(--report-border); font-size: 8.5pt; font-weight: 400; }
+.report_variant th.report_variant_header { padding: 4px 5px; background: var(--tint); font-size: 10pt; font-weight: 600; }
+.report_variant .report_key { width: var(--detail-label-width); background: var(--tint); }
+.report_variant td.emphasis { font-weight: 600; }
+.report_variant .report_comment > :first-child { margin-top: 0; }
+.report_variant .report_comment > :last-child { margin-bottom: 0; }
+/* Full-width clinical text can continue across pages, retaining all supplied text. */
+.report_variant.detail-flow { display: block; border: 0; break-inside: auto; }
+.detail-flow > thead, .detail-flow > tbody { display: block; }
+.detail-flow tr { display: table; width: 100%; table-layout: fixed; }
+.detail-flow th.report_variant_header { width: 100%; }
+.detail-flow tr + tr th, .detail-flow tr + tr td { border-top: 0; }
+.detail-flow tr.detail-wide-row { display: block; break-inside: auto; border: 1px solid var(--report-border); border-top: 0; }
+.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: transparent; }
+.detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
 .results_summary table { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 3px 0; background: #fff; color: #000; font-size: 8pt; line-height: 1.2; break-inside: auto; }
@@ -130,10 +147,26 @@ p, li { orphans: 3; widows: 3; }
   .report-page-header .report-patient-table .metadata-label { width: 12%; }
   .variant_table th, .variant_table td { padding: 2px 8px; font-size: 8.25pt; line-height: 1.18; }
   .variant_table th { font-size: 7.5pt; }
+  .report_variant th, .report_variant td { font-size: 8.25pt; line-height: 1.18; }
+  .report_variant th.report_variant_header { font-size: 8.75pt; }
   .break-before { break-before: page; }
   .report-summary { break-before: page; break-after: page; }
 }
 @media screen and (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
+/* Preserve the original grouped CLL sequence rows and Genexus variant cards. */
+.cll-sequence, .genexus-detail { margin: 6px 0 12px; }
+.cll-sequence-table th.report_variant_header { text-align: center; }
+.cll-sequence-table tr > th, .cll-sequence-table tr > td { width: 20%; }
+.cll-sequence-table tr > [colspan="2"] { width: 40%; }
+.cll-sequence-table tr > [colspan="3"] { width: 60%; }
+.cll-sequence-table tr > [colspan="4"] { width: 80%; }
+.cll-sequence-table tr > [colspan="5"] { width: 100%; }
+.cll-sequence-table .report_key { width: auto; }
+.cll-sequence-table .cll-highlight { background: #ffffe0; }
+.cll-sequence-table .cll-text { white-space: pre-wrap; }
+.cll-sequence-table tr.detail-wide-row > td.report_comment { width: auto; }
+.genexus-detail .report_key { font-size: 7.5pt; }
+.genexus-detail .report_variant_header { font-weight: 700; }
 
 @page { margin-top: 65.0mm; margin-bottom: 38.0mm; }
 .report-application-logo { width: 13.75mm; }
@@ -150,7 +183,7 @@ p, li { orphans: 3; widows: 3; }
 <tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Provtyp</th><td>Syntetiskt prov</td><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td><th scope="row">Rapportdatum</th><td>2026-01-01</td></tr><tr><th scope="row">Skapad av</th><td>Demo User</td><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 <img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div>
-<div class="report-page-number-footer"><span class="template-version">pgx template v1.6.0</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">pgx template v1.7.0</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-center-brand"><div class="report-center-lockup"><div class="report-center-contact">
 <span>Example Diagnostics Center</span><span>Molekylär diagnostik</span><span class="report-center-address">Exempeladress 1</span><span class="report-center-phone"><svg width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z" fill="none" stroke="#656670" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> 000-000000</span><span>demo@example.org</span></div><div class="report-center-logo-cell"><img class="center-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iOTAiIHZpZXdCb3g9IjAgMCAxMjAgOTAiPgo8dGl0bGU+RXhhbXBsZSBjZW50ZXIgbG9nbzwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSIxMTgiIGhlaWdodD0iODgiIHJ4PSI4IiBmaWxsPSIjZjNmNmY3IiBzdHJva2U9IiM2ODdkODYiLz4KPHRleHQgeD0iNjAiIHk9IjQyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzM1NDk1MiI+RVhBTVBMRTwvdGV4dD4KPHRleHQgeD0iNjAiIHk9IjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzM1NDk1MiI+Q0VOVEVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example Diagnostics Center"></div></div></div>
@@ -165,29 +198,32 @@ p, li { orphans: 3; widows: 3; }
 <table class="report-patient-table"><colgroup><col class="metadata-label"><col><col class="metadata-label"><col></colgroup><tbody>
 <tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td><th scope="row">Provtyp</th><td>Syntetiskt prov</td></tr><tr><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Rapportdatum</th><td>2026-01-01</td><th scope="row">Skapad av</th><td>Demo User</td></tr><tr><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <section id="pgx-recommendations" class="section">
-<h2 class="report_header">Kliniska rekommendationer</h2>
-<table class="results variant_table"><thead><tr><th scope="col">Gen</th><th scope="col">Haplotyp</th><th scope="col">Klinisk rekommendation</th></tr></thead><tbody>
+<h2 class="report_header">Kliniska rekommendationer</h2><table class="results variant_table"><thead><tr><th scope="col">Gen</th><th scope="col">Haplotyp</th><th scope="col">Klinisk rekommendation</th></tr></thead><tbody>
 <tr><td>DPYD</td><td>*1/*2A</td><td>Syntetisk rekommendation - ej för kliniskt bruk.</td></tr></tbody></table></section>
 <section id="pgx-variants" class="section break-before">
-<h2 class="report_header">Kliniskt relevanta varianter</h2>
-<table class="results variant_table"><thead><tr><th scope="col">Gen</th><th scope="col">rsID</th><th scope="col">Möjliga haplotyper</th><th scope="col">Position</th><th scope="col">Zygositet</th><th scope="col">Variantfrekvens (%)</th><th scope="col">Möjlig duplikation</th></tr></thead><tbody>
+<h2 class="report_header">Kliniskt relevanta varianter</h2><table class="results variant_table"><thead><tr><th scope="col">Gen</th><th scope="col">rsID</th><th scope="col">Möjliga haplotyper</th><th scope="col">Position</th><th scope="col">Zygositet</th><th scope="col">Variantfrekvens (%)</th><th scope="col">Möjlig duplikation</th></tr></thead><tbody>
 <tr><td>DPYD</td><td>rsDEMO</td><td>DPYD-*2A</td><td>1:100</td><td>Hetero</td><td>50.0</td><td>Nej</td></tr></tbody></table></section>
 <section id="pgx-depth" class="section">
-<h2 class="report_header">Mål med lågt läsdjup</h2>
-<table class="results variant_table"><thead><tr><th scope="col">rsID</th><th scope="col">Haplotyp</th><th scope="col">Position</th><th scope="col">Läsdjup</th></tr></thead><tbody>
+<h2 class="report_header">Mål med lågt läsdjup</h2><table class="results variant_table"><thead><tr><th scope="col">rsID</th><th scope="col">Haplotyp</th><th scope="col">Position</th><th scope="col">Läsdjup</th></tr></thead><tbody>
 <tr><td>rsLOW</td><td>DEMO</td><td>1:200</td><td>72.0</td></tr></tbody></table></section>
-<section id="pgx-genes" class="section">
-<h2 class="report_header">Gener som ingår i PGx-analysen</h2>
-<table class="results variant_table"><thead><tr><th scope="col">Gen</th></tr></thead><tbody>
-<tr><td>DPYD</td></tr><tr><td>TPMT</td></tr><tr><td>NUDT15</td></tr></tbody></table></section>
 <section id="summary" class="section report-summary break-before">
-<h2 class="report_header">Slutsats</h2>
-<div class="results_summary plain">Exempel på granskad slutsats. Endast för demonstration.</div>
+<h2 class="report_header">Slutsats</h2><div class="results_summary plain">Exempel på granskad slutsats. Endast för demonstration.</div>
 </section>
 <section id="description" class="section">
-<h2 class="report_header">Analysbeskrivning</h2>
-<div class="plain">Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.</div>
+<h2 class="report_header">Analysbeskrivning</h2><div class="plain">Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.</div>
+</section>
+<section id="classification-description" class="section">
+<h2 class="report_header">Klassificeringsbeskrivning</h2><div class="plain">Synthetic classification description supplied by the application.</div>
+</section>
+<section id="pgx-genes" class="section">
+<h2 class="report_header">Gener som ingår i PGx-analysen</h2><table class="results variant_table"><thead><tr><th scope="col">Gen</th></tr></thead><tbody>
+<tr><td>DPYD</td></tr><tr><td>TPMT</td></tr><tr><td>NUDT15</td></tr></tbody></table></section>
+<section id="pgx-targets" class="section">
+<h2 class="report_header">Varianter som ingår i PGx-analysen</h2><table class="results variant_table"><thead><tr><th scope="col">rsID</th><th scope="col">Haplotyp</th></tr></thead><tbody>
+<tr><td>rsDEMO</td><td>DPYD-*2A</td></tr></tbody></table></section>
+<section id="references" class="section">
+<h2 class="report_header">Referenser</h2><div class="plain">Example reference supplied by the application; demonstration only.</div>
 </section>
 </main>
-<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">pgx template v1.6.0</span></footer>
+<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">pgx template v1.7.0</span></footer>
 </div></body></html>

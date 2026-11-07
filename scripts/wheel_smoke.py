@@ -32,7 +32,7 @@ report = CoyoteReport(CoyoteData(analyte='dna', metadata=ReportMetadata(
 html = report.render_html()
 assert 'data:font/woff2;base64,' in html
 assert 'Installed wheel' in html
-assert 'template v1.6.0' in html
+assert 'template v1.7.0' in html
 print('Isolated HTML-only wheel smoke check passed')
 """,
             ],

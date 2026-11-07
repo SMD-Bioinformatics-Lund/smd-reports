@@ -78,7 +78,18 @@
     "summary": "Exempel på granskad slutsats. Endast för demonstration.",
     "summary_format": "plain",
     "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "",
+    "references": "Example reference supplied by the application; demonstration only.",
+    "supporting_sections": [
+      {
+        "key": "classification-description",
+        "title": "Klassificeringsbeskrivning",
+        "page_break_before": false,
+        "kind": "text",
+        "text": "Synthetic classification description supplied by the application.",
+        "format": "plain",
+        "conclusion": false
+      }
+    ],
     "variants": [
       {
         "gene": "DPYD",
@@ -106,7 +117,12 @@
       }
     ],
     "read_depth_threshold": 100,
-    "targets": [],
+    "targets": [
+      {
+        "rsid": "rsDEMO",
+        "haplotypes": "DPYD-*2A"
+      }
+    ],
     "genes": [
       "DPYD",
       "TPMT",

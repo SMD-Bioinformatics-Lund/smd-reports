@@ -26,6 +26,7 @@ class Analysis(Model):
     name: str
     parameters: list[FieldValue] = Field(default_factory=list)
     sections: list[ReportSection] = Field(default_factory=list)
+    details: list[ReportSection] = Field(default_factory=list)
 
 
 class ReportConfig(Model):
@@ -49,6 +50,7 @@ class PreparedContent(Model):
     summary_format: Literal["plain", "markdown"] = "plain"
     description: str = ""
     references: str = ""
+    supporting_sections: list[ReportSection] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def consistent_analyses(self):
@@ -90,10 +92,12 @@ class PreparedReport(ClinicalReport):
         from .. import __version__
 
         sections = []
+        detail_sections = []
         for analysis in self.data.analyses:
             if analysis.name not in self.data.enabled_analyses:
                 continue
             sections.extend(section.model_copy(deep=True) for section in analysis.sections)
+            detail_sections.extend(section.model_copy(deep=True) for section in analysis.details)
             if analysis.parameters:
                 from ..core import Column, TableSection
 
@@ -128,6 +132,7 @@ class PreparedReport(ClinicalReport):
                     page_break_before=self.config.summary_new_page,
                 )
             )
+        sections.extend(detail_sections)
         if self.data.description:
             sections.append(
                 TextSection(
@@ -136,6 +141,7 @@ class PreparedReport(ClinicalReport):
                     text=self.data.description,
                 )
             )
+        sections.extend(section.model_copy(deep=True) for section in self.data.supporting_sections)
         if self.data.references:
             sections.append(
                 TextSection(

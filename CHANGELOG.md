@@ -2,8 +2,19 @@
 
 ## 0.1.0
 
+- Restore the CLL Genie grouped five-column sequence layout with typed V/J scores and
+  identities, D-region, FR/CDR, indel, functionality, junction and read-count fields.
+- Give Genexus its own source-compatible detail template and representative SNV/INDEL,
+  CNV, fusion and other-finding examples. CLL Genie and Genexus template revisions are 1.8.0.
+
+- Add typed per-finding cards for molecular results and CLL sequences, compact fields,
+  full-width classifications and paginated Markdown comments. Render enabled analysis
+  details after the conclusion, followed by method, supporting material and references.
+- Expand public previews with SNV, CNV, fusion, biomarker and sequence detail examples.
+  Keep clinical facts and interpretations supplied by the calling application.
+
 - Use generic artwork in public examples; production branding comes entirely from caller
-  JSON. Application names use styled text. Shared template revisions are 1.6.0.
+  JSON. Application names use styled text. Coyote3 and PGx template revisions are 1.7.0.
 
 - Isolate yellow conclusions with print/PDF page breaks before and after across all
   applications; long conclusions may span pages.

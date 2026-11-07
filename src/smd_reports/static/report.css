@@ -55,6 +55,23 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .snv-summary th:nth-child(6) { width: 8%; }
 .snv-summary th:nth-child(7) { width: 25%; }
 .emphasis { font-weight: 600; }
+.finding-detail { margin: 6px 0 12px; }
+.report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
+.report_variant th, .report_variant td { padding: 2px 4px; border: 1px solid var(--report-border); font-size: 8.5pt; font-weight: 400; }
+.report_variant th.report_variant_header { padding: 4px 5px; background: var(--tint); font-size: 10pt; font-weight: 600; }
+.report_variant .report_key { width: var(--detail-label-width); background: var(--tint); }
+.report_variant td.emphasis { font-weight: 600; }
+.report_variant .report_comment > :first-child { margin-top: 0; }
+.report_variant .report_comment > :last-child { margin-bottom: 0; }
+/* Full-width clinical text can continue across pages, retaining all supplied text. */
+.report_variant.detail-flow { display: block; border: 0; break-inside: auto; }
+.detail-flow > thead, .detail-flow > tbody { display: block; }
+.detail-flow tr { display: table; width: 100%; table-layout: fixed; }
+.detail-flow th.report_variant_header { width: 100%; }
+.detail-flow tr + tr th, .detail-flow tr + tr td { border-top: 0; }
+.detail-flow tr.detail-wide-row { display: block; break-inside: auto; border: 1px solid var(--report-border); border-top: 0; }
+.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: transparent; }
+.detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
 .results_summary table { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 3px 0; background: #fff; color: #000; font-size: 8pt; line-height: 1.2; break-inside: auto; }
@@ -103,7 +120,23 @@ p, li { orphans: 3; widows: 3; }
   .report-page-header .report-patient-table .metadata-label { width: 12%; }
   .variant_table th, .variant_table td { padding: 2px 8px; font-size: 8.25pt; line-height: 1.18; }
   .variant_table th { font-size: 7.5pt; }
+  .report_variant th, .report_variant td { font-size: 8.25pt; line-height: 1.18; }
+  .report_variant th.report_variant_header { font-size: 8.75pt; }
   .break-before { break-before: page; }
   .report-summary { break-before: page; break-after: page; }
 }
 @media screen and (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
+/* Preserve the original grouped CLL sequence rows and Genexus variant cards. */
+.cll-sequence, .genexus-detail { margin: 6px 0 12px; }
+.cll-sequence-table th.report_variant_header { text-align: center; }
+.cll-sequence-table tr > th, .cll-sequence-table tr > td { width: 20%; }
+.cll-sequence-table tr > [colspan="2"] { width: 40%; }
+.cll-sequence-table tr > [colspan="3"] { width: 60%; }
+.cll-sequence-table tr > [colspan="4"] { width: 80%; }
+.cll-sequence-table tr > [colspan="5"] { width: 100%; }
+.cll-sequence-table .report_key { width: auto; }
+.cll-sequence-table .cll-highlight { background: #ffffe0; }
+.cll-sequence-table .cll-text { white-space: pre-wrap; }
+.cll-sequence-table tr.detail-wide-row > td.report_comment { width: auto; }
+.genexus-detail .report_key { font-size: 7.5pt; }
+.genexus-detail .report_variant_header { font-weight: 700; }

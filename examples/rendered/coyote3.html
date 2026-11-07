@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Molekylärgenetisk analysrapport - DEMO-REPORT-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:plugin_version" content="1.0.0"><meta name="smd-reports:schema_version" content="1"><meta name="smd-reports:template_version" content="1.6.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
+<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:plugin_version" content="1.0.0"><meta name="smd-reports:schema_version" content="1"><meta name="smd-reports:template_version" content="1.7.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
   font-style: normal;
@@ -82,6 +82,23 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .snv-summary th:nth-child(6) { width: 8%; }
 .snv-summary th:nth-child(7) { width: 25%; }
 .emphasis { font-weight: 600; }
+.finding-detail { margin: 6px 0 12px; }
+.report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
+.report_variant th, .report_variant td { padding: 2px 4px; border: 1px solid var(--report-border); font-size: 8.5pt; font-weight: 400; }
+.report_variant th.report_variant_header { padding: 4px 5px; background: var(--tint); font-size: 10pt; font-weight: 600; }
+.report_variant .report_key { width: var(--detail-label-width); background: var(--tint); }
+.report_variant td.emphasis { font-weight: 600; }
+.report_variant .report_comment > :first-child { margin-top: 0; }
+.report_variant .report_comment > :last-child { margin-bottom: 0; }
+/* Full-width clinical text can continue across pages, retaining all supplied text. */
+.report_variant.detail-flow { display: block; border: 0; break-inside: auto; }
+.detail-flow > thead, .detail-flow > tbody { display: block; }
+.detail-flow tr { display: table; width: 100%; table-layout: fixed; }
+.detail-flow th.report_variant_header { width: 100%; }
+.detail-flow tr + tr th, .detail-flow tr + tr td { border-top: 0; }
+.detail-flow tr.detail-wide-row { display: block; break-inside: auto; border: 1px solid var(--report-border); border-top: 0; }
+.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: transparent; }
+.detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
 .results_summary table { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 3px 0; background: #fff; color: #000; font-size: 8pt; line-height: 1.2; break-inside: auto; }
@@ -130,10 +147,26 @@ p, li { orphans: 3; widows: 3; }
   .report-page-header .report-patient-table .metadata-label { width: 12%; }
   .variant_table th, .variant_table td { padding: 2px 8px; font-size: 8.25pt; line-height: 1.18; }
   .variant_table th { font-size: 7.5pt; }
+  .report_variant th, .report_variant td { font-size: 8.25pt; line-height: 1.18; }
+  .report_variant th.report_variant_header { font-size: 8.75pt; }
   .break-before { break-before: page; }
   .report-summary { break-before: page; break-after: page; }
 }
 @media screen and (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
+/* Preserve the original grouped CLL sequence rows and Genexus variant cards. */
+.cll-sequence, .genexus-detail { margin: 6px 0 12px; }
+.cll-sequence-table th.report_variant_header { text-align: center; }
+.cll-sequence-table tr > th, .cll-sequence-table tr > td { width: 20%; }
+.cll-sequence-table tr > [colspan="2"] { width: 40%; }
+.cll-sequence-table tr > [colspan="3"] { width: 60%; }
+.cll-sequence-table tr > [colspan="4"] { width: 80%; }
+.cll-sequence-table tr > [colspan="5"] { width: 100%; }
+.cll-sequence-table .report_key { width: auto; }
+.cll-sequence-table .cll-highlight { background: #ffffe0; }
+.cll-sequence-table .cll-text { white-space: pre-wrap; }
+.cll-sequence-table tr.detail-wide-row > td.report_comment { width: auto; }
+.genexus-detail .report_key { font-size: 7.5pt; }
+.genexus-detail .report_variant_header { font-weight: 700; }
 
 @page { margin-top: 65.0mm; margin-bottom: 38.0mm; }
 .report-application-logo { width: 13.75mm; }
@@ -154,7 +187,7 @@ p, li { orphans: 3; widows: 3; }
 <tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Provtyp</th><td>Syntetiskt prov</td><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td><th scope="row">Rapportdatum</th><td>2026-01-01</td></tr><tr><th scope="row">Skapad av</th><td>Demo User</td><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 <img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div>
-<div class="report-page-number-footer"><span class="template-version">DNA template v1.6.0</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">DNA template v1.7.0</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-product-brand">
 <div class="report-logo-identity"><img class="report-application-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDgwIDQ4Ij4KPHRpdGxlPkV4YW1wbGUgYXBwbGljYXRpb24gaWNvbjwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI3OCIgaGVpZ2h0PSI0NiIgcng9IjgiIGZpbGw9IiNmNGYwZjgiIHN0cm9rZT0iIzc2NjQ4NiIvPgo8cGF0aCBkPSJNMTMgMjQgMjEgMTYgMjkgMjQgMjEgMzJaIiBmaWxsPSIjNzY2NDg2Ii8+Cjx0ZXh0IHg9IjQ5IiB5PSIyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1MTQ2NWMiPkFQUDwvdGV4dD4KPC9zdmc+Cg==" alt="coyote3"></div><div><strong class="application-name">Coyote<span>3</span></strong>
@@ -173,28 +206,87 @@ p, li { orphans: 3; widows: 3; }
 <table class="report-patient-table"><colgroup><col class="metadata-label"><col><col class="metadata-label"><col></colgroup><tbody>
 <tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td><th scope="row">Provtyp</th><td>Syntetiskt prov</td></tr><tr><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Rapportdatum</th><td>2026-01-01</td><th scope="row">Skapad av</th><td>Demo User</td></tr><tr><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <section id="snvs" class="section">
-<h2 class="report_header">Kliniskt relevanta SNVs och små INDELs</h2>
-<table class="results variant_table snv-summary"><thead><tr><th scope="col">Gen</th><th scope="col">Kromosom</th><th scope="col">Exon</th><th scope="col">HGVS</th><th scope="col">VAF</th><th scope="col">Tier</th><th scope="col">Klassificering</th></tr></thead><tbody>
+<h2 class="report_header">Kliniskt relevanta SNVs och små INDELs</h2><table class="results variant_table snv-summary"><thead><tr><th scope="col">Gen</th><th scope="col">Kromosom</th><th scope="col">Exon</th><th scope="col">HGVS</th><th scope="col">VAF</th><th scope="col">Tier</th><th scope="col">Klassificering</th></tr></thead><tbody>
 <tr><td>BRAF</td><td>7</td><td>15</td><td>p.Val600Glu</td><td>24%</td><td>I</td><td class="emphasis">Tier I</td></tr></tbody></table></section>
 <section id="parameters-SNV" class="section">
-<h2 class="report_header">SNV - parametrar</h2>
-<table class="results variant_table"><thead><tr><th scope="col">Parameter</th><th scope="col">Värde</th></tr></thead><tbody>
+<h2 class="report_header">SNV - parametrar</h2><table class="results variant_table"><thead><tr><th scope="col">Parameter</th><th scope="col">Värde</th></tr></thead><tbody>
 <tr><td>Referensgenom</td><td>GRCh38</td></tr></tbody></table></section>
 <section id="cnvs" class="section">
-<h2 class="report_header">Kopietalsförändringar</h2>
-<p class="empty">Inga rapporterbara resultat</p></section>
+<h2 class="report_header">Kopietalsförändringar</h2><table class="results variant_table"><thead><tr><th scope="col">Gen</th><th scope="col">Kopietal</th></tr></thead><tbody>
+<tr><td>EXAMPLE1</td><td>6</td></tr></tbody></table></section>
 <section id="biomarkers" class="section">
-<h2 class="report_header">Kliniskt relevanta biomarkörer</h2>
-<table class="results variant_table"><thead><tr><th scope="col">Biomarkör</th><th scope="col">Resultat</th><th scope="col">Bedömning</th></tr></thead><tbody>
+<h2 class="report_header">Kliniskt relevanta biomarkörer</h2><table class="results variant_table"><thead><tr><th scope="col">Biomarkör</th><th scope="col">Resultat</th><th scope="col">Bedömning</th></tr></thead><tbody>
 <tr><td>TMB</td><td>12 mut/Mb</td><td>Hög</td></tr></tbody></table></section>
+<section id="translocations" class="section">
+<h2 class="report_header">Translokationer</h2><table class="results variant_table"><thead><tr><th scope="col">Fusion</th><th scope="col">Klassificering</th></tr></thead><tbody>
+<tr><td>EML4::ALK</td><td>Tier II</td></tr></tbody></table></section>
 <section id="summary" class="section report-summary break-before">
-<h2 class="report_header">Slutsats</h2>
-<div class="results_summary plain">Exempel på granskad slutsats. Endast för demonstration.</div>
+<h2 class="report_header">Slutsats</h2><div class="results_summary plain">Exempel på granskad slutsats. Endast för demonstration.</div>
+</section>
+<section id="snv-details" class="section">
+<h2 class="report_header">SNV / INDEL - BRAF p.Val600Glu</h2><article class="finding-detail" id="snv-details-snv-details-1" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant detail-flow">
+<thead><tr><th class="report_variant_header" colspan="6">SNV / INDEL - BRAF p.Val600Glu</th></tr></thead>
+<tbody><tr>
+<th scope="row" class="report_key">Gen</th><td class="var_report_val">BRAF</td><th scope="row" class="report_key">Typ</th><td class="var_report_val">SNV</td><th scope="row" class="report_key">Transkript</th><td class="var_report_val">NM_004333.6</td></tr><tr>
+<th scope="row" class="report_key">Konsekvens</th><td class="var_report_val">missense_variant</td><th scope="row" class="report_key">cDNA</th><td class="var_report_val">c.1799T&gt;A</td><th scope="row" class="report_key">Protein</th><td class="var_report_val">p.Val600Glu</td></tr><tr>
+<th scope="row" class="report_key">Kromosom</th><td class="var_report_val">7</td><th scope="row" class="report_key">Position</th><td class="var_report_val">140753336</td><th scope="row" class="report_key">VAF</th><td class="var_report_val">24%</td></tr><tr>
+<th scope="row" class="report_key">Exon</th><td class="var_report_val" colspan="5">15</td></tr><tr class="detail-wide-row">
+<th scope="row" class="report_key">Klassificering</th><td class="report_comment emphasis" colspan="5">Reviewed example</td></tr><tr class="detail-wide-row">
+<th scope="row" class="report_key">Kommentar</th><td class="report_comment" colspan="5"><p><strong>Synthetic example.</strong> Interpretation supplied and reviewed by the application.</p></td></tr></tbody></table></article>
+</section>
+<section id="cnv-details" class="section">
+<h2 class="report_header">CNV - EXAMPLE1</h2><article class="finding-detail" id="cnv-details-cnv-details-1" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant detail-flow">
+<thead><tr><th class="report_variant_header" colspan="6">CNV - EXAMPLE1</th></tr></thead>
+<tbody><tr>
+<th scope="row" class="report_key">Gen</th><td class="var_report_val">EXAMPLE1</td><th scope="row" class="report_key">Region</th><td class="var_report_val">chr1:100000-200000</td><th scope="row" class="report_key">Typ</th><td class="var_report_val">Gain</td></tr><tr>
+<th scope="row" class="report_key">Kopietal</th><td class="var_report_val">6</td><th scope="row" class="report_key">Storlek</th><td class="var_report_val">100 kb</td><th scope="row" class="report_key">Prober</th><td class="var_report_val">42</td></tr><tr>
+<th scope="row" class="report_key">PR</th><td class="var_report_val">25</td><th scope="row" class="report_key">SR</th><td class="var_report_val" colspan="3">12</td></tr><tr class="detail-wide-row">
+<th scope="row" class="report_key">Klassificering</th><td class="report_comment emphasis" colspan="5">Reviewed example</td></tr><tr class="detail-wide-row">
+<th scope="row" class="report_key">Kommentar</th><td class="report_comment" colspan="5"><p>Synthetic copy-number finding; supplied description and classification.</p></td></tr></tbody></table></article>
+</section>
+<section id="biomarker-details" class="section">
+<h2 class="report_header">Biomarkördetaljer</h2><article class="finding-detail" id="biomarker-details-tmb" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant">
+<thead><tr><th class="report_variant_header" colspan="6">TMB</th></tr></thead>
+<tbody><tr>
+<th scope="row" class="report_key">Resultat</th><td class="var_report_val">12 mut/Mb</td><th scope="row" class="report_key">Bedömning</th><td class="var_report_val" colspan="3">Hög</td></tr></tbody></table></article>
+<article class="finding-detail" id="biomarker-details-msi" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant">
+<thead><tr><th class="report_variant_header" colspan="6">MSI</th></tr></thead>
+<tbody><tr>
+<th scope="row" class="report_key">Instabila markörer</th><td class="var_report_val">0</td><th scope="row" class="report_key">Analyserade markörer</th><td class="var_report_val">100</td><th scope="row" class="report_key">Resultat</th><td class="var_report_val">0%</td></tr></tbody></table></article>
+<article class="finding-detail" id="biomarker-details-hrd" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant">
+<thead><tr><th class="report_variant_header" colspan="6">HRD</th></tr></thead>
+<tbody><tr>
+<th scope="row" class="report_key">Summa</th><td class="var_report_val">25</td><th scope="row" class="report_key">TAI</th><td class="var_report_val">8</td><th scope="row" class="report_key">LST</th><td class="var_report_val">9</td></tr><tr>
+<th scope="row" class="report_key">LOH</th><td class="var_report_val" colspan="5">8</td></tr></tbody></table></article>
+</section>
+<section id="translocation-details" class="section">
+<h2 class="report_header">Fusion - EML4::ALK</h2><article class="finding-detail" id="translocation-details-fusion-details-1" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant detail-flow">
+<thead><tr><th class="report_variant_header" colspan="6">Fusion - EML4::ALK</th></tr></thead>
+<tbody><tr>
+<th scope="row" class="report_key">5′ gen</th><td class="var_report_val">EML4</td><th scope="row" class="report_key">3′ gen</th><td class="var_report_val">ALK</td><th scope="row" class="report_key">Effekt</th><td class="var_report_val">In-frame</td></tr><tr>
+<th scope="row" class="report_key">5′ brytpunkt</th><td class="var_report_val">chr2:42400000</td><th scope="row" class="report_key">3′ brytpunkt</th><td class="var_report_val">chr2:29400000</td><th scope="row" class="report_key">Split reads</th><td class="var_report_val">37</td></tr><tr>
+<th scope="row" class="report_key">Spanning pairs</th><td class="var_report_val">18</td><th scope="row" class="report_key">Anchor</th><td class="var_report_val" colspan="3">64</td></tr><tr class="detail-wide-row">
+<th scope="row" class="report_key">Klassificering</th><td class="report_comment emphasis" colspan="5">Reviewed example</td></tr><tr class="detail-wide-row">
+<th scope="row" class="report_key">Kommentar</th><td class="report_comment" colspan="5"><p>Synthetic fusion. All breakpoints, evidence and text are application inputs.</p></td></tr></tbody></table></article>
 </section>
 <section id="description" class="section">
-<h2 class="report_header">Analysbeskrivning</h2>
-<div class="plain">Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.</div>
+<h2 class="report_header">Analysbeskrivning</h2><div class="plain">Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.</div>
+</section>
+<section id="covered-genes" class="section">
+<h2 class="report_header">Analyserade gener</h2><table class="results variant_table"><thead><tr><th scope="col">Gen</th></tr></thead><tbody>
+<tr><td>BRAF</td></tr><tr><td>EML4</td></tr><tr><td>ALK</td></tr><tr><td>EXAMPLE1</td></tr></tbody></table></section>
+<section id="classification-description" class="section">
+<h2 class="report_header">Klassificeringsbeskrivning</h2><div class="plain">Synthetic classification description supplied by the application.</div>
+</section>
+<section id="references" class="section">
+<h2 class="report_header">Referenser</h2><div class="plain">Example reference supplied by the application; demonstration only.</div>
 </section>
 </main>
-<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">DNA template v1.6.0</span></footer>
+<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">DNA template v1.7.0</span></footer>
 </div></body></html>

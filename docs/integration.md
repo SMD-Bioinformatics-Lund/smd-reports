@@ -37,6 +37,15 @@ Use `GenexusData` and `GenexusReport(data, config)`. In addition to common prepa
 `GenexusData` accepts ordered `assay` and `run` lists of `FieldValue`. These are included
 in report metadata. Supply QC results as typed sections.
 
+Genexus `Analysis.details` uses a dedicated variant-card template matching the source
+report configuration: compact fields batched three pairs per row, with declared
+full-width fields placed afterwards. The public examples include separate SNV/INDEL,
+CNV, fusion and other-finding sections. For example, CNVs include change, copy number,
+CNV ratio and locus; fusions include variant ID, genes/exons, driver gene, fusion type,
+read support, unique molecules and both breakpoints. Supply the field labels, values,
+record titles and full-width flags through `DetailSection`/`DetailRecord`/`DetailField`.
+Classification and emphasis are prepared by the application, never inferred by the template.
+
 Input discovery, exported-data parsing, merging, duplicate detection, assay eligibility,
 finding selection and clinical narrative generation remain in the application. Both Python
 and JSON interfaces consume the resulting prepared content.
@@ -53,9 +62,26 @@ Use `CLLGenieData` and `CLLGenieReport(data, config)`.
 
 `CLLSequence` has required `sequence_id`, `mutation_status` and `productivity` strings.
 Optional values include `length_nt`, `identity_percent`, `identity_nt`, `identity_with_indels`
-and `subset`. Sequence identifiers must be unique. Supply detailed V/J/D gene/allele,
-scores, functionality comments, indels, FR/CDR, junction and read information as ordered
-`FieldValue` entries in `details`.
+and `subset`. Sequence identifiers must be unique. The builder creates a dedicated
+`CLLSequenceSection` preserving the grouped five-column sequence table, rather than
+converting these facts into generic finding cards.
+
+| Group | Optional `CLLSequence` fields |
+| --- | --- |
+| Category and indels | `analysis_category`, `indel_summary` |
+| Functionality | `functionality_label`, `functionality_comment`; `productivity` is required |
+| V gene | `v_gene`, `v_score`; identity uses `identity_percent`, `identity_nt`, `identity_with_indels` |
+| J gene | `j_gene`, `j_score`, `j_identity_percent`, `j_identity_nt` |
+| D gene | `d_gene`, `d_reading_frame` |
+| FR/CDR and junction | `fr_lengths`, `cdr_lengths`, `aa_junction`, `junction_length_nt`, `junction_decryption`, `junction_legend` |
+| Read counts | `merge_count`, `total_reads_percent` |
+
+The sequence table groups V/J alleles, scores and identities on the same rows, followed
+by D-region, FR/CDR, junction and count rows. Subset, category, functionality and V-gene
+identity retain the source layout's yellow highlighting. Extra ordered `FieldValue`
+entries in `details` appear as full-width rows after these groups. Null values display
+as a hyphen; zero remains zero. Indel descriptions and functionality labels are supplied
+verbatim by CLL Genie; the package does not create indel explanations.
 
 The application determines authoritative mutation status, productivity and subset results;
 the builder does not recalculate them. Reviewed comment selection, thresholds, clinical

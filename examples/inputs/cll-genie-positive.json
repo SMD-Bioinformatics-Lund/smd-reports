@@ -78,7 +78,8 @@
     "summary": "Exempel på granskad slutsats. Endast för demonstration.",
     "summary_format": "plain",
     "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "",
+    "references": "Example reference supplied by the application; demonstration only.",
+    "supporting_sections": [],
     "report_type": "positive",
     "submission_id": "submission_demo",
     "sequences": [
@@ -91,30 +92,30 @@
         "mutation_status": "Borderline (granskad)",
         "productivity": "Produktiv",
         "subset": "#2",
+        "analysis_category": "Single productive rearrangement (synthetic)",
+        "indel_summary": "Synthetic insertion/deletion description supplied by CLL Genie.",
+        "functionality_label": "V-Domain functionality after removal of Indels",
+        "functionality_comment": "Reviewed synthetic result supplied by CLL Genie.",
+        "v_gene": "IGHV3-21*01",
+        "v_score": 1500,
+        "j_gene": "IGHJ6*02",
+        "j_score": 230,
+        "j_identity_percent": 100.0,
+        "j_identity_nt": "60/60",
+        "d_gene": "IGHD3-3*01",
+        "d_reading_frame": 2,
+        "fr_lengths": "[25.17.38.11]",
+        "cdr_lengths": "8.8.14",
+        "aa_junction": "SYNTHETIC",
+        "junction_length_nt": 42,
+        "junction_decryption": "DEMO-V {N1} DEMO-D {N2} DEMO-J",
+        "junction_legend": "(3′V)3′{N1}5′(D)3′{N2}5′(5′J)",
+        "merge_count": 1200,
+        "total_reads_percent": 0.0,
         "details": [
-          {
-            "label": "V-GENE and allele",
-            "value": "IGHV3-21*01"
-          },
-          {
-            "label": "J-GENE and allele",
-            "value": "IGHJ6*02"
-          },
-          {
-            "label": "D-GENE and allele",
-            "value": "IGHD3-3*01"
-          },
-          {
-            "label": "AA JUNCTION",
-            "value": "SYNTHETIC"
-          },
           {
             "label": "JUNCTION-nt nb",
             "value": 42
-          },
-          {
-            "label": "Total reads (%)",
-            "value": 0
           }
         ]
       }

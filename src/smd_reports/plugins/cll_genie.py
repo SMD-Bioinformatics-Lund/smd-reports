@@ -4,23 +4,10 @@ from typing import Literal
 
 from pydantic import Field, model_validator
 
-from ..core import Column, FieldValue, Model, TableSection
+from ..core import Column, FieldValue, TableSection
 from ..localization import label, localize_table
+from ..sequence import CLLSequence, CLLSequenceSection
 from .prepared import PreparedContent, PreparedData, PreparedReport, ReportConfig
-
-
-class CLLSequence(Model):
-    """Supplied IMGT facts; status and productivity are never inferred here."""
-
-    sequence_id: str
-    length_nt: int | None = Field(default=None, ge=0)
-    identity_percent: float | None = Field(default=None, ge=0, le=100)
-    identity_nt: str | None = None
-    identity_with_indels: str | None = None
-    mutation_status: str
-    productivity: str
-    subset: str | None = None
-    details: list[FieldValue] = Field(default_factory=list)
 
 
 class CLLGenieContent(PreparedContent):
@@ -59,10 +46,11 @@ class CLLGenieReport(PreparedReport):
 
     def build(self):
         document = super().build()
-        trailing = [s for s in document.sections if s.key in {"description", "references"}]
-        document.sections = [
-            s for s in document.sections if s.key not in {"description", "references"}
-        ]
+        trailing_keys = {"description", "references"} | {
+            s.key for s in self.data.supporting_sections
+        }
+        trailing = [s for s in document.sections if s.key in trailing_keys]
+        document.sections = [s for s in document.sections if s.key not in trailing_keys]
         document.metadata.fields.append(
             FieldValue(
                 label=label("Rapporttyp", self.config.language),
@@ -94,7 +82,6 @@ class CLLGenieReport(PreparedReport):
                         ("length", "Sekvenslängd"),
                         ("identity", "V-gen identitet"),
                         ("status", "IGHV-mutationsstatus"),
-                        ("productivity", "Produktivitet"),
                         ("subset", "CLL subset"),
                     )
                 ],
@@ -107,9 +94,13 @@ class CLLGenieReport(PreparedReport):
                             if sequence.identity_percent is None
                             else f"{sequence.identity_percent}%"
                             + (f" ({sequence.identity_nt})" if sequence.identity_nt else "")
+                            + (
+                                f" [{sequence.identity_with_indels}]"
+                                if sequence.identity_with_indels
+                                else ""
+                            )
                         ),
                         "status": sequence.mutation_status,
-                        "productivity": sequence.productivity,
                         "subset": sequence.subset,
                     }
                     for sequence in self.data.sequences
@@ -118,28 +109,15 @@ class CLLGenieReport(PreparedReport):
             document.sections.insert(0, summary)
             localize_table(summary, self.config.language)
             for index, sequence in enumerate(self.data.sequences):
-                details = list(sequence.details)
-                if sequence.identity_with_indels is not None:
-                    details.insert(
-                        0,
-                        FieldValue(
-                            label=label("V-gen identitet med indels", self.config.language),
-                            value=sequence.identity_with_indels,
-                        ),
-                    )
                 document.sections.append(
-                    TableSection(
+                    CLLSequenceSection(
                         key=f"cll-detail-{index}",
-                        title=f"{label('Detaljer', self.config.language)} - {sequence.sequence_id}",
-                        page_break_before=index == 0,
-                        columns=[
-                            Column(key="label", label="Parameter"),
-                            Column(key="value", label="Resultat"),
-                        ],
-                        rows=[item.model_dump() for item in details],
+                        title=label("Detaljerade analysresultat", self.config.language)
+                        if index == 0
+                        else "",
+                        sequences=[sequence.model_copy(deep=True)],
                     )
                 )
-                localize_table(document.sections[-1], self.config.language)
         document.sections.extend(trailing)
         # Validate again after adding generated sections.
         return type(document).model_validate(document.model_dump())

@@ -6,22 +6,10 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 
-Scalar = str | int | float | bool | None
-
-
-class Model(BaseModel):
-    """Reject unknown fields and invalid non-finite numeric values."""
-
-    model_config = ConfigDict(extra="forbid", allow_inf_nan=False, validate_assignment=True)
-
-
-class FieldValue(Model):
-    """An ordered, caller-labelled metadata or parameter value."""
-
-    label: str
-    value: Scalar
+from ._models import FieldValue, Model, Scalar, SectionBase
+from .sequence import CLLSequenceSection
 
 
 class Branding(Model):
@@ -105,14 +93,6 @@ class ReportMetadata(Model):
         return value
 
 
-class SectionBase(Model):
-    """Common layout controls for an ordered section."""
-
-    key: str = Field(min_length=1)
-    title: str
-    page_break_before: bool = False
-
-
 class TextSection(SectionBase):
     """Plain text or sanitized Markdown, optionally styled as a conclusion."""
 
@@ -152,6 +132,38 @@ class TableSection(SectionBase):
         return self
 
 
+class DetailField(FieldValue):
+    """One supplied detail value with optional full-width or Markdown presentation."""
+
+    full_width: bool = False
+    format: Literal["plain", "markdown"] = "plain"
+    emphasis: bool = False
+
+
+class DetailRecord(Model):
+    """A finding's titled card; the caller supplies classifications and interpretation."""
+
+    key: str = Field(min_length=1)
+    title: str = Field(min_length=1)
+    fields: list[DetailField] = Field(min_length=1)
+
+
+class DetailSection(SectionBase):
+    """Ordered finding cards using the clinical report's compact detail-table layout."""
+
+    kind: Literal["details"] = "details"
+    records: list[DetailRecord] = Field(default_factory=list)
+    fields_per_row: Literal[1, 2, 3] = 3
+    empty_text: str = "Inga rapporterbara resultat"
+
+    @model_validator(mode="after")
+    def unique_records(self) -> DetailSection:
+        keys = [record.key for record in self.records]
+        if len(keys) != len(set(keys)):
+            raise ValueError("Duplicate detail record keys")
+        return self
+
+
 class ImageSection(SectionBase):
     """An embedded plot prepared by the application."""
 
@@ -166,7 +178,10 @@ class ImageSection(SectionBase):
         return value
 
 
-ReportSection = Annotated[TextSection | TableSection | ImageSection, Field(discriminator="kind")]
+ReportSection = Annotated[
+    TextSection | TableSection | DetailSection | CLLSequenceSection | ImageSection,
+    Field(discriminator="kind"),
+]
 
 
 class Report(Model):

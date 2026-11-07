@@ -103,3 +103,33 @@ imports of this package before running plain WeasyPrint in another directory.
 data is synthetic and all artwork consists of generic placeholders. Supply your chosen
 application, center and accreditation logos in production JSON. Regenerate inputs using
 `python examples/json_inputs.py` after changing the Python demo inputs.
+
+## Detailed findings and supporting material
+
+Each analysis accepts `details` alongside its summary `sections` and `parameters`.
+Details are rendered only for enabled analyses, after the yellow conclusion and before
+the method description. A detail section uses this shape:
+
+```json
+{
+  "kind": "details",
+  "key": "variant-details",
+  "title": "Variant details",
+  "fields_per_row": 3,
+  "records": [{
+    "key": "finding-1",
+    "title": "Synthetic finding",
+    "fields": [
+      {"label": "Gene", "value": "EXAMPLE"},
+      {"label": "Classification", "value": "Reviewed example", "full_width": true},
+      {"label": "Comment", "value": "**Reviewed** synthetic text.",
+       "full_width": true, "format": "markdown"}
+    ]
+  }]
+}
+```
+
+`data.supporting_sections` holds sections after the method description and before
+references. The checked-in Coyote3 and Genexus examples include molecular finding cards;
+CLL Genie includes sequence details. Clinical labels and narratives must already be in
+the selected report language.

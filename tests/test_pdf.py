@@ -175,3 +175,96 @@ def test_clinical_skeleton_preserves_header_and_footer_positions(reports):
         assert "schema 1" not in page.get_text()
     assert "ANALYSRAPPORT" in pdf[0].get_text()
     assert "PROVINFORMATION" in pdf[0].get_text()
+
+
+@pytest.mark.parametrize("fields_per_row", [1, 2, 3])
+def test_long_detail_comments_continue_without_losing_content(reports, fields_per_row):
+    from smd_reports import DetailField, DetailRecord, DetailSection
+
+    document = reports["coyote3-dna"].build()
+    document.sections = [
+        DetailSection(
+            key="details",
+            title="Finding details",
+            fields_per_row=fields_per_row,
+            records=[
+                DetailRecord(
+                    key="one",
+                    title="DETAILED-FINDING",
+                    fields=[
+                        DetailField(label="Gene", value="EXAMPLE"),
+                        DetailField(
+                            label="Comment",
+                            full_width=True,
+                            format="markdown",
+                            value="\n\n".join(f"DETAIL-PARAGRAPH-{i:03d}" for i in range(100)),
+                        ),
+                        DetailField(label="Final", value="DETAIL-END-MARKER"),
+                    ],
+                )
+            ],
+        )
+    ]
+    pdf = pymupdf.open(stream=ReportRenderer().render_pdf(document), filetype="pdf")
+    text = "\n".join(page.get_text() for page in pdf)
+    assert len(pdf) > 2
+    for index in range(100):
+        assert text.count(f"DETAIL-PARAGRAPH-{index:03d}") == 1
+    assert text.count("DETAIL-END-MARKER") == 1
+    for page in pdf:
+        assert footer_images(page)
+        assert all(
+            0 <= block[1] <= block[3] <= page.rect.height for block in page.get_text("blocks")
+        )
+
+
+def test_cll_sequence_grouping_in_pdf_and_comment_continuation(reports):
+    builder = reports["cll-genie-positive"]
+    builder.data.sequences[0].functionality_comment = "\n\n".join(
+        f"CLL-COMMENT-{index:03d}" for index in range(100)
+    )
+    pdf = pymupdf.open(stream=builder.render_pdf(), filetype="pdf")
+    text = "\n".join(page.get_text() for page in pdf)
+    for index in range(100):
+        assert text.count(f"CLL-COMMENT-{index:03d}") == 1
+    for value in [
+        "IGHV3-21*01",
+        "1500",
+        "313/321",
+        "IGHJ6*02",
+        "60/60",
+        "DEMO-V {N1} DEMO-D {N2} DEMO-J",
+        "0.0%",
+    ]:
+        assert value in text
+    assert len(pdf) > 3
+    for page in pdf:
+        assert footer_images(page)
+        assert "SYNTHETIC-001" in page.get_text()
+        assert all(
+            0 <= block[1] <= block[3] <= page.rect.height for block in page.get_text("blocks")
+        )
+    v_page = next(page for page in pdf if page.search_for("IGHV3-21*01"))
+    gene = v_page.search_for("IGHV3-21*01")[0]
+    score = v_page.search_for("1500")[0]
+    assert abs(gene.y0 - score.y0) < 1
+    assert gene.x0 < score.x0
+
+
+def test_genexus_detail_sections_follow_conclusion_without_losing_fields(reports):
+    pdf = pymupdf.open(stream=reports["genexus"].render_pdf(), filetype="pdf")
+    conclusion = next(i for i, page in enumerate(pdf) if "Slutsats" in page.get_text())
+    details = next(i for i, page in enumerate(pdf) if "Detekterade mutationer" in page.get_text())
+    assert details > conclusion
+    text = "\n".join(page.get_text() for page in pdf)
+    for value in [
+        "DEMO-FUSION-001",
+        "Unika molekyler",
+        "CNV-kvot",
+        "Hotspot",
+        "Brytpunktsintervall",
+        "EXAMPLE2",
+        "Obalansvärde",
+    ]:
+        assert value in text
+    assert all(footer_images(page) for page in pdf)

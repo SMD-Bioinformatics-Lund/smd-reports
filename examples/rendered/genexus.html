@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NGS Analysis Report - DEMO-REPORT-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:plugin_version" content="1.0.0"><meta name="smd-reports:schema_version" content="1"><meta name="smd-reports:template_version" content="1.6.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
+<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:plugin_version" content="1.0.0"><meta name="smd-reports:schema_version" content="1"><meta name="smd-reports:template_version" content="1.8.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
   font-style: normal;
@@ -82,6 +82,23 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .snv-summary th:nth-child(6) { width: 8%; }
 .snv-summary th:nth-child(7) { width: 25%; }
 .emphasis { font-weight: 600; }
+.finding-detail { margin: 6px 0 12px; }
+.report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
+.report_variant th, .report_variant td { padding: 2px 4px; border: 1px solid var(--report-border); font-size: 8.5pt; font-weight: 400; }
+.report_variant th.report_variant_header { padding: 4px 5px; background: var(--tint); font-size: 10pt; font-weight: 600; }
+.report_variant .report_key { width: var(--detail-label-width); background: var(--tint); }
+.report_variant td.emphasis { font-weight: 600; }
+.report_variant .report_comment > :first-child { margin-top: 0; }
+.report_variant .report_comment > :last-child { margin-bottom: 0; }
+/* Full-width clinical text can continue across pages, retaining all supplied text. */
+.report_variant.detail-flow { display: block; border: 0; break-inside: auto; }
+.detail-flow > thead, .detail-flow > tbody { display: block; }
+.detail-flow tr { display: table; width: 100%; table-layout: fixed; }
+.detail-flow th.report_variant_header { width: 100%; }
+.detail-flow tr + tr th, .detail-flow tr + tr td { border-top: 0; }
+.detail-flow tr.detail-wide-row { display: block; break-inside: auto; border: 1px solid var(--report-border); border-top: 0; }
+.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: transparent; }
+.detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
 .results_summary table { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 3px 0; background: #fff; color: #000; font-size: 8pt; line-height: 1.2; break-inside: auto; }
@@ -130,10 +147,26 @@ p, li { orphans: 3; widows: 3; }
   .report-page-header .report-patient-table .metadata-label { width: 12%; }
   .variant_table th, .variant_table td { padding: 2px 8px; font-size: 8.25pt; line-height: 1.18; }
   .variant_table th { font-size: 7.5pt; }
+  .report_variant th, .report_variant td { font-size: 8.25pt; line-height: 1.18; }
+  .report_variant th.report_variant_header { font-size: 8.75pt; }
   .break-before { break-before: page; }
   .report-summary { break-before: page; break-after: page; }
 }
 @media screen and (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
+/* Preserve the original grouped CLL sequence rows and Genexus variant cards. */
+.cll-sequence, .genexus-detail { margin: 6px 0 12px; }
+.cll-sequence-table th.report_variant_header { text-align: center; }
+.cll-sequence-table tr > th, .cll-sequence-table tr > td { width: 20%; }
+.cll-sequence-table tr > [colspan="2"] { width: 40%; }
+.cll-sequence-table tr > [colspan="3"] { width: 60%; }
+.cll-sequence-table tr > [colspan="4"] { width: 80%; }
+.cll-sequence-table tr > [colspan="5"] { width: 100%; }
+.cll-sequence-table .report_key { width: auto; }
+.cll-sequence-table .cll-highlight { background: #ffffe0; }
+.cll-sequence-table .cll-text { white-space: pre-wrap; }
+.cll-sequence-table tr.detail-wide-row > td.report_comment { width: auto; }
+.genexus-detail .report_key { font-size: 7.5pt; }
+.genexus-detail .report_variant_header { font-weight: 700; }
 
 @page { margin-top: 75.0mm; margin-bottom: 38.0mm; }
 .report-application-logo { width: 13.75mm; }
@@ -151,10 +184,10 @@ p, li { orphans: 3; widows: 3; }
 </header><section class="report-metadata" aria-label="Sample information">
 <h2 class="report-metadata-heading">Sample information</h2>
 <table class="report-patient-table"><colgroup><col class="metadata-label"><col><col class="metadata-label"><col><col class="metadata-label"><col></colgroup><tbody>
-<tr><th scope="row">Patient name</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personal identity number</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Sample ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Sample type</th><td>Synthetic sample</td><th scope="row">Registration date</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Clinical question</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysis method</th><td>NGS - syntetisk demonstration</td><th scope="row">Analysis performed by</th><td>Example Diagnostics Center</td><th scope="row">Assay</th><td>Demonstrationspanel</td></tr><tr><th scope="row">Körning</th><td>SYNTHETIC-RUN</td><th scope="row">Generated at</th><td>2026-01-01</td><th scope="row">Generated by</th><td>Demo User</td></tr><tr><th scope="row">Report ID</th><td colspan="5">DEMO-REPORT-001</td></tr></tbody></table></section></div>
+<tr><th scope="row">Patient name</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personal identity number</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Sample ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Sample type</th><td>Synthetic sample</td><th scope="row">Registration date</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Clinical question</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysis method</th><td>NGS - syntetisk demonstration</td><th scope="row">Analysis performed by</th><td>Example Diagnostics Center</td><th scope="row">Assay</th><td>Demonstrationspanel</td></tr><tr><th scope="row">Run</th><td>SYNTHETIC-RUN</td><th scope="row">Generated at</th><td>2026-01-01</td><th scope="row">Generated by</th><td>Demo User</td></tr><tr><th scope="row">Report ID</th><td colspan="5">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 <img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div>
-<div class="report-page-number-footer"><span class="template-version">genexus template v1.6.0</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">genexus template v1.8.0</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-center-brand"><div class="report-center-lockup"><div class="report-center-contact">
 <span>Example Diagnostics Center</span><span>Molekylär diagnostik</span><span class="report-center-address">Exempeladress 1</span><span class="report-center-phone"><svg width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z" fill="none" stroke="#656670" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> 000-000000</span><span>demo@example.org</span></div><div class="report-center-logo-cell"><img class="center-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iOTAiIHZpZXdCb3g9IjAgMCAxMjAgOTAiPgo8dGl0bGU+RXhhbXBsZSBjZW50ZXIgbG9nbzwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSIxMTgiIGhlaWdodD0iODgiIHJ4PSI4IiBmaWxsPSIjZjNmNmY3IiBzdHJva2U9IiM2ODdkODYiLz4KPHRleHQgeD0iNjAiIHk9IjQyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzM1NDk1MiI+RVhBTVBMRTwvdGV4dD4KPHRleHQgeD0iNjAiIHk9IjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzM1NDk1MiI+Q0VOVEVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example Diagnostics Center"></div></div></div>
@@ -167,23 +200,67 @@ p, li { orphans: 3; widows: 3; }
 </header><div class="screen-metadata"><section class="report-metadata" aria-label="Sample information">
 <h2 class="report-metadata-heading">Sample information</h2>
 <table class="report-patient-table"><colgroup><col class="metadata-label"><col><col class="metadata-label"><col></colgroup><tbody>
-<tr><th scope="row">Patient name</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personal identity number</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Sample ID</th><td>SYNTHETIC-001</td><th scope="row">Sample type</th><td>Synthetic sample</td></tr><tr><th scope="row">Registration date</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Clinical question</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysis method</th><td>NGS - syntetisk demonstration</td><th scope="row">Analysis performed by</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Assay</th><td>Demonstrationspanel</td><th scope="row">Körning</th><td>SYNTHETIC-RUN</td></tr><tr><th scope="row">Generated at</th><td>2026-01-01</td><th scope="row">Generated by</th><td>Demo User</td></tr><tr><th scope="row">Report ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
+<tr><th scope="row">Patient name</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personal identity number</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Sample ID</th><td>SYNTHETIC-001</td><th scope="row">Sample type</th><td>Synthetic sample</td></tr><tr><th scope="row">Registration date</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Clinical question</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysis method</th><td>NGS - syntetisk demonstration</td><th scope="row">Analysis performed by</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Assay</th><td>Demonstrationspanel</td><th scope="row">Run</th><td>SYNTHETIC-RUN</td></tr><tr><th scope="row">Generated at</th><td>2026-01-01</td><th scope="row">Generated by</th><td>Demo User</td></tr><tr><th scope="row">Report ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <section id="snvs" class="section">
-<h2 class="report_header">Clinically relevant SNVs and small INDELs</h2>
-<table class="results variant_table snv-summary"><thead><tr><th scope="col">Gene</th><th scope="col">Chromosome</th><th scope="col">Exon</th><th scope="col">HGVS</th><th scope="col">VAF</th><th scope="col">Tier</th><th scope="col">Classification</th></tr></thead><tbody>
-<tr><td>BRAF</td><td>7</td><td>15</td><td>p.Val600Glu</td><td>24%</td><td>I</td><td class="emphasis">Tier I</td></tr></tbody></table></section>
+<h2 class="report_header">Clinically relevant SNVs and small INDELs</h2><table class="results variant_table"><thead><tr><th scope="col">Gene</th><th scope="col">HGVS protein</th><th scope="col">VAF (%)</th><th scope="col">Hotspot</th><th scope="col">Classification</th></tr></thead><tbody>
+<tr><td>BRAF</td><td>p.Val600Glu</td><td>24</td><td>Yes</td><td>Reviewed synthetic classification</td></tr><tr><td>EXAMPLE2</td><td>p.(Example34del)</td><td>18</td><td>No</td><td>Reviewed synthetic classification</td></tr></tbody></table></section>
+<section id="cnvs" class="section">
+<h2 class="report_header">Copy-number alterations</h2><table class="results variant_table"><thead><tr><th scope="col">Gene</th><th scope="col">Copy number</th><th scope="col">Classification</th></tr></thead><tbody>
+<tr><td>EXAMPLE1</td><td>6</td><td>Reviewed synthetic classification</td></tr></tbody></table></section>
 <section id="fusions" class="section">
-<h2 class="report_header">Fusions</h2>
-<table class="results variant_table"><thead><tr><th scope="col">Fusion</th><th scope="col">Tier</th></tr></thead><tbody>
-<tr><td>EML4::ALK</td><td>Tier II</td></tr></tbody></table></section>
+<h2 class="report_header">Fusions</h2><table class="results variant_table"><thead><tr><th scope="col">Genes (exons)</th><th scope="col">Locus</th><th scope="col">Classification</th></tr></thead><tbody>
+<tr><td>EML4(13)::ALK(20)</td><td>chr2:42400000;chr2:29400000</td><td>Reviewed synthetic classification</td></tr></tbody></table></section>
+<section id="others" class="section">
+<h2 class="report_header">Other clinically relevant findings</h2><table class="results variant_table"><thead><tr><th scope="col">Gene</th><th scope="col">Source type</th><th scope="col">Variant class</th><th scope="col">Classification</th></tr></thead><tbody>
+<tr><td>EXAMPLE3</td><td>Imbalance</td><td>RNA</td><td>Reviewed synthetic classification</td></tr></tbody></table></section>
 <section id="summary" class="section report-summary break-before">
-<h2 class="report_header">Conclusion</h2>
-<div class="results_summary plain">Reviewed synthetic conclusion. For demonstration only.</div>
+<h2 class="report_header">Conclusion</h2><div class="results_summary plain">Reviewed synthetic conclusion. For demonstration only.</div>
+</section>
+<section id="snv-details" class="section">
+<h2 class="report_header">Detected mutations</h2><article class="variant-detail genexus-detail" id="snv-details-braf" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant">
+<thead><tr><th class="report_variant_header" colspan="6">BRAF: p.Val600Glu</th></tr></thead>
+<tbody>
+<tr><td class="report_key">Gene</td><td class="var_report_val">BRAF</td><td class="report_key">Type</td><td class="var_report_val">SNV</td><td class="report_key">Transcript</td><td class="var_report_val">NM_004333.6</td></tr><tr><td class="report_key">Consequence</td><td class="var_report_val">missense_variant</td><td class="report_key">HGVS cDNA</td><td class="var_report_val">c.1799T&gt;A</td><td class="report_key">HGVS protein</td><td class="var_report_val">p.Val600Glu</td></tr><tr><td class="report_key">Chromosome</td><td class="var_report_val">7</td><td class="report_key">Position</td><td class="var_report_val">140753336</td><td class="report_key">VAF (%)</td><td class="var_report_val">24</td></tr><tr><td class="report_key">Hotspot</td><td class="var_report_val">Yes</td><td class="report_key">Classification</td><td class="var_report_val" colspan="3">Reviewed synthetic classification</td></tr></tbody></table></article>
+<article class="variant-detail genexus-detail" id="snv-details-indel" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant">
+<thead><tr><th class="report_variant_header" colspan="6">EXAMPLE2: p.(Example34del)</th></tr></thead>
+<tbody>
+<tr><td class="report_key">Gene</td><td class="var_report_val">EXAMPLE2</td><td class="report_key">Type</td><td class="var_report_val">INDEL</td><td class="report_key">Transcript</td><td class="var_report_val">DEMO_TRANSCRIPT</td></tr><tr><td class="report_key">Consequence</td><td class="var_report_val">inframe_deletion</td><td class="report_key">HGVS cDNA</td><td class="var_report_val">c.100_102del</td><td class="report_key">HGVS protein</td><td class="var_report_val">p.(Example34del)</td></tr><tr><td class="report_key">Chromosome</td><td class="var_report_val">1</td><td class="report_key">Position</td><td class="var_report_val">100100</td><td class="report_key">VAF (%)</td><td class="var_report_val">18</td></tr><tr><td class="report_key">Hotspot</td><td class="var_report_val">No</td><td class="report_key">Classification</td><td class="var_report_val" colspan="3">Reviewed synthetic classification</td></tr></tbody></table></article>
+</section>
+<section id="cnv-details" class="section">
+<h2 class="report_header">Detected copy-number alterations</h2><article class="variant-detail genexus-detail" id="cnv-details-cnv-1" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant detail-flow">
+<thead><tr><th class="report_variant_header" colspan="6">EXAMPLE1</th></tr></thead>
+<tbody>
+<tr><td class="report_key">Gene</td><td class="var_report_val">EXAMPLE1</td><td class="report_key">Change</td><td class="var_report_val">Gain</td><td class="report_key">Copy number</td><td class="var_report_val">6</td></tr><tr><td class="report_key">CNV ratio</td><td class="var_report_val">3.1</td><td class="report_key">Locus</td><td class="var_report_val" colspan="3">chr1:100000-200000</td></tr><tr class="detail-wide-row"><th scope="row" class="report_key">Classification</th><td class="report_comment report_annotation" colspan="5">Reviewed synthetic classification</td></tr></tbody></table></article>
+</section>
+<section id="fusion-details" class="section">
+<h2 class="report_header">Detailed fusion results</h2><article class="variant-detail genexus-detail" id="fusion-details-fusion-1" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant detail-flow">
+<thead><tr><th class="report_variant_header" colspan="6">EML4(13)::ALK(20)</th></tr></thead>
+<tbody>
+<tr><td class="report_key">Variant-ID</td><td class="var_report_val">DEMO-FUSION-001</td><td class="report_key">Genes (exons)</td><td class="var_report_val">EML4(13)::ALK(20)</td><td class="report_key">Locus</td><td class="var_report_val">chr2:42400000;chr2:29400000</td></tr><tr><td class="report_key">Oncomine driver gene</td><td class="var_report_val">ALK</td><td class="report_key">Fusion type</td><td class="var_report_val">RNA fusion</td><td class="report_key">Supporting reads</td><td class="var_report_val">37</td></tr><tr><td class="report_key">Unique molecules</td><td class="var_report_val">18</td><td class="report_key">5′ breakpoint</td><td class="var_report_val">chr2:42400000</td><td class="report_key">3′ breakpoint</td><td class="var_report_val">chr2:29400000</td></tr><tr class="detail-wide-row"><th scope="row" class="report_key">Classification</th><td class="report_comment report_annotation" colspan="5">Reviewed synthetic classification</td></tr></tbody></table></article>
+</section>
+<section id="other-details" class="section">
+<h2 class="report_header">Details of other findings</h2><article class="variant-detail genexus-detail" id="other-details-other-1" style="--detail-label-width: 16.666666666666668%">
+<table class="report_variant detail-flow">
+<thead><tr><th class="report_variant_header" colspan="6">EXAMPLE3: Imbalance</th></tr></thead>
+<tbody>
+<tr><td class="report_key">Gene</td><td class="var_report_val">EXAMPLE3</td><td class="report_key">Source type</td><td class="var_report_val">Imbalance</td><td class="report_key">Variant class</td><td class="var_report_val">RNA</td></tr><tr><td class="report_key">Locus</td><td class="var_report_val">chr3:100000-200000</td><td class="report_key">Imbalance score</td><td class="var_report_val">2.1</td><td class="report_key">Imbalance p-value</td><td class="var_report_val">0.01</td></tr><tr><td class="report_key">Breakpoint range</td><td class="var_report_val" colspan="5">100000-200000</td></tr><tr class="detail-wide-row"><th scope="row" class="report_key">Classification</th><td class="report_comment report_annotation" colspan="5">Reviewed synthetic classification</td></tr></tbody></table></article>
 </section>
 <section id="description" class="section">
-<h2 class="report_header">Analysis description</h2>
-<div class="plain">Synthetic analysis description supplied by the application.</div>
+<h2 class="report_header">Analysis description</h2><div class="plain">Synthetic analysis description supplied by the application.</div>
+</section>
+<section id="covered-genes" class="section">
+<h2 class="report_header">Analyzed genes</h2><table class="results variant_table"><thead><tr><th scope="col">Gene</th></tr></thead><tbody>
+<tr><td>BRAF</td></tr><tr><td>EXAMPLE1</td></tr><tr><td>EXAMPLE2</td></tr><tr><td>EXAMPLE3</td></tr><tr><td>EML4</td></tr><tr><td>ALK</td></tr></tbody></table></section>
+<section id="classification-description" class="section">
+<h2 class="report_header">Classification description</h2><div class="plain">Synthetic classification description supplied by the application.</div>
+</section>
+<section id="references" class="section">
+<h2 class="report_header">References</h2><div class="plain">Example reference supplied by the application; demonstration only.</div>
 </section>
 </main>
-<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">genexus template v1.6.0</span></footer>
+<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">genexus template v1.8.0</span></footer>
 </div></body></html>

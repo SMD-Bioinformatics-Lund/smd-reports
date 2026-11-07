@@ -1,0 +1,21 @@
+{% macro identity(percent, nt) -%}
+{% if percent is not none %}{{ percent|display }}%{% else %}-{% endif %}{% if nt is not none %} ({{ nt }}){% endif %}
+{%- endmacro %}
+{% for sequence in section.sequences %}
+<article class="cll-sequence" data-sequence-id="{{ sequence.sequence_id }}">
+<table class="report_variant detail-flow cll-sequence-table" style="--detail-label-width: 20%">
+<thead><tr><th class="report_variant_header" colspan="5">{{ sequence.sequence_id }} - {{ sequence.length_nt|display }} nt ({{ sequence.mutation_status }})</th></tr></thead>
+<tbody>
+<tr><th scope="row" class="report_key">Seq ID</th><td>{{ sequence.sequence_id }}</td><th scope="row" class="report_key">CLL subset</th><td class="cll-highlight">{{ sequence.subset|display }}</td><td class="cll-highlight"><strong>{{ 'Sekvensanalyskategori'|ui }}:</strong> {{ sequence.analysis_category|display }}</td></tr>
+{% if sequence.indel_summary is not none %}<tr class="detail-wide-row"><th scope="row" class="report_key">Indel summary</th><td class="report_comment cll-highlight cll-text" colspan="4">{{ sequence.indel_summary }}</td></tr>{% endif %}
+<tr><th scope="row" class="report_key" colspan="2">{{ sequence.functionality_label }}</th><td class="cll-highlight" colspan="3">{{ sequence.productivity }}</td></tr>
+{% if sequence.functionality_comment is not none %}<tr class="detail-wide-row"><th scope="row" class="report_key">{{ 'Kommentar'|ui }}</th><td class="report_comment cll-highlight cll-text" colspan="4">{{ sequence.functionality_comment }}</td></tr>{% endif %}
+<tr><th scope="row" class="report_key">V-GENE and allele</th><td>{{ sequence.v_gene|display }}</td><td><strong>Score:</strong> {{ sequence.v_score|display }}</td><td class="cll-highlight" colspan="2"><strong>Identity:</strong> {{ identity(sequence.identity_percent, sequence.identity_nt) }}{% if sequence.identity_with_indels is not none %} [{{ sequence.identity_with_indels }}]{% endif %}</td></tr>
+<tr><th scope="row" class="report_key">J-GENE and allele</th><td>{{ sequence.j_gene|display }}</td><td><strong>Score:</strong> {{ sequence.j_score|display }}</td><td colspan="2"><strong>Identity:</strong> {{ identity(sequence.j_identity_percent, sequence.j_identity_nt) }}</td></tr>
+<tr><th scope="row" class="report_key" colspan="3">D-GENE and allele by IMGT/JunctionAnalysis</th><td>{{ sequence.d_gene|display }}</td><td><strong>D-REGION reading frame:</strong> {{ sequence.d_reading_frame|display }}</td></tr>
+<tr><th scope="row" class="report_key" colspan="2">FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION</th><td>{{ sequence.fr_lengths|display }}</td><td>[{{ sequence.cdr_lengths|display }}]</td><td>{{ sequence.aa_junction|display }}</td></tr>
+<tr><th scope="row" class="report_key" colspan="2">JUNCTION length (in nt) and decryption</th><td colspan="2">{{ sequence.junction_length_nt|display }} nt = {{ sequence.junction_decryption|display }}</td><td>{{ sequence.junction_legend|display }}</td></tr>
+<tr><th scope="row" class="report_key">Merge count</th><td>{{ sequence.merge_count|display }}</td><th scope="row" class="report_key">{{ 'Totala läsningar'|ui }}</th><td colspan="2">{{ sequence.total_reads_percent|display }}{% if sequence.total_reads_percent is not none %}%{% endif %}</td></tr>
+{% for field in sequence.details %}<tr class="detail-wide-row"><th scope="row" class="report_key">{{ field.label }}</th><td class="report_comment cll-text" colspan="4">{{ field.value|display }}</td></tr>{% endfor %}
+</tbody></table></article>
+{% endfor %}

@@ -1,0 +1,13 @@
+{% if not section.records %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}
+{% for record in section.records %}
+{% set compact = record.fields|rejectattr('full_width')|rejectattr('format', 'equalto', 'markdown')|list %}
+{% set detail = namespace(wide=[]) %}
+{% for field in record.fields %}{% if field.full_width or field.format == 'markdown' %}{% set _ = detail.wide.append(field) %}{% endif %}{% endfor %}
+<article class="variant-detail genexus-detail" id="{{ section.key }}-{{ record.key }}" style="--detail-label-width: {{ 100 / (section.fields_per_row * 2) }}%">
+<table class="report_variant{% if detail.wide %} detail-flow{% endif %}">
+<thead><tr><th class="report_variant_header" colspan="{{ section.fields_per_row * 2 }}">{{ record.title }}</th></tr></thead>
+<tbody>
+{% for row in compact|batch(section.fields_per_row) %}<tr>{% for field in row %}<td class="report_key">{{ field.label }}</td><td class="var_report_val{% if field.emphasis %} emphasis{% endif %}"{% if loop.last and row|length < section.fields_per_row %} colspan="{{ 1 + (section.fields_per_row - row|length) * 2 }}"{% endif %}>{{ field.value|display }}</td>{% endfor %}</tr>{% endfor %}
+{% for field in detail.wide %}<tr class="detail-wide-row"><th scope="row" class="report_key">{{ field.label }}</th><td class="report_comment report_annotation{% if field.emphasis %} emphasis{% endif %}" colspan="{{ section.fields_per_row * 2 - 1 }}">{% if field.format == 'markdown' %}{{ field.value|display|markdown }}{% else %}{{ field.value|display }}{% endif %}</td></tr>{% endfor %}
+</tbody></table></article>
+{% endfor %}

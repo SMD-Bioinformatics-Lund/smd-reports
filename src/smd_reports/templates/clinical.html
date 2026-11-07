@@ -26,8 +26,10 @@
 <div class="screen-metadata">{% include 'components/metadata.html' %}</div>
 {% for section in report.sections %}
 <section id="{{ section.key }}" class="section{% if section.kind == 'text' and section.conclusion %} report-summary{% endif %}{% if section.page_break_before %} break-before{% endif %}">
-<h2 class="report_header">{{ section.title }}</h2>
+{% if section.title %}<h2 class="report_header">{{ section.title }}</h2>{% endif %}
 {% if section.kind == 'table' %}{% include 'components/table.html' %}
+{% elif section.kind == 'details' %}{% if report.application == 'genexus' %}{% include 'components/genexus_details.html' %}{% else %}{% include 'components/details.html' %}{% endif %}
+{% elif section.kind == 'cll_sequences' %}{% include 'components/cll_sequence.html' %}
 {% elif section.kind == 'text' %}<div class="{% if section.conclusion %}results_summary {% endif %}{{ section.format }}">{% if section.format == 'markdown' %}{{ section.text|markdown }}{% else %}{{ section.text }}{% endif %}</div>
 {% elif section.kind == 'image' %}<figure><img src="{{ section.source }}" alt="{{ section.caption }}"><figcaption>{{ section.caption }}</figcaption></figure>
 {% endif %}</section>

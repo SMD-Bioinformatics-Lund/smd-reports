@@ -6,6 +6,9 @@ from .core import (
     Branding,
     ClinicalReport,
     Column,
+    DetailField,
+    DetailRecord,
+    DetailSection,
     FieldValue,
     ImageSection,
     Provenance,
@@ -22,9 +25,13 @@ from .plugins.genexus import GenexusData, GenexusReport
 from .plugins.pgx import PGxData, PGxFiles, PGxReport
 from .plugins.prepared import Analysis, ReportConfig
 from .rendering import PDFUnavailableError, ReportRenderer
+from .sequence import CLLSequenceSection
 from .themes import Theme
 
 __all__ = [
+    "DetailField",
+    "DetailRecord",
+    "DetailSection",
     "ReportLoader",
     "Analysis",
     "ReportConfig",
@@ -42,6 +49,7 @@ __all__ = [
     "CLLGenieData",
     "CLLGenieReport",
     "CLLSequence",
+    "CLLSequenceSection",
     "CoyoteData",
     "CoyoteReport",
     "GenexusData",

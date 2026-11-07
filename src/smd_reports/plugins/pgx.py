@@ -283,5 +283,16 @@ class PGxReport(PreparedReport):
                     f"All analyzed regions have read depth ≥ {self.data.read_depth_threshold}x "
                     "(PGX_QC_PASS)"
                 )
-        document.sections = sections + document.sections
+        supporting = [
+            section for section in sections if section.key in {"pgx-genes", "pgx-targets"}
+        ]
+        results = [
+            section for section in sections if section.key not in {"pgx-genes", "pgx-targets"}
+        ]
+        insertion = next(
+            (i for i, section in enumerate(document.sections) if section.key == "references"),
+            len(document.sections),
+        )
+        document.sections[insertion:insertion] = supporting
+        document.sections = results + document.sections
         return document

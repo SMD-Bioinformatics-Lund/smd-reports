@@ -78,7 +78,8 @@
     "summary": "Exempel på granskad slutsats. Endast för demonstration.",
     "summary_format": "plain",
     "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "",
+    "references": "Example reference supplied by the application; demonstration only.",
+    "supporting_sections": [],
     "report_type": "nonfunctional",
     "submission_id": null,
     "sequences": []

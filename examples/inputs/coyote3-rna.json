@@ -108,13 +108,141 @@
             "emphasis_column": null,
             "emphasis_value": null
           }
+        ],
+        "details": [
+          {
+            "key": "fusion-details",
+            "title": "Fusion - EML4::ALK",
+            "page_break_before": false,
+            "kind": "details",
+            "records": [
+              {
+                "key": "fusion-details-1",
+                "title": "Fusion - EML4::ALK",
+                "fields": [
+                  {
+                    "label": "5′ gen",
+                    "value": "EML4",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "3′ gen",
+                    "value": "ALK",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Effekt",
+                    "value": "In-frame",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "5′ brytpunkt",
+                    "value": "chr2:42400000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "3′ brytpunkt",
+                    "value": "chr2:29400000",
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Split reads",
+                    "value": 37,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Spanning pairs",
+                    "value": 18,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Anchor",
+                    "value": 64,
+                    "full_width": false,
+                    "format": "plain",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Klassificering",
+                    "value": "Reviewed example",
+                    "full_width": true,
+                    "format": "plain",
+                    "emphasis": true
+                  },
+                  {
+                    "label": "Kommentar",
+                    "value": "Synthetic fusion. All breakpoints, evidence and text are application inputs.",
+                    "full_width": true,
+                    "format": "markdown",
+                    "emphasis": false
+                  }
+                ]
+              }
+            ],
+            "fields_per_row": 3,
+            "empty_text": "Inga rapporterbara resultat"
+          }
         ]
       }
     ],
     "summary": "Exempel på granskad slutsats. Endast för demonstration.",
     "summary_format": "plain",
     "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "",
+    "references": "Example reference supplied by the application; demonstration only.",
+    "supporting_sections": [
+      {
+        "key": "covered-genes",
+        "title": "Analyserade gener",
+        "page_break_before": false,
+        "kind": "table",
+        "columns": [
+          {
+            "key": "gene",
+            "label": "Gen"
+          }
+        ],
+        "rows": [
+          {
+            "gene": "BRAF"
+          },
+          {
+            "gene": "EML4"
+          },
+          {
+            "gene": "ALK"
+          },
+          {
+            "gene": "EXAMPLE1"
+          }
+        ],
+        "empty_text": "Inga rapporterbara resultat",
+        "emphasis_column": null,
+        "emphasis_value": null
+      },
+      {
+        "key": "classification-description",
+        "title": "Klassificeringsbeskrivning",
+        "page_break_before": false,
+        "kind": "text",
+        "text": "Synthetic classification description supplied by the application.",
+        "format": "plain",
+        "conclusion": false
+      }
+    ],
     "analyte": "rna"
   }
 }

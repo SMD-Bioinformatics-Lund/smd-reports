@@ -38,7 +38,7 @@ def test_supported_does_not_enable_analysis(reports):
     builder = reports["coyote3-dna"]
     assert "FUSION" in builder.data.supported_analyses
     assert "fusions" not in {section.key for section in builder.build().sections}
-    assert "Inga rapporterbara resultat" in builder.render_html()
+    assert "fusion-details" not in {section.key for section in builder.build().sections}
 
 
 @pytest.mark.parametrize(
@@ -58,7 +58,11 @@ def test_invalid_analysis_inputs_fail(reports, updates):
 
 def test_order_and_parameter_values(reports):
     builder = reports["coyote3-dna"]
-    keys = [s.key for s in builder.build().sections if s.key not in {"summary", "description"}]
+    keys = []
+    for section in builder.build().sections:
+        if section.key == "summary":
+            break
+        keys.append(section.key)
     configured = CoyoteReport(
         builder.data,
         ReportConfig(
