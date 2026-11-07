@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "application": "genexus",
+  "title": "NGS Analysis Report",
+  "language": "en",
+  "report": {
+    "report_id": "DEMO-REPORT-001",
+    "sample_id": "SYNTHETIC-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Demo User",
+    "fields": [
+      {
+        "label": "Patient name",
+        "value": "<PATIENT_NAME>"
+      },
+      {
+        "label": "Personal identity number",
+        "value": "<PERSONAL_IDENTITY_NUMBER>"
+      },
+      {
+        "label": "Sample type",
+        "value": "Synthetic sample"
+      },
+      {
+        "label": "Registration date",
+        "value": "<REGISTRATION_DATE>"
+      },
+      {
+        "label": "Clinical question",
+        "value": "Syntetisk analys"
+      },
+      {
+        "label": "Analysis method",
+        "value": "NGS - syntetisk demonstration"
+      },
+      {
+        "label": "Analysis performed by",
+        "value": "Example Diagnostics Center"
+      }
+    ]
+  },
+  "branding": {
+    "organization": "Example Diagnostics Center",
+    "department": "Molekylär diagnostik",
+    "address": "Exempeladress 1",
+    "telephone": "000-000000",
+    "email": "demo@example.org",
+    "website": "",
+    "application_logo": null,
+    "center_logo": "../assets/center-example.svg",
+    "accreditation_logo": "../assets/accreditation-example.svg",
+    "accredited": true,
+    "center_logo_width_mm": 11.64,
+    "application_logo_width_mm": 13.75,
+    "accreditation_logo_width_mm": 25.0,
+    "accreditation_label": "Example accreditation placeholder"
+  },
+  "provenance": {
+    "application_version": "",
+    "configuration_version": "",
+    "assay_version": "",
+    "source_revision": "",
+    "package_version": "0.1.0",
+    "plugin_version": "1.0.0",
+    "schema_version": 1,
+    "template_version": "1.0.0"
+  },
+  "presentation": {
+    "section_order": null,
+    "summary_new_page": true,
+    "header_height_mm": 75.0,
+    "footer_height_mm": 38
+  },
+  "data": {
+    "supported_analyses": [
+      "SNV",
+      "FUSION"
+    ],
+    "enabled_analyses": [
+      "SNV",
+      "FUSION"
+    ],
+    "analyses": [
+      {
+        "name": "SNV",
+        "parameters": [],
+        "sections": [
+          {
+            "key": "snvs",
+            "title": "Clinically relevant SNVs and small INDELs",
+            "page_break_before": false,
+            "kind": "table",
+            "columns": [
+              {
+                "key": "gene",
+                "label": "Gene"
+              },
+              {
+                "key": "chromosome",
+                "label": "Chromosome"
+              },
+              {
+                "key": "exon",
+                "label": "Exon"
+              },
+              {
+                "key": "variant",
+                "label": "HGVS"
+              },
+              {
+                "key": "af",
+                "label": "VAF"
+              },
+              {
+                "key": "tier",
+                "label": "Tier"
+              },
+              {
+                "key": "classification",
+                "label": "Classification"
+              }
+            ],
+            "rows": [
+              {
+                "gene": "BRAF",
+                "chromosome": "7",
+                "exon": "15",
+                "variant": "p.Val600Glu",
+                "af": "24%",
+                "tier": "I",
+                "classification": "Tier I"
+              }
+            ],
+            "empty_text": "No reportable results",
+            "emphasis_column": "classification",
+            "emphasis_value": "Tier I"
+          }
+        ]
+      },
+      {
+        "name": "FUSION",
+        "parameters": [],
+        "sections": [
+          {
+            "key": "fusions",
+            "title": "Fusions",
+            "page_break_before": false,
+            "kind": "table",
+            "columns": [
+              {
+                "key": "fusion",
+                "label": "Fusion"
+              },
+              {
+                "key": "tier",
+                "label": "Tier"
+              }
+            ],
+            "rows": [
+              {
+                "fusion": "EML4::ALK",
+                "tier": "Tier II"
+              }
+            ],
+            "empty_text": "No reportable results",
+            "emphasis_column": null,
+            "emphasis_value": null
+          }
+        ]
+      }
+    ],
+    "summary": "Reviewed synthetic conclusion. For demonstration only.",
+    "summary_format": "plain",
+    "description": "Synthetic analysis description supplied by the application.",
+    "references": "",
+    "assay": [
+      {
+        "label": "Assay",
+        "value": "Demonstrationspanel"
+      }
+    ],
+    "run": [
+      {
+        "label": "Körning",
+        "value": "SYNTHETIC-RUN"
+      }
+    ]
+  }
+}

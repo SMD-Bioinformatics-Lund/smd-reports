@@ -1,0 +1,19 @@
+{% set columns = 3 if compact_metadata|default(false) else 2 %}
+{% set metadata = namespace(rows=[], pending=[]) %}
+{% set fields = report.metadata.fields[:2] + [dict(label='Prov-ID'|ui, value=report.metadata.sample_id)] + report.metadata.fields[2:] + [dict(label='Rapportdatum'|ui, value=report.metadata.generated_at.date().isoformat()), dict(label='Skapad av'|ui, value=report.metadata.author), dict(label='Rapport-ID'|ui, value=report.metadata.report_id)] %}
+{% for field in fields %}
+{% set wide = compact_metadata|default(false) and field.value|string|length > 60 %}
+{% if wide %}
+{% if metadata.pending %}{% set _ = metadata.rows.append(metadata.pending) %}{% set metadata.pending = [] %}{% endif %}
+{% set _ = metadata.rows.append([(field, true)]) %}
+{% else %}
+{% set _ = metadata.pending.append((field, false)) %}
+{% if metadata.pending|length == columns %}{% set _ = metadata.rows.append(metadata.pending) %}{% set metadata.pending = [] %}{% endif %}
+{% endif %}
+{% endfor %}
+{% if metadata.pending %}{% set _ = metadata.rows.append(metadata.pending) %}{% endif %}
+<section class="report-metadata" aria-label="{{ 'Provinformation'|ui }}">
+<h2 class="report-metadata-heading">{{ 'Provinformation'|ui }}</h2>
+<table class="report-patient-table"><colgroup>{% for _ in range(columns) %}<col class="metadata-label"><col>{% endfor %}</colgroup><tbody>
+{% for row in metadata.rows %}<tr>{% for field, wide in row %}<th scope="row">{{ field.label }}</th><td{% if wide %} colspan="{{ columns * 2 - 1 }}"{% elif loop.last and row|length < columns %} colspan="{{ (columns - row|length) * 2 + 1 }}"{% endif %}>{{ field.value|display }}</td>{% endfor %}</tr>{% endfor %}
+</tbody></table></section>

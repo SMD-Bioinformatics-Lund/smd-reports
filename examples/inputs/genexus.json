@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "application": "genexus",
+  "title": "NGS-analysrapport",
+  "language": "sv",
+  "report": {
+    "report_id": "DEMO-REPORT-001",
+    "sample_id": "SYNTHETIC-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Demo User",
+    "fields": [
+      {
+        "label": "Patientnamn",
+        "value": "<PATIENT_NAME>"
+      },
+      {
+        "label": "Personnummer",
+        "value": "<PERSONAL_IDENTITY_NUMBER>"
+      },
+      {
+        "label": "Provtyp",
+        "value": "Syntetiskt prov"
+      },
+      {
+        "label": "Registreringsdatum",
+        "value": "<REGISTRATION_DATE>"
+      },
+      {
+        "label": "Frågeställning",
+        "value": "Syntetisk analys"
+      },
+      {
+        "label": "Analysmetod",
+        "value": "NGS - syntetisk demonstration"
+      },
+      {
+        "label": "Analys genomförd av",
+        "value": "Example Diagnostics Center"
+      }
+    ]
+  },
+  "branding": {
+    "organization": "Example Diagnostics Center",
+    "department": "Molekylär diagnostik",
+    "address": "Exempeladress 1",
+    "telephone": "000-000000",
+    "email": "demo@example.org",
+    "website": "",
+    "application_logo": null,
+    "center_logo": "../assets/center-example.svg",
+    "accreditation_logo": "../assets/accreditation-example.svg",
+    "accredited": true,
+    "center_logo_width_mm": 11.64,
+    "application_logo_width_mm": 13.75,
+    "accreditation_logo_width_mm": 25.0,
+    "accreditation_label": "Example accreditation placeholder"
+  },
+  "provenance": {
+    "application_version": "",
+    "configuration_version": "",
+    "assay_version": "",
+    "source_revision": "",
+    "package_version": "0.1.0",
+    "plugin_version": "1.0.0",
+    "schema_version": 1,
+    "template_version": "1.0.0"
+  },
+  "presentation": {
+    "section_order": null,
+    "summary_new_page": true,
+    "header_height_mm": 75.0,
+    "footer_height_mm": 38
+  },
+  "data": {
+    "supported_analyses": [
+      "SNV",
+      "FUSION"
+    ],
+    "enabled_analyses": [
+      "SNV",
+      "FUSION"
+    ],
+    "analyses": [
+      {
+        "name": "SNV",
+        "parameters": [],
+        "sections": [
+          {
+            "key": "snvs",
+            "title": "Kliniskt relevanta SNVs och små INDELs",
+            "page_break_before": false,
+            "kind": "table",
+            "columns": [
+              {
+                "key": "gene",
+                "label": "Gen"
+              },
+              {
+                "key": "chromosome",
+                "label": "Kromosom"
+              },
+              {
+                "key": "exon",
+                "label": "Exon"
+              },
+              {
+                "key": "variant",
+                "label": "HGVS"
+              },
+              {
+                "key": "af",
+                "label": "VAF"
+              },
+              {
+                "key": "tier",
+                "label": "Tier"
+              },
+              {
+                "key": "classification",
+                "label": "Klassificering"
+              }
+            ],
+            "rows": [
+              {
+                "gene": "BRAF",
+                "chromosome": "7",
+                "exon": "15",
+                "variant": "p.Val600Glu",
+                "af": "24%",
+                "tier": "I",
+                "classification": "Tier I"
+              }
+            ],
+            "empty_text": "Inga rapporterbara resultat",
+            "emphasis_column": "classification",
+            "emphasis_value": "Tier I"
+          }
+        ]
+      },
+      {
+        "name": "FUSION",
+        "parameters": [],
+        "sections": [
+          {
+            "key": "fusions",
+            "title": "Fusioner",
+            "page_break_before": false,
+            "kind": "table",
+            "columns": [
+              {
+                "key": "fusion",
+                "label": "Fusion"
+              },
+              {
+                "key": "tier",
+                "label": "Klassificering"
+              }
+            ],
+            "rows": [
+              {
+                "fusion": "EML4::ALK",
+                "tier": "Tier II"
+              }
+            ],
+            "empty_text": "Inga rapporterbara resultat",
+            "emphasis_column": null,
+            "emphasis_value": null
+          }
+        ]
+      }
+    ],
+    "summary": "Exempel på granskad slutsats. Endast för demonstration.",
+    "summary_format": "plain",
+    "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
+    "references": "",
+    "assay": [
+      {
+        "label": "Assay",
+        "value": "Demonstrationspanel"
+      }
+    ],
+    "run": [
+      {
+        "label": "Körning",
+        "value": "SYNTHETIC-RUN"
+      }
+    ]
+  }
+}

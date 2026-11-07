@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smd-reports"
+version = "0.1.0"
+description = "Shared clinical report presentation and application report builders"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+dependencies = ["pydantic>=2.10,<3", "Jinja2>=3.1.6,<4", "Markdown>=3.6,<4", "bleach>=6.2,<7", "defusedxml>=0.7,<1"]
+
+[project.optional-dependencies]
+docs = ["mkdocs>=1.6,<2", "mkdocs-material>=9.6,<10"]
+pdf = ["weasyprint==63.0"]
+test = ["pytest>=8,<9", "pypdf>=5,<6", "PyMuPDF>=1.25,<2", "Pillow>=10,<12", "build>=1,<2", "ruff>=0.13,<0.14"]
+
+[project.scripts]
+smd-reports = "smd_reports.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+smd_reports = ["py.typed", "templates/**/*.html", "static/*.css", "static/*.md", "themes/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

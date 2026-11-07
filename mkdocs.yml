@@ -1,0 +1,31 @@
+site_name: smd-reports
+site_description: Python clinical report builders and portable HTML/PDF rendering
+repo_url: https://github.com/SMD-Bioinformatics-Lund/smd-reports
+theme:
+  name: material
+  font: false
+  palette:
+    primary: teal
+  features:
+    - navigation.sections
+    - content.code.copy
+nav:
+  - Overview: index.md
+  - Getting started:
+      - Installation: installation.md
+      - Quickstart: quickstart.md
+  - User guide:
+      - Python usage: python-api.md
+      - Application inputs: integration.md
+      - JSON format: json-inputs.md
+      - Center branding: branding.md
+      - HTML and PDF: rendering.md
+  - Reference:
+      - Python API reference: reference.md
+      - Command-line reference: cli.md
+  - Development:
+      - Contributing: contributing.md
+      - Testing and releases: validation.md
+markdown_extensions:
+  - tables
+  - fenced_code
