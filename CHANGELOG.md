@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Enforce version increases and nonempty changelog entries for release PRs and publishing.
+
 ## 0.1.0
 
 First release.

@@ -135,6 +135,8 @@ up-to-date branch. The maintainer `ramsainanduri` may bypass the approving-revie
 for solo maintenance. Required CI checks and the other protections still apply, including to
 administrators. Force pushes and branch deletion are blocked. Required checks are `branch-flow`, `lint`, `docs`, `core (3.10)`, `core (3.12)`,
 `core (3.14)` and `pdf`. Release PRs to `master` must originate from this repository's `dev`
-branch. The PR templates in `.github/PULL_REQUEST_TEMPLATE/` describe the expected checks.
+branch. The required `branch-flow` job also checks version increases and matching release
+notes on PRs into `master`; see [release preparation](validation.md#release-preparation).
+The PR templates in `.github/PULL_REQUEST_TEMPLATE/` describe the expected checks.
 
 See [publishing setup](publishing.md) for release configuration and commands.

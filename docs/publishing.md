@@ -45,7 +45,8 @@ After the development PR is merged into `dev` and the release PR is merged into 
 5. Review the completed checks and TestPyPI installation verification.
 6. Start the workflow separately with the same tag and index `pypi` when ready.
 
-The workflow checks tag/version agreement, tag existence and `master` ancestry, then runs
+The workflow requires a matching nonempty changelog entry and a version newer than previous
+release tags on `master`. It also checks tag/version agreement, tag existence and ancestry, then runs
 tests, lint, documentation, distribution checks and isolated wheel/source installation.
 Only the checked artifacts are passed to the publishing job. Package versions cannot be
 overwritten; an existing version requires a new release rather than replacement files.
