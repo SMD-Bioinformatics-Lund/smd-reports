@@ -67,6 +67,8 @@ Use `python -m mkdocs serve` to preview documentation locally.
 The `.readthedocs.yaml` file configures Read the Docs to build `mkdocs.yml` with Python
 3.12 and the package's `docs` extra. Documentation warnings fail the build, as they do in CI.
 
+![Documentation source, Read the Docs and GitHub wiki workflow](assets/documentation-workflow.svg)
+
 To enable hosting:
 
 1. Sign in to [Read the Docs](https://app.readthedocs.org/) and connect GitHub.
@@ -95,6 +97,8 @@ Review the PDFs and keep their data and artwork synthetic. Other generated outpu
 under `.artifacts/`.
 
 ## Pull requests
+
+![Development branches and manual package publishing workflow](assets/development-workflow.svg)
 
 Create feature or bugfix branches from `dev` and open development PRs against `dev`.
 Include the behavior change and relevant test results. Development PRs use squash merges.

@@ -4,6 +4,8 @@ Publishing is manual. The `Publish package` workflow has no push, tag or release
 trigger. It runs only after a maintainer starts it on `master` with an existing release
 tag and the confirmation `publish`.
 
+![Development branches and manual package publishing workflow](assets/development-workflow.svg)
+
 ## One-time account configuration
 
 Create an account on [PyPI](https://pypi.org/account/register/) and a separate account on

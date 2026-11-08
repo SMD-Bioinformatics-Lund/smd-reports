@@ -17,6 +17,14 @@ print rules, fonts and artwork, so it can be converted elsewhere with WeasyPrint
 Choose preset/custom paper sizes, attach plots to sections, and format summaries,
 descriptions and references as plain text or Markdown.
 
+## Report workflow
+
+![JSON input to HTML and PDF report workflow](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/7b241f357134628486e72b9f6fcaa2aafd3c8689/docs/assets/report-workflow.svg)
+
+The [development and release workflow](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Contributing#pull-requests)
+and [documentation publishing workflow](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Contributing#documentation-hosting)
+are described in the contribution guide.
+
 ## Install
 
 Requires Python 3.10 or newer. Install with pip:

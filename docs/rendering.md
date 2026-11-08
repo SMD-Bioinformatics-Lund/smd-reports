@@ -10,6 +10,8 @@ Path("report.html").write_text(renderer.render_html(report), encoding="utf-8")
 Path("report.pdf").write_bytes(renderer.render_pdf(report))
 ```
 
+![JSON input to HTML and PDF report workflow](assets/report-workflow.svg)
+
 ## Portable HTML
 
 HTML embeds CSS, print rules, Source Sans 3 fonts and artwork. Plain text is escaped and
