@@ -1,10 +1,9 @@
 """Read report JSON and embed local artwork."""
 
 import json
-from importlib.resources import files
 from pathlib import Path
 
-from .assets import embed_image
+from .assets import embed_image, prepare_image
 from .core import Report
 
 APPLICATIONS = ("coyote3", "genexus", "cll_genie", "pgx")
@@ -64,16 +63,18 @@ class ReportLoader:
                 document.branding, key, image(getattr(document.branding, key), f"branding.{key}")
             )
         for section in document.sections:
-            if section.kind == "image":
-                section.source = image(section.source, f"sections.{section.key}.source")
-        from . import __version__
-
-        versions = json.loads(files("smd_reports.themes").joinpath("versions.json").read_text())
-        revisions = versions[document.application]
-        document.provenance.package_version = __version__
-        document.provenance.template_version = revisions.get(
-            document.analyte, revisions.get("default", next(iter(revisions.values())))
-        )
+            assets = section.images + ([section] if section.kind == "image" else [])
+            for index, asset in enumerate(assets):
+                field = f"sections.{section.key}.images.{index}"
+                asset.source = image(asset.source, field)
+                try:
+                    prepare_image(
+                        asset.source,
+                        frame=asset.frame,
+                        accepted_formats=document.presentation.accepted_image_formats,
+                    )
+                except (OSError, ValueError) as exc:
+                    raise ReportAssetError(field) from exc
         return document
 
     def schema(self, application: str | None = None) -> dict:

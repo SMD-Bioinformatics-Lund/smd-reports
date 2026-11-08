@@ -1,15 +1,15 @@
 {
   "coyote3": {
-    "dna": "2.0.0",
-    "rna": "2.0.0"
+    "dna": "2.1.0",
+    "rna": "2.1.0"
   },
   "genexus": {
-    "default": "2.0.0"
+    "default": "2.1.0"
   },
   "cll_genie": {
-    "default": "2.0.0"
+    "default": "2.1.0"
   },
   "pgx": {
-    "default": "2.0.0"
+    "default": "2.1.0"
   }
 }

@@ -16,7 +16,7 @@ ROOT = Path(__file__).parents[1]
 
 def test_all_committed_json_examples_load():
     for path in (ROOT / "examples/inputs").glob("*.json"):
-        assert ReportLoader().load(path).visible_sections
+        assert ReportLoader().load(path).sections
 
 
 @pytest.mark.parametrize("application", ["coyote3", "genexus", "cll_genie", "pgx", None])
@@ -96,7 +96,7 @@ def test_standalone_html_converts_without_package_or_source_assets(tmp_path, rep
 import sys
 sys.modules['smd_reports']=None
 from weasyprint import HTML
-HTML(filename=sys.argv[1]).write_pdf(sys.argv[2])
+HTML(filename=sys.argv[1]).write_pdf(sys.argv[2], custom_metadata=True)
 """
     environment = dict(os.environ)
     environment.pop("PYTHONPATH", None)

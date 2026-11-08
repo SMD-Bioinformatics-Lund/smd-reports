@@ -2,15 +2,24 @@
 
 from __future__ import annotations
 
+import json
 from datetime import datetime
+from functools import lru_cache
+from importlib.resources import files
 from math import isfinite
-from pathlib import Path
 from string import Formatter
 from typing import Annotated, Literal
 
 from pydantic import Field, field_validator, model_validator
 
-from ._models import CellValue, FieldValue, Language, LocalizedText, Model, SectionBase
+from ._models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
+from .assets import ImageFormat, validate_image_reference
+from .pages import PAGE_SIZES_MM, PageSize
+
+
+@lru_cache(maxsize=1)
+def template_versions():
+    return json.loads(files("smd_reports").joinpath("themes/versions.json").read_text())
 
 
 class Branding(Model):
@@ -32,26 +41,15 @@ class Branding(Model):
     @field_validator("application_logo", "center_logo", "accreditation_logo")
     @classmethod
     def image_reference(cls, value):
-        if value is None:
-            return value
-        if value.startswith("data:"):
-            from .assets import validate_image
-
-            validate_image(value)
-        elif (
-            not value.strip() or (":" in value and not Path(value).is_absolute()) or "\x00" in value
-        ):
-            raise ValueError("Use a local image path or embedded image data URI")
-        return value
+        return validate_image_reference(value) if value is not None else None
 
 
 class Provenance(Model):
+    application_name: str = ""
     application_version: str = ""
-    configuration_version: str = ""
-    assay_version: str = ""
-    source_revision: str = ""
-    package_version: str = ""
-    template_version: str = ""
+    pipeline_name: str = ""
+    pipeline_version: str = ""
+    assay_name: str = ""
 
 
 class ReportMetadata(Model):
@@ -70,15 +68,63 @@ class ReportMetadata(Model):
 
 
 class Presentation(Model):
+    page_size: PageSize = "A4"
+    orientation: Literal["portrait", "landscape"] | None = None
+    custom_width_mm: float | None = Field(default=None, gt=0)
+    custom_height_mm: float | None = Field(default=None, gt=0)
     header_height_mm: float = Field(default=65, ge=40, le=120)
     footer_height_mm: float = Field(default=38, ge=22, le=50)
+    accepted_image_formats: list[ImageFormat] = Field(
+        default_factory=lambda: ["png", "jpeg", "svg", "webp", "gif", "tiff", "bmp"],
+        min_length=1,
+    )
+
+    @property
+    def dimensions_mm(self):
+        width, height = (
+            (self.custom_width_mm, self.custom_height_mm)
+            if self.page_size == "custom"
+            else PAGE_SIZES_MM[self.page_size]
+        )
+        if self.orientation == "portrait":
+            return min(width, height), max(width, height)
+        if self.orientation == "landscape":
+            return max(width, height), min(width, height)
+        return width, height
+
+    @model_validator(mode="after")
+    def valid_page(self):
+        if self.page_size == "custom":
+            if self.custom_width_mm is None or self.custom_height_mm is None:
+                raise ValueError("Custom pages require custom_width_mm and custom_height_mm")
+        elif self.custom_width_mm is not None or self.custom_height_mm is not None:
+            raise ValueError("Custom dimensions require page_size custom")
+        width, height = self.dimensions_mm
+        if width <= 52 or height <= self.header_height_mm + self.footer_height_mm + 20:
+            raise ValueError("Page dimensions must leave room for margins, headers and content")
+        if len(set(self.accepted_image_formats)) != len(self.accepted_image_formats):
+            raise ValueError("Duplicate accepted image formats")
+        return self
+
+
+TEXT_HEADINGS = {
+    "summary": {"en": "Conclusion", "sv": "Slutsats"},
+    "description": {"en": "Analysis description", "sv": "Analysbeskrivning"},
+    "references": {"en": "References", "sv": "Referenser"},
+}
 
 
 class TextSection(SectionBase):
-    kind: Literal["text"] = "text"
+    kind: Literal["text", "summary", "description", "references"] = "text"
     text: LocalizedText
     format: Literal["plain", "markdown"] = "plain"
-    conclusion: bool = False
+
+    @model_validator(mode="before")
+    @classmethod
+    def default_heading(cls, data):
+        if isinstance(data, dict) and "heading" not in data:
+            return {**data, "heading": TEXT_HEADINGS.get(data.get("kind"), "")}
+        return data
 
 
 class Column(Model):
@@ -175,16 +221,8 @@ class GridSection(RecordSection):
         return self
 
 
-class ImageSection(SectionBase):
+class ImageSection(SectionBase, ImageAsset):
     kind: Literal["image"] = "image"
-    source: str
-    caption: LocalizedText = ""
-
-    @field_validator("source")
-    @classmethod
-    def image_reference(cls, value):
-        Branding.image_reference(value)
-        return value
 
 
 ReportSection = Annotated[
@@ -202,8 +240,6 @@ class Report(Model):
     branding: Branding = Field(default_factory=Branding)
     provenance: Provenance = Field(default_factory=Provenance)
     presentation: Presentation = Field(default_factory=Presentation)
-    supported_analyses: list[str] | None = None
-    enabled_analyses: list[str] | None = None
     sections: list[ReportSection] = Field(default_factory=list)
 
     @property
@@ -219,30 +255,33 @@ class Report(Model):
         return self.presentation.footer_height_mm
 
     @property
-    def visible_sections(self):
-        return [
-            section
-            for section in self.sections
-            if section.enabled
-            and (
-                section.analysis is None
-                or self.enabled_analyses is None
-                or section.analysis in self.enabled_analyses
-            )
-        ]
+    def template_version(self):
+        revisions = template_versions()[self.application]
+        return revisions.get(self.analyte, revisions.get("default", next(iter(revisions.values()))))
+
+    @property
+    def rendering_metadata(self):
+        from . import __version__
+
+        return {
+            **{key: value for key, value in self.provenance.model_dump().items() if value},
+            "package_name": "smd-reports",
+            "package_version": __version__,
+            "template_version": self.template_version,
+        }
+
+    @property
+    def image_height_limit_mm(self):
+        footer = (
+            self.footer_height_mm
+            if (self.branding.accredited and self.branding.accreditation_logo)
+            else 22
+        )
+        return self.presentation.dimensions_mm[1] - self.header_height_mm - footer - 20
 
     @model_validator(mode="after")
     def valid_sections(self):
         keys = [section.key for section in self.sections]
         if len(keys) != len(set(keys)):
             raise ValueError("Duplicate section keys")
-        for names in [self.supported_analyses, self.enabled_analyses]:
-            if names is not None and len(names) != len(set(names)):
-                raise ValueError("Duplicate analysis names")
-        if self.supported_analyses is not None:
-            requested = set(self.enabled_analyses or []) | {
-                s.analysis for s in self.sections if s.analysis is not None
-            }
-            if requested - set(self.supported_analyses):
-                raise ValueError("An analysis is not in supported_analyses")
         return self

@@ -23,16 +23,27 @@ Save this as `report.json`:
     {
       "kind": "table",
       "key": "results",
-      "title": "Detected variants",
-      "columns": [{"label": "Gene"}, {"label": "HGVS"}],
-      "rows": [["BRAF", "p.Val600Glu"]]
+      "columns": [
+        {
+          "label": "Gene"
+        },
+        {
+          "label": "HGVS"
+        }
+      ],
+      "rows": [
+        [
+          "BRAF",
+          "p.Val600Glu"
+        ]
+      ],
+      "heading": "Detected variants"
     },
     {
-      "kind": "text",
+      "kind": "summary",
       "key": "summary",
-      "title": "Conclusion",
       "text": "Synthetic demonstration.",
-      "conclusion": true
+      "heading": "Conclusion"
     }
   ]
 }

@@ -15,7 +15,7 @@ def test_new_columns_need_only_json_changes(payloads, load, application, kind):
         {
             "kind": kind,
             "key": "dynamic",
-            "title": "Dynamic",
+            "heading": "Dynamic",
             "columns": [{"label": f"Field {i}"} for i in range(9)],
             "rows": [[f"VALUE-{r}-{c}" for c in range(9)] for r in range(3)],
         }

@@ -1,0 +1,45 @@
+"""Paper dimensions in millimetres, independent of the optional PDF renderer."""
+
+from typing import Literal
+
+PageSize = Literal[
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "Letter",
+    "Legal",
+    "Tabloid",
+    "Executive",
+    "custom",
+]
+PAGE_SIZES_MM = {
+    "A0": (841, 1189),
+    "A1": (594, 841),
+    "A2": (420, 594),
+    "A3": (297, 420),
+    "A4": (210, 297),
+    "A5": (148, 210),
+    "A6": (105, 148),
+    "B0": (1000, 1414),
+    "B1": (707, 1000),
+    "B2": (500, 707),
+    "B3": (353, 500),
+    "B4": (250, 353),
+    "B5": (176, 250),
+    "B6": (125, 176),
+    "Letter": (215.9, 279.4),
+    "Legal": (215.9, 355.6),
+    "Tabloid": (279.4, 431.8),
+    "Executive": (184.15, 266.7),
+}

@@ -2,11 +2,19 @@
 
 ## 0.1.0
 
+- Limit input provenance to application/pipeline names and versions plus assay name;
+  compute package/template metadata automatically.
+- Add preset/custom paper sizes, inline plots and configurable image formats/frame selection.
+- Add explicit summary/description/references text sections with localized headings and
+  plain/Markdown content. Keep summary tables compact and wrap wide cells.
+- Remove analysis selectors and example parameter scaffolding; section headings use `heading`.
+
+
 - Standardize input on JSON files/text with one shared document format. Remove Python
   data builders and TSV ingestion before the first public release.
 - Preserve boolean and numeric cell types during JSON export and reloading.
 - Define table and detail columns once and supply values as row matrices. Add configurable
-  grouped grids, localized labels and record-heading formats; template revisions are 2.0.0.
+  grouped grids, localized labels and record-heading formats; template revisions are 2.1.0.
 - Remove the separate schema-version field; export JSON Schema for the installed package.
 - Prepare manual TestPyPI/PyPI publishing, distribution checks and public package metadata.
 - Include the Coyote3 DNA/RNA, Genexus, CLL Genie and PGx layouts with generic public artwork.

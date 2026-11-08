@@ -2,7 +2,16 @@
 
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StrictBool,
+    StrictFloat,
+    StrictInt,
+    StrictStr,
+    field_validator,
+)
 
 Language = Literal["en", "sv"]
 Translations = Annotated[dict[Language, str], Field(min_length=1)]
@@ -22,9 +31,24 @@ class FieldValue(Model):
     value: CellValue
 
 
+class ImageAsset(Model):
+    source: str
+    caption: LocalizedText = ""
+    alt: LocalizedText = ""
+    frame: int = Field(default=0, ge=0)
+    width_percent: float = Field(default=100, gt=0, le=100)
+    max_height_mm: float | None = Field(default=None, gt=0)
+
+    @field_validator("source")
+    @classmethod
+    def image_reference(cls, value):
+        from .assets import validate_image_reference
+
+        return validate_image_reference(value)
+
+
 class SectionBase(Model):
     key: str = Field(min_length=1)
-    title: LocalizedText = ""
-    enabled: bool = True
-    analysis: str | None = None
+    heading: LocalizedText = ""
     page_break_before: bool = False
+    images: list[ImageAsset] = Field(default_factory=list)

@@ -2,9 +2,42 @@
 
 import base64
 import re
+from io import BytesIO
 from pathlib import Path
+from typing import Literal
 
 from defusedxml import ElementTree
+
+ImageFormat = Literal["png", "jpeg", "svg", "webp", "gif", "tiff", "bmp"]
+IMAGE_MIMES = {
+    "png": "image/png",
+    "jpeg": "image/jpeg",
+    "svg": "image/svg+xml",
+    "webp": "image/webp",
+    "gif": "image/gif",
+    "tiff": "image/tiff",
+    "bmp": "image/bmp",
+}
+IMAGE_EXTENSIONS = {
+    ".png": "png",
+    ".jpg": "jpeg",
+    ".jpeg": "jpeg",
+    ".svg": "svg",
+    ".webp": "webp",
+    ".gif": "gif",
+    ".tif": "tiff",
+    ".tiff": "tiff",
+    ".bmp": "bmp",
+}
+
+
+def validate_image_reference(value: str) -> str:
+    if value.startswith("data:"):
+        validate_image(value)
+    elif not value.strip() or (":" in value and not Path(value).is_absolute()) or "\x00" in value:
+        raise ValueError("Use a local image path or embedded image data URI")
+    return value
+
 
 SVG_TAGS = {
     "svg",
@@ -32,14 +65,10 @@ SVG_TAGS = {
 
 
 def validate_image(value: str) -> str:
-    """Accept embedded PNG, JPEG or static SVG; reject active or remote SVG content."""
+    """Validate supported raster images and reject active or remote SVG content."""
     prefix, separator, encoded = value.partition(",")
-    if not separator or prefix not in {
-        "data:image/png;base64",
-        "data:image/jpeg;base64",
-        "data:image/svg+xml;base64",
-    }:
-        raise ValueError("Supply a base64 PNG, JPEG or static SVG data URI")
+    if not separator or prefix not in {f"data:{mime};base64" for mime in IMAGE_MIMES.values()}:
+        raise ValueError("Supply a supported base64 image data URI")
     raw = base64.b64decode(encoded, validate=True)
     if not raw:
         raise ValueError("Empty image")
@@ -65,18 +94,52 @@ def validate_image(value: str) -> str:
                 # Disallow CSS escapes/imports and all URL functions, including encoded variants.
                 if "\\" in attribute or "@" in attribute or re.search(r"url\s*\(", attribute, re.I):
                     raise ValueError("SVG URL/CSS resources are prohibited")
+    else:
+        from PIL import Image
+
+        try:
+            with Image.open(BytesIO(raw)) as image:
+                expected = prefix.removeprefix("data:").removesuffix(";base64").split("/")[-1]
+                if image.format.lower() != expected:
+                    raise ValueError("Image content does not match its MIME type")
+                image.verify()
+        except (OSError, SyntaxError, Image.DecompressionBombError) as exc:
+            raise ValueError("Invalid or unsupported raster image") from exc
     return value
+
+
+def prepare_image(value: str, *, frame: int = 0, accepted_formats=None) -> str:
+    """Validate the selected frame and provide a portable HTML image representation."""
+    validate_image(value)
+    prefix, encoded = value.split(",", 1)
+    image_format = next(
+        name for name, mime in IMAGE_MIMES.items() if prefix == f"data:{mime};base64"
+    )
+    if accepted_formats is not None and image_format not in accepted_formats:
+        raise ValueError("Image format is not in accepted_image_formats")
+    if image_format == "svg":
+        if frame != 0:
+            raise ValueError("SVG images have only one frame")
+        return value
+    from PIL import Image
+
+    with Image.open(BytesIO(base64.b64decode(encoded))) as image:
+        if frame >= getattr(image, "n_frames", 1):
+            raise ValueError("The selected image frame does not exist")
+        image.seek(frame)
+        image.load()
+        if image_format in {"png", "jpeg"} and frame == 0 and getattr(image, "n_frames", 1) == 1:
+            return value
+        output = BytesIO()
+        image.convert("RGBA").save(output, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(output.getvalue()).decode()
 
 
 def embed_image(path: str | Path) -> str:
     """Read an explicitly supplied local artwork file into a validated data URI."""
     path = Path(path)
-    mime = {
-        ".png": "image/png",
-        ".jpg": "image/jpeg",
-        ".jpeg": "image/jpeg",
-        ".svg": "image/svg+xml",
-    }.get(path.suffix.lower())
-    if mime is None:
-        raise ValueError("Logo files must be PNG, JPEG or static SVG")
+    image_format = IMAGE_EXTENSIONS.get(path.suffix.lower())
+    if image_format is None:
+        raise ValueError("Unsupported image file extension")
+    mime = IMAGE_MIMES[image_format]
     return validate_image(f"data:{mime};base64," + base64.b64encode(path.read_bytes()).decode())

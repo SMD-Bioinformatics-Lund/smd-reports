@@ -28,18 +28,12 @@ def test_examples_preserve_content_and_round_trip(reports, name):
     assert renderer.render_html(restored) == html
 
 
-def test_enabled_analyses_and_sections_are_independent(payloads, load):
-    payload = payloads["coyote3-dna"]
-    payload["enabled_analyses"] = ["SNV"]
-    payload["sections"][0]["enabled"] = False
-    document = load(payload)
-    html = ReportRenderer().render_html(document)
-    assert 'id="snvs"' not in html
+def test_sections_are_shown_in_json_order(payloads, load):
+    data = payloads["coyote3-dna"]
+    data["sections"] = [section for section in data["sections"] if section["key"] != "cnvs"]
+    html = ReportRenderer().render_html(load(data))
     assert 'id="cnvs"' not in html
-    assert 'id="snv-details"' in html
-    assert 'id="summary"' in html
-    # Normalizing retains disabled data and its configuration.
-    assert any(section.key == "cnvs" for section in document.sections)
+    assert html.index('id="snvs"') < html.index('id="summary"') < html.index('id="snv-details"')
 
 
 @pytest.mark.parametrize("change", ["unsupported", "duplicate", "section", "timezone", "schema"])
@@ -68,7 +62,7 @@ def test_custom_labels_titles_and_values_are_localized(payloads, load, language)
         {
             "kind": "table",
             "key": "custom",
-            "title": {"en": "Results", "sv": "Resultat"},
+            "heading": {"en": "Results", "sv": "Resultat"},
             "columns": [{"label": {"en": "New column", "sv": "Ny kolumn"}}],
             "rows": [[{"en": "English value", "sv": "Svenskt värde"}]],
         }

@@ -12,6 +12,8 @@ application themes, center branding and Swedish/English interface labels.
 
 Build reports from JSON. Define columns once and supply values as row lists. HTML includes its CSS,
 print rules, fonts and artwork, so it can be converted elsewhere with WeasyPrint.
+Choose preset/custom paper sizes, attach plots to sections, and format summaries,
+descriptions and references as plain text or Markdown.
 
 ## Install
 

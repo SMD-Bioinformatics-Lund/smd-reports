@@ -39,6 +39,10 @@ def format_markdown(value: str) -> Markup:
                 "tr",
                 "th",
                 "td",
+                "h1",
+                "h2",
+                "h5",
+                "h6",
                 "h3",
                 "h4",
             },
@@ -93,6 +97,14 @@ def grid_row_visible(context, layout, values):
     return not layout.hide_if_empty or any(value is not None and value != "" for value in selected)
 
 
+@pass_context
+def image_uri(context, value, frame=0, plot=False):
+    from .assets import prepare_image
+
+    formats = context["report"].presentation.accepted_image_formats if plot else None
+    return prepare_image(value, frame=frame, accepted_formats=formats)
+
+
 def offline_fetcher(url, **kwargs):
     """Allow embedded raster/font resources only; never access disk or the network."""
     allowed = (
@@ -130,6 +142,7 @@ class ReportRenderer:
             ui=ui_label,
             heading=record_heading,
             grid_row_visible=grid_row_visible,
+            image_uri=image_uri,
         )
 
     def register_theme(self, theme: Theme) -> None:
@@ -162,4 +175,4 @@ class ReportRenderer:
             ) from exc
         return HTML(
             string=self.render_html(report, theme=theme), url_fetcher=offline_fetcher
-        ).write_pdf()
+        ).write_pdf(custom_metadata=True)

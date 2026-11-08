@@ -10,21 +10,36 @@ from pathlib import Path
 CHECK = """
 import importlib.util
 import json
+import base64
+from io import BytesIO
+from PIL import Image
 from smd_reports import ReportLoader, ReportRenderer
 assert importlib.util.find_spec('weasyprint') is None
+image = BytesIO()
+Image.new("RGB", (10, 3), (20, 60, 120)).save(image, format="PNG")
+plot = "data:image/png;base64," + base64.b64encode(image.getvalue()).decode()
 payload = {
     "application": "coyote3", "analyte": "dna", "title": "Installed distribution",
     "language": "en", "report": {"report_id": "DEMO", "sample_id": "SYNTHETIC",
                                    "generated_at": "2026-01-01T12:00:00Z"},
+    "presentation": {"page_size": "custom", "custom_width_mm": 300, "custom_height_mm": 200},
+    "provenance": {"application_name": "Example", "pipeline_name": "Example pipeline"},
     "sections": [{"kind": "details", "key": "details", "record_heading": "{0}",
                   "columns": [{"label": "Gene"}, {"label": "Added field"}, {"label": "Flag"},
                               {"label": "Count"}, {"label": "Rate"}],
-                  "rows": [["EXAMPLE", "DYNAMIC-VALUE", False, 0, 0.0]]}],
+                  "rows": [["EXAMPLE", "DYNAMIC-VALUE", False, 0, 0.0]],
+                  "images": [{"source": plot, "caption": "Example plot"}]},
+                 {"kind": "summary", "key": "summary",
+                  "format": "markdown", "text": "**Reviewed**"}],
 }
 report = ReportLoader().loads(json.dumps(payload))
 html = ReportRenderer().render_html(report)
 assert 'data:font/woff2;base64,' in html
 assert 'Installed distribution' in html
+assert 'Conclusion' in html and '<strong>Reviewed</strong>' in html
+assert 'data:image/png;base64,' in html
+assert report.presentation.dimensions_mm == (300, 200)
+assert 'package_version' in report.rendering_metadata
 assert 'Added field' in html and 'DYNAMIC-VALUE' in html
 serialized = report.model_dump_json()
 assert json.loads(serialized)['sections'][0]['rows'][0][2] is False
@@ -32,7 +47,7 @@ restored = ReportLoader().loads(serialized)
 assert type(restored.sections[0].rows[0][3]) is int
 assert type(restored.sections[0].rows[0][4]) is float
 assert ReportRenderer().render_html(restored) == html
-assert 'schema_version' not in serialized
+assert 'schema_version' not in serialized and 'package_version' not in serialized
 print('Isolated JSON/HTML installation passed')
 """
 

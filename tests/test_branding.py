@@ -14,7 +14,7 @@ from smd_reports.assets import embed_image
 def test_public_previews_embed_only_example_artwork():
     root = Path(__file__).parents[1]
     allowed = {path.read_bytes() for path in (root / "examples/assets").glob("*-example.svg")}
-    assert len(allowed) == 3
+    assert len(allowed) == 4
     for path in (root / "examples/rendered").glob("*.html"):
         images = re.findall(r'src="data:image/[^,]+,([^\"]+)"', path.read_text())
         assert images

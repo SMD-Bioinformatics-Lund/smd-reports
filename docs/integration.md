@@ -5,7 +5,7 @@ selects the header identity and theme; the JSON sections define the report conte
 
 | Application | JSON identity | Example |
 | --- | --- | --- |
-| Coyote3 | `coyote3` | DNA/RNA summary tables, parameters, variant and biomarker details |
+| Coyote3 | `coyote3` | DNA/RNA summary tables, plots, variant and biomarker details |
 | Genexus | `genexus` | SNV/INDEL, CNV, fusion and other-finding cards |
 | CLL Genie | `cll_genie` | Sequence summaries and grouped V/J/D, FR/CDR and junction details |
 | PGx | `pgx` | Recommendations, variants, depth, genes and target tables |
@@ -15,9 +15,9 @@ The example JSON files contain complete synthetic reports. Modify their `columns
 
 ## Coyote3
 
-Set `analyte` to `dna` or `rna`. Use ordinary tables for summary results and analysis
-parameters, `details` for finding cards, and `image` for supplied plots. An optional
-`analysis` on each section lets `enabled_analyses` select related sections together.
+Set `analyte` to `dna` or `rna`. Use ordinary tables for summary results, `details` for finding cards and `images`
+for supplied plots within sections. A separate `image` section can start a CNV profile
+on its own page.
 
 ## Genexus
 

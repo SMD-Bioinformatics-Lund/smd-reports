@@ -43,7 +43,8 @@ Path("report.portable.json").write_text(
 ```
 
 The saved document embeds artwork and uses the same JSON format as the original input.
-Reload it with `ReportLoader.load()` or `loads()`.
+Reload it with `ReportLoader.load()` or `loads()`. Automatically computed package/template
+versions are available separately through `report.rendering_metadata`.
 
 ## Export validation rules
 

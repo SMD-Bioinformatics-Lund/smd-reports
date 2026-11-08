@@ -14,7 +14,10 @@ Add a `branding` object to the JSON document:
     "telephone": "000-000000",
     "email": "demo@example.org",
     "accredited": true,
-    "accreditation_label": {"en": "Accreditation mark", "sv": "Ackrediteringsmärke"}
+    "accreditation_label": {
+      "en": "Accreditation mark",
+      "sv": "Ackrediteringsmärke"
+    }
   }
 }
 ```
@@ -55,6 +58,6 @@ accreditation artwork, the PDF uses a 22 mm footer.
 
 ## Image formats
 
-PNG, JPEG and static SVG are supported. SVG scripts, external references, entities,
+PNG, JPEG, static SVG, WebP, GIF, TIFF and BMP are supported. SVG scripts, external references, entities,
 embedded documents and CSS URL resources are rejected. Missing or unsupported artwork
-produces a loading error. Public examples use generic artwork from `examples/assets/`.
+produces a loading error. Public examples use generic logos and a synthetic CNV plot from `examples/assets/`.

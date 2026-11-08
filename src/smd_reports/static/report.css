@@ -1,7 +1,7 @@
 /* Shared primitives extracted from the Coyote3 modern and Genexus report layouts. */
 :root { --report-border: #b8bec5; }
 @page {
-  size: A4; margin: 65mm 16mm 22mm;
+  margin: 65mm 16mm 22mm;
   @top-right { content: none; }
   @top-left { content: element(report-page-header); width: 100%; vertical-align: bottom; }
   @bottom-left { content: element(report-page-footer); width: 75%; vertical-align: top; border-top: 1px solid var(--report-border); padding-top: 3mm; padding-bottom: 5mm; }
@@ -10,7 +10,7 @@
 * { box-sizing: border-box; }
 html { background: #f2f1f4; color-scheme: light; }
 body { margin: 0; color: #000; font: var(--body-size)/1.35 "Source Sans 3", sans-serif; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.page { width: 210mm; margin: 24px auto; padding: 14mm 16mm 18mm; background: #fff; box-shadow: 0 2px 8px #392b430a, 0 16px 48px #392b4314; }
+.page { width: var(--page-width); max-width: 100%; margin: 24px auto; padding: 14mm 16mm 18mm; background: #fff; box-shadow: 0 2px 8px #392b430a, 0 16px 48px #392b4314; }
 .report-brand-header { display: table; width: 100%; table-layout: fixed; border-spacing: 0; padding-bottom: 8px; margin-bottom: 0; break-inside: avoid; }
 .report-brand-rule { height: 2px; margin-bottom: 9px; background: linear-gradient(90deg, var(--accent), var(--rule-end)); }
 .report-product-brand { display: table-cell; width: 50%; vertical-align: middle; }
@@ -67,9 +67,9 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
-.results_summary table { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 3px 0; background: #fff; color: #000; font-size: 8pt; line-height: 1.2; break-inside: auto; }
+.results_summary table { width: auto; max-width: 100%; table-layout: auto; border-collapse: collapse; margin: 3px 0; background: #fff; color: #000; font-size: 8pt; line-height: 1.2; break-inside: auto; }
 .results_summary th, .results_summary td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; text-align: left; white-space: normal; overflow-wrap: anywhere; font-weight: 400; }
-.results_summary:has(table) { padding: 0; border: 0; background: transparent; }
+
 .results_summary > :first-child { margin-top: 0; }
 .results_summary > :last-child { margin-bottom: 0; }
 .markdown p:first-child { margin-top: 0; }
@@ -125,3 +125,6 @@ p, li { orphans: 3; widows: 3; }
 .grid-table th.report_variant_header { text-align: center; }
 .grid-table .report_key { width: auto; }
 .grid-table .detail-wide-row > .report_comment { width: auto; }
+
+.report-image { margin: 8px 0; max-width: 100%; break-inside: avoid; }
+.report-image img { display: block; width: 100%; height: auto; object-fit: contain; }
