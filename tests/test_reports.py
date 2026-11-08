@@ -21,6 +21,8 @@ def test_examples_preserve_content_and_round_trip(reports, name):
     assert "Exempel på granskad slutsats" in html
     assert "data:font/woff2;base64," in html
     assert "fetch(" not in html
+    if name == "cll-genie-positive":
+        assert "submission_demo" in html and "Rapporttyp" in html
     restored = ReportLoader().loads(document.model_dump_json())
     assert restored == document
     assert renderer.render_html(restored) == html

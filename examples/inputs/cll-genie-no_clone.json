@@ -35,6 +35,16 @@
       {
         "label": "Analys genomförd av",
         "value": "Example Diagnostics Center"
+      },
+      {
+        "label": {
+          "en": "Report type",
+          "sv": "Rapporttyp"
+        },
+        "value": {
+          "en": "No clonal sequence detected",
+          "sv": "Ingen klonal sekvens detekterad"
+        }
       }
     ]
   },
