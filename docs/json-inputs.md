@@ -1,7 +1,7 @@
 # JSON input format
 
-All applications use the same JSON document format. Set `application` to `coyote3`,
-`genexus`, `cll_genie` or `pgx` to select the report identity and theme.
+Reports use one JSON document format. Omit `application` for the neutral `generic` preset,
+or select `generic`, `coyote3`, `genexus`, `cll_genie` or `pgx` explicitly.
 
 ```json
 {
@@ -73,11 +73,11 @@ validation. Use `null` for a missing cell; zero and false remain visible.
 
 | Field | Description |
 | --- | --- |
-| `application` | One of the four report identities |
+| `application` | Optional preset; defaults to `generic` |
 | `title` | Report title; plain text or translations |
 | `language` | `sv` (default) or `en` |
 | `analyte` | Optional heading label, such as `dna` or `rna` |
-| `report` | Required report ID, sample ID and timezone-aware generation timestamp; optional author and metadata `fields` |
+| `report` | Required report ID and timezone-aware generation timestamp; optional sample ID, author and metadata `fields` |
 | `sections` | Ordered list of text, table, details, grid or image sections |
 | `branding` | Logos and center information; see [branding](branding.md) |
 | `presentation` | Paper size/orientation, custom dimensions, reserved header/footer space and accepted image formats |

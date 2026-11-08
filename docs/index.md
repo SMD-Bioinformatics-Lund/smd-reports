@@ -1,13 +1,14 @@
 # smd-reports
 
-A Python package for rendering JSON reports as standalone HTML and PDF. It includes
-Coyote3, Genexus, CLL Genie and PGx themes, configurable headers/footers, localized labels
-and reusable report sections.
+Render validated JSON documents as standalone HTML and PDF from Python or the command line.
+The package provides reusable report sections, configurable branding, English/Swedish labels
+and print layouts with repeating headers, footers and page numbers.
 
-Define columns once and provide data as lists of rows. Add columns, finding fields or
-translations in JSON without updating the package. Grouped grids support layouts such as
-the CLL Genie sequence table.
+Use the neutral default theme or select a built-in preset. Define columns once and supply
+values as lists of rows. Add fields, translations, detail cards and plots through JSON.
+HTML embeds styles, fonts and artwork for offline viewing and conversion.
 
 Start with [installation](installation.md) and the [quickstart](quickstart.md).
-Use the [JSON guide](json-inputs.md) for the document format, [Python usage](python-api.md)
-for imports, or the [command-line reference](cli.md) for shell commands.
+The [JSON guide](json-inputs.md) describes the document format, [Python usage](python-api.md)
+covers imports, and the [command-line reference](cli.md) lists available commands.
+Browse the [examples](integration.md) for complete inputs and rendered reports.

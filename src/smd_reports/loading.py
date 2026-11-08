@@ -6,10 +6,21 @@ from pathlib import Path
 from .assets import embed_image, prepare_image
 from .core import Report
 
-APPLICATIONS = ("coyote3", "genexus", "cll_genie", "pgx")
+APPLICATIONS = ("generic", "coyote3", "genexus", "cll_genie", "pgx")
 
 
 def unique_object(pairs):
+    """Build a JSON object while detecting duplicate keys.
+
+    Args:
+        pairs: Key/value pairs emitted by the JSON decoder.
+
+    Returns:
+        A dictionary containing the decoded members.
+
+    Raises:
+        ValueError: A key occurs more than once.
+    """
     result = {}
     for key, value in pairs:
         if key in result:
@@ -19,11 +30,26 @@ def unique_object(pairs):
 
 
 def reject_constant(value):
+    """Reject nonstandard JSON numeric constants.
+
+    Args:
+        value: The NaN or Infinity token encountered by the decoder.
+
+    Raises:
+        ValueError: Always, because the token is not a finite JSON number.
+    """
     raise ValueError("Non-finite JSON numbers are prohibited")
 
 
 class ReportAssetError(ValueError):
+    """An image-loading error identified by its JSON field name."""
+
     def __init__(self, field):
+        """Initialize an asset error without exposing image bytes or file paths.
+
+        Args:
+            field: Dotted JSON field name for the image that could not be loaded.
+        """
         super().__init__(f"Cannot load {field}; supply valid local or embedded artwork")
 
 
@@ -31,10 +57,41 @@ class ReportLoader:
     """Load a JSON file or JSON text into a validated document."""
 
     def load(self, path: str | Path) -> Report:
+        """Read a JSON file and embed its referenced artwork.
+
+        Args:
+            path: Path to the UTF-8 JSON document. Relative artwork paths resolve
+                against this file's parent directory.
+
+        Returns:
+            A validated report with embedded artwork.
+
+        Raises:
+            OSError: The JSON file cannot be read.
+            ValueError: JSON syntax, numeric constants, or object keys are invalid.
+            pydantic.ValidationError: Document fields do not match the input format.
+            ReportAssetError: Referenced artwork cannot be loaded.
+        """
         path = Path(path)
         return self.loads(path.read_text(encoding="utf-8-sig"), base_dir=path.parent)
 
     def loads(self, source: str | bytes, *, base_dir: str | Path | None = None) -> Report:
+        """Validate JSON text or bytes and embed referenced images.
+
+        Args:
+            source: JSON text or UTF-8 bytes.
+            base_dir: Directory for relative image paths. Omit it when artwork
+                is already embedded or uses absolute paths.
+
+        Returns:
+            A validated report with its original section order.
+
+        Raises:
+            TypeError: The source is neither text nor bytes.
+            ValueError: JSON syntax, numeric constants, or object keys are invalid.
+            pydantic.ValidationError: Report fields fail validation.
+            ReportAssetError: An image, frame, or accepted format is invalid.
+        """
         if not isinstance(source, (str, bytes)):
             raise TypeError("Supply JSON text or bytes")
         document = Report.model_validate(
@@ -78,6 +135,17 @@ class ReportLoader:
         return document
 
     def schema(self, application: str | None = None) -> dict:
+        """Export validation rules for the installed JSON format.
+
+        Args:
+            application: Optional preset name to constrain the exported identity.
+
+        Returns:
+            The JSON Schema dictionary.
+
+        Raises:
+            ValueError: The requested preset name is unknown.
+        """
         if application is not None and application not in APPLICATIONS:
             raise ValueError("Unknown application")
         result = Report.model_json_schema()

@@ -11,7 +11,18 @@ import pymupdf
 
 
 def capture(source: Path, output: Path) -> dict:
-    """Write page PNGs and a manifest without modifying the input reports."""
+    """Rasterize PDF previews and record their geometry and environment.
+
+    Args:
+        source: Directory containing the PDF files to inspect.
+        output: Directory receiving PNG pages and a manifest.
+
+    Returns:
+        A manifest of rendering versions, page sizes, and pixel hashes.
+
+    Raises:
+        ValueError: The source directory contains no PDFs.
+    """
     output.mkdir(parents=True, exist_ok=True)
     manifest = {
         "environment": {"python": platform.python_version(), "platform": platform.platform()},
@@ -50,7 +61,7 @@ def capture(source: Path, output: Path) -> dict:
 
 
 def main():
-    """Exit unsuccessfully if any candidate page differs from the selected baseline."""
+    """Capture report previews and optionally compare an existing manifest."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path)
     parser.add_argument("--output", type=Path, default=Path(".artifacts/visual"))

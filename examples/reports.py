@@ -7,6 +7,7 @@ from smd_reports import ReportLoader, ReportRenderer
 
 
 def main():
+    """Render the packaged JSON examples into a chosen output directory."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path(".artifacts/examples"))
     parser.add_argument("--pdf", action="store_true")
@@ -16,6 +17,7 @@ def main():
     root = Path(__file__).parent / "inputs"
     sources = (
         {
+            "generic": "generic",
             "coyote3": "coyote3-dna",
             "genexus": "genexus-en",
             "cll-genie": "cll-genie-positive",
@@ -28,7 +30,7 @@ def main():
     for name, source in sources.items():
         report = ReportLoader().load(root / f"{source}.json")
         args.output.joinpath(name + ".html").write_text(
-            renderer.render_html(report), encoding="utf-8"
+            renderer.render_html(report) + "\n", encoding="utf-8"
         )
         if args.pdf:
             args.output.joinpath(name + ".pdf").write_bytes(renderer.render_pdf(report))

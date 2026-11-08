@@ -1,5 +1,5 @@
 <header class="report-document-heading">
-<p class="report-document-label">{% if report.analyte %}{{ report.analyte|upper }} · {% endif %}{{ 'Analysrapport'|ui }}</p>
+<p class="report-document-label">{% if report.analyte %}{{ report.analyte|upper }} · {% endif %}{{ ('Rapport' if report.application == 'generic' else 'Analysrapport')|ui }}</p>
 <h1>{{ report.title|ui }}</h1>
-<p class="report-sample-reference">{{ report.metadata.sample_id }}</p>
+{% if report.metadata.sample_id %}<p class="report-sample-reference">{{ report.metadata.sample_id }}</p>{% endif %}
 </header>

@@ -51,7 +51,7 @@ jobs:
       - run: python -m pip install '.[pdf,test,docs]'
       - run: python -m ruff check src examples tests scripts
       - run: python -m ruff format --check src examples tests scripts
-      - run: python -m pytest -q
+      - run: python -m pytest -q --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=xml
       - run: python -m mkdocs build --strict
       - run: python -m build
       - run: python -m twine check --strict dist/*

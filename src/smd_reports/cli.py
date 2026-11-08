@@ -1,4 +1,4 @@
-"""Validate, normalize and render application JSON from the command line."""
+"""Validate, normalize and render report JSON from the command line."""
 
 import argparse
 import json
@@ -12,10 +12,17 @@ from .rendering import PDFUnavailableError, ReportRenderer
 
 
 def main(argv=None) -> int:
-    """Run a command; input errors produce exit status 2 without clinical values."""
+    """Run a JSON validation, normalization, schema, or rendering command.
+
+    Args:
+        argv: Command arguments, excluding the executable name. None reads sys.argv.
+
+    Returns:
+        Zero on success, or two for invalid input, assets, or output locations.
+    """
     parser = argparse.ArgumentParser(prog="smd-reports", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    schema = commands.add_parser("schema", help="Export an application JSON Schema")
+    schema = commands.add_parser("schema", help="Export a report JSON Schema")
     schema.add_argument("--application", choices=APPLICATIONS)
     schema.add_argument("--output", type=Path, required=True)
     for name in ("validate", "normalize", "render"):

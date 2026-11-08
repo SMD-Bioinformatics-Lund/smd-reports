@@ -1,4 +1,4 @@
-/* Shared primitives extracted from the Coyote3 modern and Genexus report layouts. */
+/* Shared screen and print layout for report documents. */
 :root { --report-border: #b8bec5; }
 @page {
   margin: 65mm 16mm 22mm;
@@ -91,6 +91,7 @@ p, li { orphans: 3; widows: 3; }
 .screen-footer { display: table; width: 100%; border-top: 1px solid var(--report-border); margin-top: 12px; padding-top: 3mm; }
 .screen-footer > div, .screen-footer > span { display: table-cell; vertical-align: top; }
 .screen-footer > span { text-align: right; }
+.report-generic .report-brand-header, .report-generic .report-center-brand,
 .report-genexus .report-brand-header, .report-genexus .report-center-brand,
 .report-pgx .report-brand-header, .report-pgx .report-center-brand { display: block; width: 100%; }
 .report-genexus .report-document-label, .report-genexus .report-document-heading h1 { color: #000; }

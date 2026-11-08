@@ -38,8 +38,8 @@ for relative paths.
 | `accreditation_logo` | Left footer when `accredited` is true |
 | `accreditation_label` | Logo alternative text |
 
-Coyote3 shows a purple/orange application name; CLL Genie uses dark orange. Genexus and
-PGx use center-only headers. Omitting the application logo retains the colored name.
+Coyote3 shows a purple/orange application name; CLL Genie uses dark orange. Generic, Genexus and
+PGx presets use center-only headers. Omitting the application logo retains the colored name.
 No institutional logos or center information are supplied as defaults.
 
 ## Dimensions

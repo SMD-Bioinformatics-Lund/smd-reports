@@ -17,7 +17,14 @@ class PDFUnavailableError(RuntimeError):
 
 
 def format_markdown(value: str) -> Markup:
-    """Render Markdown with safe structure and no embedded external resources."""
+    """Convert Markdown into sanitized report HTML.
+
+    Args:
+        value: Markdown source text.
+
+    Returns:
+        Markup containing permitted text, heading, list, and table elements.
+    """
     html = markdown.markdown(value, extensions=["tables", "sane_lists"])
     return Markup(
         bleach.clean(
@@ -54,7 +61,15 @@ def format_markdown(value: str) -> Markup:
 
 
 def display(value, language="sv"):
-    """Preserve zero/false rather than treating them as missing values."""
+    """Format a cell without confusing zero or false with missing data.
+
+    Args:
+        value: A scalar or English/Swedish translation mapping.
+        language: Language used for translated values and booleans.
+
+    Returns:
+        Display text, or a hyphen for None and empty strings.
+    """
     if isinstance(value, dict):
         value = label(value, language)
     if value is None or value == "":
@@ -66,18 +81,45 @@ def display(value, language="sv"):
 
 @pass_context
 def display_in_language(context, value):
-    """Format scalar values in the document language."""
+    """Format a cell in the active report language.
+
+    Args:
+        context: Jinja context containing the loaded report.
+        value: Scalar or translated cell value.
+
+    Returns:
+        The cell's display text.
+    """
     return display(value, context["report"].language)
 
 
 @pass_context
 def ui_label(context, value):
-    """Translate explicitly marked interface labels in templates."""
+    """Resolve interface text in the active report language.
+
+    Args:
+        context: Jinja context containing the loaded report.
+        value: Literal label or English/Swedish translation mapping.
+
+    Returns:
+        The selected label text.
+    """
     return label(value, context["report"].language)
 
 
 @pass_context
 def record_heading(context, section, values, index):
+    """Resolve a finding heading from explicit titles or positional values.
+
+    Args:
+        context: Jinja context containing the loaded report.
+        section: Detail or grid section with heading configuration.
+        values: Values for the current finding.
+        index: Zero-based finding index.
+
+    Returns:
+        The translated and formatted finding heading.
+    """
     if section.record_titles is not None:
         return label(section.record_titles[index], context["report"].language)
     if section.record_heading is not None:
@@ -88,6 +130,17 @@ def record_heading(context, section, values, index):
 
 @pass_context
 def grid_row_visible(context, layout, values):
+    """Check whether a translated grid row contains displayable values.
+
+    Args:
+        context: Jinja context containing the loaded report.
+        layout: Grid row with an optional hide-if-empty setting.
+        values: Values for the current finding.
+
+    Returns:
+        False only when empty-row suppression is enabled and all referenced
+        values are null or empty. Zero and false remain visible.
+    """
     selected = [
         label(values[cell.column], context["report"].language)
         if isinstance(values[cell.column], dict)
@@ -99,6 +152,20 @@ def grid_row_visible(context, layout, values):
 
 @pass_context
 def image_uri(context, value, frame=0, plot=False):
+    """Prepare an embedded image for the active report.
+
+    Args:
+        context: Jinja context containing the loaded report.
+        value: Embedded image data URI.
+        frame: Zero-based frame or TIFF page index.
+        plot: Whether to enforce the report's accepted plot-format list.
+
+    Returns:
+        An embedded, portable image data URI.
+
+    Raises:
+        ValueError: The image, selected frame, or requested format is invalid.
+    """
     from .assets import prepare_image
 
     formats = context["report"].presentation.accepted_image_formats if plot else None
@@ -106,7 +173,18 @@ def image_uri(context, value, frame=0, plot=False):
 
 
 def offline_fetcher(url, **kwargs):
-    """Allow embedded raster/font resources only; never access disk or the network."""
+    """Fetch embedded image/font data without accessing files or the network.
+
+    Args:
+        url: Supported image or font data URI.
+        **kwargs: Options forwarded to WeasyPrint's data fetcher.
+
+    Returns:
+        The resource dictionary expected by WeasyPrint.
+
+    Raises:
+        ValueError: The URL is external or its embedded image is invalid.
+    """
     allowed = (
         "data:image/png;base64,",
         "data:image/jpeg;base64,",
@@ -125,9 +203,10 @@ def offline_fetcher(url, **kwargs):
 
 
 class ReportRenderer:
-    """Render validated documents using an isolated theme registry."""
+    """Render validated JSON documents with isolated theme and template registries."""
 
     def __init__(self):
+        """Create the template environment and independent preset themes."""
         self.themes = default_themes()
         self.environment = Environment(
             loader=PackageLoader("smd_reports", "templates"),
@@ -146,13 +225,33 @@ class ReportRenderer:
         )
 
     def register_theme(self, theme: Theme) -> None:
-        """Register an additional theme without replacing existing names."""
+        """Register a custom theme without replacing an existing preset.
+
+        Args:
+            theme: Theme instance containing a new name and validated color tokens.
+
+        Raises:
+            ValueError: A theme with the same name is already registered.
+            pydantic.ValidationError: The theme contains invalid design tokens.
+        """
         if theme.name in self.themes:
             raise ValueError(f"Theme already registered: {theme.name}")
         self.themes[theme.name] = Theme.model_validate(theme.model_dump())
 
     def render_html(self, report: Report, *, theme: str | None = None) -> str:
-        """Return a self-contained document, revalidating potentially mutated inputs."""
+        """Render a complete HTML document with embedded styles and artwork.
+
+        Args:
+            report: Validated document returned by ReportLoader.
+            theme: Optional registered theme name overriding the report preset.
+
+        Returns:
+            A standalone HTML document.
+
+        Raises:
+            ValueError: A theme or embedded image is invalid.
+            pydantic.ValidationError: The report was modified into an invalid state.
+        """
         report = Report.model_validate(report.model_dump())
         selected = theme or report.application
         if selected not in self.themes:
@@ -166,7 +265,20 @@ class ReportRenderer:
         )
 
     def render_pdf(self, report: Report, *, theme: str | None = None) -> bytes:
-        """Render the canonical HTML without saving files or fetching external assets."""
+        """Convert the standalone report HTML into PDF bytes.
+
+        Args:
+            report: Validated document returned by ReportLoader.
+            theme: Optional registered theme name overriding the report preset.
+
+        Returns:
+            PDF bytes containing the report and automatic rendering metadata.
+
+        Raises:
+            PDFUnavailableError: WeasyPrint or its native libraries are unavailable.
+            ValueError: A theme or embedded image is invalid.
+            pydantic.ValidationError: The report was modified into an invalid state.
+        """
         try:
             from weasyprint import HTML
         except (ImportError, OSError) as exc:

@@ -19,10 +19,17 @@ from .pages import PAGE_SIZES_MM, PageSize
 
 @lru_cache(maxsize=1)
 def template_versions():
+    """Read and cache the installed template revision registry.
+
+    Returns:
+        A mapping of preset names to their template revision strings.
+    """
     return json.loads(files("smd_reports").joinpath("themes/versions.json").read_text())
 
 
 class Branding(Model):
+    """Header and footer artwork, contact details, and image dimensions."""
+
     organization: str = ""
     department: str = ""
     address: str = ""
@@ -41,10 +48,23 @@ class Branding(Model):
     @field_validator("application_logo", "center_logo", "accreditation_logo")
     @classmethod
     def image_reference(cls, value):
+        """Validate an optional local or embedded image reference.
+
+        Args:
+            value: Image path or data URI, or None to omit the artwork.
+
+        Returns:
+            The validated reference or None.
+
+        Raises:
+            ValueError: The reference is empty, remote, or contains invalid image data.
+        """
         return validate_image_reference(value) if value is not None else None
 
 
 class Provenance(Model):
+    """Application, pipeline, and assay identifiers included with a report."""
+
     application_name: str = ""
     application_version: str = ""
     pipeline_name: str = ""
@@ -53,8 +73,18 @@ class Provenance(Model):
 
 
 class ReportMetadata(Model):
+    """Report identity, generation timestamp, and optional reference fields.
+
+    Attributes:
+        report_id: Nonempty document identifier.
+        sample_id: Optional sample or reference identifier.
+        generated_at: Timezone-aware generation timestamp.
+        author: Display name of the report creator.
+        fields: Additional ordered labels and values.
+    """
+
     report_id: str = Field(min_length=1)
-    sample_id: str = Field(min_length=1)
+    sample_id: str = ""
     generated_at: datetime
     author: str = ""
     fields: list[FieldValue] = Field(default_factory=list)
@@ -62,12 +92,25 @@ class ReportMetadata(Model):
     @field_validator("generated_at")
     @classmethod
     def aware_timestamp(cls, value):
+        """Require an unambiguous generation timestamp.
+
+        Args:
+            value: Parsed generation timestamp.
+
+        Returns:
+            The timestamp unchanged.
+
+        Raises:
+            ValueError: The timestamp has no UTC offset.
+        """
         if value.utcoffset() is None:
             raise ValueError("generated_at must include a timezone")
         return value
 
 
 class Presentation(Model):
+    """Paper dimensions, reserved print areas, and accepted plot formats."""
+
     page_size: PageSize = "A4"
     orientation: Literal["portrait", "landscape"] | None = None
     custom_width_mm: float | None = Field(default=None, gt=0)
@@ -81,6 +124,7 @@ class Presentation(Model):
 
     @property
     def dimensions_mm(self):
+        """The resolved paper width and height in millimetres."""
         width, height = (
             (self.custom_width_mm, self.custom_height_mm)
             if self.page_size == "custom"
@@ -94,6 +138,14 @@ class Presentation(Model):
 
     @model_validator(mode="after")
     def valid_page(self):
+        """Check custom dimensions, available content space, and format choices.
+
+        Returns:
+            The validated presentation settings.
+
+        Raises:
+            ValueError: Dimensions are incomplete, content cannot fit, or formats repeat.
+        """
         if self.page_size == "custom":
             if self.custom_width_mm is None or self.custom_height_mm is None:
                 raise ValueError("Custom pages require custom_width_mm and custom_height_mm")
@@ -115,6 +167,8 @@ TEXT_HEADINGS = {
 
 
 class TextSection(SectionBase):
+    """A plain-text or Markdown block with an optional translated heading."""
+
     kind: Literal["text", "summary", "description", "references"] = "text"
     text: LocalizedText
     format: Literal["plain", "markdown"] = "plain"
@@ -122,12 +176,22 @@ class TextSection(SectionBase):
     @model_validator(mode="before")
     @classmethod
     def default_heading(cls, data):
+        """Supply localized headings for the built-in narrative section kinds.
+
+        Args:
+            data: Raw section fields or an existing model instance.
+
+        Returns:
+            Section fields with a default heading, or the original instance.
+        """
         if isinstance(data, dict) and "heading" not in data:
             return {**data, "heading": TEXT_HEADINGS.get(data.get("kind"), "")}
         return data
 
 
 class Column(Model):
+    """A reusable column label and its width, text format, and emphasis."""
+
     label: LocalizedText
     width: float = Field(default=1, gt=0)
     format: Literal["plain", "markdown"] = "plain"
@@ -137,12 +201,22 @@ class Column(Model):
 
 
 class MatrixSection(SectionBase):
+    """Shared column definitions and equally sized rows of cell values."""
+
     columns: list[Column] = Field(min_length=1)
     rows: list[list[CellValue]] = Field(default_factory=list)
     empty_text: LocalizedText = "Inga rapporterbara resultat"
 
     @model_validator(mode="after")
     def rectangular_rows(self):
+        """Reject ambiguous row alignment and overflowing column-width totals.
+
+        Returns:
+            The validated matrix section.
+
+        Raises:
+            ValueError: A row has the wrong length or the total width is not finite.
+        """
         if not isfinite(sum(column.width for column in self.columns)):
             raise ValueError("The total column width must be finite")
         if any(len(row) != len(self.columns) for row in self.rows):
@@ -151,10 +225,21 @@ class MatrixSection(SectionBase):
 
 
 class TableSection(MatrixSection):
+    """A result table whose headers are declared once for all rows."""
+
     kind: Literal["table"] = "table"
 
 
 def validate_heading(pattern: LocalizedText | None, columns: int):
+    """Check a record-heading format without permitting attribute access.
+
+    Args:
+        pattern: Literal or translated format text, or None for the default heading.
+        columns: Number of available positional values.
+
+    Raises:
+        ValueError: A placeholder is unsafe, malformed, or outside the column range.
+    """
     if pattern is None:
         return
     for text in [pattern] if isinstance(pattern, str) else pattern.values():
@@ -170,11 +255,21 @@ def validate_heading(pattern: LocalizedText | None, columns: int):
 
 
 class RecordSection(MatrixSection):
+    """Shared row matrices and per-record heading options for finding cards."""
+
     record_heading: LocalizedText | None = None
     record_titles: list[LocalizedText] | None = None
 
     @model_validator(mode="after")
     def valid_headings(self):
+        """Validate positional headings and explicit record-title counts.
+
+        Returns:
+            The validated record section.
+
+        Raises:
+            ValueError: A heading is invalid or record titles do not match the rows.
+        """
         validate_heading(self.record_heading, len(self.columns))
         if self.record_titles is not None and len(self.record_titles) != len(self.rows):
             raise ValueError("record_titles must have one title per row")
@@ -182,12 +277,16 @@ class RecordSection(MatrixSection):
 
 
 class DetailSection(RecordSection):
+    """Finding cards with compact label/value pairs and full-width text rows."""
+
     kind: Literal["details"] = "details"
     fields_per_row: int = Field(default=3, ge=1, le=6)
     full_width_last: bool = False
 
 
 class GridCell(Model):
+    """A column reference and its placement within a grouped detail grid."""
+
     column: int = Field(ge=0)
     mode: Literal["pair", "inline", "value", "label"] = "pair"
     span: int = Field(default=2, ge=1)
@@ -196,23 +295,43 @@ class GridCell(Model):
 
     @model_validator(mode="after")
     def valid_span(self):
+        """Reserve enough grid columns for both parts of a label/value pair.
+
+        Returns:
+            The validated grid cell.
+
+        Raises:
+            ValueError: A pair leaves no room for its value.
+        """
         if self.mode == "pair" and self.label_span >= self.span:
             raise ValueError("A pair needs space for both its label and value")
         return self
 
 
 class GridRow(Model):
+    """An ordered group of grid cells with optional empty-row suppression."""
+
     cells: list[GridCell] = Field(min_length=1)
     hide_if_empty: bool = False
 
 
 class GridSection(RecordSection):
+    """Repeated finding grids arranged using JSON-defined column spans."""
+
     kind: Literal["grid"] = "grid"
     grid_columns: int = Field(default=5, ge=1, le=24)
     layout: list[GridRow] = Field(min_length=1)
 
     @model_validator(mode="after")
     def valid_layout(self):
+        """Check that grid rows fit and reference existing data columns.
+
+        Returns:
+            The validated grid section.
+
+        Raises:
+            ValueError: Row spans do not fit or a referenced column is missing.
+        """
         for row in self.layout:
             if sum(cell.span for cell in row.cells) != self.grid_columns:
                 raise ValueError("Each layout row must fill grid_columns exactly")
@@ -222,6 +341,8 @@ class GridSection(RecordSection):
 
 
 class ImageSection(SectionBase, ImageAsset):
+    """A standalone plot with a heading, caption, and page-break controls."""
+
     kind: Literal["image"] = "image"
 
 
@@ -232,7 +353,20 @@ ReportSection = Annotated[
 
 
 class Report(Model):
-    application: Literal["coyote3", "genexus", "cll_genie", "pgx"]
+    """A validated JSON report with a neutral default presentation.
+
+    Attributes:
+        application: Optional preset identity; defaults to generic.
+        title: Literal or translated document title.
+        language: Language used for interface labels and translations.
+        report: Document identity and metadata fields.
+        branding: Header and footer configuration.
+        provenance: Application, pipeline, and assay context.
+        presentation: Paper dimensions and image-format settings.
+        sections: Ordered report contents.
+    """
+
+    application: Literal["generic", "coyote3", "genexus", "cll_genie", "pgx"] = "generic"
     title: LocalizedText
     language: Language = "sv"
     analyte: str = ""
@@ -244,23 +378,28 @@ class Report(Model):
 
     @property
     def metadata(self):
+        """The document identity and optional user-defined metadata fields."""
         return self.report
 
     @property
     def header_height_mm(self):
+        """The vertical space reserved for the repeating header, in millimetres."""
         return self.presentation.header_height_mm
 
     @property
     def footer_height_mm(self):
+        """The configured accreditation-footer height, in millimetres."""
         return self.presentation.footer_height_mm
 
     @property
     def template_version(self):
+        """The installed template revision for the selected preset and analyte."""
         revisions = template_versions()[self.application]
         return revisions.get(self.analyte, revisions.get("default", next(iter(revisions.values()))))
 
     @property
     def rendering_metadata(self):
+        """The supplied context and automatically computed package/template versions."""
         from . import __version__
 
         return {
@@ -272,6 +411,7 @@ class Report(Model):
 
     @property
     def image_height_limit_mm(self):
+        """The image-height limit after reserving headers, footers, and captions."""
         footer = (
             self.footer_height_mm
             if (self.branding.accredited and self.branding.accreditation_logo)
@@ -281,6 +421,14 @@ class Report(Model):
 
     @model_validator(mode="after")
     def valid_sections(self):
+        """Require unique section identifiers within the document.
+
+        Returns:
+            The validated report.
+
+        Raises:
+            ValueError: Two sections share the same key.
+        """
         keys = [section.key for section in self.sections]
         if len(keys) != len(set(keys)):
             raise ValueError("Duplicate section keys")

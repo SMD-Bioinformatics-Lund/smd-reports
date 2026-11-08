@@ -12,6 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def package_version():
+    """Read the single package-version declaration without importing the package.
+
+    Returns:
+        The declared release version.
+
+    Raises:
+        ValueError: The version assignment is missing.
+    """
     tree = ast.parse((ROOT / "src/smd_reports/__init__.py").read_text())
     for node in tree.body:
         if isinstance(node, ast.Assign) and any(
@@ -22,10 +30,35 @@ def package_version():
 
 
 def git(*args):
+    """Run a read-only Git query in the source checkout.
+
+    Args:
+        *args: Git subcommand and arguments.
+
+    Returns:
+        Standard output with surrounding whitespace removed.
+
+    Raises:
+        subprocess.CalledProcessError: Git rejects the query.
+    """
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
 def check(tag, *, check_git=False, dist=None):
+    """Validate a release tag and optionally inspect ancestry and distributions.
+
+    Args:
+        tag: Expected version tag, including its v prefix.
+        check_git: Require HEAD to be the tag and an ancestor of origin/master.
+        dist: Optional directory containing one wheel and one source archive.
+
+    Returns:
+        The validated package version.
+
+    Raises:
+        ValueError: The tag or distribution metadata is inconsistent.
+        subprocess.CalledProcessError: The tag is absent or fails the ancestry check.
+    """
     version = package_version()
     if tag != f"v{version}":
         raise ValueError("Release tag must match the package version exactly")
@@ -62,6 +95,7 @@ def check(tag, *, check_git=False, dist=None):
 
 
 def main():
+    """Validate the release requested through the command-line arguments."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("tag")
     parser.add_argument("--check-git", action="store_true")

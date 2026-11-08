@@ -32,6 +32,17 @@ IMAGE_EXTENSIONS = {
 
 
 def validate_image_reference(value: str) -> str:
+    """Validate a local path or embedded image reference without fetching URLs.
+
+    Args:
+        value: An image path or base64 data URI.
+
+    Returns:
+        The validated reference.
+
+    Raises:
+        ValueError: The path is empty or remote, or embedded image data is invalid.
+    """
     if value.startswith("data:"):
         validate_image(value)
     elif not value.strip() or (":" in value and not Path(value).is_absolute()) or "\x00" in value:
@@ -65,7 +76,17 @@ SVG_TAGS = {
 
 
 def validate_image(value: str) -> str:
-    """Validate supported raster images and reject active or remote SVG content."""
+    """Validate raster content or a restricted static SVG document.
+
+    Args:
+        value: A supported base64 image data URI.
+
+    Returns:
+        The original data URI.
+
+    Raises:
+        ValueError: Content is empty, malformed, unsafe, or inconsistent with its MIME type.
+    """
     prefix, separator, encoded = value.partition(",")
     if not separator or prefix not in {f"data:{mime};base64" for mime in IMAGE_MIMES.values()}:
         raise ValueError("Supply a supported base64 image data URI")
@@ -109,7 +130,21 @@ def validate_image(value: str) -> str:
 
 
 def prepare_image(value: str, *, frame: int = 0, accepted_formats=None) -> str:
-    """Validate the selected frame and provide a portable HTML image representation."""
+    """Select an image frame and produce portable HTML image data.
+
+    Args:
+        value: A supported embedded image data URI.
+        frame: Nonnegative frame or TIFF page index, starting at zero.
+        accepted_formats: Optional allowed format names; None permits every
+            format supported by the package.
+
+    Returns:
+        A PNG, JPEG, or static SVG data URI. Other supported raster formats
+        are converted to a static PNG.
+
+    Raises:
+        ValueError: The image format or requested frame is not accepted.
+    """
     validate_image(value)
     prefix, encoded = value.split(",", 1)
     image_format = next(
@@ -136,7 +171,18 @@ def prepare_image(value: str, *, frame: int = 0, accepted_formats=None) -> str:
 
 
 def embed_image(path: str | Path) -> str:
-    """Read an explicitly supplied local artwork file into a validated data URI."""
+    """Read a local artwork file and encode it as validated image data.
+
+    Args:
+        path: Path to a supported image file.
+
+    Returns:
+        A base64 image data URI.
+
+    Raises:
+        OSError: The file cannot be read.
+        ValueError: The extension or file contents are unsupported.
+    """
     path = Path(path)
     image_format = IMAGE_EXTENSIONS.get(path.suffix.lower())
     if image_format is None:

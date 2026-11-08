@@ -27,11 +27,24 @@ class Model(BaseModel):
 
 
 class FieldValue(Model):
+    """An ordered metadata label paired with a scalar or translated value."""
+
     label: LocalizedText
     value: CellValue
 
 
 class ImageAsset(Model):
+    """A local or embedded plot and its display options.
+
+    Attributes:
+        source: Local path or embedded data URI.
+        caption: Literal or translated caption text.
+        alt: Alternative text, falling back to the caption when omitted.
+        frame: Zero-based frame or TIFF page index.
+        width_percent: Width relative to the content area.
+        max_height_mm: Optional additional physical height limit.
+    """
+
     source: str
     caption: LocalizedText = ""
     alt: LocalizedText = ""
@@ -42,12 +55,25 @@ class ImageAsset(Model):
     @field_validator("source")
     @classmethod
     def image_reference(cls, value):
+        """Validate the image path or embedded content.
+
+        Args:
+            value: Local image path or base64 data URI.
+
+        Returns:
+            The validated reference.
+
+        Raises:
+            ValueError: The reference or embedded image is unsupported.
+        """
         from .assets import validate_image_reference
 
         return validate_image_reference(value)
 
 
 class SectionBase(Model):
+    """Shared section identity, heading, pagination, and inline image fields."""
+
     key: str = Field(min_length=1)
     heading: LocalizedText = ""
     page_break_before: bool = False

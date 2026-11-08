@@ -10,13 +10,10 @@ Save this as `report.json`:
 
 ```json
 {
-  "application": "coyote3",
-  "analyte": "dna",
-  "title": "Molecular Genetics Report",
+  "title": "Example Report",
   "language": "en",
   "report": {
     "report_id": "DEMO-001",
-    "sample_id": "SYNTHETIC-001",
     "generated_at": "2026-01-01T12:00:00Z"
   },
   "sections": [
@@ -25,19 +22,19 @@ Save this as `report.json`:
       "key": "results",
       "columns": [
         {
-          "label": "Gene"
+          "label": "Measure"
         },
         {
-          "label": "HGVS"
+          "label": "Value"
         }
       ],
       "rows": [
         [
-          "BRAF",
-          "p.Val600Glu"
+          "Example A",
+          12
         ]
       ],
-      "heading": "Detected variants"
+      "heading": "Results"
     },
     {
       "kind": "summary",
@@ -48,6 +45,9 @@ Save this as `report.json`:
   ]
 }
 ```
+
+Omitting `application` selects the neutral default theme. `sample_id` is optional.
+Choose a [preset](integration.md) when you want a different report identity.
 
 Validate and render:
 

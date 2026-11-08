@@ -1,4 +1,7 @@
 {
+  "generic": {
+    "default": "2.1.0"
+  },
   "coyote3": {
     "dna": "2.1.0",
     "rna": "2.1.0"

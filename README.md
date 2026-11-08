@@ -7,8 +7,8 @@
 [![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/rendering.md)
 [![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE)
 
-JSON report rendering for Coyote3, Genexus, CLL Genie and PGxModule, with shared layouts,
-application themes, center branding and Swedish/English interface labels.
+Render JSON reports as standalone HTML and PDF with shared layouts, configurable branding
+and Swedish/English labels. Use a neutral default theme or choose a built-in preset.
 
 Build reports from JSON. Define columns once and supply values as row lists. HTML includes its CSS,
 print rules, fonts and artwork, so it can be converted elsewhere with WeasyPrint.
@@ -52,7 +52,7 @@ smd-reports validate report.json
 smd-reports render report.json --format html --output report.html
 smd-reports render report.json --format pdf --output report.pdf
 smd-reports normalize report.json --output report.portable.json
-smd-reports schema --application coyote3 --output coyote3.schema.json
+smd-reports schema --output report.schema.json
 ```
 
 The same commands are available with `python -m smd_reports`.
@@ -61,7 +61,7 @@ The same commands are available with `python -m smd_reports`.
 
 - [Overview](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/index.md), [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/quickstart.md)
 - [Python usage](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/python-api.md) and [Python API reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/reference.md)
-- [Application inputs](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/integration.md), [JSON format](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/json-inputs.md)
+- [Report examples and presets](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/integration.md), [JSON format](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/json-inputs.md)
   and [Command-line reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/cli.md)
 - [Center branding](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/branding.md) and [HTML/PDF rendering](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/rendering.md)
 - [Contributing](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/contributing.md), [testing and releases](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/validation.md)
@@ -71,8 +71,9 @@ Runnable synthetic examples and complete JSON inputs are in [examples/](https://
 
 ## Example reports
 
-| Application | HTML | PDF | Input |
+| Preset | HTML | PDF | Input |
 | --- | --- | --- | --- |
+| Generic | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/generic.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/generic.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/generic.json) |
 | Coyote3 | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote3.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote3.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/coyote3-dna.json) |
 | Genexus | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/genexus.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/genexus.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/genexus-en.json) |
 | CLL Genie | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/cll-genie.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/cll-genie.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/cll-genie-positive.json) |

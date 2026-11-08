@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "JSON-based reports with dynamic tables, localized themes and portable HTML/PDF"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [{name = "SMD Bioinformatics"}]
+authors = [{name = "Ram Nanduri", email = "Ram.Nanduri@skane.se"}]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
@@ -35,7 +35,8 @@ Changelog = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/
 [project.optional-dependencies]
 docs = ["mkdocs>=1.6,<2", "mkdocs-material>=9.6,<10"]
 pdf = ["weasyprint==63.0"]
-test = ["pytest>=8,<9", "PyMuPDF>=1.25,<2", "build>=1,<2", "ruff>=0.13,<0.14", "twine>=6.1,<7"]
+dev = ["pre-commit>=4,<5"]
+test = ["pytest>=8,<9", "pytest-cov>=6,<8", "PyMuPDF>=1.25,<2", "build>=1,<2", "ruff==0.13.3", "twine>=6.1,<7"]
 
 [project.scripts]
 smd-reports = "smd_reports.cli:main"
@@ -59,4 +60,25 @@ line-length = 100
 target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+
+[tool.coverage.run]
+source = ["smd_reports"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
+precision = 2
+
+[tool.coverage.html]
+directory = ".artifacts/coverage/html"
+
+[tool.coverage.xml]
+output = ".artifacts/coverage/coverage.xml"

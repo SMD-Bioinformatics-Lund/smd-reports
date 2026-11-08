@@ -53,6 +53,7 @@ print('Isolated JSON/HTML installation passed')
 
 
 def main():
+    """Install and check a distribution in an isolated temporary environment."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", action="store_true", help="Install the source distribution")
     args = parser.parse_args()

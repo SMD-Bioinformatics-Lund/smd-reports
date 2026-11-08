@@ -1,6 +1,8 @@
 """Translations for built-in interface labels only; never translate clinical content."""
 
 ENGLISH = {
+    "Rapport": "Report",
+    "Rapportinformation": "Report information",
     "Analysrapport": "Analysis report",
     "Provinformation": "Sample information",
     "Inga rapporterbara resultat": "No reportable results",
@@ -51,7 +53,15 @@ ENGLISH = {
 
 
 def label(value: str, language: str) -> str:
-    """Translate a known framework label; preserve unknown caller wording."""
+    """Select translated text or resolve a built-in interface label.
+
+    Args:
+        value: Literal text or an English/Swedish translation mapping.
+        language: Requested report language.
+
+    Returns:
+        The requested translation, English fallback, or original literal text.
+    """
     if isinstance(value, dict):
         return value.get(language, value.get("en", next(iter(value.values()))))
     return ENGLISH.get(value, value) if language == "en" else value

@@ -1,6 +1,6 @@
 {% set columns = 3 if compact_metadata|default(false) else 2 %}
 {% set metadata = namespace(rows=[], pending=[]) %}
-{% set fields = report.metadata.fields[:2] + [dict(label='Prov-ID'|ui, value=report.metadata.sample_id)] + report.metadata.fields[2:] + [dict(label='Rapportdatum'|ui, value=report.metadata.generated_at.date().isoformat()), dict(label='Skapad av'|ui, value=report.metadata.author), dict(label='Rapport-ID'|ui, value=report.metadata.report_id)] %}
+{% set fields = report.metadata.fields[:2] + ([dict(label='Prov-ID'|ui, value=report.metadata.sample_id)] if report.metadata.sample_id else []) + report.metadata.fields[2:] + [dict(label='Rapportdatum'|ui, value=report.metadata.generated_at.date().isoformat()), dict(label='Skapad av'|ui, value=report.metadata.author), dict(label='Rapport-ID'|ui, value=report.metadata.report_id)] %}
 {% for field in fields %}
 {% set wide = compact_metadata|default(false) and field.value|display|length > 60 %}
 {% if wide %}
@@ -12,8 +12,8 @@
 {% endif %}
 {% endfor %}
 {% if metadata.pending %}{% set _ = metadata.rows.append(metadata.pending) %}{% endif %}
-<section class="report-metadata" aria-label="{{ 'Provinformation'|ui }}">
-<h2 class="report-metadata-heading">{{ 'Provinformation'|ui }}</h2>
+<section class="report-metadata" aria-label="{{ ('Rapportinformation' if report.application == 'generic' else 'Provinformation')|ui }}">
+<h2 class="report-metadata-heading">{{ ('Rapportinformation' if report.application == 'generic' else 'Provinformation')|ui }}</h2>
 <table class="report-patient-table"><colgroup>{% for _ in range(columns) %}<col class="metadata-label"><col>{% endfor %}</colgroup><tbody>
 {% for row in metadata.rows %}<tr>{% for field, wide in row %}<th scope="row">{{ field.label|ui }}</th><td{% if wide %} colspan="{{ columns * 2 - 1 }}"{% elif loop.last and row|length < columns %} colspan="{{ (columns - row|length) * 2 + 1 }}"{% endif %}>{{ field.value|display }}</td>{% endfor %}</tr>{% endfor %}
 </tbody></table></section>

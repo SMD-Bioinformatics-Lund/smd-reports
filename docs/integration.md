@@ -1,43 +1,29 @@
-# Application examples
+# Report examples and presets
 
-Every application uses the same [JSON format](json-inputs.md). The `application` value
-selects the header identity and theme; the JSON sections define the report contents.
+The neutral `generic` preset is the default. Omit `application` to use it, or select a
+preset explicitly. Every preset uses the same [JSON format](json-inputs.md), section
+components and rendering methods. Choosing a preset changes the theme and header identity;
+columns and content are supplied by the JSON document.
 
-| Application | JSON identity | Example |
+| Preset | Example input | Demonstrates |
 | --- | --- | --- |
-| Coyote3 | `coyote3` | DNA/RNA summary tables, plots, variant and biomarker details |
-| Genexus | `genexus` | SNV/INDEL, CNV, fusion and other-finding cards |
-| CLL Genie | `cll_genie` | Sequence summaries and grouped V/J/D, FR/CDR and junction details |
-| PGx | `pgx` | Recommendations, variants, depth, genes and target tables |
+| `generic` | `examples/inputs/generic.json` | Neutral header, optional sample ID, translated tables and narrative |
+| `coyote3` | `examples/inputs/coyote3-dna.json` | Summary tables, plots and finding cards; optional DNA/RNA heading |
+| `genexus` | `examples/inputs/genexus-en.json` | Compact finding fields with full-width comments |
+| `cll_genie` | `examples/inputs/cll-genie-positive.json` | Grouped detail grids with column spans and conditional empty rows |
+| `pgx` | `examples/inputs/pgx.json` | Multiple tables, localized labels and recommendations |
 
-The example JSON files contain complete synthetic reports. Modify their `columns` and
-`rows` to add fields without changing the renderer.
+Browse the [example inputs](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/inputs)
+and [HTML/PDF previews](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/rendered).
+All previews use synthetic values and example artwork.
 
-## Coyote3
+## Choosing section layouts
 
-Set `analyte` to `dna` or `rna`. Use ordinary tables for summary results, `details` for finding cards and `images`
-for supplied plots within sections. A separate `image` section can start a CNV profile
-on its own page.
+Use `table` for rows with shared column headings, `details` for repeated cards, and `grid`
+for arrangements that combine fields or span columns. Define labels once in `columns` and
+append one list of values per record to `rows`. Add plots through a section's `images`
+list, or use an `image` section for a standalone figure.
 
-## Genexus
-
-Use `details` sections with `fields_per_row: 3`. Setting `full_width_last: true` batches
-compact fields before classification and comment rows. The example includes mutation
-hotspots, CNV ratios, fusion read support and unique molecules, plus other-finding metrics.
-Add any additional field once in `columns` and append its value to each row.
-
-## CLL Genie
-
-The example uses a `grid` section. Its JSON layout retains the five-column sequence table:
-sequence/subset/category, functionality, V/J genes with scores and identities, D-region,
-FR/CDR, junction and read-count rows. Each sequence occupies one row in the data matrix;
-the same layout is reused for every sequence.
-
-For reports without sequence results, omit the sequence table or use an empty `rows` list
-and the desired `empty_text`.
-
-## PGx
-
-Supply the report tables through JSON, including recommendations, variants, low-depth
-targets and the analyzed genes/targets. These use the same configurable columns and value
-matrices as the other examples.
+Use `summary` for a highlighted conclusion on its own page, and `text`, `description`
+or `references` for narrative content. Each accepts plain text or sanitized Markdown.
+See the [JSON guide](json-inputs.md) for complete field definitions and layout examples.

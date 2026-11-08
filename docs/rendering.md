@@ -27,7 +27,7 @@ rendering metadata; PDF output from `ReportRenderer` includes it by default.
 
 ## Print layout
 
-Reports default to A4 with repeating center branding and compact patient metadata.
+Reports default to A4 with repeating center branding and compact report metadata.
 Ordinary tables repeat headers across pages. Column widths follow the JSON definitions;
 text wraps within each column. Finding cards and grouped grids use their JSON layout.
 
@@ -80,8 +80,9 @@ include both translations in JSON. See [translations](json-inputs.md#translation
 
 ## Themes
 
-| Application | Colors |
+| Preset | Colors |
 | --- | --- |
+| Generic (default) | Slate |
 | Coyote3 | Purple/orange |
 | Genexus | Blue |
 | CLL Genie | Dark orange |
