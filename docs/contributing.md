@@ -84,6 +84,33 @@ The project must be imported into Read the Docs before pushes can publish docume
 Until a hosted site is available, the [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki)
 is the public documentation link.
 
+## Wiki publishing
+
+Edit documentation in `docs/` and navigation in `mkdocs.yml`. The **Publish wiki** workflow
+synchronizes those pages after documentation changes merge into `master`. It can also be
+run manually on `master`. Feature branches and pull requests check generated pages and links
+without publishing them.
+
+The wiki retains its existing page URLs, with a sidebar generated from MkDocs navigation
+and a footer from the configured copyright. Relative page links point to the wiki; images
+and repository files link to the source commit. Code examples remain unchanged. The workflow
+preserves wiki commit history and skips commits when the generated content is unchanged.
+
+Wiki pages are generated files. Make edits in `docs/`; direct edits to the wiki are replaced
+by the next synchronization. The workflow uses GitHub's automatic token with `contents: write`
+permission, so no additional publishing secret is required. The wiki must already contain
+at least one page before its Git repository can be cloned.
+
+To preview the generated Markdown, choose an empty output directory:
+
+```sh
+python scripts/build_wiki.py --output .artifacts/wiki-preview \
+  --repository SMD-Bioinformatics-Lund/smd-reports --revision "$(git rev-parse HEAD)"
+```
+
+CI builds both MkDocs and the wiki output. Missing relative links or duplicate wiki page
+names fail the documentation check.
+
 ## Example reports
 
 JSON files in `examples/inputs/` are the source for the report examples. Regenerate the

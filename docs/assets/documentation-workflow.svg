@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="574" viewBox="0 0 1120 574" role="img" aria-labelledby="title description">
 <title id="title">Documentation publishing</title>
-<desc id="description">Documentation source is built by MkDocs using Python 3.12, the docs extra and the Read the Docs theme. Hosting on Read the Docs still requires repository import and version activation. The live GitHub wiki uses Markdown pages and is updated separately from the MkDocs site.</desc>
+<desc id="description">Documentation source is built by MkDocs using Python 3.12, the docs extra and the Read the Docs theme. Hosting on Read the Docs still requires repository import and version activation. The GitHub wiki is synchronized from docs after changes merge into master.</desc>
 <defs>
 <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
 <path d="m1 1 8 4-8 4" fill="none" stroke="#3c6585" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -56,8 +56,8 @@
 <text x="430" y="474" fill="#526579" font-size="14" font-weight="400">Markdown pages, navigation and copyright footer</text>
 <rect x="970" y="406" width="88" height="28" rx="14" fill="#edf7f5" stroke="#cce3de"/>
 <text x="990" y="425" fill="#176b68" font-size="13" font-weight="600">Live</text>
-<text x="36" y="478" fill="#526579" font-size="13" font-weight="400">Wiki pages are updated</text>
-<text x="36" y="499" fill="#526579" font-size="13" font-weight="400">separately from MkDocs.</text>
+<text x="36" y="478" fill="#526579" font-size="13" font-weight="400">Wiki pages sync after</text>
+<text x="36" y="499" fill="#526579" font-size="13" font-weight="400">merges into master.</text>
 <text x="36" y="545" fill="#526579" font-size="14" font-weight="400">Read the Docs rebuilds enabled versions after repository import. The wiki is available independently.</text>
 </g>
 </svg>
