@@ -86,5 +86,7 @@ be previewed directly in GitHub.
 
 ## License
 
+Copyright (C) 2026 Ram Nanduri. Developed for the Section for Molecular Diagnostics (SMD).
+
 [GPL-3.0-only](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE). Embedded Source Sans 3 fonts use the
 [SIL Open Font License](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/src/smd_reports/static/SourceSans3-LICENSE.md).

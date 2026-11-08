@@ -12,3 +12,5 @@ Start with [installation](installation.md) and the [quickstart](quickstart.md).
 The [JSON guide](json-inputs.md) describes the document format, [Python usage](python-api.md)
 covers imports, and the [command-line reference](cli.md) lists available commands.
 Browse the [examples](integration.md) for complete inputs and rendered reports.
+
+Developed by Ram Nanduri for the Section for Molecular Diagnostics (SMD).

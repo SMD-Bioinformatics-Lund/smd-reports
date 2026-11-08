@@ -1,5 +1,6 @@
 site_name: smd-reports
 site_description: JSON reports with portable HTML/PDF rendering
+copyright: Copyright &copy; 2026 Ram Nanduri
 repo_url: https://github.com/SMD-Bioinformatics-Lund/smd-reports
 theme:
   name: material
