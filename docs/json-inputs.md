@@ -280,14 +280,17 @@ Attach images to any section through `images`:
 ```json
 {
   "kind": "table",
-  "key": "cnvs",
-  "heading": {"en": "Copy-number changes", "sv": "Kopietalsförändringar"},
-  "columns": [{"label": {"en": "Gene", "sv": "Gen"}}, {"label": "CN"}],
-  "rows": [["EXAMPLE", 6]],
+  "key": "qc",
+  "heading": {"en": "Quality control", "sv": "Kvalitetskontroll"},
+  "columns": [
+    {"label": {"en": "Metric", "sv": "Mätvärde"}},
+    {"label": {"en": "Result", "sv": "Resultat"}}
+  ],
+  "rows": [[{"en": "Coverage (%)", "sv": "Täckning (%)"}, 98]],
   "images": [{
-    "source": "plots/cnv-profile.tiff",
+    "source": "plots/coverage.tiff",
     "frame": 0,
-    "caption": {"en": "Copy-number profile", "sv": "Kopietalsprofil"},
+    "caption": {"en": "Coverage profile", "sv": "Täckningsprofil"},
     "width_percent": 100,
     "max_height_mm": 120
   }]
@@ -296,6 +299,27 @@ Attach images to any section through `images`:
 
 For a separate plot section, use `kind: "image"`, `key`, optional `heading`, and the same
 image fields. Set `page_break_before: true` when it should start on a separate page.
+
+For a full-page CNV overview, place an image section after the summary and before the
+detailed findings:
+
+```json
+{
+  "kind": "image",
+  "key": "cnv-profile",
+  "heading": {
+    "en": "Copy-number profile, genome-wide overview",
+    "sv": "Kopietalsprofil, genomisk översikt"
+  },
+  "source": "plots/cnv-profile.tiff",
+  "page_break_before": true,
+  "width_percent": 100
+}
+```
+
+Set `page_break_before: true` on the following detail section as well. This keeps the
+overview on its own page, independently of image dimensions. Omit the image section when
+no profile is available. Section order and page breaks are controlled by the JSON input.
 
 | Image field | Default | Description |
 | --- | --- | --- |

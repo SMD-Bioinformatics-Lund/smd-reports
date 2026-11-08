@@ -258,12 +258,47 @@ def test_summary_markdown_table_is_compact_and_wraps(payloads, load, wide):
             assert table.height > 50 / 0.75
 
 
-def test_cnv_plot_is_embedded_and_fits_the_report_page(reports):
-    document = pdf(reports["coyote3-dna"])
-    page = next(page for page in document if "SYNTHETIC COPY-NUMBER PROFILE" in page.get_text())
-    assert "Syntetisk kopietalsprofil" in page.get_text()
-    for block in page.get_text("blocks"):
-        assert block[0] >= 40 and block[2] <= page.rect.width - 39
+@pytest.mark.parametrize("language", ["en", "sv"])
+@pytest.mark.parametrize("include_profile", [False, True])
+def test_cnv_overview_has_its_own_page_between_summary_and_details(
+    payloads, load, language, include_profile
+):
+    data = payloads["coyote3-dna"]
+    data["language"] = language
+    if not include_profile:
+        data["sections"] = [s for s in data["sections"] if s["key"] != "cnv-profile"]
+    summary = next(s for s in data["sections"] if s["key"] == "summary")
+    details = next(s for s in data["sections"] if s["key"] == "snv-details")
+    document = pdf(load(data))
+    texts = [" ".join(page.get_text().split()) for page in document]
+    conclusion = summary["text"][language].split("\n")[0]
+    summary_page = next(i for i, text in enumerate(texts) if conclusion in text)
+    detail_title = details["record_titles"][0]
+    detail_page = next(i for i, text in enumerate(texts) if detail_title in text)
+    plot_marker = "SYNTHETIC COPY-NUMBER PROFILE"
+    if include_profile:
+        profile_page = next(i for i, text in enumerate(texts) if plot_marker in text)
+        assert profile_page == summary_page + 1
+        assert detail_page == profile_page + 1
+        assert plot_marker not in texts[0]
+        assert conclusion not in texts[profile_page]
+        assert detail_title not in texts[profile_page]
+        heading = (
+            "Copy-number profile, genome-wide overview"
+            if language == "en"
+            else "Kopietalsprofil, genomisk översikt"
+        )
+        assert heading in texts[profile_page]
+        caption = (
+            "Synthetic copy-number profile" if language == "en" else "Syntetisk kopietalsprofil"
+        )
+        assert caption in texts[profile_page]
+        page = document[profile_page]
+        for block in page.get_text("blocks"):
+            assert block[0] >= 40 and block[2] <= page.rect.width - 39
+    else:
+        assert all(plot_marker not in text for text in texts)
+        assert detail_page == summary_page + 1
 
 
 @pytest.mark.parametrize("format,extension", [("PNG", "png"), ("TIFF", "tif"), ("GIF", "gif")])

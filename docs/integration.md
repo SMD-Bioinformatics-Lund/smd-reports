@@ -8,7 +8,7 @@ columns and content are supplied by the JSON document.
 | Preset | Example input | Demonstrates |
 | --- | --- | --- |
 | `generic` | `examples/inputs/generic.json` | Neutral header, optional sample ID, translated tables and narrative |
-| `coyote3` | `examples/inputs/coyote3-dna.json` | Summary tables, plots and finding cards; optional DNA/RNA heading |
+| `coyote3` | `examples/inputs/coyote3-dna.json` | Summary tables, a separate CNV overview page and finding cards; optional DNA/RNA heading |
 | `genexus` | `examples/inputs/genexus-en.json` | Compact finding fields with full-width comments |
 | `cll_genie` | `examples/inputs/cll-genie-positive.json` | Grouped detail grids with column spans and conditional empty rows |
 | `pgx` | `examples/inputs/pgx.json` | Multiple tables, localized labels and recommendations |
@@ -16,6 +16,11 @@ columns and content are supplied by the JSON document.
 Browse the [example inputs](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/inputs)
 and [HTML/PDF previews](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/rendered).
 All previews use synthetic values and example artwork.
+
+The Coyote3 DNA example places the genome-wide CNV profile on a separate page after the
+conclusion and before the detailed findings. The profile is an `image` section in the JSON;
+page breaks before the profile and the following detail section keep it on its own page.
+Omit the image section when no profile is supplied.
 
 ## Choosing section layouts
 

@@ -196,22 +196,7 @@
       "heading": {
         "en": "Copy-number alterations",
         "sv": "Kopietalsförändringar"
-      },
-      "images": [
-        {
-          "source": "../assets/cnv-example.svg",
-          "caption": {
-            "en": "Synthetic copy-number profile",
-            "sv": "Syntetisk kopietalsprofil"
-          },
-          "alt": {
-            "en": "Example copy-number profile for four synthetic regions",
-            "sv": "Exempelprofil för fyra syntetiska regioner"
-          },
-          "width_percent": 100,
-          "max_height_mm": 65
-        }
-      ]
+      }
     },
     {
       "key": "biomarkers",
@@ -300,8 +285,27 @@
       }
     },
     {
+      "key": "cnv-profile",
+      "page_break_before": true,
+      "kind": "image",
+      "heading": {
+        "en": "Copy-number profile, genome-wide overview",
+        "sv": "Kopietalsprofil, genomisk översikt"
+      },
+      "source": "../assets/cnv-example.svg",
+      "caption": {
+        "en": "Synthetic copy-number profile",
+        "sv": "Syntetisk kopietalsprofil"
+      },
+      "alt": {
+        "en": "Example copy-number profile for four synthetic regions",
+        "sv": "Exempelprofil för fyra syntetiska regioner"
+      },
+      "width_percent": 100
+    },
+    {
       "key": "snv-details",
-      "page_break_before": false,
+      "page_break_before": true,
       "kind": "details",
       "fields_per_row": 3,
       "empty_text": {
