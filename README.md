@@ -1,9 +1,11 @@
 # smd-reports
 
+![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/f809a167384ecd28b34be9cbc5efa0ca64055766/docs/assets/smd-reports-logo.svg)
+
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md)
 [![Package version](https://img.shields.io/badge/package-0.1.0-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/actions/workflows/quality.yml)
-[![Documentation](https://img.shields.io/badge/docs-MkDocs-009688?style=flat-square&logo=materialformkdocs&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/index.md)
+[![Documentation](https://img.shields.io/badge/docs-MkDocs-009688?style=flat-square&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/index.md)
 [![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/rendering.md)
 [![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE)
 
@@ -86,7 +88,7 @@ be previewed directly in GitHub.
 
 ## License
 
-Copyright (C) 2026 Ram Nanduri. Developed for the Section for Molecular Diagnostics (SMD).
+Copyright (C) 2026 Ram Nanduri.
 
 [GPL-3.0-only](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE). Embedded Source Sans 3 fonts use the
 [SIL Open Font License](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/src/smd_reports/static/SourceSans3-LICENSE.md).

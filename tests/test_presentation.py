@@ -116,3 +116,46 @@ def test_invalid_paper_dimensions_fail(payloads, load, presentation):
     data["presentation"] = presentation
     with pytest.raises(ValidationError):
         load(data)
+
+
+@pytest.mark.parametrize(
+    "name,template_name",
+    [
+        ("generic", "Rapport"),
+        ("coyote3-dna", "Coyote3 DNA"),
+        ("coyote3-rna", "Coyote3 RNA"),
+        ("genexus", "Genexus"),
+        ("cll-genie-positive", "CLL Genie"),
+        ("pgx", "PGx"),
+    ],
+)
+@pytest.mark.parametrize("language,label", [("en", "Template"), ("sv", "Mall")])
+def test_footer_identifies_template_and_package_versions(
+    payloads, load, name, template_name, language, label
+):
+    data = payloads[name]
+    data["language"] = language
+    document = load(data)
+    assert document.template_name == template_name
+    displayed_name = "Report" if name == "generic" and language == "en" else template_name
+    expected = f"{displayed_name} · {label} {document.template_version} · smd-reports {__version__}"
+    html = ReportRenderer().render_html(document)
+    # The screen and repeating PDF footers must show the same version information.
+    assert html.count(expected) == 2
+
+
+def test_coyote_dna_and_rna_template_revisions_are_independent(monkeypatch, reports):
+    from copy import deepcopy
+
+    from smd_reports.core import template_versions
+
+    revisions = deepcopy(template_versions())
+    revisions["coyote3"] = {"dna": "3.0.0", "rna": "4.2.0"}
+    monkeypatch.setattr("smd_reports.core.template_versions", lambda: revisions)
+    for name, revision in [("coyote3-dna", "3.0.0"), ("coyote3-rna", "4.2.0")]:
+        report = reports[name]
+        html = ReportRenderer().render_html(report)
+        assert report.template_version == revision
+        assert f"Mall {revision}" in html
+        assert f"smd-reports {__version__}" in html
+        assert report.rendering_metadata["package_version"] == __version__

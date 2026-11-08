@@ -392,6 +392,20 @@ class Report(Model):
         return self.presentation.footer_height_mm
 
     @property
+    def template_name(self):
+        """The template display name, including the Coyote3 DNA or RNA variant."""
+        name = {
+            "generic": "Rapport",
+            "coyote3": "Coyote3",
+            "genexus": "Genexus",
+            "cll_genie": "CLL Genie",
+            "pgx": "PGx",
+        }[self.application]
+        if self.application == "coyote3" and self.analyte in {"dna", "rna"}:
+            return f"{name} {self.analyte.upper()}"
+        return name
+
+    @property
     def template_version(self):
         """The installed template revision for the selected preset and analyte."""
         revisions = template_versions()[self.application]

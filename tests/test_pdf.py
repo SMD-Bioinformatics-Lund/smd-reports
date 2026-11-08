@@ -5,7 +5,7 @@ import re
 
 import pytest
 
-from smd_reports import ReportLoader, ReportRenderer
+from smd_reports import ReportLoader, ReportRenderer, __version__
 
 pytest.importorskip("weasyprint")
 pymupdf = pytest.importorskip("pymupdf")
@@ -58,6 +58,10 @@ def test_pdfs_retain_identity_headers_fonts_and_footer(reports, name):
         assert "SYNTHETIC-001" in page.get_text()
         assert re.search(rf"Sida\s+{i + 1}\s+av\s+{len(doc)}", page.get_text())
         assert footer_images(page)
+        footer = " ".join(page.get_text().split())
+        assert reports[name].template_name in footer
+        assert f"Mall {reports[name].template_version}" in footer
+        assert f"smd-reports {__version__}" in footer
         assert round(page.rect.width) == 595 and round(page.rect.height) == 842
         assert any("Source" in str(font) for font in page.get_fonts())
         assert all(

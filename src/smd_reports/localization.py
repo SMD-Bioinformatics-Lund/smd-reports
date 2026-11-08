@@ -1,6 +1,7 @@
 """English and Swedish report labels and translation lookup."""
 
 ENGLISH = {
+    "Mall": "Template",
     "Rapport": "Report",
     "Rapportinformation": "Report information",
     "Analysrapport": "Analysis report",

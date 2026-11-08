@@ -37,7 +37,7 @@ Set `page_break_before: true` on any other section for an additional break.
 
 Use `presentation.header_height_mm` and `footer_height_mm` to adjust reserved print space.
 Genexus repeats the report title in its header. The accreditation logo, when enabled,
-appears opposite the template revision and page number.
+appears opposite the template and package versions and page number.
 
 ## Page size
 
@@ -104,3 +104,26 @@ html = renderer.render_html(report, theme="center")
 The package records its version and template revision automatically in HTML metadata. PDF appearance can
 vary with fonts, WeasyPrint and native libraries; use the same rendering environment when
 comparing outputs. See [installation](installation.md) for PDF dependencies.
+
+## Template and package versions
+
+Each report footer shows the template name, its revision and the installed package version,
+for example `Coyote3 DNA · Template 2.1.1 · smd-reports 0.1.0`.
+Swedish reports use `Mall` as the template label.
+
+Template revisions identify layout changes for each preset. Coyote3 DNA and RNA revisions
+are tracked separately. The package version identifies the installed Python distribution,
+including rendering code and dependencies; it is not used as a template revision.
+Both values are supplied by the package and cannot be overridden in report JSON.
+
+| Template | Revision |
+| --- | --- |
+| Generic | 2.1.1 |
+| Coyote3 DNA | 2.1.1 |
+| Coyote3 RNA | 2.1.1 |
+| Genexus | 2.1.1 |
+| CLL Genie | 2.1.1 |
+| PGx | 2.1.1 |
+
+Inspect `report.template_name`, `report.template_version` and `report.rendering_metadata`
+from Python. A package release may update only the templates affected by its changes.

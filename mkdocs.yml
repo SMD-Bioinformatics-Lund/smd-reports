@@ -1,15 +1,15 @@
 site_name: smd-reports
 site_description: JSON reports with portable HTML/PDF rendering
 copyright: Copyright &copy; 2026 Ram Nanduri
+exclude_docs: |
+  /overrides/
 repo_url: https://github.com/SMD-Bioinformatics-Lund/smd-reports
 theme:
-  name: material
-  font: false
-  palette:
-    primary: teal
-  features:
-    - navigation.sections
-    - content.code.copy
+  name: readthedocs
+  custom_dir: docs/overrides
+  logo: assets/smd-reports-logo.svg
+  navigation_depth: 3
+  prev_next_buttons_location: bottom
 nav:
   - Overview: index.md
   - Getting started:

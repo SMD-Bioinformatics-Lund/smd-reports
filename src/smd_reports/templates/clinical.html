@@ -19,7 +19,7 @@
 <div class="report-page-footer">
 {% if report.branding.accredited and report.branding.accreditation_logo %}<img class="accreditation" src="{{ report.branding.accreditation_logo|image_uri }}" alt="{{ report.branding.accreditation_label|ui }}">{% endif %}
 </div>
-<div class="report-page-number-footer"><span class="template-version">{{ report.analyte|upper if report.analyte else report.application }} template v{{ report.template_version }}</span><span class="page-number"></span></div>
+<div class="report-page-number-footer">{% include 'components/versions.html' %}<span class="page-number"></span></div>
 <div class="report-screen-brand">{% with brand_instance='screen' %}{% include 'components/header.html' %}{% endwith %}</div>
 <main class="report-content">
 {% include 'components/document_heading.html' %}
@@ -36,5 +36,5 @@
 {% for asset in section.images %}{% include 'components/image.html' %}{% endfor %}</section>
 {% endfor %}
 </main>
-<footer class="screen-footer"><div>{% if report.branding.accredited and report.branding.accreditation_logo %}<img class="accreditation" src="{{ report.branding.accreditation_logo|image_uri }}" alt="{{ report.branding.accreditation_label|ui }}">{% endif %}</div><span class="template-version">{{ report.analyte|upper if report.analyte else report.application }} template v{{ report.template_version }}</span></footer>
+<footer class="screen-footer"><div>{% if report.branding.accredited and report.branding.accreditation_logo %}<img class="accreditation" src="{{ report.branding.accreditation_logo|image_uri }}" alt="{{ report.branding.accreditation_label|ui }}">{% endif %}</div>{% include 'components/versions.html' %}</footer>
 </div></body></html>

@@ -13,6 +13,8 @@ The public interface is exported from `smd_reports`.
 
 Loading and rendering return values without saving output files. The document returned
 by a loader supports `model_dump_json(indent=2)` for portable JSON export.
+Its `template_name` and `template_version` properties identify the selected layout;
+`rendering_metadata` includes the installed package version.
 
 ## Exceptions
 
