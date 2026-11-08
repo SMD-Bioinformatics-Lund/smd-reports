@@ -47,7 +47,7 @@ jobs:
       - run: python -m pytest -q --ignore=tests/test_pdf.py
       - run: python -m build
       - run: python -m twine check --strict dist/*
-      - run: python scripts/wheel_smoke.py
+      - run: python scripts/check_installation.py
       - uses: actions/upload-artifact@v4
         with:
           name: distributions-${{ matrix.python }}
@@ -68,5 +68,5 @@ jobs:
       - run: python scripts/visual_review.py .artifacts/examples
       - uses: actions/upload-artifact@v4
         with:
-          name: synthetic-report-candidates
+          name: example-reports
           path: .artifacts/

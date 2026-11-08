@@ -8,7 +8,7 @@ python -m pytest -q --cov=smd_reports --cov-branch --cov-report=term-missing --c
 python -m mkdocs build --strict
 python -m build
 python -m twine check --strict dist/*
-python scripts/wheel_smoke.py
+python scripts/check_installation.py
 ```
 
 Tests cover JSON validation, scalar type preservation, dynamic column and grid layouts,
@@ -27,8 +27,8 @@ python examples/reports.py --previews --pdf --output examples/rendered
 python scripts/visual_review.py examples/rendered
 ```
 
-The first command regenerates the five public example pairs. The second rasterizes PDFs
-and records page sizes, image hashes and rendering versions under `.artifacts/`.
+These commands regenerate the five example reports, render PDF pages as images,
+and record page sizes, image hashes and rendering versions under `.artifacts/`.
 Use `--baseline PATH` to compare with an existing capture. Inspect wrapping, page breaks,
 headers and footers when a rendering change affects the previews.
 

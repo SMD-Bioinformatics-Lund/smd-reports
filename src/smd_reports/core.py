@@ -1,4 +1,4 @@
-"""Validated JSON document and reusable presentation sections."""
+"""Report models and section definitions."""
 
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ class ReportMetadata(Model):
     @field_validator("generated_at")
     @classmethod
     def aware_timestamp(cls, value):
-        """Require an unambiguous generation timestamp.
+        """Require a generation timestamp with a UTC offset.
 
         Args:
             value: Parsed generation timestamp.
@@ -209,7 +209,7 @@ class MatrixSection(SectionBase):
 
     @model_validator(mode="after")
     def rectangular_rows(self):
-        """Reject ambiguous row alignment and overflowing column-width totals.
+        """Validate row lengths and the total column width.
 
         Returns:
             The validated matrix section.

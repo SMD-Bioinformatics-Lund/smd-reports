@@ -1,4 +1,4 @@
-"""Install a distribution into a fresh environment and render JSON without PDF extras."""
+"""Check package installation, HTML rendering, and CLI commands in a clean environment."""
 
 import argparse
 import os
@@ -48,18 +48,18 @@ assert type(restored.sections[0].rows[0][3]) is int
 assert type(restored.sections[0].rows[0][4]) is float
 assert ReportRenderer().render_html(restored) == html
 assert 'schema_version' not in serialized and 'package_version' not in serialized
-print('Isolated JSON/HTML installation passed')
+print('Installation and HTML rendering checks passed')
 """
 
 
 def main():
-    """Install and check a distribution in an isolated temporary environment."""
+    """Install and test a wheel or source distribution in a temporary virtual environment."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", action="store_true", help="Install the source distribution")
     args = parser.parse_args()
     pattern = "*.tar.gz" if args.source else "*.whl"
-    candidates = list(Path("dist").resolve().glob(pattern))
-    if len(candidates) != 1:
+    distributions = list(Path("dist").resolve().glob(pattern))
+    if len(distributions) != 1:
         raise SystemExit("Expected exactly one matching distribution in dist/")
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
@@ -67,7 +67,7 @@ def main():
         python = root / "venv/bin/python"
         environment = {key: value for key, value in os.environ.items() if key != "PYTHONPATH"}
         subprocess.run(
-            [str(python), "-m", "pip", "install", str(candidates[0])],
+            [str(python), "-m", "pip", "install", str(distributions[0])],
             check=True,
             cwd=root,
             env=environment,

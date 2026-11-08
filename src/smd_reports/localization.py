@@ -1,4 +1,4 @@
-"""Translations for built-in interface labels only; never translate clinical content."""
+"""English and Swedish report labels and translation lookup."""
 
 ENGLISH = {
     "Rapport": "Report",

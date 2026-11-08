@@ -56,8 +56,8 @@ jobs:
       - run: python -m build
       - run: python -m twine check --strict dist/*
       - run: python scripts/check_release.py "$RELEASE_TAG" --check-git --dist dist
-      - run: python scripts/wheel_smoke.py
-      - run: python scripts/wheel_smoke.py --source
+      - run: python scripts/check_installation.py
+      - run: python scripts/check_installation.py --source
       - uses: actions/upload-artifact@v4
         with:
           name: release-distributions

@@ -8,7 +8,7 @@ Link relevant issues or requirements.
 
 ## Affected components
 
-- [ ] Shared document contracts or renderer
+- [ ] Report format or renderer
 - [ ] Shared layout, assets or themes
 - [ ] Coyote3
 - [ ] Genexus
@@ -18,14 +18,14 @@ Link relevant issues or requirements.
 
 ## Validation
 
-List checks performed and link synthetic HTML/PDF evidence where applicable.
+List the tests run and link example HTML/PDF reports for layout changes.
 
 - [ ] Relevant tests and quality checks pass
 - [ ] Input values and text are preserved, or intentional changes are explained
 - [ ] Layout changes have reviewed examples; baseline changes have an explicit reason
-- [ ] Package/template version impacts have been assessed
+- [ ] Package and template versions are updated where needed
 - [ ] Documentation and changelog reflect the change
-- [ ] No patient data, credentials or private runtime artifacts are included
+- [ ] No patient data, credentials or local output files are included
 
 ## Review
 
@@ -33,4 +33,4 @@ Performed by:
 
 Reviewed by:
 
-Remaining risks or follow-up:
+Known issues:

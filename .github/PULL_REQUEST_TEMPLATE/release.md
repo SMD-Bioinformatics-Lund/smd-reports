@@ -6,7 +6,7 @@ Source branch: `dev`. Target branch: `master`.
 
 Describe the changes being released and link the changelog.
 
-## Validation evidence
+## Release checks
 
 - [ ] Development PRs are reviewed and merged into `dev`
 - [ ] Release version and changelog are correct
@@ -16,7 +16,7 @@ Describe the changes being released and link the changelog.
 - [ ] Updated synthetic report previews are reviewed
 - [ ] Installation and JSON compatibility changes are documented
 
-Evidence/artifact links:
+Test results and build links:
 
 ## Approval
 
@@ -26,4 +26,4 @@ Reviewed by:
 
 Release approval:
 
-Publishing/tagging and application deployment actions:
+Tag and publishing details:

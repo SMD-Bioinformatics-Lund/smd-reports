@@ -1,4 +1,4 @@
-"""Rasterize synthetic PDF candidates and optionally compare an approved baseline."""
+"""Render PDF pages as images and compare them with a saved baseline."""
 
 import argparse
 import hashlib
@@ -11,7 +11,7 @@ import pymupdf
 
 
 def capture(source: Path, output: Path) -> dict:
-    """Rasterize PDF previews and record their geometry and environment.
+    """Render PDF pages as images and record page sizes and library versions.
 
     Args:
         source: Directory containing the PDF files to inspect.
@@ -61,18 +61,18 @@ def capture(source: Path, output: Path) -> dict:
 
 
 def main():
-    """Capture report previews and optionally compare an existing manifest."""
+    """Generate report images and compare them with a baseline when provided."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path)
     parser.add_argument("--output", type=Path, default=Path(".artifacts/visual"))
     parser.add_argument("--baseline", type=Path)
     args = parser.parse_args()
-    candidate = capture(args.source, args.output)
+    result = capture(args.source, args.output)
     if args.baseline:
         baseline = json.loads((args.baseline / "manifest.json").read_text())
-        if baseline != candidate:
-            raise SystemExit("Visual/environment difference: review candidates before acceptance")
-    print(f"Captured {len(candidate['reports'])} synthetic reports in {args.output}")
+        if baseline != result:
+            raise SystemExit("Report images or rendering environment differ from the baseline")
+    print(f"Captured {len(result['reports'])} reports in {args.output}")
 
 
 if __name__ == "__main__":

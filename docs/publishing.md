@@ -32,7 +32,7 @@ for account-side registration. If the GitHub repository is private, its document
 example links will remain private too; publishing a package does not change repository
 visibility.
 
-## Later release steps
+## Publish a release
 
 After the development PR is merged into `dev` and the release PR is merged into `master`:
 
@@ -47,5 +47,3 @@ The workflow checks tag/version agreement, tag existence and `master` ancestry, 
 tests, lint, documentation, distribution checks and isolated wheel/source installation.
 Only the checked artifacts are passed to the publishing job. Package versions cannot be
 overwritten; an existing version requires a new release rather than replacement files.
-
-No workflow needs to be started to prepare or review a release.

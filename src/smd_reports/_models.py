@@ -1,4 +1,4 @@
-"""Validation primitives for the JSON document format."""
+"""Base models and field types for report JSON."""
 
 from typing import Annotated, Literal
 

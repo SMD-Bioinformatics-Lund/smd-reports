@@ -20,8 +20,7 @@ python -m pip install smd-reports
 
 On Windows, activate the environment with `.venv\Scripts\activate` instead.
 Pip uses PyPI by default. For private distribution, configure pip to use your
-organization's package index. A release must be published to that index before it can
-be installed; a GitHub source branch or CI artifact is not an index release.
+organization's package index. The package version must be available on that index before pip can install it.
 
 To generate PDFs in the same environment:
 

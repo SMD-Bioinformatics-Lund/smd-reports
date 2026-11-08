@@ -1,4 +1,4 @@
-"""Offline HTML-first rendering; PDF support is imported only when requested."""
+"""Render standalone HTML and load the optional PDF renderer when needed."""
 
 from importlib.resources import files
 
@@ -61,7 +61,7 @@ def format_markdown(value: str) -> Markup:
 
 
 def display(value, language="sv"):
-    """Format a cell without confusing zero or false with missing data.
+    """Format a cell value, preserving zero and false.
 
     Args:
         value: A scalar or English/Swedish translation mapping.
@@ -203,7 +203,7 @@ def offline_fetcher(url, **kwargs):
 
 
 class ReportRenderer:
-    """Render validated JSON documents with isolated theme and template registries."""
+    """Render reports using built-in templates and registered themes."""
 
     def __init__(self):
         """Create the template environment and independent preset themes."""
