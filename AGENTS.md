@@ -32,14 +32,3 @@ See [the contributing guide](docs/contributing.md) for development setup, checks
   as described in the contributing guide.
 - For packaging changes, build and check distributions and verify clean installation using
   the commands in [testing and releases](docs/validation.md).
-
-## Remote access and data
-
-- Prefer local work. Connect to a remote server only when the user explicitly requests it
-  and identifies the server for the current task.
-- Authorized server access is strictly read-only. Do not modify remote state, elevate
-  privileges, deploy, install software or launch agents on a server.
-- Remote file retrieval requires separate explicit authorization. Do not bypass access controls.
-- Never read or expose credentials, secrets or private keys.
-- Do not access patient-identifiable or confidential clinical data without separate organizational
-  authorization, or transmit restricted data to external services without appropriate authorization.
