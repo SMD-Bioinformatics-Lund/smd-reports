@@ -283,6 +283,54 @@ Summary sections have the yellow box and print/PDF page breaks before and after.
 Markdown tables inside summaries use compact natural widths, plain borders and wrapping
 cells. Ordinary result tables keep their own full-width layout.
 
+### Markdown tables in summary text
+
+Set the section's `format` to `markdown` to interpret Markdown in its `text` values.
+The report's `language: "sv"` selects `text.sv`. In a JSON string, `\n` encodes a newline;
+`\n\n` provides the blank line separating the paragraph from the table.
+
+For example, this JSON value:
+
+```json
+{
+  "sv": "Exempel på granskad slutsats. Endast för demonstration.\n\n| Prov | Status |\n| --- | --- |\n| SYNTHETIC-001 | Granskad |"
+}
+```
+
+decodes to the following Markdown:
+
+```markdown
+Exempel på granskad slutsats. Endast för demonstration.
+
+| Prov | Status |
+| --- | --- |
+| SYNTHETIC-001 | Granskad |
+```
+
+The report displays the paragraph followed by this table:
+
+Exempel på granskad slutsats. Endast för demonstration.
+
+| Prov | Status |
+| --- | --- |
+| SYNTHETIC-001 | Granskad |
+
+The first pipe-delimited line supplies the column headings. The dashed line separates
+the headings from data and is not printed. Each following line adds a row. The newline
+escapes and pipe characters are not shown as text in the rendered table.
+
+Markdown tables define their headings and rows in the text itself. `columns` and
+`column_options` apply to structured `table`, `details` and `grid` sections instead.
+
+Both the paragraph and table appear inside the yellow summary box. The table uses only
+the width its contents need, up to the available width; long cell text wraps. The summary
+starts on a new print/PDF page, and the next section starts on another page.
+The [Coyote3 example PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/0d5397f1273e39704003bcf00373ef6523a28695/examples/rendered/coyote3.pdf)
+shows this summary on page 2.
+
+With `format: "plain"`, or when `format` is omitted, the same content is displayed as text
+with its pipe and dash characters. It does not become a table.
+
 ## Images and plots
 
 Attach images to any section through `images`:
