@@ -75,7 +75,10 @@ def test_long_table_keeps_all_rows_and_repeats_headers(payloads, load):
         {
             "kind": "table",
             "key": "long",
-            "columns": [{"label": "Synthetic row"}, {"label": "Description"}],
+            "columns": {
+                "en": ["Synthetic row", "Description"],
+                "sv": ["Synthetic row", "Description"],
+            },
             "rows": [[f"ROW-{i:03d}", "LongIdentifier" * 12] for i in range(100)],
         }
     ]
@@ -94,11 +97,8 @@ def test_long_detail_comment_continues_without_truncation(payloads, load, kind):
         "kind": kind,
         "key": "details",
         "record_heading": "Detailed finding",
-        "columns": [
-            {"label": "Gene"},
-            {"label": "Comment", "full_width": True, "format": "markdown"},
-            {"label": "Final"},
-        ],
+        "columns": {"en": ["Gene", "Comment", "Final"], "sv": ["Gene", "Comment", "Final"]},
+        "column_options": {"1": {"full_width": True, "format": "markdown"}},
         "rows": [["EXAMPLE", "\n\n".join(f"PARAGRAPH-{i:03d}" for i in range(100)), "END-MARKER"]],
     }
     if kind == "grid":
@@ -159,7 +159,10 @@ def test_dynamic_column_and_localized_heading_appear_in_pdf(payloads, load):
         {
             "kind": "table",
             "key": "custom",
-            "columns": [{"label": {"en": f"Column {i}", "sv": f"Kolumn {i}"}} for i in range(8)],
+            "columns": {
+                "en": [f"Column {i}" for i in range(8)],
+                "sv": [f"Kolumn {i}" for i in range(8)],
+            },
             "rows": [[f"VALUE-{i}" for i in range(8)]],
         }
     ]

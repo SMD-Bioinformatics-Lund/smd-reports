@@ -63,7 +63,7 @@ def test_custom_labels_titles_and_values_are_localized(payloads, load, language)
             "kind": "table",
             "key": "custom",
             "heading": {"en": "Results", "sv": "Resultat"},
-            "columns": [{"label": {"en": "New column", "sv": "Ny kolumn"}}],
+            "columns": {"en": ["New column"], "sv": ["Ny kolumn"]},
             "rows": [[{"en": "English value", "sv": "Svenskt värde"}]],
         }
     ]
@@ -94,7 +94,7 @@ def test_markdown_and_plain_text_are_safe(payloads, load):
         {
             "kind": "table",
             "key": "table",
-            "columns": [{"label": "<HEADER>"}],
+            "columns": {"en": ["<HEADER>"], "sv": ["<HEADER>"]},
             "rows": [["<VALUE>"]],
         },
     ]

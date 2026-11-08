@@ -16,7 +16,10 @@ def test_new_columns_need_only_json_changes(payloads, load, application, kind):
             "kind": kind,
             "key": "dynamic",
             "heading": "Dynamic",
-            "columns": [{"label": f"Field {i}"} for i in range(9)],
+            "columns": {
+                "en": [f"Field {i}" for i in range(9)],
+                "sv": [f"Field {i}" for i in range(9)],
+            },
             "rows": [[f"VALUE-{r}-{c}" for c in range(9)] for r in range(3)],
         }
     ]
@@ -31,7 +34,12 @@ def test_new_columns_need_only_json_changes(payloads, load, application, kind):
 def test_misaligned_rows_fail_instead_of_losing_values(payloads, load, row):
     data = payloads["pgx"]
     data["sections"] = [
-        {"kind": "table", "key": "bad", "columns": [{"label": "A"}, {"label": "B"}], "rows": [row]}
+        {
+            "kind": "table",
+            "key": "bad",
+            "columns": {"en": ["A", "B"], "sv": ["A", "B"]},
+            "rows": [row],
+        }
     ]
     with pytest.raises(ValidationError, match="exactly one value"):
         load(data)
@@ -46,14 +54,11 @@ def test_detail_headers_are_declared_once_and_rows_preserve_values(payloads, loa
             "key": "details",
             "fields_per_row": pairs,
             "record_heading": "{0}: {1}",
-            "columns": [
-                {"label": "Gene"},
-                {"label": "Variant"},
-                {"label": "Zero"},
-                {"label": "Boolean"},
-                {"label": "Missing"},
-                {"label": "Comment", "full_width": True, "format": "markdown"},
-            ],
+            "columns": {
+                "en": ["Gene", "Variant", "Zero", "Boolean", "Missing", "Comment"],
+                "sv": ["Gene", "Variant", "Zero", "Boolean", "Missing", "Comment"],
+            },
+            "column_options": {"5": {"full_width": True, "format": "markdown"}},
             "rows": [
                 ["DEMO1", "p.Example", 0, False, None, "**FIRST**"],
                 ["DEMO2", "p.Other", 1, True, "present", "**SECOND**"],
@@ -79,7 +84,7 @@ def test_record_heading_rejects_unsafe_or_unknown_fields(payloads, load, heading
         {
             "kind": "details",
             "key": "details",
-            "columns": [{"label": "A"}],
+            "columns": {"en": ["A"], "sv": ["A"]},
             "rows": [["x"]],
             "record_heading": heading,
         }
@@ -93,7 +98,8 @@ def test_detail_full_width_placement_is_json_configurable(payloads, load):
     section = {
         "kind": "details",
         "key": "details",
-        "columns": [{"label": "A"}, {"label": "Comment", "full_width": True}, {"label": "B"}],
+        "columns": {"en": ["A", "Comment", "B"], "sv": ["A", "Comment", "B"]},
+        "column_options": {"1": {"full_width": True}},
         "rows": [["FIRST-VALUE", "WIDE-VALUE", "LAST-VALUE"]],
     }
     data["sections"] = [section]
@@ -124,8 +130,9 @@ def test_grid_layout_is_validated(payloads, load, invalid):
 def test_cll_layout_and_additional_field_are_defined_in_json(payloads, load):
     data = payloads["cll-genie-positive"]
     section = next(s for s in data["sections"] if s["kind"] == "grid")
-    added = len(section["columns"])
-    section["columns"].append({"label": {"en": "New metric", "sv": "Nytt mått"}})
+    added = len(section["columns"]["en"])
+    section["columns"]["en"].append("New metric")
+    section["columns"]["sv"].append("Nytt mått")
     for row in section["rows"]:
         row.append(0)
     section["rows"].append(list(section["rows"][0]))
@@ -144,7 +151,7 @@ def test_grid_hide_if_empty_preserves_zero_and_false(payloads, load):
         {
             "kind": "grid",
             "key": "grid",
-            "columns": [{"label": "Zero"}, {"label": "False"}, {"label": "Empty"}],
+            "columns": {"en": ["Zero", "False", "Empty"], "sv": ["Zero", "False", "Empty"]},
             "rows": [[0, False, None]],
             "record_heading": "Values",
             "grid_columns": 2,

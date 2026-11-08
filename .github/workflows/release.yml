@@ -108,8 +108,11 @@ jobs:
               "application": "pgx", "title": "TestPyPI installation",
               "report": {"report_id": "DEMO", "sample_id": "SYNTHETIC",
                          "generated_at": "2026-01-01T12:00:00Z"},
-              "sections": [{"kind": "table", "key": "results",
-                            "columns": [{"label": "New field"}], "rows": [["DEMO-VALUE"]]}],
+              "sections": [{
+                  "kind": "table", "key": "results",
+                  "columns": {"en": ["New field"], "sv": ["Nytt fält"]},
+                  "rows": [["DEMO-VALUE"]],
+              }],
           }))
           html = ReportRenderer().render_html(report)
           assert "DEMO-VALUE" in html and "data:font/woff2;base64," in html

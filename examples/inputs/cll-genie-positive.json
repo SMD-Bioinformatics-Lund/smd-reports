@@ -117,35 +117,22 @@
     {
       "kind": "table",
       "key": "cll-sequences",
-      "columns": [
-        {
-          "label": {
-            "en": "Sequence ID",
-            "sv": "Sekvens-ID"
-          }
-        },
-        {
-          "label": {
-            "en": "Sequence length",
-            "sv": "Sekvenslängd"
-          }
-        },
-        {
-          "label": {
-            "en": "V-gene identity",
-            "sv": "V-gen identitet"
-          }
-        },
-        {
-          "label": {
-            "en": "IGHV mutation status",
-            "sv": "IGHV-mutationsstatus"
-          }
-        },
-        {
-          "label": "CLL subset"
-        }
-      ],
+      "columns": {
+        "en": [
+          "Sequence ID",
+          "Sequence length",
+          "V-gene identity",
+          "IGHV mutation status",
+          "CLL subset"
+        ],
+        "sv": [
+          "Sekvens-ID",
+          "Sekvenslängd",
+          "V-gen identitet",
+          "IGHV-mutationsstatus",
+          "CLL subset"
+        ]
+      },
       "rows": [
         [
           "Seq1",
@@ -179,98 +166,78 @@
     {
       "kind": "grid",
       "key": "cll-details",
-      "columns": [
-        {
-          "label": "Seq ID"
-        },
-        {
-          "label": {
-            "en": "Length",
-            "sv": "Sekvenslängd"
-          }
-        },
-        {
-          "label": {
-            "en": "IGHV mutation status",
-            "sv": "IGHV-mutationsstatus"
-          }
-        },
-        {
-          "label": "CLL subset",
+      "columns": {
+        "en": [
+          "Seq ID",
+          "Length",
+          "IGHV mutation status",
+          "CLL subset",
+          "Sequence analysis category",
+          "Indel summary",
+          "V-Domain functionality after removal of Indels",
+          "Comment",
+          "V-GENE and allele",
+          "Score",
+          "Identity",
+          "J-GENE and allele",
+          "Score",
+          "Identity",
+          "D-GENE and allele by IMGT/JunctionAnalysis",
+          "D-REGION reading frame",
+          "FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION",
+          "CDR-IMGT lengths",
+          "AA JUNCTION",
+          "JUNCTION length (in nt) and decryption",
+          "Junction legend",
+          "Merge count",
+          "Total reads"
+        ],
+        "sv": [
+          "Seq ID",
+          "Sekvenslängd",
+          "IGHV-mutationsstatus",
+          "CLL subset",
+          "Sekvensanalyskategori",
+          "Indel summary",
+          "V-Domain functionality after removal of Indels",
+          "Kommentar",
+          "V-GENE and allele",
+          "Score",
+          "Identity",
+          "J-GENE and allele",
+          "Score",
+          "Identity",
+          "D-GENE and allele by IMGT/JunctionAnalysis",
+          "D-REGION reading frame",
+          "FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION",
+          "CDR-IMGT lengths",
+          "AA JUNCTION",
+          "JUNCTION length (in nt) and decryption",
+          "Junction legend",
+          "Merge count",
+          "Totala läsningar"
+        ]
+      },
+      "column_options": {
+        "3": {
           "highlight": true
         },
-        {
-          "label": {
-            "en": "Sequence analysis category",
-            "sv": "Sekvensanalyskategori"
-          },
+        "4": {
           "highlight": true
         },
-        {
-          "label": "Indel summary",
+        "5": {
           "highlight": true
         },
-        {
-          "label": "V-Domain functionality after removal of Indels",
+        "6": {
           "highlight": true
         },
-        {
-          "label": {
-            "en": "Comment",
-            "sv": "Kommentar"
-          },
+        "7": {
           "highlight": true
         },
-        {
-          "label": "V-GENE and allele"
-        },
-        {
-          "label": "Score"
-        },
-        {
-          "label": "Identity",
+        "10": {
           "highlight": true
-        },
-        {
-          "label": "J-GENE and allele"
-        },
-        {
-          "label": "Score"
-        },
-        {
-          "label": "Identity"
-        },
-        {
-          "label": "D-GENE and allele by IMGT/JunctionAnalysis"
-        },
-        {
-          "label": "D-REGION reading frame"
-        },
-        {
-          "label": "FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION"
-        },
-        {
-          "label": "CDR-IMGT lengths"
-        },
-        {
-          "label": "AA JUNCTION"
-        },
-        {
-          "label": "JUNCTION length (in nt) and decryption"
-        },
-        {
-          "label": "Junction legend"
-        },
-        {
-          "label": "Merge count"
-        },
-        {
-          "label": {
-            "en": "Total reads",
-            "sv": "Totala läsningar"
-          }
         }
-      ],
+      },
       "rows": [
         [
           "Seq1",

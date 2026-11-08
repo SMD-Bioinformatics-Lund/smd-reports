@@ -10,7 +10,7 @@ from math import isfinite
 from string import Formatter
 from typing import Annotated, Literal
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, field_serializer, field_validator, model_validator
 
 from ._models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .assets import ImageFormat, validate_image_reference
@@ -189,10 +189,9 @@ class TextSection(SectionBase):
         return data
 
 
-class Column(Model):
-    """A reusable column label and its width, text format, and emphasis."""
+class ColumnOptions(Model):
+    """Optional column widths, text formatting, and detail-card layout settings."""
 
-    label: LocalizedText
     width: float = Field(default=1, gt=0)
     format: Literal["plain", "markdown"] = "plain"
     full_width: bool = False
@@ -200,26 +199,70 @@ class Column(Model):
     highlight: bool = False
 
 
-class MatrixSection(SectionBase):
-    """Shared column definitions and equally sized rows of cell values."""
+class Column(ColumnOptions):
+    """A translated column label combined with its rendering options."""
 
-    columns: list[Column] = Field(min_length=1)
+    label: LocalizedText
+
+
+class MatrixSection(SectionBase):
+    """Column labels grouped by language and equally sized rows of cell values."""
+
+    columns: dict[Language, Annotated[list[str], Field(min_length=1)]] = Field(min_length=1)
+    column_options: dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], ColumnOptions] = (
+        Field(default_factory=dict)
+    )
     rows: list[list[CellValue]] = Field(default_factory=list)
     empty_text: LocalizedText = "Inga rapporterbara resultat"
 
+    @property
+    def column_count(self) -> int:
+        """The number of labels in each language and values in each row."""
+        return len(next(iter(self.columns.values())))
+
+    @property
+    def render_columns(self) -> list[Column]:
+        """Translated labels combined with options for rendering each column."""
+        return [
+            Column(
+                label={language: labels[index] for language, labels in self.columns.items()},
+                **self.column_options.get(str(index), ColumnOptions()).model_dump(),
+            )
+            for index in range(self.column_count)
+        ]
+
+    @field_serializer("column_options")
+    def serialize_column_options(self, value: dict[str, ColumnOptions]) -> dict[str, dict]:
+        """Serialize column options without repeating their default values.
+
+        Args:
+            value: Column options indexed by zero-based column position.
+
+        Returns:
+            The same indexes with only nondefault formatting settings.
+        """
+        return {
+            index: options.model_dump(exclude_defaults=True) for index, options in value.items()
+        }
+
     @model_validator(mode="after")
     def rectangular_rows(self):
-        """Validate row lengths and the total column width.
+        """Validate translated label counts, formatting indexes, and row lengths.
 
         Returns:
             The validated matrix section.
 
         Raises:
-            ValueError: A row has the wrong length or the total width is not finite.
+            ValueError: Label counts differ, a formatting index is invalid, a row
+                has the wrong length, or the total width is not finite.
         """
-        if not isfinite(sum(column.width for column in self.columns)):
+        if any(len(labels) != self.column_count for labels in self.columns.values()):
+            raise ValueError("Column labels must have the same count in every language")
+        if any(int(index) >= self.column_count for index in self.column_options):
+            raise ValueError("Column options reference an undeclared column")
+        if not isfinite(sum(column.width for column in self.render_columns)):
             raise ValueError("The total column width must be finite")
-        if any(len(row) != len(self.columns) for row in self.rows):
+        if any(len(row) != self.column_count for row in self.rows):
             raise ValueError("Every row must contain exactly one value per declared column")
         return self
 
@@ -270,7 +313,7 @@ class RecordSection(MatrixSection):
         Raises:
             ValueError: A heading is invalid or record titles do not match the rows.
         """
-        validate_heading(self.record_heading, len(self.columns))
+        validate_heading(self.record_heading, self.column_count)
         if self.record_titles is not None and len(self.record_titles) != len(self.rows):
             raise ValueError("record_titles must have one title per row")
         return self
@@ -335,7 +378,7 @@ class GridSection(RecordSection):
         for row in self.layout:
             if sum(cell.span for cell in row.cells) != self.grid_columns:
                 raise ValueError("Each layout row must fill grid_columns exactly")
-            if any(cell.column >= len(self.columns) for cell in row.cells):
+            if any(cell.column >= self.column_count for cell in row.cells):
                 raise ValueError("A grid cell references an undeclared column")
         return self
 

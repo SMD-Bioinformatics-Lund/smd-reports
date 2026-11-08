@@ -25,8 +25,11 @@ payload = {
     "presentation": {"page_size": "custom", "custom_width_mm": 300, "custom_height_mm": 200},
     "provenance": {"application_name": "Example", "pipeline_name": "Example pipeline"},
     "sections": [{"kind": "details", "key": "details", "record_heading": "{0}",
-                  "columns": [{"label": "Gene"}, {"label": "Added field"}, {"label": "Flag"},
-                              {"label": "Count"}, {"label": "Rate"}],
+                  "columns": {
+                      "en": ["Gene", "Added field", "Flag", "Count", "Rate"],
+                      "sv": ["Gen", "Nytt fält", "Flagga", "Antal", "Frekvens"],
+                  },
+                  "column_options": {"1": {"emphasis": True}},
                   "rows": [["EXAMPLE", "DYNAMIC-VALUE", False, 0, 0.0]],
                   "images": [{"source": plot, "caption": "Example plot"}]},
                  {"kind": "summary", "key": "summary",
@@ -42,6 +45,8 @@ assert report.presentation.dimensions_mm == (300, 200)
 assert 'package_version' in report.rendering_metadata
 assert 'Added field' in html and 'DYNAMIC-VALUE' in html
 serialized = report.model_dump_json()
+assert json.loads(serialized)['sections'][0]['columns']['en'][1] == 'Added field'
+assert json.loads(serialized)['sections'][0]['column_options'] == {'1': {'emphasis': True}}
 assert json.loads(serialized)['sections'][0]['rows'][0][2] is False
 restored = ReportLoader().loads(serialized)
 assert type(restored.sections[0].rows[0][3]) is int

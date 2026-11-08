@@ -69,7 +69,8 @@ def test_invalid_layout_settings_cannot_reach_css(payloads, load, setting):
             {
                 "kind": "table",
                 "key": "results",
-                "columns": [{"label": "A", "width": 1e308}, {"label": "B", "width": 1e308}],
+                "columns": {"en": ["A", "B"], "sv": ["A", "B"]},
+                "column_options": {"0": {"width": 1e308}, "1": {"width": 1e308}},
                 "rows": [[1, 2]],
             }
         ]

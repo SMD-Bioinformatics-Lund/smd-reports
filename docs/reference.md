@@ -41,3 +41,7 @@ The [JSON guide](json-inputs.md) documents the input fields. `schema()` exports 
 machine-readable definitions, including table/detail row matrices, grouped grids, paper
 sizes, text blocks and images. `report.rendering_metadata` exposes automatically computed
 package/template versions alongside the supplied provenance context.
+
+Table, detail and grid sections use `columns` with `en` and/or `sv` label lists. Optional
+`column_options` controls widths and formatting by zero-based column index. Both are
+preserved when exporting and reloading JSON.

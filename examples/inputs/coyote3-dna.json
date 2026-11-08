@@ -105,46 +105,31 @@
       "key": "snvs",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          },
-          "width": 1
-        },
-        {
-          "label": {
-            "en": "Chromosome",
-            "sv": "Kromosom"
-          },
+      "columns": {
+        "en": ["Gene", "Chromosome", "Exon", "HGVS", "VAF", "Tier", "Classification"],
+        "sv": ["Gen", "Kromosom", "Exon", "HGVS", "VAF", "Tier", "Klassificering"]
+      },
+      "column_options": {
+        "1": {
           "width": 1.2
         },
-        {
-          "label": "Exon",
+        "2": {
           "width": 0.9
         },
-        {
-          "label": "HGVS",
+        "3": {
           "width": 2.7
         },
-        {
-          "label": "VAF",
+        "4": {
           "width": 0.9
         },
-        {
-          "label": "Tier",
+        "5": {
           "width": 0.8
         },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
+        "6": {
           "emphasis": true,
           "width": 2.5
         }
-      ],
+      },
       "rows": [
         [
           "BRAF",
@@ -169,20 +154,10 @@
       "key": "cnvs",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        },
-        {
-          "label": {
-            "en": "Copy number",
-            "sv": "Kopietal"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene", "Copy number"],
+        "sv": ["Gen", "Kopietal"]
+      },
       "rows": [
         [
           "EXAMPLE1",
@@ -202,26 +177,10 @@
       "key": "biomarkers",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Biomarker",
-            "sv": "Biomarkör"
-          }
-        },
-        {
-          "label": {
-            "en": "Result",
-            "sv": "Resultat"
-          }
-        },
-        {
-          "label": {
-            "en": "Assessment",
-            "sv": "Bedömning"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Biomarker", "Result", "Assessment"],
+        "sv": ["Biomarkör", "Resultat", "Bedömning"]
+      },
       "rows": [
         [
           "TMB",
@@ -245,17 +204,10 @@
       "key": "translocations",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": "Fusion"
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Fusion", "Classification"],
+        "sv": ["Fusion", "Klassificering"]
+      },
       "rows": [
         [
           "EML4::ALK",
@@ -312,101 +264,46 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Type",
-            "sv": "Typ"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Transcript",
-            "sv": "Transkript"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Consequence",
-            "sv": "Konsekvens"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "cDNA",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Protein",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Chromosome",
-            "sv": "Kromosom"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Position",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "VAF",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Exon",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
+      "columns": {
+        "en": [
+          "Gene",
+          "Type",
+          "Transcript",
+          "Consequence",
+          "cDNA",
+          "Protein",
+          "Chromosome",
+          "Position",
+          "VAF",
+          "Exon",
+          "Classification",
+          "Comment"
+        ],
+        "sv": [
+          "Gen",
+          "Typ",
+          "Transkript",
+          "Konsekvens",
+          "cDNA",
+          "Protein",
+          "Kromosom",
+          "Position",
+          "VAF",
+          "Exon",
+          "Klassificering",
+          "Kommentar"
+        ]
+      },
+      "column_options": {
+        "10": {
           "full_width": true,
-          "format": "plain",
           "emphasis": true
         },
-        {
-          "label": {
-            "en": "Comment",
-            "sv": "Kommentar"
-          },
+        "11": {
           "full_width": true,
-          "format": "markdown",
-          "emphasis": false
+          "format": "markdown"
         }
-      ],
+      },
       "rows": [
         [
           "BRAF",
@@ -446,92 +343,42 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Region",
-            "sv": "Region"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Type",
-            "sv": "Typ"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Copy number",
-            "sv": "Kopietal"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Size",
-            "sv": "Storlek"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Probes",
-            "sv": "Prober"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "PR",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "SR",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
+      "columns": {
+        "en": [
+          "Gene",
+          "Region",
+          "Type",
+          "Copy number",
+          "Size",
+          "Probes",
+          "PR",
+          "SR",
+          "Classification",
+          "Comment"
+        ],
+        "sv": [
+          "Gen",
+          "Region",
+          "Typ",
+          "Kopietal",
+          "Storlek",
+          "Prober",
+          "PR",
+          "SR",
+          "Klassificering",
+          "Kommentar"
+        ]
+      },
+      "column_options": {
+        "8": {
           "full_width": true,
-          "format": "plain",
           "emphasis": true
         },
-        {
-          "label": {
-            "en": "Comment",
-            "sv": "Kommentar"
-          },
+        "9": {
           "full_width": true,
-          "format": "markdown",
-          "emphasis": false
+          "format": "markdown"
         }
-      ],
+      },
       "rows": [
         [
           "EXAMPLE1",
@@ -569,26 +416,10 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Result",
-            "sv": "Resultat"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Assessment",
-            "sv": "Bedömning"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        }
-      ],
+      "columns": {
+        "en": ["Result", "Assessment"],
+        "sv": ["Resultat", "Bedömning"]
+      },
       "rows": [
         [
           "12 mut/Mb",
@@ -615,35 +446,10 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Unstable markers",
-            "sv": "Instabila markörer"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Analyzed markers",
-            "sv": "Analyserade markörer"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Result",
-            "sv": "Resultat"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        }
-      ],
+      "columns": {
+        "en": ["Unstable markers", "Analyzed markers", "Result"],
+        "sv": ["Instabila markörer", "Analyserade markörer", "Resultat"]
+      },
       "rows": [
         [
           0,
@@ -665,35 +471,10 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Total",
-            "sv": "Summa"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "TAI",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "LST",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "LOH",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        }
-      ],
+      "columns": {
+        "en": ["Total", "TAI", "LST", "LOH"],
+        "sv": ["Summa", "TAI", "LST", "LOH"]
+      },
       "rows": [
         [
           25,
@@ -716,89 +497,42 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "5′ gene",
-            "sv": "5′ gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "3′ gene",
-            "sv": "3′ gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Effect",
-            "sv": "Effekt"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "5′ breakpoint",
-            "sv": "5′ brytpunkt"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "3′ breakpoint",
-            "sv": "3′ brytpunkt"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Split reads",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Spanning pairs",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Anchor",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
+      "columns": {
+        "en": [
+          "5′ gene",
+          "3′ gene",
+          "Effect",
+          "5′ breakpoint",
+          "3′ breakpoint",
+          "Split reads",
+          "Spanning pairs",
+          "Anchor",
+          "Classification",
+          "Comment"
+        ],
+        "sv": [
+          "5′ gen",
+          "3′ gen",
+          "Effekt",
+          "5′ brytpunkt",
+          "3′ brytpunkt",
+          "Split reads",
+          "Spanning pairs",
+          "Anchor",
+          "Klassificering",
+          "Kommentar"
+        ]
+      },
+      "column_options": {
+        "8": {
           "full_width": true,
-          "format": "plain",
           "emphasis": true
         },
-        {
-          "label": {
-            "en": "Comment",
-            "sv": "Kommentar"
-          },
+        "9": {
           "full_width": true,
-          "format": "markdown",
-          "emphasis": false
+          "format": "markdown"
         }
-      ],
+      },
       "rows": [
         [
           "EML4",
@@ -844,14 +578,10 @@
       "key": "covered-genes",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene"],
+        "sv": ["Gen"]
+      },
       "rows": [
         [
           "BRAF"

@@ -20,14 +20,10 @@ Save this as `report.json`:
     {
       "kind": "table",
       "key": "results",
-      "columns": [
-        {
-          "label": "Measure"
-        },
-        {
-          "label": "Value"
-        }
-      ],
+      "columns": {
+        "en": ["Measure", "Value"],
+        "sv": ["Mått", "Värde"]
+      },
       "rows": [
         [
           "Example A",

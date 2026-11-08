@@ -32,7 +32,7 @@ def test_inline_plot_formats_and_portable_json(payloads, tmp_path, extension, fo
             "kind": "table",
             "key": "cnvs",
             "heading": "CNV",
-            "columns": [{"label": "Gene"}],
+            "columns": {"en": ["Gene"], "sv": ["Gene"]},
             "rows": [["EXAMPLE"]],
             "images": [
                 {

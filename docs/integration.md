@@ -25,7 +25,7 @@ Omit the image section when no profile is supplied.
 ## Choosing section layouts
 
 Use `table` for rows with shared column headings, `details` for repeated cards, and `grid`
-for arrangements that combine fields or span columns. Define labels once in `columns` and
+for arrangements that combine fields or span columns. Define labels by language in `columns` and
 append one list of values per record to `rows`. Add plots through a section's `images`
 list, or use an `image` section for a standalone figure.
 

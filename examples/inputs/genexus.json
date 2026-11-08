@@ -118,29 +118,10 @@
       "key": "snvs",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        },
-        {
-          "label": "HGVS protein"
-        },
-        {
-          "label": "VAF (%)"
-        },
-        {
-          "label": "Hotspot"
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene", "HGVS protein", "VAF (%)", "Hotspot", "Classification"],
+        "sv": ["Gen", "HGVS protein", "VAF (%)", "Hotspot", "Klassificering"]
+      },
       "rows": [
         [
           "BRAF",
@@ -176,26 +157,10 @@
       "key": "cnvs",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        },
-        {
-          "label": {
-            "en": "Copy number",
-            "sv": "Kopietal"
-          }
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene", "Copy number", "Classification"],
+        "sv": ["Gen", "Kopietal", "Klassificering"]
+      },
       "rows": [
         [
           "EXAMPLE1",
@@ -219,23 +184,10 @@
       "key": "fusions",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Genes (exons)",
-            "sv": "Gener (exoner)"
-          }
-        },
-        {
-          "label": "Locus"
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Genes (exons)", "Locus", "Classification"],
+        "sv": ["Gener (exoner)", "Locus", "Klassificering"]
+      },
       "rows": [
         [
           "EML4(13)::ALK(20)",
@@ -259,32 +211,10 @@
       "key": "others",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        },
-        {
-          "label": {
-            "en": "Source type",
-            "sv": "Källtyp"
-          }
-        },
-        {
-          "label": {
-            "en": "Variant class",
-            "sv": "Variantklass"
-          }
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene", "Source type", "Variant class", "Classification"],
+        "sv": ["Gen", "Källtyp", "Variantklass", "Klassificering"]
+      },
       "rows": [
         [
           "EXAMPLE3",
@@ -327,92 +257,34 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Type",
-            "sv": "Typ"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Transcript",
-            "sv": "Transkript"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Consequence",
-            "sv": "Konsekvens"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "HGVS cDNA",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "HGVS protein",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Chromosome",
-            "sv": "Kromosom"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Position",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "VAF (%)",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Hotspot",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        }
-      ],
+      "columns": {
+        "en": [
+          "Gene",
+          "Type",
+          "Transcript",
+          "Consequence",
+          "HGVS cDNA",
+          "HGVS protein",
+          "Chromosome",
+          "Position",
+          "VAF (%)",
+          "Hotspot",
+          "Classification"
+        ],
+        "sv": [
+          "Gen",
+          "Typ",
+          "Transkript",
+          "Konsekvens",
+          "HGVS cDNA",
+          "HGVS protein",
+          "Kromosom",
+          "Position",
+          "VAF (%)",
+          "Hotspot",
+          "Klassificering"
+        ]
+      },
       "rows": [
         [
           "BRAF",
@@ -463,59 +335,15 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Change",
-            "sv": "Förändring"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Copy number",
-            "sv": "Kopietal"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "CNV ratio",
-            "sv": "CNV-kvot"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Locus",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
-          "full_width": true,
-          "format": "plain",
-          "emphasis": false
+      "columns": {
+        "en": ["Gene", "Change", "Copy number", "CNV ratio", "Locus", "Classification"],
+        "sv": ["Gen", "Förändring", "Kopietal", "CNV-kvot", "Locus", "Klassificering"]
+      },
+      "column_options": {
+        "5": {
+          "full_width": true
         }
-      ],
+      },
       "rows": [
         [
           "EXAMPLE1",
@@ -545,92 +373,37 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": "Variant-ID",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Genes (exons)",
-            "sv": "Gener (exoner)"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Locus",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Oncomine driver gene",
-            "sv": "Oncomine-drivargen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Fusion type",
-            "sv": "Fusionstyp"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Supporting reads",
-            "sv": "Stödjande läsningar"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Unique molecules",
-            "sv": "Unika molekyler"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "5′ breakpoint",
-            "sv": "Brytpunkt 5′"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "3′ breakpoint",
-            "sv": "Brytpunkt 3′"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
-          "full_width": true,
-          "format": "plain",
-          "emphasis": false
+      "columns": {
+        "en": [
+          "Variant-ID",
+          "Genes (exons)",
+          "Locus",
+          "Oncomine driver gene",
+          "Fusion type",
+          "Supporting reads",
+          "Unique molecules",
+          "5′ breakpoint",
+          "3′ breakpoint",
+          "Classification"
+        ],
+        "sv": [
+          "Variant-ID",
+          "Gener (exoner)",
+          "Locus",
+          "Oncomine-drivargen",
+          "Fusionstyp",
+          "Stödjande läsningar",
+          "Unika molekyler",
+          "Brytpunkt 5′",
+          "Brytpunkt 3′",
+          "Klassificering"
+        ]
+      },
+      "column_options": {
+        "9": {
+          "full_width": true
         }
-      ],
+      },
       "rows": [
         [
           "DEMO-FUSION-001",
@@ -664,77 +437,33 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Source type",
-            "sv": "Källtyp"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Variant class",
-            "sv": "Variantklass"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Locus",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Imbalance score",
-            "sv": "Obalansvärde"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Imbalance p-value",
-            "sv": "P-värde för obalans"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Breakpoint range",
-            "sv": "Brytpunktsintervall"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
-          "full_width": true,
-          "format": "plain",
-          "emphasis": false
+      "columns": {
+        "en": [
+          "Gene",
+          "Source type",
+          "Variant class",
+          "Locus",
+          "Imbalance score",
+          "Imbalance p-value",
+          "Breakpoint range",
+          "Classification"
+        ],
+        "sv": [
+          "Gen",
+          "Källtyp",
+          "Variantklass",
+          "Locus",
+          "Obalansvärde",
+          "P-värde för obalans",
+          "Brytpunktsintervall",
+          "Klassificering"
+        ]
+      },
+      "column_options": {
+        "7": {
+          "full_width": true
         }
-      ],
+      },
       "rows": [
         [
           "EXAMPLE3",
@@ -774,14 +503,10 @@
       "key": "covered-genes",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene"],
+        "sv": ["Gen"]
+      },
       "rows": [
         [
           "BRAF"

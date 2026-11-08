@@ -103,26 +103,10 @@
     {
       "kind": "table",
       "key": "pgx-recommendations",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        },
-        {
-          "label": {
-            "en": "Haplotype",
-            "sv": "Haplotyp"
-          }
-        },
-        {
-          "label": {
-            "en": "Clinical recommendation",
-            "sv": "Klinisk rekommendation"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene", "Haplotype", "Clinical recommendation"],
+        "sv": ["Gen", "Haplotyp", "Klinisk rekommendation"]
+      },
       "rows": [
         [
           "DPYD",
@@ -141,44 +125,26 @@
     {
       "kind": "table",
       "key": "pgx-variants",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        },
-        {
-          "label": "rsID"
-        },
-        {
-          "label": {
-            "en": "Possible haplotypes",
-            "sv": "Möjliga haplotyper"
-          }
-        },
-        {
-          "label": "Position"
-        },
-        {
-          "label": {
-            "en": "Zygosity",
-            "sv": "Zygositet"
-          }
-        },
-        {
-          "label": {
-            "en": "Variant frequency (%)",
-            "sv": "Variantfrekvens (%)"
-          }
-        },
-        {
-          "label": {
-            "en": "Possible duplication",
-            "sv": "Möjlig duplikation"
-          }
-        }
-      ],
+      "columns": {
+        "en": [
+          "Gene",
+          "rsID",
+          "Possible haplotypes",
+          "Position",
+          "Zygosity",
+          "Variant frequency (%)",
+          "Possible duplication"
+        ],
+        "sv": [
+          "Gen",
+          "rsID",
+          "Möjliga haplotyper",
+          "Position",
+          "Zygositet",
+          "Variantfrekvens (%)",
+          "Möjlig duplikation"
+        ]
+      },
       "rows": [
         [
           "DPYD",
@@ -199,26 +165,10 @@
     {
       "kind": "table",
       "key": "pgx-depth",
-      "columns": [
-        {
-          "label": "rsID"
-        },
-        {
-          "label": {
-            "en": "Haplotype",
-            "sv": "Haplotyp"
-          }
-        },
-        {
-          "label": "Position"
-        },
-        {
-          "label": {
-            "en": "Read depth",
-            "sv": "Läsdjup"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["rsID", "Haplotype", "Position", "Read depth"],
+        "sv": ["rsID", "Haplotyp", "Position", "Läsdjup"]
+      },
       "rows": [
         [
           "rsLOW",
@@ -275,14 +225,10 @@
     {
       "kind": "table",
       "key": "pgx-genes",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene"],
+        "sv": ["Gen"]
+      },
       "rows": [
         [
           "DPYD"
@@ -302,17 +248,10 @@
     {
       "kind": "table",
       "key": "pgx-targets",
-      "columns": [
-        {
-          "label": "rsID"
-        },
-        {
-          "label": {
-            "en": "Haplotype",
-            "sv": "Haplotyp"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["rsID", "Haplotype"],
+        "sv": ["rsID", "Haplotyp"]
+      },
       "rows": [
         [
           "rsDEMO",

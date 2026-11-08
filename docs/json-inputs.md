@@ -20,20 +20,10 @@ or select `generic`, `coyote3`, `genexus`, `cll_genie` or `pgx` explicitly.
     {
       "kind": "table",
       "key": "variants",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        },
-        {
-          "label": "HGVS"
-        },
-        {
-          "label": "VAF (%)"
-        }
-      ],
+      "columns": {
+        "en": ["Gene", "HGVS", "VAF (%)"],
+        "sv": ["Gen", "HGVS", "VAF (%)"]
+      },
       "rows": [
         [
           "BRAF",
@@ -64,8 +54,9 @@ or select `generic`, `coyote3`, `genexus`, `cll_genie` or `pgx` explicitly.
 }
 ```
 
-Columns are declared once. Every row is a list containing exactly one value per column,
-in column order. Add a column and the corresponding value to each row to extend a report.
+Column labels are grouped by language. Each language contains a list of labels in the same
+order, and every row contains exactly one value per column. Add a label to each language
+list and the corresponding value to each row to extend a report.
 Unknown fields, duplicate object keys, mismatched row lengths and non-finite numbers fail
 validation. Use `null` for a missing cell; zero and false remain visible.
 
@@ -87,24 +78,53 @@ Sections appear in JSON order. Include the sections and data you want to show.
 
 ## Translations
 
-Titles, labels, text, captions, record headings and cell values accept either a string
+Titles, metadata labels, text, captions, record headings and cell values accept either a string
 or an object such as `{"en": "Gene", "sv": "Gen"}`. The selected language is used
 throughout the report. If that translation is missing, English is used when available,
 otherwise the supplied Swedish text. This is local text selection and works offline.
+Column labels use language-specific lists, as shown below.
 
 ## Table columns
 
-| Column field | Default | Effect |
+Use `columns` to define the labels once for each language:
+
+```json
+{
+  "columns": {
+    "en": ["Gene", "Copy number"],
+    "sv": ["Gen", "Kopietal"]
+  },
+  "column_options": {
+    "1": {
+      "width": 2,
+      "emphasis": true
+    }
+  },
+  "rows": [
+    [
+      "EXAMPLE",
+      6
+    ]
+  ]
+}
+```
+
+Supply `en`, `sv` or both. Language lists must be nonempty and have the same length.
+If the selected language is absent, the supplied language is used. `column_options` is
+optional and uses zero-based column indexes as JSON string keys. For example, `"1"`
+configures the second column. It contains only the settings you want to change:
+
+| Column option | Default | Effect |
 | --- | --- | --- |
-| `label` | Required | Column header or detail-field label |
 | `width` | `1` | Relative width for ordinary table columns; `2` gets twice the width of `1` |
 | `format` | `plain` | Plain text or sanitized `markdown` |
 | `emphasis` | `false` | Bold values |
 | `highlight` | `false` | Yellow background |
 | `full_width` | `false` | Full-width row within a detail card |
 
-Table widths come from the JSON columns. There are no gene-, assay- or application-specific
-column positions in the renderer.
+Table widths come from `column_options`; unspecified columns use equal weights. Unknown
+settings and options referencing undeclared columns fail validation. The same column
+format is used by tables, detail cards and grouped grids.
 
 ## Detailed findings
 
@@ -116,27 +136,20 @@ Use the same column definitions and row matrices for finding cards:
   "key": "variant-details",
   "fields_per_row": 3,
   "record_heading": "{0}: {1}",
-  "columns": [
-    {
-      "label": {
-        "en": "Gene",
-        "sv": "Gen"
-      }
-    },
-    {
-      "label": "Variant"
-    },
-    {
-      "label": "Classification",
+  "columns": {
+    "en": ["Gene", "Variant", "Classification", "Comment"],
+    "sv": ["Gen", "Variant", "Klassificering", "Kommentar"]
+  },
+  "column_options": {
+    "2": {
       "full_width": true,
       "emphasis": true
     },
-    {
-      "label": "Comment",
+    "3": {
       "full_width": true,
       "format": "markdown"
     }
-  ],
+  },
   "rows": [
     [
       "EXAMPLE1",
@@ -176,21 +189,15 @@ values still use the same matrix format. `grid_columns` defines the visual grid 
   "key": "sequence-details",
   "record_heading": "{0}",
   "grid_columns": 5,
-  "columns": [
-    {
-      "label": "Sequence"
-    },
-    {
-      "label": "V-GENE and allele"
-    },
-    {
-      "label": "Score"
-    },
-    {
-      "label": "Identity",
+  "columns": {
+    "en": ["Sequence", "V-GENE and allele", "Score", "Identity"],
+    "sv": ["Sequence", "V-GENE and allele", "Score", "Identity"]
+  },
+  "column_options": {
+    "3": {
       "highlight": true
     }
-  ],
+  },
   "rows": [
     [
       "Seq1",
@@ -255,7 +262,10 @@ These sections are text objects with `heading`, `format` and `text`:
 {
   "kind": "summary",
   "key": "summary",
-  "heading": {"en": "Conclusion", "sv": "Slutsats"},
+  "heading": {
+    "en": "Conclusion",
+    "sv": "Slutsats"
+  },
   "format": "markdown",
   "text": {
     "en": "**Reviewed** example.\n\n| Sample | Status |\n| --- | --- |\n| DEMO | Reviewed |",
@@ -281,19 +291,35 @@ Attach images to any section through `images`:
 {
   "kind": "table",
   "key": "qc",
-  "heading": {"en": "Quality control", "sv": "Kvalitetskontroll"},
-  "columns": [
-    {"label": {"en": "Metric", "sv": "Mätvärde"}},
-    {"label": {"en": "Result", "sv": "Resultat"}}
+  "heading": {
+    "en": "Quality control",
+    "sv": "Kvalitetskontroll"
+  },
+  "columns": {
+    "en": ["Metric", "Result"],
+    "sv": ["Mätvärde", "Resultat"]
+  },
+  "rows": [
+    [
+      {
+        "en": "Coverage (%)",
+        "sv": "Täckning (%)"
+      },
+      98
+    ]
   ],
-  "rows": [[{"en": "Coverage (%)", "sv": "Täckning (%)"}, 98]],
-  "images": [{
-    "source": "plots/coverage.tiff",
-    "frame": 0,
-    "caption": {"en": "Coverage profile", "sv": "Täckningsprofil"},
-    "width_percent": 100,
-    "max_height_mm": 120
-  }]
+  "images": [
+    {
+      "source": "plots/coverage.tiff",
+      "frame": 0,
+      "caption": {
+        "en": "Coverage profile",
+        "sv": "Täckningsprofil"
+      },
+      "width_percent": 100,
+      "max_height_mm": 120
+    }
+  ]
 }
 ```
 

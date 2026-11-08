@@ -105,17 +105,10 @@
       "key": "fusions",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": "Fusion"
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Fusion", "Classification"],
+        "sv": ["Fusion", "Klassificering"]
+      },
       "rows": [
         [
           "EML4::ALK",
@@ -153,89 +146,42 @@
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "5′ gene",
-            "sv": "5′ gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "3′ gene",
-            "sv": "3′ gen"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Effect",
-            "sv": "Effekt"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "5′ breakpoint",
-            "sv": "5′ brytpunkt"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "3′ breakpoint",
-            "sv": "3′ brytpunkt"
-          },
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Split reads",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Spanning pairs",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": "Anchor",
-          "full_width": false,
-          "format": "plain",
-          "emphasis": false
-        },
-        {
-          "label": {
-            "en": "Classification",
-            "sv": "Klassificering"
-          },
+      "columns": {
+        "en": [
+          "5′ gene",
+          "3′ gene",
+          "Effect",
+          "5′ breakpoint",
+          "3′ breakpoint",
+          "Split reads",
+          "Spanning pairs",
+          "Anchor",
+          "Classification",
+          "Comment"
+        ],
+        "sv": [
+          "5′ gen",
+          "3′ gen",
+          "Effekt",
+          "5′ brytpunkt",
+          "3′ brytpunkt",
+          "Split reads",
+          "Spanning pairs",
+          "Anchor",
+          "Klassificering",
+          "Kommentar"
+        ]
+      },
+      "column_options": {
+        "8": {
           "full_width": true,
-          "format": "plain",
           "emphasis": true
         },
-        {
-          "label": {
-            "en": "Comment",
-            "sv": "Kommentar"
-          },
+        "9": {
           "full_width": true,
-          "format": "markdown",
-          "emphasis": false
+          "format": "markdown"
         }
-      ],
+      },
       "rows": [
         [
           "EML4",
@@ -281,14 +227,10 @@
       "key": "covered-genes",
       "page_break_before": false,
       "kind": "table",
-      "columns": [
-        {
-          "label": {
-            "en": "Gene",
-            "sv": "Gen"
-          }
-        }
-      ],
+      "columns": {
+        "en": ["Gene"],
+        "sv": ["Gen"]
+      },
       "rows": [
         [
           "BRAF"

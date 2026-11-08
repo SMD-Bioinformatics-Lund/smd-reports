@@ -116,7 +116,12 @@ HTML(filename=sys.argv[1]).write_pdf(sys.argv[2], custom_metadata=True)
 def test_json_export_preserves_cell_value_types(payloads, load, value):
     data = payloads["pgx"]
     data["sections"] = [
-        {"kind": "table", "key": "scalars", "columns": [{"label": "Value"}], "rows": [[value]]}
+        {
+            "kind": "table",
+            "key": "scalars",
+            "columns": {"en": ["Value"], "sv": ["Value"]},
+            "rows": [[value]],
+        }
     ]
     document = load(data)
     serialized = document.model_dump_json()

@@ -55,6 +55,20 @@ Load JSON text with `ReportLoader().loads(json_text)` or files with `load(path)`
 The [Python guide](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Python-usage) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Quickstart) include examples.
 Custom columns and detail fields are configured in JSON, including English/Swedish labels.
 
+Group column labels by language and supply values in the same order:
+
+```json
+{
+  "columns": {
+    "en": ["Gene", "Copy number"],
+    "sv": ["Gen", "Kopietal"]
+  },
+  "rows": [["EXAMPLE", 6]]
+}
+```
+
+Optional `column_options` configures widths and formatting by column index.
+
 ## Use from the command line
 
 ```sh

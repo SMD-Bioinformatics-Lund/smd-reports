@@ -31,23 +31,10 @@
         "en": "Results",
         "sv": "Resultat"
       },
-      "columns": [
-        {
-          "label": {
-            "en": "Measure",
-            "sv": "Mått"
-          }
-        },
-        {
-          "label": {
-            "en": "Value",
-            "sv": "Värde"
-          }
-        },
-        {
-          "label": "Status"
-        }
-      ],
+      "columns": {
+        "en": ["Measure", "Value", "Status"],
+        "sv": ["Mått", "Värde", "Status"]
+      },
       "rows": [
         [
           "Example A",
