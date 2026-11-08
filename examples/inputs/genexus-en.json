@@ -30,7 +30,7 @@
           "en": "Sample type",
           "sv": "Provtyp"
         },
-        "value": "Synthetic sample"
+        "value": "<SAMPLE_TYPE>"
       },
       {
         "label": {

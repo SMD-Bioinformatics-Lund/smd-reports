@@ -68,6 +68,8 @@ Group column labels by language and supply values in the same order:
 ```
 
 Optional `column_options` configures widths and formatting by column index.
+Placeholders such as `<PATIENT_NAME>` remain visible in HTML and PDF output; see
+[placeholder values and replacement](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/JSON-format#placeholders-for-later-replacement).
 
 ## Use from the command line
 

@@ -84,6 +84,47 @@ throughout the report. If that translation is missing, English is used when avai
 otherwise the supplied Swedish text. This is local text selection and works offline.
 Column labels use language-specific lists, as shown below.
 
+## Placeholders for later replacement
+
+Put placeholder tokens directly in JSON string values, using uppercase names such as
+`<PATIENT_NAME>`, `<PERSONAL_IDENTITY_NUMBER>`, `<REGISTRATION_DATE>` and `<SAMPLE_TYPE>`.
+The Coyote3 DNA example uses `<TUMOR_SAMPLE_TYPE>`; its RNA example uses
+`<SAMPLE_TYPE> / RNA`.
+
+```json
+{
+  "label": {"en": "Patient name", "sv": "Patientnamn"},
+  "value": "<PATIENT_NAME>"
+}
+```
+
+The renderer preserves the token and escapes its angle brackets for HTML:
+
+| Representation | Value |
+| --- | --- |
+| JSON input | `<PATIENT_NAME>` |
+| HTML source | `&lt;PATIENT_NAME&gt;` |
+| Browser or PDF text | `<PATIENT_NAME>` |
+
+Use the raw token in JSON, not its HTML-encoded form. The HTML entities include their
+semicolons. Tokens also remain visible inside Markdown paragraphs, tables and inline code;
+they are not treated as HTML tags or filled automatically by the package.
+
+Another system can replace tokens in the generated HTML before its final PDF conversion.
+Match the encoded token in HTML source and HTML-escape the replacement value:
+
+```python
+from html import escape
+
+html = renderer.render_html(report)
+html = html.replace("&lt;PATIENT_NAME&gt;", escape("Example Person"))
+```
+
+This replaces every occurrence, including the screen metadata and repeating print header.
+Apply replacements to JSON values or HTML before generating the final PDF; the PDF is the
+rendered output. Supplied patient values are displayed as provided and are not replaced
+with tokens.
+
 ## Table columns
 
 Use `columns` to define the labels once for each language:

@@ -56,6 +56,13 @@ def test_pdfs_retain_identity_headers_fonts_and_footer(reports, name):
     assert "Exempel på granskad slutsats" in text
     for i, page in enumerate(doc):
         assert "SYNTHETIC-001" in page.get_text()
+        for token in [
+            "<PATIENT_NAME>",
+            "<PERSONAL_IDENTITY_NUMBER>",
+            "<REGISTRATION_DATE>",
+            "<TUMOR_SAMPLE_TYPE>" if name == "coyote3-dna" else "<SAMPLE_TYPE>",
+        ]:
+            assert token in page.get_text()
         assert re.search(rf"Sida\s+{i + 1}\s+av\s+{len(doc)}", page.get_text())
         assert footer_images(page)
         footer = " ".join(page.get_text().split())

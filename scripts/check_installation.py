@@ -33,13 +33,14 @@ payload = {
                   "rows": [["EXAMPLE", "DYNAMIC-VALUE", False, 0, 0.0]],
                   "images": [{"source": plot, "caption": "Example plot"}]},
                  {"kind": "summary", "key": "summary",
-                  "format": "markdown", "text": "**Reviewed**"}],
+                  "format": "markdown", "text": "**Reviewed** <PATIENT_NAME>"}],
 }
 report = ReportLoader().loads(json.dumps(payload))
 html = ReportRenderer().render_html(report)
 assert 'data:font/woff2;base64,' in html
 assert 'Installed distribution' in html
 assert 'Conclusion' in html and '<strong>Reviewed</strong>' in html
+assert '&lt;PATIENT_NAME&gt;' in html and '<PATIENT_NAME>' not in html
 assert 'data:image/png;base64,' in html
 assert report.presentation.dimensions_mm == (300, 200)
 assert 'package_version' in report.rendering_metadata

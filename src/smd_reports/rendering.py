@@ -1,5 +1,7 @@
 """Render standalone HTML and load the optional PDF renderer when needed."""
 
+import re
+from html import escape
 from importlib.resources import files
 
 import bleach
@@ -17,47 +19,47 @@ class PDFUnavailableError(RuntimeError):
 
 
 def format_markdown(value: str) -> Markup:
-    """Convert Markdown into sanitized report HTML.
+    """Convert Markdown into sanitized HTML while preserving placeholder text.
 
     Args:
-        value: Markdown source text.
+        value: Markdown source text. Uppercase tokens such as <PATIENT_NAME>
+            remain visible in paragraphs, tables, and code.
 
     Returns:
         Markup containing permitted text, heading, list, and table elements.
     """
+    allowed_tags = {
+        "p",
+        "br",
+        "strong",
+        "em",
+        "ul",
+        "ol",
+        "li",
+        "blockquote",
+        "code",
+        "pre",
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+    }
     html = markdown.markdown(value, extensions=["tables", "sane_lists"])
-    return Markup(
-        bleach.clean(
-            html,
-            tags={
-                "p",
-                "br",
-                "strong",
-                "em",
-                "ul",
-                "ol",
-                "li",
-                "blockquote",
-                "code",
-                "pre",
-                "table",
-                "thead",
-                "tbody",
-                "tr",
-                "th",
-                "td",
-                "h1",
-                "h2",
-                "h5",
-                "h6",
-                "h3",
-                "h4",
-            },
-            attributes={},
-            protocols=[],
-            strip=True,
-        )
+    # Protect placeholder text before the sanitizer treats it as an unknown HTML tag.
+    html = re.sub(
+        r"<([A-Z][A-Z0-9_]*)>",
+        lambda match: match[0] if match[1].lower() in allowed_tags else escape(match[0]),
+        html,
     )
+    return Markup(bleach.clean(html, tags=allowed_tags, attributes={}, protocols=[], strip=True))
 
 
 def display(value, language="sv"):
