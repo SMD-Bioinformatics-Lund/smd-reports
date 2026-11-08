@@ -1,0 +1,564 @@
+{
+  "application": "genexus",
+  "title": {
+    "en": "NGS Analysis Report",
+    "sv": "NGS-analysrapport"
+  },
+  "language": "sv",
+  "report": {
+    "report_id": "DEMO-REPORT-001",
+    "sample_id": "SYNTHETIC-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Demo User",
+    "fields": [
+      {
+        "label": {
+          "en": "Patient name",
+          "sv": "Patientnamn"
+        },
+        "value": "<PATIENT_NAME>"
+      },
+      {
+        "label": {
+          "en": "Personal identity number",
+          "sv": "Personnummer"
+        },
+        "value": "<PERSONAL_IDENTITY_NUMBER>"
+      },
+      {
+        "label": {
+          "en": "Sample type",
+          "sv": "Provtyp"
+        },
+        "value": "<SAMPLE_TYPE>"
+      },
+      {
+        "label": {
+          "en": "Registration date",
+          "sv": "Registreringsdatum"
+        },
+        "value": "<REGISTRATION_DATE>"
+      },
+      {
+        "label": {
+          "en": "Clinical question",
+          "sv": "Frågeställning"
+        },
+        "value": {
+          "en": "Synthetic analysis",
+          "sv": "Syntetisk analys"
+        }
+      },
+      {
+        "label": {
+          "en": "Analysis method",
+          "sv": "Analysmetod"
+        },
+        "value": {
+          "en": "NGS - synthetic demonstration",
+          "sv": "NGS - syntetisk demonstration"
+        }
+      },
+      {
+        "label": {
+          "en": "Analysis performed by",
+          "sv": "Analys genomförd av"
+        },
+        "value": "Example Diagnostics Center"
+      },
+      {
+        "label": "Assay",
+        "value": {
+          "en": "Demonstration panel",
+          "sv": "Demonstrationspanel"
+        }
+      },
+      {
+        "label": {
+          "en": "Run",
+          "sv": "Körning"
+        },
+        "value": "SYNTHETIC-RUN"
+      }
+    ]
+  },
+  "branding": {
+    "organization": "Example Diagnostics Center",
+    "department": "Molekylär diagnostik",
+    "address": "Exempeladress 1",
+    "telephone": "000-000000",
+    "email": "demo@example.org",
+    "website": "",
+    "application_logo": null,
+    "center_logo": "../assets/center-example.svg",
+    "accreditation_logo": "../assets/accreditation-example.svg",
+    "accredited": true,
+    "center_logo_width_mm": 11.64,
+    "application_logo_width_mm": 13.75,
+    "accreditation_logo_width_mm": 25.0,
+    "accreditation_label": "Example accreditation placeholder"
+  },
+  "provenance": {
+    "application_name": "Genexus",
+    "application_version": "DEMO",
+    "pipeline_name": "Example pipeline",
+    "pipeline_version": "DEMO",
+    "assay_name": "Example assay"
+  },
+  "presentation": {
+    "header_height_mm": 75.0,
+    "footer_height_mm": 38,
+    "page_size": "A4"
+  },
+  "sections": [
+    {
+      "key": "snvs",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": {
+        "en": ["Gene", "HGVS protein", "VAF (%)", "Hotspot", "Classification"],
+        "sv": ["Gen", "HGVS protein", "VAF (%)", "Hotspot", "Klassificering"]
+      },
+      "rows": [
+        [
+          "BRAF",
+          "p.Val600Glu",
+          24,
+          true,
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ],
+        [
+          "EXAMPLE2",
+          "p.(Example34del)",
+          18,
+          false,
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "heading": {
+        "en": "Clinically relevant SNVs and small INDELs",
+        "sv": "Kliniskt relevanta SNVs och små INDELs"
+      }
+    },
+    {
+      "key": "cnvs",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": {
+        "en": ["Gene", "Copy number", "Classification"],
+        "sv": ["Gen", "Kopietal", "Klassificering"]
+      },
+      "rows": [
+        [
+          "EXAMPLE1",
+          6,
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "heading": {
+        "en": "Clinically relevant copy-number alterations",
+        "sv": "Kliniskt relevanta kopietalsförändringar"
+      }
+    },
+    {
+      "key": "fusions",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": {
+        "en": ["Genes (exons)", "Locus", "Classification"],
+        "sv": ["Gener (exoner)", "Locus", "Klassificering"]
+      },
+      "rows": [
+        [
+          "EML4(13)::ALK(20)",
+          "chr2:42400000;chr2:29400000",
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "heading": {
+        "en": "Detected fusions",
+        "sv": "Detekterade fusioner"
+      }
+    },
+    {
+      "key": "others",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": {
+        "en": ["Gene", "Source type", "Variant class", "Classification"],
+        "sv": ["Gen", "Källtyp", "Variantklass", "Klassificering"]
+      },
+      "rows": [
+        [
+          "EXAMPLE3",
+          "Imbalance",
+          "RNA",
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "heading": {
+        "en": "Other clinically relevant findings",
+        "sv": "Övriga kliniskt relevanta fynd"
+      }
+    },
+    {
+      "kind": "summary",
+      "key": "summary",
+      "text": {
+        "sv": "Exempel på granskad slutsats. Endast för demonstration.\n\n| Prov | Status |\n| --- | --- |\n| SYNTHETIC-001 | Granskad |",
+        "en": "Reviewed synthetic conclusion. For demonstration only.\n\n| Sample | Status |\n| --- | --- |\n| SYNTHETIC-001 | Reviewed |"
+      },
+      "format": "markdown",
+      "heading": {
+        "en": "Conclusion",
+        "sv": "Slutsats"
+      }
+    },
+    {
+      "key": "snv-details",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "columns": {
+        "en": [
+          "Gene",
+          "Type",
+          "Transcript",
+          "Consequence",
+          "HGVS cDNA",
+          "HGVS protein",
+          "Chromosome",
+          "Position",
+          "VAF (%)",
+          "Hotspot",
+          "Classification"
+        ],
+        "sv": [
+          "Gen",
+          "Typ",
+          "Transkript",
+          "Konsekvens",
+          "HGVS cDNA",
+          "HGVS protein",
+          "Kromosom",
+          "Position",
+          "VAF (%)",
+          "Hotspot",
+          "Klassificering"
+        ]
+      },
+      "rows": [
+        [
+          "BRAF",
+          "SNV",
+          "NM_004333.6",
+          "missense_variant",
+          "c.1799T>A",
+          "p.Val600Glu",
+          "7",
+          140753336,
+          24,
+          true,
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ],
+        [
+          "EXAMPLE2",
+          "INDEL",
+          "DEMO_TRANSCRIPT",
+          "inframe_deletion",
+          "c.100_102del",
+          "p.(Example34del)",
+          "1",
+          100100,
+          18,
+          false,
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "full_width_last": true,
+      "record_heading": "{0}: {5}",
+      "heading": {
+        "en": "Detected mutations",
+        "sv": "Detekterade mutationer"
+      }
+    },
+    {
+      "key": "cnv-details",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "columns": {
+        "en": ["Gene", "Change", "Copy number", "CNV ratio", "Locus", "Classification"],
+        "sv": ["Gen", "Förändring", "Kopietal", "CNV-kvot", "Locus", "Klassificering"]
+      },
+      "column_options": {
+        "5": {
+          "full_width": true
+        }
+      },
+      "rows": [
+        [
+          "EXAMPLE1",
+          "Gain",
+          6,
+          3.1,
+          "chr1:100000-200000",
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "full_width_last": true,
+      "record_heading": "{0}",
+      "heading": {
+        "en": "Detected copy-number alterations",
+        "sv": "Detekterade kopietalsförändringar"
+      }
+    },
+    {
+      "key": "fusion-details",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "columns": {
+        "en": [
+          "Variant-ID",
+          "Genes (exons)",
+          "Locus",
+          "Oncomine driver gene",
+          "Fusion type",
+          "Supporting reads",
+          "Unique molecules",
+          "5′ breakpoint",
+          "3′ breakpoint",
+          "Classification"
+        ],
+        "sv": [
+          "Variant-ID",
+          "Gener (exoner)",
+          "Locus",
+          "Oncomine-drivargen",
+          "Fusionstyp",
+          "Stödjande läsningar",
+          "Unika molekyler",
+          "Brytpunkt 5′",
+          "Brytpunkt 3′",
+          "Klassificering"
+        ]
+      },
+      "column_options": {
+        "9": {
+          "full_width": true
+        }
+      },
+      "rows": [
+        [
+          "DEMO-FUSION-001",
+          "EML4(13)::ALK(20)",
+          "chr2:42400000;chr2:29400000",
+          "ALK",
+          "RNA fusion",
+          37,
+          18,
+          "chr2:42400000",
+          "chr2:29400000",
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "full_width_last": true,
+      "record_heading": "{1}",
+      "heading": {
+        "en": "Detailed fusion results",
+        "sv": "Detaljerade fusionsresultat"
+      }
+    },
+    {
+      "key": "other-details",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "columns": {
+        "en": [
+          "Gene",
+          "Source type",
+          "Variant class",
+          "Locus",
+          "Imbalance score",
+          "Imbalance p-value",
+          "Breakpoint range",
+          "Classification"
+        ],
+        "sv": [
+          "Gen",
+          "Källtyp",
+          "Variantklass",
+          "Locus",
+          "Obalansvärde",
+          "P-värde för obalans",
+          "Brytpunktsintervall",
+          "Klassificering"
+        ]
+      },
+      "column_options": {
+        "7": {
+          "full_width": true
+        }
+      },
+      "rows": [
+        [
+          "EXAMPLE3",
+          "Imbalance",
+          "RNA",
+          "chr3:100000-200000",
+          2.1,
+          0.01,
+          "100000-200000",
+          {
+            "en": "Reviewed synthetic classification",
+            "sv": "Granskad syntetisk klassificering"
+          }
+        ]
+      ],
+      "full_width_last": true,
+      "record_heading": "{0}: {1}",
+      "heading": {
+        "en": "Details of other findings",
+        "sv": "Detaljer för övriga fynd"
+      }
+    },
+    {
+      "kind": "description",
+      "key": "description",
+      "text": {
+        "sv": "### Metod\nSyntetisk analysbeskrivning.\n\n### Omfattning\nDemonstration av rapportens innehåll och layout.",
+        "en": "### Method\nSynthetic analysis description.\n\n### Scope\nDemonstration of report content and layout."
+      },
+      "heading": {
+        "en": "Analysis description",
+        "sv": "Analysbeskrivning"
+      },
+      "format": "markdown"
+    },
+    {
+      "key": "covered-genes",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": {
+        "en": ["Gene"],
+        "sv": ["Gen"]
+      },
+      "rows": [
+        [
+          "BRAF"
+        ],
+        [
+          "EXAMPLE1"
+        ],
+        [
+          "EXAMPLE2"
+        ],
+        [
+          "EXAMPLE3"
+        ],
+        [
+          "EML4"
+        ],
+        [
+          "ALK"
+        ]
+      ],
+      "empty_text": {
+        "en": "No reportable results",
+        "sv": "Inga rapporterbara resultat"
+      },
+      "heading": {
+        "en": "Analyzed genes",
+        "sv": "Analyserade gener"
+      }
+    },
+    {
+      "key": "classification-description",
+      "page_break_before": false,
+      "kind": "text",
+      "text": {
+        "en": "Example classification description.",
+        "sv": "Exempel på klassificeringsbeskrivning."
+      },
+      "format": "plain",
+      "heading": {
+        "en": "Classification description",
+        "sv": "Klassificeringsbeskrivning"
+      }
+    },
+    {
+      "kind": "references",
+      "key": "references",
+      "text": {
+        "sv": "1. Demonstrationsreferens.",
+        "en": "1. Example reference."
+      },
+      "heading": {
+        "en": "References",
+        "sv": "Referenser"
+      },
+      "format": "markdown"
+    }
+  ]
+}

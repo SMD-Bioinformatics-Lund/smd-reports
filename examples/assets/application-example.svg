@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="48" viewBox="0 0 80 48">
+<title>Example application icon</title>
+<rect x="1" y="1" width="78" height="46" rx="8" fill="#f4f0f8" stroke="#766486"/>
+<path d="M13 24 21 16 29 24 21 32Z" fill="#766486"/>
+<text x="49" y="28" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#51465c">APP</text>
+</svg>

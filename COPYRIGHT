@@ -1,0 +1,12 @@
+smd-reports
+
+Copyright (C) 2026 Ram Nanduri
+
+Author: Ram Nanduri <Ram.Nanduri@skane.se>
+Developed for the Section for Molecular Diagnostics (SMD).
+
+Licensed under the GNU General Public License, version 3 only. See LICENSE.
+
+The bundled Source Sans 3 fonts retain their original copyright notices and
+are licensed under the SIL Open Font License. See
+src/smd_reports/static/SourceSans3-LICENSE.md.

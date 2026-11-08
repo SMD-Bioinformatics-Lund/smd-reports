@@ -1,0 +1,74 @@
+name: Quality
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[dev]'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-py312-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
+      - run: python -m pre_commit run --all-files
+  docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[docs]'
+      - run: python -m mkdocs build --strict
+      - name: Check wiki pages and links
+        run: python scripts/build_wiki.py --output .artifacts/wiki --repository "$GITHUB_REPOSITORY" --revision "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: site/
+  core:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python: ['3.10', '3.12', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install '.[test]'
+      - run: python -m ruff check src examples tests scripts .github/scripts
+      - run: python -m ruff format --check src examples tests scripts .github/scripts
+      - run: python -m pytest -q --ignore=tests/test_pdf.py
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - run: python scripts/check_installation.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distributions-${{ matrix.python }}
+          path: dist/*
+  pdf:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+      - run: python -m pip install '.[pdf,test]'
+      - run: python -m pytest -q --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=xml --cov-report=html
+      - run: python examples/reports.py --pdf
+      - run: smd-reports render examples/inputs/genexus-en.json --format html --output .artifacts/examples/genexus-en.html
+      - run: weasyprint .artifacts/examples/genexus-en.html .artifacts/examples/genexus-en.pdf
+      - run: python scripts/visual_review.py .artifacts/examples
+      - uses: actions/upload-artifact@v4
+        with:
+          name: example-reports
+          path: .artifacts/

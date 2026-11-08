@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="620" viewBox="0 0 1120 620" role="img" aria-labelledby="title description">
+<title id="title">Development and release</title>
+<desc id="description">A feature or fix branch is reviewed and squash merged into dev. A release PR from dev is merged into master with a merge commit. Publishing is a separate manual process: tag a commit on master, run Publish package with explicit confirmation, pass the release checks, and publish to either TestPyPI or PyPI. TestPyPI publication includes installation verification.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="m1 1 8 4-8 4" fill="none" stroke="#3c6585" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="1118" height="618" rx="22" fill="#f8fafb" stroke="#dce4eb"/>
+<g font-family="DejaVu Sans, Arial, sans-serif">
+<text x="32" y="51" fill="#253747" font-size="27" font-weight="600">Development and release</text>
+<text x="32" y="80" fill="#526579" font-size="15" font-weight="400">Reviewed changes move through dev before master.</text>
+<rect x="36" y="137" width="280" height="190" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="36" y="134" width="280" height="190" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="54" y="152" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(63 161)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="6" cy="4" r="3"/>
+<circle cx="18" cy="5" r="3"/>
+<circle cx="6" cy="21" r="3"/>
+<path d="M6 7v11m0-3c0-6 12-2 12-7"/>
+</g>
+<text x="110" y="179" fill="#253747" font-size="19" font-weight="600">Feature / fix</text>
+<text x="56" y="222" fill="#526579" font-size="14" font-weight="400">feat/... or fix/...</text>
+<text x="56" y="247" fill="#526579" font-size="14" font-weight="400">Code, tests and documentation</text>
+<text x="56" y="272" fill="#526579" font-size="14" font-weight="400">Open a PR against dev</text>
+<rect x="420" y="137" width="280" height="190" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="420" y="134" width="280" height="190" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="438" y="152" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(447 161)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="m12 2 11 6-11 6L1 8zm-11 11 11 6 11-6M1 18l11 6 11-6"/>
+</g>
+<text x="494" y="179" fill="#253747" font-size="19" font-weight="600">dev</text>
+<text x="440" y="222" fill="#526579" font-size="14" font-weight="400">Staging branch</text>
+<text x="440" y="247" fill="#526579" font-size="14" font-weight="400">Review and required checks</text>
+<text x="440" y="272" fill="#526579" font-size="14" font-weight="400">Squash development PRs</text>
+<rect x="804" y="137" width="280" height="190" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="804" y="134" width="280" height="190" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="822" y="152" width="42" height="42" rx="12" fill="#3c6585" opacity=".09"/>
+<g transform="translate(831 161)" fill="none" stroke="#3c6585" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6z"/>
+<path d="m7 12 3 3 7-7"/>
+</g>
+<text x="878" y="179" fill="#253747" font-size="19" font-weight="600">master</text>
+<text x="824" y="222" fill="#526579" font-size="14" font-weight="400">Release branch</text>
+<text x="824" y="247" fill="#526579" font-size="14" font-weight="400">Release PR comes from dev</text>
+<text x="824" y="272" fill="#526579" font-size="14" font-weight="400">Merge commit preserves history</text>
+<path d="M328 229H408" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M712 229H792" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="329" y="207" fill="#3c6585" font-size="12" font-weight="600">PR + review</text>
+<text x="710" y="207" fill="#3c6585" font-size="12" font-weight="600">Release PR</text>
+<path d="M944 336V354H176V392" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="414" y="381" fill="#526579" font-size="14" font-weight="400">Publishing runs separately from merging.</text>
+<rect x="36" y="407" width="280" height="150" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="36" y="404" width="280" height="150" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="54" y="422" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(63 431)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M2 3h10l10 10-9 9L2 11z"/>
+<circle cx="7" cy="8" r="1"/>
+</g>
+<text x="110" y="449" fill="#253747" font-size="19" font-weight="600">Tag vX.Y.Z</text>
+<text x="56" y="492" fill="#526579" font-size="14" font-weight="400">Version matches the package</text>
+<text x="56" y="517" fill="#526579" font-size="14" font-weight="400">Tagged commit belongs to master</text>
+<rect x="420" y="407" width="280" height="150" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="420" y="404" width="280" height="150" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="438" y="422" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(447 431)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="10"/>
+<path d="m10 7 7 5-7 5z"/>
+</g>
+<text x="494" y="449" fill="#253747" font-size="19" font-weight="600">Publish workflow</text>
+<text x="440" y="492" fill="#526579" font-size="14" font-weight="400">Manual publish confirmation</text>
+<text x="440" y="517" fill="#526579" font-size="14" font-weight="400">Tests and distribution checks</text>
+<rect x="804" y="407" width="280" height="150" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="804" y="404" width="280" height="150" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="822" y="422" width="42" height="42" rx="12" fill="#3c6585" opacity=".09"/>
+<g transform="translate(831 431)" fill="none" stroke="#3c6585" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="m12 2 10 5v12l-10 5L2 19V7zm0 10v12M2 7l10 5 10-5M7 4l10 6"/>
+</g>
+<text x="878" y="449" fill="#253747" font-size="19" font-weight="600">Publish package</text>
+<text x="824" y="492" fill="#526579" font-size="14" font-weight="400">Choose TestPyPI or PyPI</text>
+<text x="824" y="517" fill="#526579" font-size="14" font-weight="400">TestPyPI verifies installation</text>
+<path d="M328 479H408" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M712 479H792" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="36" y="590" fill="#526579" font-size="13" font-weight="400">Protected branches require approval, passing CI and resolved discussions; force pushes and deletion are blocked.</text>
+</g>
+</svg>

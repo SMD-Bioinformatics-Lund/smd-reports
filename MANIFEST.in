@@ -1,0 +1,13 @@
+include CHANGELOG.md
+include mkdocs.yml
+include .readthedocs.yaml
+recursive-include docs *.md *.html *.svg
+recursive-include examples *.py
+recursive-include examples *.svg
+recursive-include examples *.json
+recursive-include examples/rendered *.html *.pdf
+recursive-include scripts *.py
+recursive-include tests *.py
+include .github/labels.json
+recursive-include .github/ISSUE_TEMPLATE *.yml
+recursive-include .github/scripts *.py

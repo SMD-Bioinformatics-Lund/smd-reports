@@ -1,0 +1,150 @@
+{
+  "application": "cll_genie",
+  "title": {
+    "en": "IGHV Mutation Analysis",
+    "sv": "IGHV-mutationsanalys"
+  },
+  "language": "sv",
+  "report": {
+    "report_id": "DEMO-REPORT-001",
+    "sample_id": "SYNTHETIC-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Demo User",
+    "fields": [
+      {
+        "label": {
+          "en": "Patient name",
+          "sv": "Patientnamn"
+        },
+        "value": "<PATIENT_NAME>"
+      },
+      {
+        "label": {
+          "en": "Personal identity number",
+          "sv": "Personnummer"
+        },
+        "value": "<PERSONAL_IDENTITY_NUMBER>"
+      },
+      {
+        "label": {
+          "en": "Sample type",
+          "sv": "Provtyp"
+        },
+        "value": "<SAMPLE_TYPE>"
+      },
+      {
+        "label": {
+          "en": "Registration date",
+          "sv": "Registreringsdatum"
+        },
+        "value": "<REGISTRATION_DATE>"
+      },
+      {
+        "label": {
+          "en": "Clinical question",
+          "sv": "Frågeställning"
+        },
+        "value": {
+          "en": "Synthetic analysis",
+          "sv": "Syntetisk analys"
+        }
+      },
+      {
+        "label": {
+          "en": "Analysis method",
+          "sv": "Analysmetod"
+        },
+        "value": {
+          "en": "NGS - synthetic demonstration",
+          "sv": "NGS - syntetisk demonstration"
+        }
+      },
+      {
+        "label": {
+          "en": "Analysis performed by",
+          "sv": "Analys genomförd av"
+        },
+        "value": "Example Diagnostics Center"
+      },
+      {
+        "label": {
+          "en": "Report type",
+          "sv": "Rapporttyp"
+        },
+        "value": {
+          "en": "Clonal, nonfunctional sequence",
+          "sv": "Klonal, icke-funktionell sekvens"
+        }
+      }
+    ]
+  },
+  "branding": {
+    "organization": "Example Diagnostics Center",
+    "department": "Molekylär diagnostik",
+    "address": "Exempeladress 1",
+    "telephone": "000-000000",
+    "email": "demo@example.org",
+    "website": "",
+    "application_logo": "../assets/application-example.svg",
+    "center_logo": "../assets/center-example.svg",
+    "accreditation_logo": "../assets/accreditation-example.svg",
+    "accredited": true,
+    "center_logo_width_mm": 11.64,
+    "application_logo_width_mm": 13.75,
+    "accreditation_logo_width_mm": 25.0,
+    "accreditation_label": "Example accreditation placeholder"
+  },
+  "provenance": {
+    "application_name": "CLL Genie",
+    "application_version": "DEMO",
+    "pipeline_name": "Example pipeline",
+    "pipeline_version": "DEMO",
+    "assay_name": "Example assay"
+  },
+  "presentation": {
+    "header_height_mm": 65,
+    "footer_height_mm": 38,
+    "page_size": "A4"
+  },
+  "sections": [
+    {
+      "kind": "summary",
+      "key": "summary",
+      "text": {
+        "sv": "Exempel på granskad slutsats. Endast för demonstration.\n\n| Prov | Status |\n| --- | --- |\n| SYNTHETIC-001 | Granskad |",
+        "en": "Reviewed synthetic conclusion. For demonstration only.\n\n| Sample | Status |\n| --- | --- |\n| SYNTHETIC-001 | Reviewed |"
+      },
+      "format": "markdown",
+      "heading": {
+        "en": "Conclusion",
+        "sv": "Slutsats"
+      }
+    },
+    {
+      "kind": "description",
+      "key": "description",
+      "text": {
+        "sv": "### Metod\nSyntetisk analysbeskrivning.\n\n### Omfattning\nDemonstration av rapportens innehåll och layout.",
+        "en": "### Method\nSynthetic analysis description.\n\n### Scope\nDemonstration of report content and layout."
+      },
+      "heading": {
+        "en": "Analysis description",
+        "sv": "Analysbeskrivning"
+      },
+      "format": "markdown"
+    },
+    {
+      "kind": "references",
+      "key": "references",
+      "text": {
+        "sv": "1. Demonstrationsreferens.",
+        "en": "1. Example reference."
+      },
+      "heading": {
+        "en": "References",
+        "sv": "Referenser"
+      },
+      "format": "markdown"
+    }
+  ]
+}

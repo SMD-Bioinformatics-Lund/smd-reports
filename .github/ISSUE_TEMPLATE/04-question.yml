@@ -1,0 +1,86 @@
+name: Usage question
+description: Ask about installation, input data or report rendering.
+labels:
+- question
+- 'status: triage'
+body:
+- type: markdown
+  attributes:
+    value: Use example data only. Do not include patient information, credentials or confidential files.
+      Report security vulnerabilities through the private security-reporting link.
+- type: dropdown
+  id: priority
+  attributes:
+    label: Priority
+    description: Select the impact. Maintainers may adjust the priority.
+    options:
+    - P0 - Critical
+    - P1 - High
+    - P2 - Normal
+    - P3 - Low
+    default: 2
+  validations:
+    required: true
+- type: dropdown
+  id: component
+  attributes:
+    label: Component
+    options:
+    - JSON input and validation
+    - Python interface
+    - Command-line tools
+    - HTML rendering
+    - PDF rendering
+    - Page layout and branding
+    - Images and plots
+    - English and Swedish labels
+    - Packaging and installation
+    - CI and development tools
+    - Documentation
+    - Not sure
+    multiple: true
+  validations:
+    required: true
+- type: dropdown
+  id: report-template
+  attributes:
+    label: Report template
+    options:
+    - Generic
+    - Coyote3
+    - Genexus
+    - CLL Genie
+    - PGx
+    - Not template-specific
+    multiple: true
+  validations:
+    required: true
+- type: textarea
+  id: question
+  attributes:
+    label: Question
+  validations:
+    required: true
+- type: textarea
+  id: attempts
+  attributes:
+    label: What have you tried?
+  validations:
+    required: true
+- type: input
+  id: version
+  attributes:
+    label: Package version
+  validations:
+    required: true
+- type: checkboxes
+  id: checks
+  attributes:
+    label: Before submitting
+    options:
+    - label: I searched the existing issues.
+      required: true
+    - label: My examples contain no patient information, credentials or confidential data.
+      required: true
+  validations:
+    required: true

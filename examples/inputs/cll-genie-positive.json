@@ -1,0 +1,471 @@
+{
+  "application": "cll_genie",
+  "title": {
+    "en": "IGHV Mutation Analysis",
+    "sv": "IGHV-mutationsanalys"
+  },
+  "language": "sv",
+  "report": {
+    "report_id": "DEMO-REPORT-001",
+    "sample_id": "SYNTHETIC-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Demo User",
+    "fields": [
+      {
+        "label": {
+          "en": "Patient name",
+          "sv": "Patientnamn"
+        },
+        "value": "<PATIENT_NAME>"
+      },
+      {
+        "label": {
+          "en": "Personal identity number",
+          "sv": "Personnummer"
+        },
+        "value": "<PERSONAL_IDENTITY_NUMBER>"
+      },
+      {
+        "label": {
+          "en": "Sample type",
+          "sv": "Provtyp"
+        },
+        "value": "<SAMPLE_TYPE>"
+      },
+      {
+        "label": {
+          "en": "Registration date",
+          "sv": "Registreringsdatum"
+        },
+        "value": "<REGISTRATION_DATE>"
+      },
+      {
+        "label": {
+          "en": "Clinical question",
+          "sv": "Frågeställning"
+        },
+        "value": {
+          "en": "Synthetic analysis",
+          "sv": "Syntetisk analys"
+        }
+      },
+      {
+        "label": {
+          "en": "Analysis method",
+          "sv": "Analysmetod"
+        },
+        "value": {
+          "en": "NGS - synthetic demonstration",
+          "sv": "NGS - syntetisk demonstration"
+        }
+      },
+      {
+        "label": {
+          "en": "Analysis performed by",
+          "sv": "Analys genomförd av"
+        },
+        "value": "Example Diagnostics Center"
+      },
+      {
+        "label": {
+          "en": "Report type",
+          "sv": "Rapporttyp"
+        },
+        "value": {
+          "en": "Positive",
+          "sv": "Positiv"
+        }
+      },
+      {
+        "label": "Submission",
+        "value": "submission_demo"
+      }
+    ]
+  },
+  "branding": {
+    "organization": "Example Diagnostics Center",
+    "department": "Molekylär diagnostik",
+    "address": "Exempeladress 1",
+    "telephone": "000-000000",
+    "email": "demo@example.org",
+    "website": "",
+    "application_logo": "../assets/application-example.svg",
+    "center_logo": "../assets/center-example.svg",
+    "accreditation_logo": "../assets/accreditation-example.svg",
+    "accredited": true,
+    "center_logo_width_mm": 11.64,
+    "application_logo_width_mm": 13.75,
+    "accreditation_logo_width_mm": 25.0,
+    "accreditation_label": "Example accreditation placeholder"
+  },
+  "provenance": {
+    "application_name": "CLL Genie",
+    "application_version": "DEMO",
+    "pipeline_name": "Example pipeline",
+    "pipeline_version": "DEMO",
+    "assay_name": "Example assay"
+  },
+  "presentation": {
+    "header_height_mm": 65,
+    "footer_height_mm": 38,
+    "page_size": "A4"
+  },
+  "sections": [
+    {
+      "kind": "table",
+      "key": "cll-sequences",
+      "columns": {
+        "en": [
+          "Sequence ID",
+          "Sequence length",
+          "V-gene identity",
+          "IGHV mutation status",
+          "CLL subset"
+        ],
+        "sv": [
+          "Sekvens-ID",
+          "Sekvenslängd",
+          "V-gen identitet",
+          "IGHV-mutationsstatus",
+          "CLL subset"
+        ]
+      },
+      "rows": [
+        [
+          "Seq1",
+          321,
+          "97.5% (313/321) [97.2% (312/321)]",
+          {
+            "en": "Borderline (reviewed)",
+            "sv": "Borderline (granskad)"
+          },
+          "#2"
+        ]
+      ],
+      "heading": {
+        "en": "Analysis results",
+        "sv": "Analysresultat"
+      }
+    },
+    {
+      "kind": "summary",
+      "key": "summary",
+      "text": {
+        "sv": "Exempel på granskad slutsats. Endast för demonstration.\n\n| Prov | Status |\n| --- | --- |\n| SYNTHETIC-001 | Granskad |",
+        "en": "Reviewed synthetic conclusion. For demonstration only.\n\n| Sample | Status |\n| --- | --- |\n| SYNTHETIC-001 | Reviewed |"
+      },
+      "format": "markdown",
+      "heading": {
+        "en": "Conclusion",
+        "sv": "Slutsats"
+      }
+    },
+    {
+      "kind": "grid",
+      "key": "cll-details",
+      "columns": {
+        "en": [
+          "Seq ID",
+          "Length",
+          "IGHV mutation status",
+          "CLL subset",
+          "Sequence analysis category",
+          "Indel summary",
+          "V-Domain functionality after removal of Indels",
+          "Comment",
+          "V-GENE and allele",
+          "Score",
+          "Identity",
+          "J-GENE and allele",
+          "Score",
+          "Identity",
+          "D-GENE and allele by IMGT/JunctionAnalysis",
+          "D-REGION reading frame",
+          "FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION",
+          "CDR-IMGT lengths",
+          "AA JUNCTION",
+          "JUNCTION length (in nt) and decryption",
+          "Junction legend",
+          "Merge count",
+          "Total reads"
+        ],
+        "sv": [
+          "Seq ID",
+          "Sekvenslängd",
+          "IGHV-mutationsstatus",
+          "CLL subset",
+          "Sekvensanalyskategori",
+          "Indel summary",
+          "V-Domain functionality after removal of Indels",
+          "Kommentar",
+          "V-GENE and allele",
+          "Score",
+          "Identity",
+          "J-GENE and allele",
+          "Score",
+          "Identity",
+          "D-GENE and allele by IMGT/JunctionAnalysis",
+          "D-REGION reading frame",
+          "FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION",
+          "CDR-IMGT lengths",
+          "AA JUNCTION",
+          "JUNCTION length (in nt) and decryption",
+          "Junction legend",
+          "Merge count",
+          "Totala läsningar"
+        ]
+      },
+      "column_options": {
+        "3": {
+          "highlight": true
+        },
+        "4": {
+          "highlight": true
+        },
+        "5": {
+          "highlight": true
+        },
+        "6": {
+          "highlight": true
+        },
+        "7": {
+          "highlight": true
+        },
+        "10": {
+          "highlight": true
+        }
+      },
+      "rows": [
+        [
+          "Seq1",
+          321,
+          {
+            "en": "Borderline (reviewed)",
+            "sv": "Borderline (granskad)"
+          },
+          "#2",
+          {
+            "en": "Single productive rearrangement (synthetic)",
+            "sv": "En produktiv rearrangering (syntetisk)"
+          },
+          {
+            "en": "Synthetic insertion/deletion description.",
+            "sv": "Syntetisk beskrivning av insertion/deletion."
+          },
+          {
+            "en": "Productive",
+            "sv": "Produktiv"
+          },
+          {
+            "en": "Reviewed synthetic result.",
+            "sv": "Granskat syntetiskt resultat."
+          },
+          "IGHV3-21*01",
+          1500,
+          "97.5% (313/321) [97.2% (312/321)]",
+          "IGHJ6*02",
+          230,
+          "100.0% (60/60)",
+          "IGHD3-3*01",
+          2,
+          "[25.17.38.11]",
+          "[8.8.14]",
+          "SYNTHETIC",
+          "42 nt = DEMO-V {N1} DEMO-D {N2} DEMO-J",
+          "(3′V)3′{N1}5′(D)3′{N2}5′(5′J)",
+          1200,
+          "0.0%"
+        ]
+      ],
+      "grid_columns": 5,
+      "layout": [
+        {
+          "cells": [
+            {
+              "column": 0,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 3,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 4,
+              "span": 1,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 5,
+              "span": 5,
+              "mode": "pair"
+            }
+          ],
+          "hide_if_empty": true
+        },
+        {
+          "cells": [
+            {
+              "column": 6,
+              "span": 5,
+              "mode": "pair",
+              "label_span": 2
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 7,
+              "span": 5,
+              "mode": "pair"
+            }
+          ],
+          "hide_if_empty": true
+        },
+        {
+          "cells": [
+            {
+              "column": 8,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 9,
+              "span": 1,
+              "mode": "inline"
+            },
+            {
+              "column": 10,
+              "span": 2,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 11,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 12,
+              "span": 1,
+              "mode": "inline"
+            },
+            {
+              "column": 13,
+              "span": 2,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 14,
+              "span": 4,
+              "mode": "pair",
+              "label_span": 3
+            },
+            {
+              "column": 15,
+              "span": 1,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 16,
+              "span": 2,
+              "mode": "label"
+            },
+            {
+              "column": 16,
+              "span": 1,
+              "mode": "value"
+            },
+            {
+              "column": 17,
+              "span": 1,
+              "mode": "value"
+            },
+            {
+              "column": 18,
+              "span": 1,
+              "mode": "value"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 19,
+              "span": 4,
+              "mode": "pair",
+              "label_span": 2
+            },
+            {
+              "column": 20,
+              "span": 1,
+              "mode": "value"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 21,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 22,
+              "span": 3,
+              "mode": "pair"
+            }
+          ]
+        }
+      ],
+      "record_heading": "{0} - {1} nt ({2})",
+      "heading": {
+        "en": "Detailed analysis results",
+        "sv": "Detaljerade analysresultat"
+      }
+    },
+    {
+      "kind": "description",
+      "key": "description",
+      "text": {
+        "sv": "### Metod\nSyntetisk analysbeskrivning.\n\n### Omfattning\nDemonstration av rapportens innehåll och layout.",
+        "en": "### Method\nSynthetic analysis description.\n\n### Scope\nDemonstration of report content and layout."
+      },
+      "heading": {
+        "en": "Analysis description",
+        "sv": "Analysbeskrivning"
+      },
+      "format": "markdown"
+    },
+    {
+      "kind": "references",
+      "key": "references",
+      "text": {
+        "sv": "1. Demonstrationsreferens.",
+        "en": "1. Example reference."
+      },
+      "heading": {
+        "en": "References",
+        "sv": "Referenser"
+      },
+      "format": "markdown"
+    }
+  ]
+}

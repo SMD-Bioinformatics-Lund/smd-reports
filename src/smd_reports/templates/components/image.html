@@ -1,0 +1,2 @@
+{% set height_limit = [asset.max_height_mm, report.image_height_limit_mm]|min if asset.max_height_mm is not none else report.image_height_limit_mm %}
+<figure class="report-image" style="width: {{ asset.width_percent }}%"><img src="{{ asset.source|image_uri(asset.frame, true) }}" alt="{{ (asset.alt or asset.caption)|ui }}" style="max-height: {{ height_limit }}mm">{% if asset.caption %}<figcaption>{{ asset.caption|ui }}</figcaption>{% endif %}</figure>
