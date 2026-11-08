@@ -1,5 +1,35 @@
 # Contributing
 
+## Issues
+
+Use the [issue forms](https://github.com/SMD-Bioinformatics-Lund/smd-reports/issues/new/choose)
+for bugs, feature requests, documentation, usage questions and maintenance tasks.
+Select the priority, affected components and report templates. Include the package version
+and a minimal example for bugs. Report vulnerabilities through the private link described
+in [the security policy](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/SECURITY.md).
+
+Issues receive type, priority, component and template labels from the form. Maintainers
+confirm priority, assign an owner and select a milestone when scheduling work.
+The `v0.1.0` milestone tracks the first public release.
+
+| Priority | Use |
+| --- | --- |
+| `priority: critical` | P0: incorrect report content or a release-blocking failure |
+| `priority: high` | P1: major functionality unavailable or significantly impaired |
+| `priority: normal` | P2: standard fixes and planned improvements |
+| `priority: low` | P3: minor improvements with a workaround |
+
+New and reopened issues start with `status: triage`. Maintainers move accepted work to
+`status: ready`, then `status: in progress` and `status: in review`. Use `status: blocked`
+when work depends on another issue or decision. Adding a priority or status label removes
+the previous label in that group. Closing
+an issue removes its active status; GitHub's closed state records completion.
+
+Form edits update the selected fields without resetting priority or component labels
+changed by maintainers when those form fields have not changed. Custom labels are preserved.
+Labels are defined in `.github/labels.json`. The Issue management workflow synchronizes them
+when that file changes on `master`; it can also be run manually.
+
 ## Development setup
 
 From a source checkout, create an environment and install the development tools:

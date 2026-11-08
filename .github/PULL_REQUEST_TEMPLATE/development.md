@@ -4,7 +4,7 @@ Describe the problem and resulting behavior. Target branch: `dev`.
 
 ## Related issues
 
-Link relevant issues or requirements.
+Link related issues. Use `Closes #123` when this PR completes an issue.
 
 ## Affected components
 

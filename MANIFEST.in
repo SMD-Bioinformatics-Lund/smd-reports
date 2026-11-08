@@ -7,3 +7,6 @@ recursive-include examples *.json
 recursive-include examples/rendered *.html *.pdf
 recursive-include scripts *.py
 recursive-include tests *.py
+include .github/labels.json
+recursive-include .github/ISSUE_TEMPLATE *.yml
+recursive-include .github/scripts *.py
