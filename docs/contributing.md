@@ -131,8 +131,9 @@ Create feature or bugfix branches from `dev` and open development PRs against `d
 Include the behavior change and relevant test results. Development PRs use squash merges.
 Release PRs go from `dev` to `master` and use merge commits to preserve branch ancestry.
 Both branches require one approving review, resolved discussions and passing checks on an
-up-to-date branch. These rules also apply to administrators. Force pushes and branch deletion
-are blocked. Required checks are `branch-flow`, `lint`, `docs`, `core (3.10)`, `core (3.12)`,
+up-to-date branch. The maintainer `ramsainanduri` may bypass the approving-review requirement
+for solo maintenance. Required CI checks and the other protections still apply, including to
+administrators. Force pushes and branch deletion are blocked. Required checks are `branch-flow`, `lint`, `docs`, `core (3.10)`, `core (3.12)`,
 `core (3.14)` and `pdf`. Release PRs to `master` must originate from this repository's `dev`
 branch. The PR templates in `.github/PULL_REQUEST_TEMPLATE/` describe the expected checks.
 
