@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="156" viewBox="0 0 640 156" role="img" aria-labelledby="title description">
+  <title id="title">smd-reports</title>
+  <desc id="description">A report document containing a DNA helix and result rows, beside the smd-reports name.</desc>
+  <rect x="1" y="1" width="638" height="154" rx="20" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <path d="M42 28h58l24 24v76H42z" fill="#f0fdfa" stroke="#176b68" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M100 28v24h24" fill="#ccfbf1" stroke="#176b68" stroke-width="3.5" stroke-linejoin="round"/>
+  <g fill="none" stroke-linecap="round" stroke-width="3">
+    <path d="M58 56c34 12 0 34 34 48" stroke="#176b68"/>
+    <path d="M92 56c-34 12 0 34-34 48" stroke="#3c6585"/>
+    <path d="m63 60 24 0M68 69h14M69 79h12M65 89h20M61 99h28" stroke="#d79738" stroke-width="2"/>
+    <path d="M101 73h10m-10 13h10m-10 13h10M57 116h54" stroke="#94a3b8"/>
+  </g>
+  <text x="151" y="92" fill="#253747" font-family="DejaVu Sans, Arial, sans-serif" font-size="54" font-weight="600" letter-spacing="-1.8">smd<tspan fill="#176b68">-reports</tspan></text>
+</svg>

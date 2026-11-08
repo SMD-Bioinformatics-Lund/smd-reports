@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="588" viewBox="0 0 1120 588" role="img" aria-labelledby="title description">
+<title id="title">Report generation</title>
+<desc id="description">JSON files or text are validated by ReportLoader, which embeds local images. ReportRenderer applies templates, themes and language labels to produce standalone HTML. The HTML can be viewed or printed, or converted to PDF with optional WeasyPrint support.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="m1 1 8 4-8 4" fill="none" stroke="#3c6585" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="1118" height="586" rx="22" fill="#f8fafb" stroke="#dce4eb"/>
+<g font-family="DejaVu Sans, Arial, sans-serif">
+<text x="32" y="51" fill="#253747" font-size="27" font-weight="600">Report generation</text>
+<text x="32" y="80" fill="#526579" font-size="15" font-weight="400">JSON input to standalone HTML and PDF.</text>
+<rect x="32" y="153" width="222" height="178" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="32" y="150" width="222" height="178" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="50" y="168" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(59 177)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M6 3H2v18h4m12-18h4v18h-4M10 6l4 12m0-12-4 12"/>
+</g>
+<text x="52" y="235" fill="#253747" font-size="19" font-weight="600">JSON input</text>
+<text x="52" y="266" fill="#526579" font-size="14" font-weight="400">Metadata and sections</text>
+<text x="52" y="291" fill="#526579" font-size="14" font-weight="400">Rows, text and translations</text>
+<text x="52" y="316" fill="#526579" font-size="14" font-weight="400">Logos and plot files</text>
+<rect x="300" y="153" width="222" height="178" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="300" y="150" width="222" height="178" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="318" y="168" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(327 177)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6z"/>
+<path d="m7 12 3 3 7-7"/>
+</g>
+<text x="320" y="235" fill="#253747" font-size="19" font-weight="600">ReportLoader</text>
+<text x="320" y="266" fill="#526579" font-size="14" font-weight="400">Validate report fields</text>
+<text x="320" y="291" fill="#526579" font-size="14" font-weight="400">Embed local images</text>
+<text x="320" y="316" fill="#526579" font-size="14" font-weight="400">Preserve section order</text>
+<rect x="568" y="153" width="222" height="178" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="568" y="150" width="222" height="178" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="586" y="168" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(595 177)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<rect x="2" y="3" width="20" height="18" rx="3"/>
+<path d="M2 9h20M8 9v12M12 13h6m-6 4h6"/>
+</g>
+<text x="588" y="235" fill="#253747" font-size="19" font-weight="600">ReportRenderer</text>
+<text x="588" y="266" fill="#526579" font-size="14" font-weight="400">Templates and theme</text>
+<text x="588" y="291" fill="#526579" font-size="14" font-weight="400">English or Swedish labels</text>
+<text x="588" y="316" fill="#526579" font-size="14" font-weight="400">Embedded CSS and fonts</text>
+<rect x="846" y="127" width="242" height="116" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="846" y="124" width="242" height="116" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="864" y="142" width="42" height="42" rx="12" fill="#3c6585" opacity=".09"/>
+<g transform="translate(873 151)" fill="none" stroke="#3c6585" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18"/>
+</g>
+<text x="920" y="169" fill="#253747" font-size="19" font-weight="600">HTML</text>
+<text x="866" y="212" fill="#526579" font-size="14" font-weight="400">Browser viewing and printing</text>
+<rect x="846" y="295" width="242" height="116" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="846" y="292" width="242" height="116" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="864" y="310" width="42" height="42" rx="12" fill="#3c6585" opacity=".09"/>
+<g transform="translate(873 319)" fill="none" stroke="#3c6585" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M5 2h10l5 5v15H5zM15 2v6h5M9 13h7m-7 4h7"/>
+</g>
+<text x="920" y="337" fill="#253747" font-size="19" font-weight="600">PDF</text>
+<text x="866" y="380" fill="#526579" font-size="14" font-weight="400">Optional WeasyPrint renderer</text>
+<path d="M266 239H288" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M534 239H556" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M802 239H818V182H834" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M967 252V280" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="32" y="446" width="1056" height="82" rx="14" fill="#edf7f5" stroke="#cce3de"/>
+<text x="52" y="477" fill="#176b68" font-size="16" font-weight="600">Report settings</text>
+<text x="52" y="505" fill="#526579" font-size="15" font-weight="400">Themes · center branding · dynamic columns · page size · image formats</text>
+<text x="32" y="560" fill="#526579" font-size="14" font-weight="400">Footers identify the template revision and package version. PDF output uses the generated HTML.</text>
+</g>
+</svg>

@@ -1,0 +1,76 @@
+{
+  "title": {
+    "en": "Example Report",
+    "sv": "Exempelrapport"
+  },
+  "language": "en",
+  "report": {
+    "report_id": "GENERIC-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Example User",
+    "fields": [
+      {
+        "label": {
+          "en": "Project",
+          "sv": "Projekt"
+        },
+        "value": "Example project"
+      }
+    ]
+  },
+  "branding": {
+    "organization": "Example Center",
+    "center_logo": "../assets/center-example.svg",
+    "email": "demo@example.org"
+  },
+  "sections": [
+    {
+      "kind": "table",
+      "key": "results",
+      "heading": {
+        "en": "Results",
+        "sv": "Resultat"
+      },
+      "columns": {
+        "en": ["Measure", "Value", "Status"],
+        "sv": ["Mått", "Värde", "Status"]
+      },
+      "rows": [
+        [
+          "Example A",
+          12,
+          {
+            "en": "Reviewed",
+            "sv": "Granskad"
+          }
+        ],
+        [
+          "Example B",
+          0,
+          {
+            "en": "Pending",
+            "sv": "Väntande"
+          }
+        ]
+      ]
+    },
+    {
+      "kind": "summary",
+      "key": "summary",
+      "format": "markdown",
+      "text": {
+        "en": "**Summary:** Example A has been reviewed.",
+        "sv": "**Sammanfattning:** Exempel A har granskats."
+      }
+    },
+    {
+      "kind": "description",
+      "key": "description",
+      "format": "markdown",
+      "text": {
+        "en": "### Method\nThis example uses the default report layout.\n\n### Notes\nAdd columns and sections directly in JSON.",
+        "sv": "### Metod\nDetta exempel använder rapportens standardlayout.\n\n### Anteckningar\nLägg till kolumner och avsnitt direkt i JSON."
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Pytest: All Tests",
+    "command": "python -m pytest tests/ -v --tb=short"
+  },
+  {
+    "label": "Pytest: With Coverage",
+    "command": "python -m pytest tests/ -v --cov=. --cov-branch --cov-report=term-missing --cov-report=xml:coverage.xml --cov-report=html:htmlcov"
+  },
+  {
+    "label": "Pytest: Failed Tests",
+    "command": "python -m pytest --lf -v"
+  },
+  {
+    "label": "Pytest: Current File",
+    "command": "python -m pytest \"$ZED_FILE\" -v"
+  }
+]

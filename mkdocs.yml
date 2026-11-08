@@ -1,0 +1,33 @@
+site_name: smd-reports
+site_description: JSON reports with portable HTML/PDF rendering
+copyright: Copyright &copy; 2026 Ram Nanduri
+exclude_docs: |
+  /overrides/
+repo_url: https://github.com/SMD-Bioinformatics-Lund/smd-reports
+theme:
+  name: readthedocs
+  custom_dir: docs/overrides
+  logo: assets/smd-reports-logo.svg
+  navigation_depth: 3
+  prev_next_buttons_location: bottom
+nav:
+  - Overview: index.md
+  - Getting started:
+      - Installation: installation.md
+      - Quickstart: quickstart.md
+  - User guide:
+      - Python usage: python-api.md
+      - Report examples and presets: integration.md
+      - JSON format: json-inputs.md
+      - Center branding: branding.md
+      - HTML and PDF: rendering.md
+  - Reference:
+      - Python API reference: reference.md
+      - Command-line reference: cli.md
+  - Development:
+      - Contributing: contributing.md
+      - Testing and releases: validation.md
+      - Publishing setup: publishing.md
+markdown_extensions:
+  - tables
+  - fenced_code

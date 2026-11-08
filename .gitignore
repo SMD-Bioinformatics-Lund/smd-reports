@@ -218,3 +218,19 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local reporting artifacts
+.artifacts/
+
+# Local workspace metadata and implementation notes
+/.agents/
+/.codex/
+/.aws/
+/.design/
+/.internal/
+/docs/implementation-validation.md
+
+# Only curated HTML/PDF previews belong in this output directory
+/examples/rendered/*
+!/examples/rendered/*.html
+!/examples/rendered/*.pdf

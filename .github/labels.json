@@ -1,0 +1,157 @@
+[
+  {
+    "name": "bug",
+    "color": "d73a4a",
+    "description": "Incorrect behavior or a regression"
+  },
+  {
+    "name": "enhancement",
+    "color": "a2eeef",
+    "description": "New functionality or an improvement"
+  },
+  {
+    "name": "documentation",
+    "color": "0075ca",
+    "description": "Documentation corrections or additions"
+  },
+  {
+    "name": "question",
+    "color": "d876e3",
+    "description": "Help using or configuring the package"
+  },
+  {
+    "name": "maintenance",
+    "color": "5319e7",
+    "description": "Refactoring, dependency updates or development tooling"
+  },
+  {
+    "name": "priority: critical",
+    "color": "b60205",
+    "description": "P0: immediate attention; report content is incorrect or release use is blocked"
+  },
+  {
+    "name": "priority: high",
+    "color": "d93f0b",
+    "description": "P1: major functionality is unavailable or significantly impaired"
+  },
+  {
+    "name": "priority: normal",
+    "color": "fbca04",
+    "description": "P2: standard bug fixes and planned improvements"
+  },
+  {
+    "name": "priority: low",
+    "color": "c2e0c6",
+    "description": "P3: minor improvements with a workaround"
+  },
+  {
+    "name": "status: triage",
+    "color": "ededed",
+    "description": "Needs review, reproduction or clarification"
+  },
+  {
+    "name": "status: ready",
+    "color": "bfdadc",
+    "description": "Ready to be assigned and scheduled"
+  },
+  {
+    "name": "status: in progress",
+    "color": "1d76db",
+    "description": "Implementation is underway"
+  },
+  {
+    "name": "status: blocked",
+    "color": "b60205",
+    "description": "Waiting on a dependency or decision"
+  },
+  {
+    "name": "status: in review",
+    "color": "5319e7",
+    "description": "Implementation is awaiting review"
+  },
+  {
+    "name": "breaking change",
+    "color": "d93f0b",
+    "description": "Changes existing public behavior or accepted input"
+  },
+  {
+    "name": "area: schema",
+    "color": "c5def5",
+    "description": "JSON input and validation"
+  },
+  {
+    "name": "area: python",
+    "color": "c5def5",
+    "description": "Python interface"
+  },
+  {
+    "name": "area: cli",
+    "color": "c5def5",
+    "description": "Command-line tools"
+  },
+  {
+    "name": "area: html",
+    "color": "c5def5",
+    "description": "HTML rendering"
+  },
+  {
+    "name": "area: pdf",
+    "color": "c5def5",
+    "description": "PDF rendering"
+  },
+  {
+    "name": "area: layout",
+    "color": "c5def5",
+    "description": "Page layout and branding"
+  },
+  {
+    "name": "area: images",
+    "color": "c5def5",
+    "description": "Images and plots"
+  },
+  {
+    "name": "area: localization",
+    "color": "c5def5",
+    "description": "English and Swedish labels"
+  },
+  {
+    "name": "area: packaging",
+    "color": "c5def5",
+    "description": "Packaging and installation"
+  },
+  {
+    "name": "area: ci",
+    "color": "c5def5",
+    "description": "CI and development tools"
+  },
+  {
+    "name": "area: docs",
+    "color": "c5def5",
+    "description": "Documentation"
+  },
+  {
+    "name": "template: generic",
+    "color": "d4c5f9",
+    "description": "Generic report template"
+  },
+  {
+    "name": "template: coyote3",
+    "color": "d4c5f9",
+    "description": "Coyote3 report template"
+  },
+  {
+    "name": "template: genexus",
+    "color": "d4c5f9",
+    "description": "Genexus report template"
+  },
+  {
+    "name": "template: cll-genie",
+    "color": "d4c5f9",
+    "description": "CLL Genie report template"
+  },
+  {
+    "name": "template: pgx",
+    "color": "d4c5f9",
+    "description": "PGx report template"
+  }
+]

@@ -1,0 +1,42 @@
+name: Issue management
+on:
+  issues:
+    types: [opened, edited, reopened, closed, labeled]
+  push:
+    branches: [master]
+    paths:
+      - .github/labels.json
+      - .github/scripts/manage_issues.py
+      - .github/workflows/issues.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: issue-management-${{ github.event.issue.number || 'labels' }}
+  cancel-in-progress: false
+jobs:
+  sync-labels:
+    if: github.event_name != 'issues'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 .github/scripts/manage_issues.py sync-labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+  label-issue:
+    if: >-
+      github.event_name == 'issues' &&
+      (github.event.action != 'labeled' ||
+      startsWith(github.event.label.name, 'priority: ') ||
+      startsWith(github.event.label.name, 'status: '))
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 .github/scripts/manage_issues.py label-issue
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="180" viewBox="0 0 800 180">
+<title>Synthetic copy-number profile</title>
+<rect width="800" height="180" fill="white"/>
+<text x="24" y="24" font-family="sans-serif" font-size="15" fill="#454545">EXAMPLE — SYNTHETIC COPY-NUMBER PROFILE</text>
+<line x1="56" y1="140" x2="776" y2="140" stroke="#777"/>
+<line x1="56" y1="45" x2="56" y2="140" stroke="#777"/>
+<line x1="56" y1="90" x2="776" y2="90" stroke="#bbb" stroke-dasharray="4 4"/>
+<polyline points="56,91 92,88 128,92 164,90 200,89 236,63 272,61 308,65 344,62 380,90 416,92 452,88 488,91 524,112 560,110 596,114 632,90 668,89 704,92 740,88 776,90" fill="none" stroke="#736185" stroke-width="3"/>
+<text x="150" y="161" font-family="sans-serif" font-size="12">1</text><text x="330" y="161" font-family="sans-serif" font-size="12">2</text><text x="510" y="161" font-family="sans-serif" font-size="12">3</text><text x="690" y="161" font-family="sans-serif" font-size="12">4</text>
+</svg>

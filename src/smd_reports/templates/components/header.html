@@ -1,0 +1,18 @@
+<header class="report-brand-header">
+{% if report.application in ['coyote3', 'cll_genie'] %}
+<div class="report-product-brand">
+{% if report.branding.application_logo %}<div class="report-logo-identity"><img class="report-application-logo" src="{{ report.branding.application_logo|image_uri }}" alt="{{ report.application }}"></div>{% endif %}
+<div>{% if report.application == 'coyote3' %}
+<strong class="application-name">Coyote<span>3</span></strong>
+{% else %}<strong>CLL Genie</strong>{% endif %}</div>
+</div>
+{% endif %}
+<div class="report-center-brand"><div class="report-center-lockup"><div class="report-center-contact">
+{% if report.branding.organization %}<span>{{ report.branding.organization }}</span>{% endif %}
+{% if report.branding.department %}<span>{{ report.branding.department }}</span>{% endif %}
+{% if report.branding.address %}<span class="report-center-address">{{ report.branding.address }}</span>{% endif %}
+{% if report.branding.telephone %}<span class="report-center-phone"><svg width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z" fill="none" stroke="#656670" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> {{ report.branding.telephone }}</span>{% endif %}
+{% if report.branding.email %}<span>{{ report.branding.email }}</span>{% endif %}
+{% if report.branding.website %}<span>{{ report.branding.website }}</span>{% endif %}
+</div>{% if report.branding.center_logo %}<div class="report-center-logo-cell"><img class="center-logo" src="{{ report.branding.center_logo|image_uri }}" alt="{{ report.branding.organization }}"></div>{% endif %}</div></div>
+</header>{% if report.application in ['coyote3', 'cll_genie'] %}<div class="report-brand-rule" aria-hidden="true"></div>{% endif %}
