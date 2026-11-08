@@ -51,6 +51,8 @@ def format_markdown(value: str) -> Markup:
 
 def display(value, language="sv"):
     """Preserve zero/false rather than treating them as missing values."""
+    if isinstance(value, dict):
+        value = label(value, language)
     if value is None or value == "":
         return "-"
     if isinstance(value, bool):
@@ -68,6 +70,27 @@ def display_in_language(context, value):
 def ui_label(context, value):
     """Translate explicitly marked interface labels in templates."""
     return label(value, context["report"].language)
+
+
+@pass_context
+def record_heading(context, section, values, index):
+    if section.record_titles is not None:
+        return label(section.record_titles[index], context["report"].language)
+    if section.record_heading is not None:
+        pattern = label(section.record_heading, context["report"].language)
+        return pattern.format(*[display(value, context["report"].language) for value in values])
+    return display(values[0], context["report"].language)
+
+
+@pass_context
+def grid_row_visible(context, layout, values):
+    selected = [
+        label(values[cell.column], context["report"].language)
+        if isinstance(values[cell.column], dict)
+        else values[cell.column]
+        for cell in layout.cells
+    ]
+    return not layout.hide_if_empty or any(value is not None and value != "" for value in selected)
 
 
 def offline_fetcher(url, **kwargs):
@@ -102,7 +125,11 @@ class ReportRenderer:
             lstrip_blocks=True,
         )
         self.environment.filters.update(
-            markdown=format_markdown, display=display_in_language, ui=ui_label
+            markdown=format_markdown,
+            display=display_in_language,
+            ui=ui_label,
+            heading=record_heading,
+            grid_row_visible=grid_row_visible,
         )
 
     def register_theme(self, theme: Theme) -> None:

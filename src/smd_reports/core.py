@@ -1,20 +1,19 @@
-"""Typed document contracts, independent of clinical workflows and storage."""
+"""Validated JSON document and reusable presentation sections."""
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from datetime import datetime
+from math import isfinite
+from pathlib import Path
+from string import Formatter
 from typing import Annotated, Literal
 
 from pydantic import Field, field_validator, model_validator
 
-from ._models import FieldValue, Model, Scalar, SectionBase
-from .sequence import CLLSequenceSection
+from ._models import CellValue, FieldValue, Language, LocalizedText, Model, SectionBase
 
 
 class Branding(Model):
-    """Embedded branding; callers decide whether an assay is accredited."""
-
     organization: str = ""
     department: str = ""
     address: str = ""
@@ -28,56 +27,34 @@ class Branding(Model):
     center_logo_width_mm: float = Field(default=11.64, ge=5, le=35)
     application_logo_width_mm: float = Field(default=13.75, ge=5, le=30)
     accreditation_logo_width_mm: float = Field(default=25, ge=10, le=35)
-    accreditation_label: str = "Ackreditering"
+    accreditation_label: LocalizedText = "Ackreditering"
 
     @field_validator("application_logo", "center_logo", "accreditation_logo")
     @classmethod
-    def embedded_image(cls, value: str | None) -> str | None:
-        """Validate embedded artwork without accepting active SVG or external resources."""
-        if value is not None:
+    def image_reference(cls, value):
+        if value is None:
+            return value
+        if value.startswith("data:"):
             from .assets import validate_image
 
             validate_image(value)
+        elif (
+            not value.strip() or (":" in value and not Path(value).is_absolute()) or "\x00" in value
+        ):
+            raise ValueError("Use a local image path or embedded image data URI")
         return value
-
-    @classmethod
-    def from_files(
-        cls, *, center_logo=None, application_logo=None, accreditation_logo=None, **information
-    ):
-        """Embed explicit local logo paths alongside validated center information.
-
-        Paths are read once; reports remain independent of host paths after creation.
-        Accreditation eligibility must still be supplied by the application.
-        """
-        from .assets import embed_image
-
-        logos = {
-            key: embed_image(path) if path is not None else None
-            for key, path in {
-                "center_logo": center_logo,
-                "application_logo": application_logo,
-                "accreditation_logo": accreditation_logo,
-            }.items()
-        }
-        return cls(**information, **logos)
 
 
 class Provenance(Model):
-    """Caller-owned generation context plus versioned reporting identities."""
-
     application_version: str = ""
     configuration_version: str = ""
     assay_version: str = ""
     source_revision: str = ""
-    package_version: str = "0.1.0"
-    plugin_version: str = "1.0.0"
-    schema_version: Literal[1] = 1
-    template_version: str = "1.0.0"
+    package_version: str = ""
+    template_version: str = ""
 
 
 class ReportMetadata(Model):
-    """Report identity and ordered patient/sample fields supplied by the host."""
-
     report_id: str = Field(min_length=1)
     sample_id: str = Field(min_length=1)
     generated_at: datetime
@@ -86,144 +63,186 @@ class ReportMetadata(Model):
 
     @field_validator("generated_at")
     @classmethod
-    def aware_timestamp(cls, value: datetime) -> datetime:
-        """Require an explicit timezone rather than guessing the host timezone."""
+    def aware_timestamp(cls, value):
         if value.utcoffset() is None:
             raise ValueError("generated_at must include a timezone")
         return value
 
 
-class TextSection(SectionBase):
-    """Plain text or sanitized Markdown, optionally styled as a conclusion."""
+class Presentation(Model):
+    header_height_mm: float = Field(default=65, ge=40, le=120)
+    footer_height_mm: float = Field(default=38, ge=22, le=50)
 
+
+class TextSection(SectionBase):
     kind: Literal["text"] = "text"
-    text: str
+    text: LocalizedText
     format: Literal["plain", "markdown"] = "plain"
     conclusion: bool = False
 
 
 class Column(Model):
-    """A declared table column; values are already prepared for reporting."""
+    label: LocalizedText
+    width: float = Field(default=1, gt=0)
+    format: Literal["plain", "markdown"] = "plain"
+    full_width: bool = False
+    emphasis: bool = False
+    highlight: bool = False
 
-    key: str
-    label: str
 
-
-class TableSection(SectionBase):
-    """Explicit columns and scalar rows; no clinical inference is performed."""
-
-    kind: Literal["table"] = "table"
+class MatrixSection(SectionBase):
     columns: list[Column] = Field(min_length=1)
-    rows: list[dict[str, Scalar]] = Field(default_factory=list)
-    empty_text: str = "Inga rapporterbara resultat"
-    emphasis_column: str | None = None
-    emphasis_value: Scalar = None
+    rows: list[list[CellValue]] = Field(default_factory=list)
+    empty_text: LocalizedText = "Inga rapporterbara resultat"
 
     @model_validator(mode="after")
-    def valid_columns(self) -> TableSection:
-        """Reject duplicate columns and accidentally discarded row fields."""
-        keys = [column.key for column in self.columns]
-        if len(keys) != len(set(keys)):
-            raise ValueError("Duplicate table columns")
-        if any(set(row) - set(keys) for row in self.rows):
-            raise ValueError("A row contains undeclared columns")
-        if self.emphasis_column is not None and self.emphasis_column not in keys:
-            raise ValueError("Unknown emphasis column")
+    def rectangular_rows(self):
+        if not isfinite(sum(column.width for column in self.columns)):
+            raise ValueError("The total column width must be finite")
+        if any(len(row) != len(self.columns) for row in self.rows):
+            raise ValueError("Every row must contain exactly one value per declared column")
         return self
 
 
-class DetailField(FieldValue):
-    """One supplied detail value with optional full-width or Markdown presentation."""
-
-    full_width: bool = False
-    format: Literal["plain", "markdown"] = "plain"
-    emphasis: bool = False
+class TableSection(MatrixSection):
+    kind: Literal["table"] = "table"
 
 
-class DetailRecord(Model):
-    """A finding's titled card; the caller supplies classifications and interpretation."""
+def validate_heading(pattern: LocalizedText | None, columns: int):
+    if pattern is None:
+        return
+    for text in [pattern] if isinstance(pattern, str) else pattern.values():
+        for _, name, spec, conversion in Formatter().parse(text):
+            if name is not None and (
+                not name.isascii()
+                or not name.isdigit()
+                or int(name) >= columns
+                or spec
+                or conversion
+            ):
+                raise ValueError("Headings accept only column indexes such as {0} or {1}")
 
-    key: str = Field(min_length=1)
-    title: str = Field(min_length=1)
-    fields: list[DetailField] = Field(min_length=1)
 
-
-class DetailSection(SectionBase):
-    """Ordered finding cards using the clinical report's compact detail-table layout."""
-
-    kind: Literal["details"] = "details"
-    records: list[DetailRecord] = Field(default_factory=list)
-    fields_per_row: Literal[1, 2, 3] = 3
-    empty_text: str = "Inga rapporterbara resultat"
+class RecordSection(MatrixSection):
+    record_heading: LocalizedText | None = None
+    record_titles: list[LocalizedText] | None = None
 
     @model_validator(mode="after")
-    def unique_records(self) -> DetailSection:
-        keys = [record.key for record in self.records]
-        if len(keys) != len(set(keys)):
-            raise ValueError("Duplicate detail record keys")
+    def valid_headings(self):
+        validate_heading(self.record_heading, len(self.columns))
+        if self.record_titles is not None and len(self.record_titles) != len(self.rows):
+            raise ValueError("record_titles must have one title per row")
+        return self
+
+
+class DetailSection(RecordSection):
+    kind: Literal["details"] = "details"
+    fields_per_row: int = Field(default=3, ge=1, le=6)
+    full_width_last: bool = False
+
+
+class GridCell(Model):
+    column: int = Field(ge=0)
+    mode: Literal["pair", "inline", "value", "label"] = "pair"
+    span: int = Field(default=2, ge=1)
+    label_span: int = Field(default=1, ge=1)
+    label: LocalizedText | None = None
+
+    @model_validator(mode="after")
+    def valid_span(self):
+        if self.mode == "pair" and self.label_span >= self.span:
+            raise ValueError("A pair needs space for both its label and value")
+        return self
+
+
+class GridRow(Model):
+    cells: list[GridCell] = Field(min_length=1)
+    hide_if_empty: bool = False
+
+
+class GridSection(RecordSection):
+    kind: Literal["grid"] = "grid"
+    grid_columns: int = Field(default=5, ge=1, le=24)
+    layout: list[GridRow] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def valid_layout(self):
+        for row in self.layout:
+            if sum(cell.span for cell in row.cells) != self.grid_columns:
+                raise ValueError("Each layout row must fill grid_columns exactly")
+            if any(cell.column >= len(self.columns) for cell in row.cells):
+                raise ValueError("A grid cell references an undeclared column")
         return self
 
 
 class ImageSection(SectionBase):
-    """An embedded plot prepared by the application."""
-
     kind: Literal["image"] = "image"
     source: str
-    caption: str = ""
+    caption: LocalizedText = ""
 
     @field_validator("source")
     @classmethod
-    def embedded_source(cls, value: str) -> str:
-        Branding.embedded_image(value)
+    def image_reference(cls, value):
+        Branding.image_reference(value)
         return value
 
 
 ReportSection = Annotated[
-    TextSection | TableSection | DetailSection | CLLSequenceSection | ImageSection,
+    TextSection | TableSection | DetailSection | GridSection | ImageSection,
     Field(discriminator="kind"),
 ]
 
 
 class Report(Model):
-    """Validated, serializable document produced by an application report builder."""
-
-    schema_version: Literal[1] = 1
     application: Literal["coyote3", "genexus", "cll_genie", "pgx"]
-    title: str
-    language: Literal["sv", "en"] = "sv"
+    title: LocalizedText
+    language: Language = "sv"
     analyte: str = ""
-    header_height_mm: float = Field(default=65, ge=40, le=120)
-    footer_height_mm: float = Field(default=38, ge=22, le=50)
-    metadata: ReportMetadata
+    report: ReportMetadata
     branding: Branding = Field(default_factory=Branding)
     provenance: Provenance = Field(default_factory=Provenance)
+    presentation: Presentation = Field(default_factory=Presentation)
+    supported_analyses: list[str] | None = None
+    enabled_analyses: list[str] | None = None
     sections: list[ReportSection] = Field(default_factory=list)
 
+    @property
+    def metadata(self):
+        return self.report
+
+    @property
+    def header_height_mm(self):
+        return self.presentation.header_height_mm
+
+    @property
+    def footer_height_mm(self):
+        return self.presentation.footer_height_mm
+
+    @property
+    def visible_sections(self):
+        return [
+            section
+            for section in self.sections
+            if section.enabled
+            and (
+                section.analysis is None
+                or self.enabled_analyses is None
+                or section.analysis in self.enabled_analyses
+            )
+        ]
+
     @model_validator(mode="after")
-    def unique_sections(self) -> Report:
-        """Require stable, unique section identifiers."""
+    def valid_sections(self):
         keys = [section.key for section in self.sections]
         if len(keys) != len(set(keys)):
             raise ValueError("Duplicate section keys")
+        for names in [self.supported_analyses, self.enabled_analyses]:
+            if names is not None and len(names) != len(set(names)):
+                raise ValueError("Duplicate analysis names")
+        if self.supported_analyses is not None:
+            requested = set(self.enabled_analyses or []) | {
+                s.analysis for s in self.sections if s.analysis is not None
+            }
+            if requested - set(self.supported_analyses):
+                raise ValueError("An analysis is not in supported_analyses")
         return self
-
-
-class ClinicalReport(ABC):
-    """Base builder; rendering is delegated to a replaceable renderer instance."""
-
-    @abstractmethod
-    def build(self) -> Report:
-        """Build the document from validated application data."""
-        raise NotImplementedError
-
-    def render_html(self, *, renderer=None) -> str:
-        """Render the built document using the supplied or default renderer."""
-        from .rendering import ReportRenderer
-
-        return (renderer or ReportRenderer()).render_html(self.build())
-
-    def render_pdf(self, *, renderer=None) -> bytes:
-        """Return PDF bytes without persisting a clinical artifact."""
-        from .rendering import ReportRenderer
-
-        return (renderer or ReportRenderer()).render_pdf(self.build())

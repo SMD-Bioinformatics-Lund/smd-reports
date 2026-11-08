@@ -1,145 +1,58 @@
 # Python usage
 
-Import the installed package as `smd_reports`. Load JSON or build directly from Python models.
+Install `smd-reports` and import it as `smd_reports`. Report data is supplied as JSON.
 
-## Load JSON and render
+## Load a file
 
 ```python
 from pathlib import Path
 from smd_reports import ReportLoader, ReportRenderer
 
-document = ReportLoader().load("report.json")
+report = ReportLoader().load("report.json")
 renderer = ReportRenderer()
-Path("report.html").write_text(renderer.render_html(document), encoding="utf-8")
-# Requires the PDF extra:
-Path("report.pdf").write_bytes(renderer.render_pdf(document))
+Path("report.html").write_text(renderer.render_html(report), encoding="utf-8")
+Path("report.pdf").write_bytes(renderer.render_pdf(report))
 ```
 
-`load()` accepts an application input envelope or a normalized `Report` snapshot.
-Relative logo paths resolve against the JSON directory, not the process's working directory.
-Model validation, JSON and filesystem errors are propagated to the caller.
+PDF generation requires `pip install "smd-reports[pdf]"` and the native runtime.
 
-## Build from application data
-
-| Builder | Data model |
-| --- | --- |
-| `CoyoteReport` | `CoyoteData` |
-| `GenexusReport` | `GenexusData` |
-| `CLLGenieReport` | `CLLGenieData` |
-| `PGxReport` | `PGxData` |
-
-Each takes `data=...` and `config=ReportConfig(...)`. The [quickstart](quickstart.md)
-contains a complete example; [application inputs](integration.md) covers their differences.
+## Load JSON text
 
 ```python
-document = report.build()       # Report
-html = report.render_html()    # str
-pdf = report.render_pdf()      # bytes; optional PDF dependency
+from smd_reports import ReportLoader, ReportRenderer
+
+report = ReportLoader().loads(json_text, base_dir="/path/to/assets")
+html = ReportRenderer().render_html(report)
 ```
 
-Builders do not save files. In a web application, return these values through the host's
-response mechanism or store them using its artifact storage service.
+`loads()` accepts JSON text or UTF-8 bytes. `base_dir` is required when that JSON contains
+relative artwork paths. Embedded data URIs need no base directory.
 
-## Define sections
+If your application already has a dictionary, serialize it with `json.dumps(payload)`
+and pass the resulting JSON text to `loads()`. Both loading methods use the same format
+and validation.
 
-```python
-from smd_reports import Analysis, Column, FieldValue, TableSection, TextSection
-
-analysis = Analysis(
-    name="SNV",
-    parameters=[FieldValue(label="Reference genome", value="GRCh38")],
-    sections=[
-        TableSection(
-            key="variants", title="Reported variants",
-            columns=[Column(key="gene", label="Gene")],
-            rows=[{"gene": "BRAF"}],
-            empty_text="No reportable variants",
-        ),
-        TextSection(
-            key="notes", title="Notes", text="**Reviewed** explanatory text.",
-            format="markdown",
-        ),
-    ],
-)
-```
-
-Declare each row's columns explicitly. Unknown row keys fail validation; missing declared
-cells display a hyphen. Zero and false are retained. Markdown is sanitized and does not
-load external images. `ImageSection` accepts an embedded raster/static SVG plot.
-
-Supply each enabled analysis in `analyses`, even when its result table is empty.
-`supported_analyses` describes assay capability; it does not automatically enable sections.
-
-## Add detailed findings
-
-Attach detail sections to `Analysis.details` to show per-finding cards after the yellow
-conclusion. Use them for SNVs/INDELs, CNVs, DNA/RNA fusions, biomarkers or other prepared
-clinical results. Genexus has its own template that batches compact fields before full-width rows.
-CLL Genie uses a separate grouped sequence table built from the typed `CLLSequence`
-fields; see [application inputs](integration.md#cll-genie). `CLLSequence.details` is for
-additional full-width rows after the standard sequence fields.
-
-```python
-from smd_reports import DetailField, DetailRecord, DetailSection
-
-analysis.details = [DetailSection(
-    key="snv-details", title="Variant details", fields_per_row=3,
-    records=[DetailRecord(
-        key="braf-1", title="BRAF p.Val600Glu",
-        fields=[
-            DetailField(label="Gene", value="BRAF"),
-            DetailField(label="Transcript", value="NM_004333.6"),
-            DetailField(label="VAF", value="24%"),
-            DetailField(label="Classification", value="Reviewed example",
-                        full_width=True, emphasis=True),
-            DetailField(label="Comment", value="**Synthetic** reviewed interpretation.",
-                        full_width=True, format="markdown"),
-        ],
-    )],
-)]
-```
-
-Fields retain their declared order within each layout group. Choose one, two or three key/value pairs per row;
-full-width fields interrupt compact rows. Comments accept sanitized Markdown and continue
-across pages. The library does not infer clinical meaning or generate conditional text.
-
-Use `data.supporting_sections` for covered-gene tables, classification explanations and
-other material after the method description. `ImageSection` can carry application-supplied
-CNV or clonality plots, including in `Analysis.details`.
-
-## Configure presentation
-
-```python
-from smd_reports import ReportConfig
-
-config = ReportConfig(
-    title="Molecular Genetics Report",
-    language="en",
-    summary_new_page=True,
-    header_height_mm=65,
-)
-```
-
-If `section_order` is provided, it must name every selected analysis section and generated
-`parameters-ANALYSIS` section exactly once. The summary follows, then enabled analyses’ details, the method description,
-`supporting_sections` and references.
-Application-specific generated tables also have their builder-defined ordering.
-
-Language controls built-in labels, boolean display and page numbering. Supply clinical
-text, custom field labels and custom section titles in the desired language yourself.
-
-## Preserve a normalized document
+## Save a portable JSON document
 
 ```python
 from pathlib import Path
-from smd_reports import ReportLoader
 
-Path("report.snapshot.json").write_text(
-    document.model_dump_json(indent=2), encoding="utf-8",
+Path("report.portable.json").write_text(
+    report.model_dump_json(indent=2), encoding="utf-8",
 )
-restored = ReportLoader().load("report.snapshot.json")
 ```
 
-Snapshots contain embedded logos and selected document content. They do not rerun clinical
-rules. Retain the matching rendering environment when regenerating reviewed layouts.
-See [Python API reference](reference.md) for signatures, defaults and errors.
+The saved document embeds artwork and uses the same JSON format as the original input.
+Reload it with `ReportLoader.load()` or `loads()`.
+
+## Export validation rules
+
+```python
+from smd_reports import ReportLoader
+
+schema = ReportLoader().schema()
+```
+
+See the [JSON guide](json-inputs.md) for dynamic columns, localized labels, detailed
+finding cards and grouped grids. Method signatures and exceptions are listed in the
+[Python API reference](reference.md).

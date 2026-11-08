@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="{{ report.language }}">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ report.title }} - {{ report.metadata.report_id }}</title>
+<title>{{ report.title|ui }} - {{ report.metadata.report_id }}</title>
 <meta name="smd-reports:generated-at" content="{{ report.metadata.generated_at.isoformat() }}">
 {% for key, value in report.provenance.model_dump().items() %}<meta name="smd-reports:{{ key }}" content="{{ value }}">{% endfor %}
 <style>{{ fonts | safe }}
@@ -24,14 +24,14 @@
 <main class="report-content">
 {% include 'components/document_heading.html' %}
 <div class="screen-metadata">{% include 'components/metadata.html' %}</div>
-{% for section in report.sections %}
+{% for section in report.visible_sections %}
 <section id="{{ section.key }}" class="section{% if section.kind == 'text' and section.conclusion %} report-summary{% endif %}{% if section.page_break_before %} break-before{% endif %}">
-{% if section.title %}<h2 class="report_header">{{ section.title }}</h2>{% endif %}
+{% if section.title %}<h2 class="report_header">{{ section.title|ui }}</h2>{% endif %}
 {% if section.kind == 'table' %}{% include 'components/table.html' %}
-{% elif section.kind == 'details' %}{% if report.application == 'genexus' %}{% include 'components/genexus_details.html' %}{% else %}{% include 'components/details.html' %}{% endif %}
-{% elif section.kind == 'cll_sequences' %}{% include 'components/cll_sequence.html' %}
-{% elif section.kind == 'text' %}<div class="{% if section.conclusion %}results_summary {% endif %}{{ section.format }}">{% if section.format == 'markdown' %}{{ section.text|markdown }}{% else %}{{ section.text }}{% endif %}</div>
-{% elif section.kind == 'image' %}<figure><img src="{{ section.source }}" alt="{{ section.caption }}"><figcaption>{{ section.caption }}</figcaption></figure>
+{% elif section.kind == 'details' %}{% include 'components/details.html' %}
+{% elif section.kind == 'grid' %}{% include 'components/grid.html' %}
+{% elif section.kind == 'text' %}<div class="{% if section.conclusion %}results_summary {% endif %}{{ section.format }}">{% if section.format == 'markdown' %}{{ section.text|ui|markdown }}{% else %}{{ section.text|ui }}{% endif %}</div>
+{% elif section.kind == 'image' %}<figure><img src="{{ section.source }}" alt="{{ section.caption|ui }}"><figcaption>{{ section.caption|ui }}</figcaption></figure>
 {% endif %}</section>
 {% endfor %}
 </main>

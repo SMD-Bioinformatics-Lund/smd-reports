@@ -1,56 +1,21 @@
 # Command-line reference
 
-Install the package to get `smd-reports`. All commands are also available as
-`python -m smd_reports`. Run `smd-reports --help` for command help.
-
-## Validate
+Install with `pip install smd-reports`. Commands are available as `smd-reports` and
+`python -m smd_reports`.
 
 ```sh
 smd-reports validate report.json
-```
-
-Checks the application contract, selected analyses and referenced artwork, then builds the
-document. No output artifact is written. Application JSON and normalized snapshots are accepted.
-
-## Render
-
-```sh
 smd-reports render report.json --format html --output report.html
 smd-reports render report.json --format pdf --output report.pdf
+smd-reports normalize report.json --output report.portable.json
+smd-reports schema --output report.schema.json
 ```
 
-`--format` and `--output` are required. HTML includes CSS, fonts, print rules and artwork.
-PDF rendering requires the `pdf` extra and native runtime. The output parent directory must
-already exist. The input JSON cannot also be the output path; an existing separate output
-file is overwritten.
+`validate` checks JSON and artwork. `render` writes HTML or PDF. `normalize` writes the
+same JSON format with embedded images and renderer versions. `schema` exports JSON Schema;
+optionally add `--application coyote3`, `genexus`, `cll_genie` or `pgx` to restrict the identity.
 
-## Normalize
-
-```sh
-smd-reports normalize report.json --output report.snapshot.json
-```
-
-Saves the built `Report` with embedded artwork. The snapshot is a document format rather
-than another application input envelope. It can be validated or rendered using the same
-commands without the original logo files.
-
-## Export JSON Schema
-
-```sh
-smd-reports schema --application coyote3 --output coyote3.schema.json
-```
-
-Application choices are `coyote3`, `genexus`, `cll_genie` and `pgx`. Schema export does not
-read report data or require WeasyPrint. The loader applies additional cross-field and
-artwork checks beyond the structural JSON Schema.
-
-## Exit status and errors
-
-| Status | Meaning |
-| --- | --- |
-| 0 | Command succeeded |
-| 2 | Argument, input validation, filesystem or renderer dependency error |
-
-Validation messages identify field locations/types without printing clinical values.
-Artwork loading errors identify the branding field. Check input paths and permissions,
-the [JSON format](json-inputs.md) and [PDF dependencies](installation.md) when a command fails.
+`--output` is required for commands that write a file. An output path cannot overwrite
+the input JSON. Parent directories must already exist. Invalid JSON, assets or output
+locations return exit status 2; success returns 0. PDF generation needs the PDF extra and
+native dependencies described in [installation](installation.md).

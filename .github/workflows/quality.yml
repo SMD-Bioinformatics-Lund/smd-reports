@@ -33,6 +33,7 @@ jobs:
       - run: python -m ruff format --check src examples tests scripts
       - run: python -m pytest -q --ignore=tests/test_pdf.py
       - run: python -m build
+      - run: python -m twine check --strict dist/*
       - run: python scripts/wheel_smoke.py
       - uses: actions/upload-artifact@v4
         with:

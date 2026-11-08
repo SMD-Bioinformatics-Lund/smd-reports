@@ -1,113 +1,39 @@
 # Python API reference
 
-Public classes below are exported from `smd_reports` unless another import path is stated.
-Models use Pydantic 2, reject unknown fields and support `model_dump()`,
-`model_dump_json()` and `model_validate()`.
+The public interface is exported from `smd_reports`.
 
-## Loading and rendering
-
-| Method | Returns | Behavior |
+| Method | Result | Description |
 | --- | --- | --- |
-| `ReportLoader.load(path: str \| Path)` | `Report` | Load application JSON or normalized snapshot; embed referenced logos |
-| `ReportLoader.schema(application: str)` | `dict` | Export one application's JSON Schema |
-| `ReportRenderer.render_html(report: Report, *, theme=None)` | `str` | Render self-contained HTML |
-| `ReportRenderer.render_pdf(report: Report, *, theme=None)` | `bytes` | Render PDF using optional WeasyPrint |
-| `ReportRenderer.register_theme(theme: Theme)` | `None` | Register a new theme name; duplicates fail |
+| `ReportLoader.load(path: str \| Path)` | Validated document | Read JSON; resolve artwork relative to the file |
+| `ReportLoader.loads(source: str \| bytes, *, base_dir=None)` | Validated document | Read JSON text/bytes; resolve artwork relative to `base_dir` |
+| `ReportLoader.schema(application=None)` | `dict` | Export JSON Schema; optionally constrain the application identity |
+| `ReportRenderer.render_html(report, *, theme=None)` | `str` | Return standalone HTML with embedded styles, fonts and images |
+| `ReportRenderer.render_pdf(report, *, theme=None)` | `bytes` | Return a PDF; requires the PDF extra |
+| `ReportRenderer.register_theme(theme: Theme)` | `None` | Add a named theme to this renderer |
 
-Loading and rendering do not persist artifacts. JSON parsing, filesystem and Pydantic
-validation errors propagate to Python callers. `ReportAssetError`, imported from
-`smd_reports.loading`, identifies a logo field that could not be loaded.
-Missing PDF Python/native dependencies raise `PDFUnavailableError`.
+Loading and rendering return values without saving output files. The document returned
+by a loader supports `model_dump_json(indent=2)` for portable JSON export.
 
-## Application builders
+## Exceptions
 
-`CoyoteReport(data: CoyoteData, config: ReportConfig)`,
-`GenexusReport(data: GenexusData, config: ReportConfig)`,
-`CLLGenieReport(data: CLLGenieData, config: ReportConfig)` and
-`PGxReport(data: PGxData, config: ReportConfig)` implement the `ClinicalReport` interface:
-
-| Method | Returns |
+| Exception | Meaning |
 | --- | --- |
-| `build()` | Validated `Report` |
-| `render_html(*, renderer=None)` | HTML `str` |
-| `render_pdf(*, renderer=None)` | PDF `bytes` |
+| `pydantic.ValidationError` | Invalid fields, row lengths, translations or layout references |
+| `json.JSONDecodeError` | Invalid JSON syntax |
+| `ValueError` | Duplicate JSON keys, non-finite JSON constants or an unknown theme |
+| `TypeError` | `loads()` received something other than JSON text/bytes |
+| `OSError` | Input/output file could not be read or written |
+| `ReportAssetError` | An image could not be loaded; identifies its JSON field |
+| `PDFUnavailableError` | PDF Python/native dependencies are unavailable |
 
-`PGxReport.from_files(inputs: PGxFiles, *, data: PGxData, config: ReportConfig)` returns a
-`PGxReport` after local TSV preparation. See [application inputs](integration.md).
+`ReportAssetError`, `PDFUnavailableError` and `Theme` are also exported from `smd_reports`.
 
-## Shared models
+## Theme
 
-### ReportMetadata
+`Theme` requires `name`, `heading`, `accent`, `tint` and `rule_end`. Colors are six-digit
+hex strings. Optional `body_pt` defaults to 9.25 and accepts 8–12. See [rendering](rendering.md).
 
-Required fields: `report_id`, `sample_id`, `generated_at`. IDs must be nonempty;
-`generated_at` must include a timezone. Optional fields are `author` (empty by default)
-and ordered `fields: list[FieldValue]` (empty by default).
+## JSON definitions
 
-`FieldValue(label, value)` accepts string, integer, finite float, boolean or null values.
-
-### ReportConfig
-
-| Field | Type | Default |
-| --- | --- | --- |
-| `title` | `str` | Required |
-| `language` | `"sv"` or `"en"` | `"sv"` |
-| `section_order` | `list[str]` or `None` | `None` |
-| `summary_new_page` | `True` only; conclusions always have page breaks before and after | `True` |
-| `header_height_mm` | Finite float, 40–120 | `65` |
-| `footer_height_mm` | Finite float, 22–50; used with accreditation artwork | `38` |
-
-### Analysis and sections
-
-`Analysis(name, parameters=[], sections=[], details=[])` groups prepared sections for one analysis.
-Section keys must be unique within a built document. All sections have `key`, `title` and
-`page_break_before=False`.
-
-| Section | Specific fields |
-| --- | --- |
-| `TextSection` | `text`; `format="plain"` or `"markdown"`; `conclusion=False` |
-| `TableSection` | Nonempty `columns: list[Column]`; `rows=[]`; `empty_text`; optional `emphasis_column`/`emphasis_value` |
-| `DetailSection` | `records: list[DetailRecord]=[]`; `fields_per_row=3` (1, 2 or 3); `empty_text` |
-| `CLLSequenceSection` | `kind="cll_sequences"`; nonempty `sequences: list[CLLSequence]` with unique identifiers |
-| `ImageSection` | Embedded `source` data URI; `caption=""` |
-
-`Column(key, label)` declares a table column. Row keys must be declared columns.
-`ReportSection` is the discriminated union of the five section types; JSON uses `kind`
-values `text`, `table`, `details`, `cll_sequences` and `image`.
-
-`DetailRecord(key, title, fields)` defines a finding card with a nonempty ordered list of
-`DetailField` values. Record keys must be unique within a detail section.
-`DetailField(label, value, full_width=False, format="plain", emphasis=False)` accepts the
-same scalar values as `FieldValue`. Markdown and full-width fields occupy their own row;
-long comments can continue across PDF pages. Genexus renders compact fields first, then
-full-width fields, matching its configured source layout.
-
-`CLLSequenceSection` renders the dedicated grouped CLL Genie sequence layout. See
-[CLL Genie inputs](integration.md#cll-genie) for the typed gene, identity, functionality,
-indel, junction and read-count fields. This section is automatically built by
-`CLLGenieReport`; normalized snapshots retain its full prepared sequence data.
-
-Analysis `sections` and parameters precede the summary; enabled analyses' `details` follow
-it. The method description, `supporting_sections` and references follow the details.
-The application supplies clinical values, classifications, labels and commentary.
-
-### Branding
-
-`Branding` holds embedded artwork and center information.
-`Branding.from_files(*, center_logo=None, application_logo=None, accreditation_logo=None,
-**information)` reads explicit local logo files and returns a validated `Branding`.
-See [branding](branding.md) for fields, dimensions and image restrictions.
-
-### Report and provenance
-
-`Report` is the normalized document: application identity, title, language, analyte,
-header height, metadata, branding, provenance and ordered sections. Its schema version is 1.
-Normalized snapshots use this format; application envelopes use the [JSON input format](json-inputs.md).
-
-`Provenance` contains application/configuration/assay/source revisions plus package, plugin,
-schema and template versions. Builders attach the installed package/template revisions.
-Applications provide their own contextual revisions and preserve artifacts.
-
-### Theme
-
-`Theme` requires `name`, `heading`, `accent`, `tint` and `rule_end`. Colors must be six-digit
-hex values. `body_pt` defaults to 9.25 and accepts 8–12. See [rendering](rendering.md).
+The [JSON guide](json-inputs.md) documents the input fields. `schema()` exports their
+machine-readable definitions, including the table/detail row matrices and grouped grids.

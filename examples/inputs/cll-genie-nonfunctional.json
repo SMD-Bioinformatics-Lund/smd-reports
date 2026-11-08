@@ -1,5 +1,4 @@
 {
-  "schema_version": 1,
   "application": "cll_genie",
   "title": "IGHV-mutationsanalys",
   "language": "sv",
@@ -59,29 +58,32 @@
     "application_version": "",
     "configuration_version": "",
     "assay_version": "",
-    "source_revision": "",
-    "package_version": "0.1.0",
-    "plugin_version": "1.0.0",
-    "schema_version": 1,
-    "template_version": "1.0.0"
+    "source_revision": ""
   },
   "presentation": {
-    "section_order": null,
-    "summary_new_page": true,
     "header_height_mm": 65,
     "footer_height_mm": 38
   },
-  "data": {
-    "supported_analyses": [],
-    "enabled_analyses": [],
-    "analyses": [],
-    "summary": "Exempel på granskad slutsats. Endast för demonstration.",
-    "summary_format": "plain",
-    "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "Example reference supplied by the application; demonstration only.",
-    "supporting_sections": [],
-    "report_type": "nonfunctional",
-    "submission_id": null,
-    "sequences": []
-  }
+  "sections": [
+    {
+      "kind": "text",
+      "key": "summary",
+      "title": "Slutsats",
+      "text": "Exempel på granskad slutsats. Endast för demonstration.",
+      "format": "plain",
+      "conclusion": true
+    },
+    {
+      "kind": "text",
+      "key": "description",
+      "title": "Analysbeskrivning",
+      "text": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här."
+    },
+    {
+      "kind": "text",
+      "key": "references",
+      "title": "Referenser",
+      "text": "Example reference supplied by the application; demonstration only."
+    }
+  ]
 }

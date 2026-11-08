@@ -1,5 +1,4 @@
 {
-  "schema_version": 1,
   "application": "coyote3",
   "title": "Molekylärgenetisk analysrapport",
   "language": "sv",
@@ -59,608 +58,622 @@
     "application_version": "",
     "configuration_version": "",
     "assay_version": "",
-    "source_revision": "",
-    "package_version": "0.1.0",
-    "plugin_version": "1.0.0",
-    "schema_version": 1,
-    "template_version": "1.0.0"
+    "source_revision": ""
   },
   "presentation": {
-    "section_order": null,
-    "summary_new_page": true,
     "header_height_mm": 65,
     "footer_height_mm": 38
   },
-  "data": {
-    "supported_analyses": [
-      "SNV",
-      "CNV",
-      "BIOMARKER",
-      "TRANSLOCATION",
-      "FUSION"
-    ],
-    "enabled_analyses": [
-      "SNV",
-      "CNV",
-      "BIOMARKER",
-      "TRANSLOCATION"
-    ],
-    "analyses": [
-      {
-        "name": "SNV",
-        "parameters": [
-          {
-            "label": "Referensgenom",
-            "value": "GRCh38"
-          }
-        ],
-        "sections": [
-          {
-            "key": "snvs",
-            "title": "Kliniskt relevanta SNVs och små INDELs",
-            "page_break_before": false,
-            "kind": "table",
-            "columns": [
-              {
-                "key": "gene",
-                "label": "Gen"
-              },
-              {
-                "key": "chromosome",
-                "label": "Kromosom"
-              },
-              {
-                "key": "exon",
-                "label": "Exon"
-              },
-              {
-                "key": "variant",
-                "label": "HGVS"
-              },
-              {
-                "key": "af",
-                "label": "VAF"
-              },
-              {
-                "key": "tier",
-                "label": "Tier"
-              },
-              {
-                "key": "classification",
-                "label": "Klassificering"
-              }
-            ],
-            "rows": [
-              {
-                "gene": "BRAF",
-                "chromosome": "7",
-                "exon": "15",
-                "variant": "p.Val600Glu",
-                "af": "24%",
-                "tier": "I",
-                "classification": "Tier I"
-              }
-            ],
-            "empty_text": "Inga rapporterbara resultat",
-            "emphasis_column": "classification",
-            "emphasis_value": "Tier I"
-          }
-        ],
-        "details": [
-          {
-            "key": "snv-details",
-            "title": "SNV / INDEL - BRAF p.Val600Glu",
-            "page_break_before": false,
-            "kind": "details",
-            "records": [
-              {
-                "key": "snv-details-1",
-                "title": "SNV / INDEL - BRAF p.Val600Glu",
-                "fields": [
-                  {
-                    "label": "Gen",
-                    "value": "BRAF",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Typ",
-                    "value": "SNV",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Transkript",
-                    "value": "NM_004333.6",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Konsekvens",
-                    "value": "missense_variant",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "cDNA",
-                    "value": "c.1799T>A",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Protein",
-                    "value": "p.Val600Glu",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Kromosom",
-                    "value": "7",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Position",
-                    "value": "140753336",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "VAF",
-                    "value": "24%",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Exon",
-                    "value": "15",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Klassificering",
-                    "value": "Reviewed example",
-                    "full_width": true,
-                    "format": "plain",
-                    "emphasis": true
-                  },
-                  {
-                    "label": "Kommentar",
-                    "value": "**Synthetic example.** Interpretation supplied and reviewed by the application.",
-                    "full_width": true,
-                    "format": "markdown",
-                    "emphasis": false
-                  }
-                ]
-              }
-            ],
-            "fields_per_row": 3,
-            "empty_text": "Inga rapporterbara resultat"
-          }
+  "analyte": "dna",
+  "supported_analyses": [
+    "SNV",
+    "CNV",
+    "BIOMARKER",
+    "TRANSLOCATION",
+    "FUSION"
+  ],
+  "enabled_analyses": [
+    "SNV",
+    "CNV",
+    "BIOMARKER",
+    "TRANSLOCATION"
+  ],
+  "sections": [
+    {
+      "key": "snvs",
+      "title": "Kliniskt relevanta SNVs och små INDELs",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": [
+        {
+          "label": "Gen",
+          "width": 1
+        },
+        {
+          "label": "Kromosom",
+          "width": 1.2
+        },
+        {
+          "label": "Exon",
+          "width": 0.9
+        },
+        {
+          "label": "HGVS",
+          "width": 2.7
+        },
+        {
+          "label": "VAF",
+          "width": 0.9
+        },
+        {
+          "label": "Tier",
+          "width": 0.8
+        },
+        {
+          "label": "Klassificering",
+          "emphasis": true,
+          "width": 2.5
+        }
+      ],
+      "rows": [
+        [
+          "BRAF",
+          "7",
+          "15",
+          "p.Val600Glu",
+          "24%",
+          "I",
+          "Tier I"
         ]
-      },
-      {
-        "name": "CNV",
-        "parameters": [],
-        "sections": [
-          {
-            "key": "cnvs",
-            "title": "Kopietalsförändringar",
-            "page_break_before": false,
-            "kind": "table",
-            "columns": [
-              {
-                "key": "gene",
-                "label": "Gen"
-              },
-              {
-                "key": "copy",
-                "label": "Kopietal"
-              }
-            ],
-            "rows": [
-              {
-                "gene": "EXAMPLE1",
-                "copy": 6
-              }
-            ],
-            "empty_text": "Inga rapporterbara resultat",
-            "emphasis_column": null,
-            "emphasis_value": null
+      ],
+      "empty_text": "Inga rapporterbara resultat",
+      "analysis": "SNV"
+    },
+    {
+      "kind": "table",
+      "key": "parameters-SNV",
+      "title": "SNV - parametrar",
+      "columns": [
+        {
+          "label": {
+            "en": "Parameter",
+            "sv": "Parameter"
           }
-        ],
-        "details": [
-          {
-            "key": "cnv-details",
-            "title": "CNV - EXAMPLE1",
-            "page_break_before": false,
-            "kind": "details",
-            "records": [
-              {
-                "key": "cnv-details-1",
-                "title": "CNV - EXAMPLE1",
-                "fields": [
-                  {
-                    "label": "Gen",
-                    "value": "EXAMPLE1",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Region",
-                    "value": "chr1:100000-200000",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Typ",
-                    "value": "Gain",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Kopietal",
-                    "value": 6,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Storlek",
-                    "value": "100 kb",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Prober",
-                    "value": 42,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "PR",
-                    "value": 25,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "SR",
-                    "value": 12,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Klassificering",
-                    "value": "Reviewed example",
-                    "full_width": true,
-                    "format": "plain",
-                    "emphasis": true
-                  },
-                  {
-                    "label": "Kommentar",
-                    "value": "Synthetic copy-number finding; supplied description and classification.",
-                    "full_width": true,
-                    "format": "markdown",
-                    "emphasis": false
-                  }
-                ]
-              }
-            ],
-            "fields_per_row": 3,
-            "empty_text": "Inga rapporterbara resultat"
+        },
+        {
+          "label": {
+            "en": "Value",
+            "sv": "Värde"
           }
+        }
+      ],
+      "rows": [
+        [
+          "Referensgenom",
+          "GRCh38"
         ]
-      },
-      {
-        "name": "BIOMARKER",
-        "parameters": [],
-        "sections": [
-          {
-            "key": "biomarkers",
-            "title": "Kliniskt relevanta biomarkörer",
-            "page_break_before": false,
-            "kind": "table",
-            "columns": [
-              {
-                "key": "marker",
-                "label": "Biomarkör"
-              },
-              {
-                "key": "value",
-                "label": "Resultat"
-              },
-              {
-                "key": "assigned",
-                "label": "Bedömning"
-              }
-            ],
-            "rows": [
-              {
-                "marker": "TMB",
-                "value": "12 mut/Mb",
-                "assigned": "Hög"
-              }
-            ],
-            "empty_text": "Inga rapporterbara resultat",
-            "emphasis_column": null,
-            "emphasis_value": null
-          }
-        ],
-        "details": [
-          {
-            "key": "biomarker-details",
-            "title": "Biomarkördetaljer",
-            "page_break_before": false,
-            "kind": "details",
-            "records": [
-              {
-                "key": "tmb",
-                "title": "TMB",
-                "fields": [
-                  {
-                    "label": "Resultat",
-                    "value": "12 mut/Mb",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Bedömning",
-                    "value": "Hög",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  }
-                ]
-              },
-              {
-                "key": "msi",
-                "title": "MSI",
-                "fields": [
-                  {
-                    "label": "Instabila markörer",
-                    "value": 0,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Analyserade markörer",
-                    "value": 100,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Resultat",
-                    "value": "0%",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  }
-                ]
-              },
-              {
-                "key": "hrd",
-                "title": "HRD",
-                "fields": [
-                  {
-                    "label": "Summa",
-                    "value": 25,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "TAI",
-                    "value": 8,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "LST",
-                    "value": 9,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "LOH",
-                    "value": 8,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  }
-                ]
-              }
-            ],
-            "fields_per_row": 3,
-            "empty_text": "Inga rapporterbara resultat"
-          }
+      ],
+      "analysis": "SNV"
+    },
+    {
+      "key": "cnvs",
+      "title": "Kopietalsförändringar",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": [
+        {
+          "label": "Gen"
+        },
+        {
+          "label": "Kopietal"
+        }
+      ],
+      "rows": [
+        [
+          "EXAMPLE1",
+          6
         ]
-      },
-      {
-        "name": "TRANSLOCATION",
-        "parameters": [],
-        "sections": [
-          {
-            "key": "translocations",
-            "title": "Translokationer",
-            "page_break_before": false,
-            "kind": "table",
-            "columns": [
-              {
-                "key": "fusion",
-                "label": "Fusion"
-              },
-              {
-                "key": "tier",
-                "label": "Klassificering"
-              }
-            ],
-            "rows": [
-              {
-                "fusion": "EML4::ALK",
-                "tier": "Tier II"
-              }
-            ],
-            "empty_text": "Inga rapporterbara resultat",
-            "emphasis_column": null,
-            "emphasis_value": null
-          }
-        ],
-        "details": [
-          {
-            "key": "translocation-details",
-            "title": "Fusion - EML4::ALK",
-            "page_break_before": false,
-            "kind": "details",
-            "records": [
-              {
-                "key": "fusion-details-1",
-                "title": "Fusion - EML4::ALK",
-                "fields": [
-                  {
-                    "label": "5′ gen",
-                    "value": "EML4",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "3′ gen",
-                    "value": "ALK",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Effekt",
-                    "value": "In-frame",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "5′ brytpunkt",
-                    "value": "chr2:42400000",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "3′ brytpunkt",
-                    "value": "chr2:29400000",
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Split reads",
-                    "value": 37,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Spanning pairs",
-                    "value": 18,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Anchor",
-                    "value": 64,
-                    "full_width": false,
-                    "format": "plain",
-                    "emphasis": false
-                  },
-                  {
-                    "label": "Klassificering",
-                    "value": "Reviewed example",
-                    "full_width": true,
-                    "format": "plain",
-                    "emphasis": true
-                  },
-                  {
-                    "label": "Kommentar",
-                    "value": "Synthetic fusion. All breakpoints, evidence and text are application inputs.",
-                    "full_width": true,
-                    "format": "markdown",
-                    "emphasis": false
-                  }
-                ]
-              }
-            ],
-            "fields_per_row": 3,
-            "empty_text": "Inga rapporterbara resultat"
-          }
+      ],
+      "empty_text": "Inga rapporterbara resultat",
+      "analysis": "CNV"
+    },
+    {
+      "key": "biomarkers",
+      "title": "Kliniskt relevanta biomarkörer",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": [
+        {
+          "label": "Biomarkör"
+        },
+        {
+          "label": "Resultat"
+        },
+        {
+          "label": "Bedömning"
+        }
+      ],
+      "rows": [
+        [
+          "TMB",
+          "12 mut/Mb",
+          "Hög"
         ]
-      }
-    ],
-    "summary": "Exempel på granskad slutsats. Endast för demonstration.",
-    "summary_format": "plain",
-    "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "Example reference supplied by the application; demonstration only.",
-    "supporting_sections": [
-      {
-        "key": "covered-genes",
-        "title": "Analyserade gener",
-        "page_break_before": false,
-        "kind": "table",
-        "columns": [
-          {
-            "key": "gene",
-            "label": "Gen"
-          }
+      ],
+      "empty_text": "Inga rapporterbara resultat",
+      "analysis": "BIOMARKER"
+    },
+    {
+      "key": "translocations",
+      "title": "Translokationer",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": [
+        {
+          "label": "Fusion"
+        },
+        {
+          "label": "Klassificering"
+        }
+      ],
+      "rows": [
+        [
+          "EML4::ALK",
+          "Tier II"
+        ]
+      ],
+      "empty_text": "Inga rapporterbara resultat",
+      "analysis": "TRANSLOCATION"
+    },
+    {
+      "kind": "text",
+      "key": "summary",
+      "title": "Slutsats",
+      "text": "Exempel på granskad slutsats. Endast för demonstration.",
+      "format": "plain",
+      "conclusion": true
+    },
+    {
+      "key": "snv-details",
+      "title": "SNV / INDEL - BRAF p.Val600Glu",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": "Inga rapporterbara resultat",
+      "columns": [
+        {
+          "label": "Gen",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Typ",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Transkript",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Konsekvens",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "cDNA",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Protein",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Kromosom",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Position",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "VAF",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Exon",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Klassificering",
+          "full_width": true,
+          "format": "plain",
+          "emphasis": true
+        },
+        {
+          "label": "Kommentar",
+          "full_width": true,
+          "format": "markdown",
+          "emphasis": false
+        }
+      ],
+      "rows": [
+        [
+          "BRAF",
+          "SNV",
+          "NM_004333.6",
+          "missense_variant",
+          "c.1799T>A",
+          "p.Val600Glu",
+          "7",
+          "140753336",
+          "24%",
+          "15",
+          "Reviewed example",
+          "**Synthetic example.** Interpretation supplied and reviewed by the application."
+        ]
+      ],
+      "record_titles": [
+        "SNV / INDEL - BRAF p.Val600Glu"
+      ],
+      "analysis": "SNV"
+    },
+    {
+      "key": "cnv-details",
+      "title": "CNV - EXAMPLE1",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": "Inga rapporterbara resultat",
+      "columns": [
+        {
+          "label": "Gen",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Region",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Typ",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Kopietal",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Storlek",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Prober",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "PR",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "SR",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Klassificering",
+          "full_width": true,
+          "format": "plain",
+          "emphasis": true
+        },
+        {
+          "label": "Kommentar",
+          "full_width": true,
+          "format": "markdown",
+          "emphasis": false
+        }
+      ],
+      "rows": [
+        [
+          "EXAMPLE1",
+          "chr1:100000-200000",
+          "Gain",
+          6,
+          "100 kb",
+          42,
+          25,
+          12,
+          "Reviewed example",
+          "Synthetic copy-number finding; supplied description and classification."
+        ]
+      ],
+      "record_titles": [
+        "CNV - EXAMPLE1"
+      ],
+      "analysis": "CNV"
+    },
+    {
+      "key": "biomarker-details",
+      "title": "Biomarkördetaljer",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": "Inga rapporterbara resultat",
+      "columns": [
+        {
+          "label": "Resultat",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Bedömning",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        }
+      ],
+      "rows": [
+        [
+          "12 mut/Mb",
+          "Hög"
+        ]
+      ],
+      "record_titles": [
+        "TMB"
+      ],
+      "analysis": "BIOMARKER"
+    },
+    {
+      "key": "biomarker-details-1",
+      "title": "",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": "Inga rapporterbara resultat",
+      "columns": [
+        {
+          "label": "Instabila markörer",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Analyserade markörer",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Resultat",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        }
+      ],
+      "rows": [
+        [
+          0,
+          100,
+          "0%"
+        ]
+      ],
+      "record_titles": [
+        "MSI"
+      ],
+      "analysis": "BIOMARKER"
+    },
+    {
+      "key": "biomarker-details-2",
+      "title": "",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": "Inga rapporterbara resultat",
+      "columns": [
+        {
+          "label": "Summa",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "TAI",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "LST",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "LOH",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        }
+      ],
+      "rows": [
+        [
+          25,
+          8,
+          9,
+          8
+        ]
+      ],
+      "record_titles": [
+        "HRD"
+      ],
+      "analysis": "BIOMARKER"
+    },
+    {
+      "key": "translocation-details",
+      "title": "Fusion - EML4::ALK",
+      "page_break_before": false,
+      "kind": "details",
+      "fields_per_row": 3,
+      "empty_text": "Inga rapporterbara resultat",
+      "columns": [
+        {
+          "label": "5′ gen",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "3′ gen",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Effekt",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "5′ brytpunkt",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "3′ brytpunkt",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Split reads",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Spanning pairs",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Anchor",
+          "full_width": false,
+          "format": "plain",
+          "emphasis": false
+        },
+        {
+          "label": "Klassificering",
+          "full_width": true,
+          "format": "plain",
+          "emphasis": true
+        },
+        {
+          "label": "Kommentar",
+          "full_width": true,
+          "format": "markdown",
+          "emphasis": false
+        }
+      ],
+      "rows": [
+        [
+          "EML4",
+          "ALK",
+          "In-frame",
+          "chr2:42400000",
+          "chr2:29400000",
+          37,
+          18,
+          64,
+          "Reviewed example",
+          "Synthetic fusion. All breakpoints, evidence and text are application inputs."
+        ]
+      ],
+      "record_titles": [
+        "Fusion - EML4::ALK"
+      ],
+      "analysis": "TRANSLOCATION"
+    },
+    {
+      "kind": "text",
+      "key": "description",
+      "title": "Analysbeskrivning",
+      "text": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här."
+    },
+    {
+      "key": "covered-genes",
+      "title": "Analyserade gener",
+      "page_break_before": false,
+      "kind": "table",
+      "columns": [
+        {
+          "label": "Gen"
+        }
+      ],
+      "rows": [
+        [
+          "BRAF"
         ],
-        "rows": [
-          {
-            "gene": "BRAF"
-          },
-          {
-            "gene": "EML4"
-          },
-          {
-            "gene": "ALK"
-          },
-          {
-            "gene": "EXAMPLE1"
-          }
+        [
+          "EML4"
         ],
-        "empty_text": "Inga rapporterbara resultat",
-        "emphasis_column": null,
-        "emphasis_value": null
-      },
-      {
-        "key": "classification-description",
-        "title": "Klassificeringsbeskrivning",
-        "page_break_before": false,
-        "kind": "text",
-        "text": "Synthetic classification description supplied by the application.",
-        "format": "plain",
-        "conclusion": false
-      }
-    ],
-    "analyte": "dna"
-  }
+        [
+          "ALK"
+        ],
+        [
+          "EXAMPLE1"
+        ]
+      ],
+      "empty_text": "Inga rapporterbara resultat"
+    },
+    {
+      "key": "classification-description",
+      "title": "Klassificeringsbeskrivning",
+      "page_break_before": false,
+      "kind": "text",
+      "text": "Synthetic classification description supplied by the application.",
+      "format": "plain",
+      "conclusion": false
+    },
+    {
+      "kind": "text",
+      "key": "references",
+      "title": "Referenser",
+      "text": "Example reference supplied by the application; demonstration only."
+    }
+  ]
 }

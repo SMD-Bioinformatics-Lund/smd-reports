@@ -1,114 +1,93 @@
-# JSON inputs and portable HTML
+# JSON input format
 
-Install with `python -m pip install smd-reports`, then run `smd-reports --help` or
-`python -m smd_reports --help`.
-The distribution does not need an application server, database or network connection to render.
-
-## Input envelope
+All applications use the same JSON document format. Set `application` to `coyote3`,
+`genexus`, `cll_genie` or `pgx` to select the report identity and theme.
 
 ```json
 {
-  "schema_version": 1,
-  "application": "coyote3",
-  "title": "Molekylärgenetisk analysrapport",
-  "language": "sv",
+  "application": "genexus",
+  "title": {"en": "NGS Analysis Report", "sv": "NGS-analysrapport"},
+  "language": "en",
   "report": {
-    "report_id": "SYNTHETIC-REPORT-001",
+    "report_id": "DEMO-001",
     "sample_id": "SYNTHETIC-001",
-    "generated_at": "2026-01-01T12:00:00Z",
-    "author": "Demo User",
-    "fields": []
+    "generated_at": "2026-01-01T12:00:00Z"
   },
-  "branding": {
-    "organization": "Demo center",
-    "address": "Example address",
-    "telephone": "000-000000",
-    "center_logo": "logos/center.svg",
-    "accreditation_logo": "logos/accreditation.svg",
-    "accredited": true
-  },
-  "data": {
-    "analyte": "dna",
-    "summary": "Granskad slutsats från applikationen.",
-    "description": "Analysbeskrivning från applikationen."
-  }
+  "sections": [
+    {
+      "kind": "table",
+      "key": "variants",
+      "title": {"en": "Detected variants", "sv": "Detekterade varianter"},
+      "columns": [
+        {"label": {"en": "Gene", "sv": "Gen"}},
+        {"label": "HGVS"},
+        {"label": "VAF (%)"}
+      ],
+      "rows": [
+        ["BRAF", "p.Val600Glu", 24],
+        ["EXAMPLE", "p.Example", 18]
+      ]
+    },
+    {
+      "kind": "text",
+      "key": "summary",
+      "title": {"en": "Conclusion", "sv": "Slutsats"},
+      "text": "Synthetic example conclusion.",
+      "conclusion": true
+    }
+  ]
 }
 ```
 
-`schema_version` and `application` are required. Supported application names are `coyote3`,
-`genexus`, `cll_genie` and `pgx`. `language` defaults to `sv` and accepts `sv` or `en`.
-`presentation` optionally supplies section order, summary page breaks, header height and
-the footer space reserved for eligible accreditation artwork.
-`provenance` optionally supplies application/configuration/assay/source versions.
-Unknown fields, duplicate JSON keys, non-finite numbers and unsupported schema versions fail.
+Columns are declared once. Every row is a list containing exactly one value per column,
+in column order. Add a column and the corresponding value to each row to extend a report.
+Unknown fields, duplicate object keys, mismatched row lengths and non-finite numbers fail
+validation. Use `null` for a missing cell; zero and false remain visible.
 
-Export each application's full schema with `smd-reports schema --application NAME --output FILE`.
-Schema export describes structural fields; the loader additionally checks analysis consistency,
-CLL report constraints, local logo availability and SVG safety.
+## Document fields
 
-The application-specific `data` contains clinical content, not another copy of identity,
-branding or language. Coyote3 requires its DNA/RNA analyte. CLL Genie requires its report type
-and reviewed conclusion; positive reports also need submission identity and sequence facts.
-PGx accepts typed prepared recommendations, variants and low-depth targets; the Python
-`PGxReport.from_files()` interface remains available for its existing TSV preparation pipeline.
-Genexus supplies prepared content; upstream source-file parsing remains in its application.
+| Field | Description |
+| --- | --- |
+| `application` | One of the four report identities |
+| `title` | Report title; plain text or translations |
+| `language` | `sv` (default) or `en` |
+| `analyte` | Optional heading label, such as `dna` or `rna` |
+| `report` | Required report ID, sample ID and timezone-aware generation timestamp; optional author and metadata `fields` |
+| `sections` | Ordered list of text, table, details, grid or image sections |
+| `branding` | Logos and center information; see [branding](branding.md) |
+| `presentation` | `header_height_mm` (65 by default) and `footer_height_mm` (38) |
+| `supported_analyses` | Optional list of available analysis names |
+| `enabled_analyses` | Optional list selecting sections with a matching `analysis` |
+| `provenance` | Optional application, configuration, assay and source revisions; renderer versions are filled during loading |
 
-## Logo loading and snapshots
+Sections appear in JSON order. Set a section's `enabled` to false to hide it, or assign
+an `analysis` and select it through `enabled_analyses`. Sections without an analysis remain
+visible. Omitting `enabled_analyses` shows all enabled sections.
 
-Relative artwork paths resolve against the JSON file's directory, regardless of the current
-working directory. Absolute local paths and already embedded data URIs are accepted too.
-Paths are only supported for the three branding logo fields; plots must be embedded.
-Only explicitly supplied local files are read. HTTP/file URLs are not accepted.
-The same restricted static SVG and raster validation applies to file and embedded artwork.
-Missing/unreadable artwork fails the command; it is not silently omitted.
+## Translations
 
-`normalize` saves the built document with embedded logos and all selected content. This is
-the normalized `Report` format, distinct from the application input envelope. Both can be
-loaded by `ReportLoader.load()` and passed to `validate`/`render`/`normalize`. Normalized
-snapshots do not rerun application builders or clinical rules; they preserve the supplied
-document, language and template provenance. The renderer uses installed templates, so retain
-the matching package and environment when regenerating an approved layout.
+Titles, labels, text, captions, record headings and cell values accept either a string
+or an object such as `{"en": "Gene", "sv": "Gen"}`. The selected language is used
+throughout the report. If that translation is missing, English is used when available,
+otherwise the supplied Swedish text. This is local text selection and works offline.
 
-Commands require an explicit output path and refuse to overwrite the input JSON. Validation
-errors return exit code 2 and identify fields/types without printing clinical values. Successful
-commands return 0. Application storage, encryption, access control and retention remain outside
-this tool; JSON snapshots contain the report's data and require the same controls as reports.
+## Table columns
 
-## Swedish and English
+| Column field | Default | Effect |
+| --- | --- | --- |
+| `label` | Required | Column header or detail-field label |
+| `width` | `1` | Relative width for ordinary table columns; `2` gets twice the width of `1` |
+| `format` | `plain` | Plain text or sanitized `markdown` |
+| `emphasis` | `false` | Bold values |
+| `highlight` | `false` | Yellow background |
+| `full_width` | `false` | Full-width row within a detail card |
 
-The selected language controls built-in metadata labels, generated headings/table labels,
-boolean display and page numbering (`Sida X av Y` / `Page X of Y`). It never translates
-supplied clinical summaries, recommendations, classifications, details, caller-defined section
-titles, or metadata labels. Supply those in the requested language from the application.
+Table widths come from the JSON columns. There are no gene-, assay- or application-specific
+column positions in the renderer.
 
-## Portable HTML
+## Detailed findings
 
-The HTML embeds one shared stylesheet, print rules, Source Sans 3 font data and all supplied
-artwork. It has no external stylesheet/font/image dependency. Moving the HTML does not
-require preserving JSON-relative paths or supplying a `base_url` to WeasyPrint.
-
-```sh
-smd-reports render report.json --format html --output report.html
-weasyprint report.html report.pdf
-```
-
-HTML preview uses screen styling; WeasyPrint uses the embedded print styling, repeating headers,
-footer artwork and pagination. No JavaScript or browser print interaction is needed. Offline
-standalone conversion is covered by a test that removes source JSON/logo files and blocks
-imports of this package before running plain WeasyPrint in another directory.
-
-## Synthetic examples
-
-`examples/inputs/` contains JSON for all applications and the CLL no-result cases. Clinical
-data is synthetic and all artwork consists of generic placeholders. Supply your chosen
-application, center and accreditation logos in production JSON. Regenerate inputs using
-`python examples/json_inputs.py` after changing the Python demo inputs.
-
-## Detailed findings and supporting material
-
-Each analysis accepts `details` alongside its summary `sections` and `parameters`.
-Details are rendered only for enabled analyses, after the yellow conclusion and before
-the method description. A detail section uses this shape:
+Use the same column definitions and row matrices for finding cards:
 
 ```json
 {
@@ -116,20 +95,88 @@ the method description. A detail section uses this shape:
   "key": "variant-details",
   "title": "Variant details",
   "fields_per_row": 3,
-  "records": [{
-    "key": "finding-1",
-    "title": "Synthetic finding",
-    "fields": [
-      {"label": "Gene", "value": "EXAMPLE"},
-      {"label": "Classification", "value": "Reviewed example", "full_width": true},
-      {"label": "Comment", "value": "**Reviewed** synthetic text.",
-       "full_width": true, "format": "markdown"}
-    ]
-  }]
+  "record_heading": "{0}: {1}",
+  "columns": [
+    {"label": {"en": "Gene", "sv": "Gen"}},
+    {"label": "Variant"},
+    {"label": "Classification", "full_width": true, "emphasis": true},
+    {"label": "Comment", "full_width": true, "format": "markdown"}
+  ],
+  "rows": [
+    ["EXAMPLE1", "p.Example", "Reviewed example", "**First** synthetic comment."],
+    ["EXAMPLE2", "p.Other", "Reviewed example", "**Second** synthetic comment."]
+  ]
 }
 ```
 
-`data.supporting_sections` holds sections after the method description and before
-references. The checked-in Coyote3 and Genexus examples include molecular finding cards;
-CLL Genie includes sequence details. Clinical labels and narratives must already be in
-the selected report language.
+`record_heading` references zero-based column positions. It produces a heading for each
+row without repeating column labels or header values. Only simple placeholders such as
+`{0}` are accepted. Omit it to use the first cell, or supply `record_titles`, with one
+explicit title per row. Headings and explicit titles can also contain translations.
+
+`fields_per_row` accepts 1–6 key/value pairs. Full-width or Markdown fields occupy separate
+rows. Set `full_width_last` to true to batch compact fields first, as in the Genexus examples.
+Long comments can continue across PDF pages.
+
+## Grouped detail grids
+
+Use `kind: "grid"` for arrangements such as the CLL Genie sequence table. Columns and
+values still use the same matrix format. `grid_columns` defines the visual grid width;
+`layout` arranges the columns within each record:
+
+```json
+{
+  "kind": "grid",
+  "key": "sequence-details",
+  "record_heading": "{0}",
+  "grid_columns": 5,
+  "columns": [
+    {"label": "Sequence"},
+    {"label": "V-GENE and allele"},
+    {"label": "Score"},
+    {"label": "Identity", "highlight": true}
+  ],
+  "rows": [
+    ["Seq1", "IGHV3-21*01", 1500, "97.5% (313/321)"],
+    ["Seq2", "DEMO-GENE", 1200, "Reviewed example identity"]
+  ],
+  "layout": [
+    {"cells": [{"column": 0, "span": 5}]},
+    {"cells": [
+      {"column": 1, "span": 2},
+      {"column": 2, "span": 1, "mode": "inline"},
+      {"column": 3, "span": 2, "mode": "inline"}
+    ]}
+  ]
+}
+```
+
+Each layout cell references a zero-based `column` index. Its `span` counts visual grid
+columns. The default `pair` mode renders a label and value, with `label_span: 1` by default.
+`inline` places a bold label and value together; `label` or `value` shows just that part.
+An optional `label` overrides the column label for that placement.
+
+The spans in each layout row must add up to `grid_columns`. Add `hide_if_empty: true`
+to a layout row to omit it when all referenced values are null or empty strings.
+Zero and false do not count as empty. The complete CLL Genie JSON example preserves
+sequence, subset, functionality, V/J scores and identities, D-region, FR/CDR, junction
+and count rows using this layout.
+
+## Text and images
+
+Text sections use `text` and optional `format: "markdown"`. Setting `conclusion: true`
+shows the yellow summary with page breaks before and after in print/PDF. Any section can
+set `page_break_before: true`.
+
+Image sections use `source` (a local image path or embedded data URI) and optional `caption`.
+Paths resolve relative to the JSON file. Supported image types are described in
+[branding](branding.md).
+
+## JSON Schema
+
+```sh
+smd-reports schema --output report.schema.json
+```
+
+The exported JSON Schema describes the format supported by the installed package and can
+be used by editors or validators. Pin the package version when you need a fixed input format.

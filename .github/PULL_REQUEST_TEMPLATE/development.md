@@ -21,9 +21,9 @@ Link relevant issues or requirements.
 List checks performed and link synthetic HTML/PDF evidence where applicable.
 
 - [ ] Relevant tests and quality checks pass
-- [ ] Clinical values and interpretation text are preserved, or intentional changes are explained
+- [ ] Input values and text are preserved, or intentional changes are explained
 - [ ] Layout changes have reviewed examples; baseline changes have an explicit reason
-- [ ] Schema/plugin/template version impacts have been assessed
+- [ ] Package/template version impacts have been assessed
 - [ ] Documentation and changelog reflect the change
 - [ ] No patient data, credentials or private runtime artifacts are included
 

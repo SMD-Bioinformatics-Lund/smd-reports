@@ -47,13 +47,6 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .variant_table th, .variant_table td { padding: 4px 10px; border: 0; border-bottom: 1px solid var(--report-border); font-size: 8.5pt; }
 .variant_table th { background: var(--tint); color: #000; border-top: 1px solid var(--report-border); font-weight: 600; }
 .variant_table tbody td { background: #fff; }
-.snv-summary th:nth-child(1) { width: 10%; }
-.snv-summary th:nth-child(2) { width: 12%; }
-.snv-summary th:nth-child(3) { width: 9%; }
-.snv-summary th:nth-child(4) { width: 27%; }
-.snv-summary th:nth-child(5) { width: 9%; }
-.snv-summary th:nth-child(6) { width: 8%; }
-.snv-summary th:nth-child(7) { width: 25%; }
 .emphasis { font-weight: 600; }
 .finding-detail { margin: 6px 0 12px; }
 .report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
@@ -126,17 +119,9 @@ p, li { orphans: 3; widows: 3; }
   .report-summary { break-before: page; break-after: page; }
 }
 @media screen and (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
-/* Preserve the original grouped CLL sequence rows and Genexus variant cards. */
-.cll-sequence, .genexus-detail { margin: 6px 0 12px; }
-.cll-sequence-table th.report_variant_header { text-align: center; }
-.cll-sequence-table tr > th, .cll-sequence-table tr > td { width: 20%; }
-.cll-sequence-table tr > [colspan="2"] { width: 40%; }
-.cll-sequence-table tr > [colspan="3"] { width: 60%; }
-.cll-sequence-table tr > [colspan="4"] { width: 80%; }
-.cll-sequence-table tr > [colspan="5"] { width: 100%; }
-.cll-sequence-table .report_key { width: auto; }
-.cll-sequence-table .cll-highlight { background: #ffffe0; }
-.cll-sequence-table .cll-text { white-space: pre-wrap; }
-.cll-sequence-table tr.detail-wide-row > td.report_comment { width: auto; }
-.genexus-detail .report_key { font-size: 7.5pt; }
-.genexus-detail .report_variant_header { font-weight: 700; }
+/* JSON columns and grid spans determine the content layout. */
+.cell-highlight { background: #ffffe0; }
+.cell-plain { white-space: pre-wrap; }
+.grid-table th.report_variant_header { text-align: center; }
+.grid-table .report_key { width: auto; }
+.grid-table .detail-wide-row > .report_comment { width: auto; }

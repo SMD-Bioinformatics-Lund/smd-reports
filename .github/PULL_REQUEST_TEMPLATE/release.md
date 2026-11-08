@@ -10,12 +10,11 @@ Describe the changes being released and link the changelog.
 
 - [ ] Development PRs are reviewed and merged into `dev`
 - [ ] Release version and changelog are correct
-- [ ] Affected plugin, schema and template revisions are correct
+- [ ] Package and template revisions are correct
 - [ ] Required CI checks pass on the release candidate
 - [ ] Wheel/source distribution and isolated installation are verified
-- [ ] Affected synthetic reports and approved baseline comparisons are reviewed
-- [ ] Clinical review requirements and any outstanding limitations are recorded
-- [ ] Application compatibility and rollback artifacts are documented
+- [ ] Updated synthetic report previews are reviewed
+- [ ] Installation and JSON compatibility changes are documented
 
 Evidence/artifact links:
 

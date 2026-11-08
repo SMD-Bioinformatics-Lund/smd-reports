@@ -1,5 +1,4 @@
 {
-  "schema_version": 1,
   "application": "cll_genie",
   "title": "IGHV-mutationsanalys",
   "language": "sv",
@@ -59,66 +58,349 @@
     "application_version": "",
     "configuration_version": "",
     "assay_version": "",
-    "source_revision": "",
-    "package_version": "0.1.0",
-    "plugin_version": "1.0.0",
-    "schema_version": 1,
-    "template_version": "1.0.0"
+    "source_revision": ""
   },
   "presentation": {
-    "section_order": null,
-    "summary_new_page": true,
     "header_height_mm": 65,
     "footer_height_mm": 38
   },
-  "data": {
-    "supported_analyses": [],
-    "enabled_analyses": [],
-    "analyses": [],
-    "summary": "Exempel på granskad slutsats. Endast för demonstration.",
-    "summary_format": "plain",
-    "description": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.",
-    "references": "Example reference supplied by the application; demonstration only.",
-    "supporting_sections": [],
-    "report_type": "positive",
-    "submission_id": "submission_demo",
-    "sequences": [
-      {
-        "sequence_id": "Seq1",
-        "length_nt": 321,
-        "identity_percent": 97.5,
-        "identity_nt": "313/321",
-        "identity_with_indels": "97.2% (312/321)",
-        "mutation_status": "Borderline (granskad)",
-        "productivity": "Produktiv",
-        "subset": "#2",
-        "analysis_category": "Single productive rearrangement (synthetic)",
-        "indel_summary": "Synthetic insertion/deletion description supplied by CLL Genie.",
-        "functionality_label": "V-Domain functionality after removal of Indels",
-        "functionality_comment": "Reviewed synthetic result supplied by CLL Genie.",
-        "v_gene": "IGHV3-21*01",
-        "v_score": 1500,
-        "j_gene": "IGHJ6*02",
-        "j_score": 230,
-        "j_identity_percent": 100.0,
-        "j_identity_nt": "60/60",
-        "d_gene": "IGHD3-3*01",
-        "d_reading_frame": 2,
-        "fr_lengths": "[25.17.38.11]",
-        "cdr_lengths": "8.8.14",
-        "aa_junction": "SYNTHETIC",
-        "junction_length_nt": 42,
-        "junction_decryption": "DEMO-V {N1} DEMO-D {N2} DEMO-J",
-        "junction_legend": "(3′V)3′{N1}5′(D)3′{N2}5′(5′J)",
-        "merge_count": 1200,
-        "total_reads_percent": 0.0,
-        "details": [
-          {
-            "label": "JUNCTION-nt nb",
-            "value": 42
-          }
+  "sections": [
+    {
+      "kind": "table",
+      "key": "cll-sequences",
+      "title": "Analysresultat",
+      "columns": [
+        {
+          "label": "Sekvens-ID"
+        },
+        {
+          "label": "Sekvenslängd"
+        },
+        {
+          "label": "V-gen identitet"
+        },
+        {
+          "label": "IGHV-mutationsstatus"
+        },
+        {
+          "label": "CLL subset"
+        }
+      ],
+      "rows": [
+        [
+          "Seq1",
+          321,
+          "97.5% (313/321) [97.2% (312/321)]",
+          "Borderline (granskad)",
+          "#2"
         ]
-      }
-    ]
-  }
+      ]
+    },
+    {
+      "kind": "text",
+      "key": "summary",
+      "title": "Slutsats",
+      "text": "Exempel på granskad slutsats. Endast för demonstration.",
+      "format": "plain",
+      "conclusion": true
+    },
+    {
+      "kind": "grid",
+      "key": "cll-details",
+      "title": {
+        "en": "Detailed analysis results",
+        "sv": "Detaljerade analysresultat"
+      },
+      "columns": [
+        {
+          "label": "Seq ID"
+        },
+        {
+          "label": {
+            "en": "Length",
+            "sv": "Sekvenslängd"
+          }
+        },
+        {
+          "label": {
+            "en": "IGHV mutation status",
+            "sv": "IGHV-mutationsstatus"
+          }
+        },
+        {
+          "label": "CLL subset",
+          "highlight": true
+        },
+        {
+          "label": {
+            "en": "Sequence analysis category",
+            "sv": "Sekvensanalyskategori"
+          },
+          "highlight": true
+        },
+        {
+          "label": "Indel summary",
+          "highlight": true
+        },
+        {
+          "label": "V-Domain functionality after removal of Indels",
+          "highlight": true
+        },
+        {
+          "label": {
+            "en": "Comment",
+            "sv": "Kommentar"
+          },
+          "highlight": true
+        },
+        {
+          "label": "V-GENE and allele"
+        },
+        {
+          "label": "Score"
+        },
+        {
+          "label": "Identity",
+          "highlight": true
+        },
+        {
+          "label": "J-GENE and allele"
+        },
+        {
+          "label": "Score"
+        },
+        {
+          "label": "Identity"
+        },
+        {
+          "label": "D-GENE and allele by IMGT/JunctionAnalysis"
+        },
+        {
+          "label": "D-REGION reading frame"
+        },
+        {
+          "label": "FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION"
+        },
+        {
+          "label": "CDR-IMGT lengths"
+        },
+        {
+          "label": "AA JUNCTION"
+        },
+        {
+          "label": "JUNCTION length (in nt) and decryption"
+        },
+        {
+          "label": "Junction legend"
+        },
+        {
+          "label": "Merge count"
+        },
+        {
+          "label": {
+            "en": "Total reads",
+            "sv": "Totala läsningar"
+          }
+        }
+      ],
+      "rows": [
+        [
+          "Seq1",
+          321,
+          "Borderline (granskad)",
+          "#2",
+          "Single productive rearrangement (synthetic)",
+          "Synthetic insertion/deletion description supplied by CLL Genie.",
+          "Produktiv",
+          "Reviewed synthetic result supplied by CLL Genie.",
+          "IGHV3-21*01",
+          1500,
+          "97.5% (313/321) [97.2% (312/321)]",
+          "IGHJ6*02",
+          230,
+          "100.0% (60/60)",
+          "IGHD3-3*01",
+          2,
+          "[25.17.38.11]",
+          "[8.8.14]",
+          "SYNTHETIC",
+          "42 nt = DEMO-V {N1} DEMO-D {N2} DEMO-J",
+          "(3′V)3′{N1}5′(D)3′{N2}5′(5′J)",
+          1200,
+          "0.0%"
+        ]
+      ],
+      "grid_columns": 5,
+      "layout": [
+        {
+          "cells": [
+            {
+              "column": 0,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 3,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 4,
+              "span": 1,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 5,
+              "span": 5,
+              "mode": "pair"
+            }
+          ],
+          "hide_if_empty": true
+        },
+        {
+          "cells": [
+            {
+              "column": 6,
+              "span": 5,
+              "mode": "pair",
+              "label_span": 2
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 7,
+              "span": 5,
+              "mode": "pair"
+            }
+          ],
+          "hide_if_empty": true
+        },
+        {
+          "cells": [
+            {
+              "column": 8,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 9,
+              "span": 1,
+              "mode": "inline"
+            },
+            {
+              "column": 10,
+              "span": 2,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 11,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 12,
+              "span": 1,
+              "mode": "inline"
+            },
+            {
+              "column": 13,
+              "span": 2,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 14,
+              "span": 4,
+              "mode": "pair",
+              "label_span": 3
+            },
+            {
+              "column": 15,
+              "span": 1,
+              "mode": "inline"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 16,
+              "span": 2,
+              "mode": "label"
+            },
+            {
+              "column": 16,
+              "span": 1,
+              "mode": "value"
+            },
+            {
+              "column": 17,
+              "span": 1,
+              "mode": "value"
+            },
+            {
+              "column": 18,
+              "span": 1,
+              "mode": "value"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 19,
+              "span": 4,
+              "mode": "pair",
+              "label_span": 2
+            },
+            {
+              "column": 20,
+              "span": 1,
+              "mode": "value"
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 21,
+              "span": 2,
+              "mode": "pair"
+            },
+            {
+              "column": 22,
+              "span": 3,
+              "mode": "pair"
+            }
+          ]
+        }
+      ],
+      "record_heading": "{0} - {1} nt ({2})"
+    },
+    {
+      "kind": "text",
+      "key": "description",
+      "title": "Analysbeskrivning",
+      "text": "Syntetisk analysbeskrivning. Inga kliniska beslut fattas här."
+    },
+    {
+      "kind": "text",
+      "key": "references",
+      "title": "Referenser",
+      "text": "Example reference supplied by the application; demonstration only."
+    }
+  ]
 }

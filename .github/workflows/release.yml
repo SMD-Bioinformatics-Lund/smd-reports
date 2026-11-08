@@ -1,0 +1,117 @@
+name: Publish package
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag on master (for example v0.1.0)
+        required: true
+        type: string
+      index:
+        description: Package index
+        required: true
+        type: choice
+        default: testpypi
+        options: [testpypi, pypi]
+      confirmation:
+        description: Type publish to authorize this upload
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: publish-${{ inputs.index }}-${{ inputs.tag }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+      DISPATCH_REF: ${{ github.ref }}
+      CONFIRMATION: ${{ inputs.confirmation }}
+      PUBLISH_INDEX: ${{ inputs.index }}
+    steps:
+      - name: Require an explicit manual release from master
+        shell: bash
+        run: |
+          test "$DISPATCH_REF" = refs/heads/master
+          test "$CONFIRMATION" = publish
+          case "$PUBLISH_INDEX" in testpypi|pypi) ;; *) exit 1 ;; esac
+          git check-ref-format "refs/tags/$RELEASE_TAG"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify tag, package version and master ancestry
+        run: python scripts/check_release.py "$RELEASE_TAG" --check-git
+      - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+      - run: python -m pip install '.[pdf,test,docs]'
+      - run: python -m ruff check src examples tests scripts
+      - run: python -m ruff format --check src examples tests scripts
+      - run: python -m pytest -q
+      - run: python -m mkdocs build --strict
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - run: python scripts/check_release.py "$RELEASE_TAG" --check-git --dist dist
+      - run: python scripts/wheel_smoke.py
+      - run: python scripts/wheel_smoke.py --source
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-distributions
+          path: dist/*
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: ${{ inputs.index }}
+      url: ${{ inputs.index == 'pypi' && 'https://pypi.org/project/smd-reports/' || 'https://test.pypi.org/project/smd-reports/' }}
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-distributions
+          path: dist/
+      - name: Publish the checked distributions with Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: ${{ inputs.index == 'pypi' && 'https://upload.pypi.org/legacy/' || 'https://test.pypi.org/legacy/' }}
+  verify-testpypi:
+    if: inputs.index == 'testpypi'
+    needs: publish
+    runs-on: ubuntu-24.04
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-distributions
+          path: dist/
+      - name: Prepare dependencies from PyPI
+        run: |
+          python -m pip install dist/*.whl
+          python -m pip uninstall -y smd-reports
+      - name: Install exactly the TestPyPI release
+        run: python -m pip install --index-url https://test.pypi.org/simple/ --no-deps "smd-reports==${RELEASE_TAG#v}"
+      - name: Verify the installed package and CLI
+        run: |
+          python - <<'PYTHON'
+          import json
+          from smd_reports import ReportLoader, ReportRenderer
+          report = ReportLoader().loads(json.dumps({
+              "application": "pgx", "title": "TestPyPI installation",
+              "report": {"report_id": "DEMO", "sample_id": "SYNTHETIC",
+                         "generated_at": "2026-01-01T12:00:00Z"},
+              "sections": [{"kind": "table", "key": "results",
+                            "columns": [{"label": "New field"}], "rows": [["DEMO-VALUE"]]}],
+          }))
+          html = ReportRenderer().render_html(report)
+          assert "DEMO-VALUE" in html and "data:font/woff2;base64," in html
+          PYTHON
+          smd-reports --help

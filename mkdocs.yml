@@ -26,6 +26,7 @@ nav:
   - Development:
       - Contributing: contributing.md
       - Testing and releases: validation.md
+      - Publishing setup: publishing.md
 markdown_extensions:
   - tables
   - fenced_code

@@ -1,16 +1,16 @@
 # smd-reports
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](docs/installation.md)
-[![Package version](https://img.shields.io/badge/package-0.1.0-00897B?style=flat-square)](CHANGELOG.md)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md)
+[![Package version](https://img.shields.io/badge/package-0.1.0-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/actions/workflows/quality.yml)
-[![Documentation](https://img.shields.io/badge/docs-MkDocs-009688?style=flat-square&logo=materialformkdocs&logoColor=white)](docs/index.md)
-[![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](docs/rendering.md)
-[![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-MkDocs-009688?style=flat-square&logo=materialformkdocs&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/index.md)
+[![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/rendering.md)
+[![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE)
 
-Python report builders for Coyote3, Genexus, CLL Genie and PGxModule, with shared layouts,
+JSON report rendering for Coyote3, Genexus, CLL Genie and PGxModule, with shared layouts,
 application themes, center branding and Swedish/English interface labels.
 
-Build reports from Python objects or application-specific JSON. HTML includes its CSS,
+Build reports from JSON. Define columns once and supply values as row lists. HTML includes its CSS,
 print rules, fonts and artwork, so it can be converted elsewhere with WeasyPrint.
 
 ## Install
@@ -24,7 +24,7 @@ python -m pip install "smd-reports[pdf]"
 ```
 
 The distribution name is `smd-reports`; the Python import name is `smd_reports`.
-PDF rendering also requires native Pango libraries. See [installation](docs/installation.md).
+PDF rendering also requires native Pango libraries. See [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md).
 
 ## Use from Python
 
@@ -39,9 +39,9 @@ Path("report.html").write_text(renderer.render_html(report), encoding="utf-8")
 Path("report.pdf").write_bytes(renderer.render_pdf(report))
 ```
 
-Applications can also instantiate `CoyoteReport`, `GenexusReport`, `CLLGenieReport` or
-`PGxReport` directly, without an intermediate JSON file. The
-[Python guide](docs/python-api.md) and [quickstart](docs/quickstart.md) include examples.
+Load JSON text with `ReportLoader().loads(json_text)` or files with `load(path)`.
+The [Python guide](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/python-api.md) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/quickstart.md) include examples.
+Custom columns and detail fields are configured in JSON, including English/Swedish labels.
 
 ## Use from the command line
 
@@ -49,7 +49,7 @@ Applications can also instantiate `CoyoteReport`, `GenexusReport`, `CLLGenieRepo
 smd-reports validate report.json
 smd-reports render report.json --format html --output report.html
 smd-reports render report.json --format pdf --output report.pdf
-smd-reports normalize report.json --output report.snapshot.json
+smd-reports normalize report.json --output report.portable.json
 smd-reports schema --application coyote3 --output coyote3.schema.json
 ```
 
@@ -57,26 +57,24 @@ The same commands are available with `python -m smd_reports`.
 
 ## Documentation
 
-- [Overview](docs/index.md), [installation](docs/installation.md) and [quickstart](docs/quickstart.md)
-- [Python usage](docs/python-api.md) and [Python API reference](docs/reference.md)
-- [Application inputs](docs/integration.md), [JSON format](docs/json-inputs.md)
-  and [Command-line reference](docs/cli.md)
-- [Center branding](docs/branding.md) and [HTML/PDF rendering](docs/rendering.md)
-- [Contributing](docs/contributing.md), [testing and releases](docs/validation.md)
-  and [changelog](CHANGELOG.md)
+- [Overview](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/index.md), [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/quickstart.md)
+- [Python usage](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/python-api.md) and [Python API reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/reference.md)
+- [Application inputs](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/integration.md), [JSON format](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/json-inputs.md)
+  and [Command-line reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/cli.md)
+- [Center branding](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/branding.md) and [HTML/PDF rendering](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/rendering.md)
+- [Contributing](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/contributing.md), [testing and releases](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/validation.md)
+  and [changelog](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 
-Runnable synthetic examples are in [examples/](examples/). Application workflows retain
-clinical decisions, authorization, approval and storage; see the application guide for
-the PGx preparation boundary.
+Runnable synthetic examples and complete JSON inputs are in [examples/](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/).
 
 ## Example reports
 
 | Application | HTML | PDF | Input |
 | --- | --- | --- | --- |
-| Coyote3 | [HTML](examples/rendered/coyote3.html) | [PDF](examples/rendered/coyote3.pdf) | [JSON](examples/inputs/coyote3-dna.json) |
-| Genexus | [HTML](examples/rendered/genexus.html) | [PDF](examples/rendered/genexus.pdf) | [JSON](examples/inputs/genexus-en.json) |
-| CLL Genie | [HTML](examples/rendered/cll-genie.html) | [PDF](examples/rendered/cll-genie.pdf) | [JSON](examples/inputs/cll-genie-positive.json) |
-| PGxModule | [HTML](examples/rendered/pgx.html) | [PDF](examples/rendered/pgx.pdf) | [JSON](examples/inputs/pgx.json) |
+| Coyote3 | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote3.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote3.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/coyote3-dna.json) |
+| Genexus | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/genexus.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/genexus.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/genexus-en.json) |
+| CLL Genie | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/cll-genie.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/cll-genie.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/cll-genie-positive.json) |
+| PGxModule | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/pgx.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/pgx.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/pgx.json) |
 
 These reports use synthetic clinical data and generic application, center and accreditation
 placeholders. Production reports use the artwork supplied through JSON.
@@ -85,5 +83,5 @@ be previewed directly in GitHub.
 
 ## License
 
-[GPL-3.0-only](LICENSE). Embedded Source Sans 3 fonts use the
-[SIL Open Font License](src/smd_reports/static/SourceSans3-LICENSE.md).
+[GPL-3.0-only](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE). Embedded Source Sans 3 fonts use the
+[SIL Open Font License](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/src/smd_reports/static/SourceSans3-LICENSE.md).

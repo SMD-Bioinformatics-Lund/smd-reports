@@ -4,24 +4,48 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "smd-reports"
-version = "0.1.0"
-description = "Shared clinical report presentation and application report builders"
+dynamic = ["version"]
+description = "JSON-based reports with dynamic tables, localized themes and portable HTML/PDF"
 readme = "README.md"
 requires-python = ">=3.10"
+authors = [{name = "SMD Bioinformatics"}]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Text Processing :: Markup :: HTML",
+]
 license = "GPL-3.0-only"
 license-files = ["LICENSE"]
 dependencies = ["pydantic>=2.10,<3", "Jinja2>=3.1.6,<4", "Markdown>=3.6,<4", "bleach>=6.2,<7", "defusedxml>=0.7,<1"]
 
+[project.urls]
+Homepage = "https://github.com/SMD-Bioinformatics-Lund/smd-reports"
+Documentation = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/docs"
+Repository = "https://github.com/SMD-Bioinformatics-Lund/smd-reports"
+Issues = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/issues"
+Changelog = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md"
+
 [project.optional-dependencies]
 docs = ["mkdocs>=1.6,<2", "mkdocs-material>=9.6,<10"]
 pdf = ["weasyprint==63.0"]
-test = ["pytest>=8,<9", "pypdf>=5,<6", "PyMuPDF>=1.25,<2", "Pillow>=10,<12", "build>=1,<2", "ruff>=0.13,<0.14"]
+test = ["pytest>=8,<9", "PyMuPDF>=1.25,<2", "build>=1,<2", "ruff>=0.13,<0.14", "twine>=6.1,<7"]
 
 [project.scripts]
 smd-reports = "smd_reports.cli:main"
 
+[tool.setuptools.dynamic]
+version = {attr = "smd_reports.__version__"}
+
 [tool.setuptools.packages.find]
 where = ["src"]
+exclude = ["*.__pycache__*"]
 
 [tool.setuptools.package-data]
 smd_reports = ["py.typed", "templates/**/*.html", "static/*.css", "static/*.md", "themes/*.json"]

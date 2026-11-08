@@ -1,18 +1,25 @@
-"""Shared synthetic report fixtures."""
+"""JSON input fixtures shared by rendering and command-line tests."""
 
-import importlib.util
+import json
 from pathlib import Path
 
 import pytest
 
-spec = importlib.util.spec_from_file_location(
-    "report_examples",
-    Path(__file__).parents[1] / "examples" / "reports.py",
-)
-examples = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(examples)
+from smd_reports import ReportLoader
+
+INPUTS = Path(__file__).parents[1] / "examples/inputs"
+
+
+@pytest.fixture
+def payloads():
+    return {path.stem: json.loads(path.read_text()) for path in INPUTS.glob("*.json")}
+
+
+@pytest.fixture
+def load():
+    return lambda payload: ReportLoader().loads(json.dumps(payload), base_dir=INPUTS)
 
 
 @pytest.fixture
 def reports():
-    return examples.demo_reports()
+    return {path.stem: ReportLoader().load(path) for path in INPUTS.glob("*.json")}

@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IGHV-mutationsanalys - DEMO-REPORT-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:plugin_version" content="1.0.0"><meta name="smd-reports:schema_version" content="1"><meta name="smd-reports:template_version" content="1.8.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
+<meta name="smd-reports:application_version" content=""><meta name="smd-reports:configuration_version" content=""><meta name="smd-reports:assay_version" content=""><meta name="smd-reports:source_revision" content=""><meta name="smd-reports:package_version" content="0.1.0"><meta name="smd-reports:template_version" content="2.0.0"><style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
   font-style: normal;
@@ -74,13 +74,6 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .variant_table th, .variant_table td { padding: 4px 10px; border: 0; border-bottom: 1px solid var(--report-border); font-size: 8.5pt; }
 .variant_table th { background: var(--tint); color: #000; border-top: 1px solid var(--report-border); font-weight: 600; }
 .variant_table tbody td { background: #fff; }
-.snv-summary th:nth-child(1) { width: 10%; }
-.snv-summary th:nth-child(2) { width: 12%; }
-.snv-summary th:nth-child(3) { width: 9%; }
-.snv-summary th:nth-child(4) { width: 27%; }
-.snv-summary th:nth-child(5) { width: 9%; }
-.snv-summary th:nth-child(6) { width: 8%; }
-.snv-summary th:nth-child(7) { width: 25%; }
 .emphasis { font-weight: 600; }
 .finding-detail { margin: 6px 0 12px; }
 .report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
@@ -153,20 +146,12 @@ p, li { orphans: 3; widows: 3; }
   .report-summary { break-before: page; break-after: page; }
 }
 @media screen and (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
-/* Preserve the original grouped CLL sequence rows and Genexus variant cards. */
-.cll-sequence, .genexus-detail { margin: 6px 0 12px; }
-.cll-sequence-table th.report_variant_header { text-align: center; }
-.cll-sequence-table tr > th, .cll-sequence-table tr > td { width: 20%; }
-.cll-sequence-table tr > [colspan="2"] { width: 40%; }
-.cll-sequence-table tr > [colspan="3"] { width: 60%; }
-.cll-sequence-table tr > [colspan="4"] { width: 80%; }
-.cll-sequence-table tr > [colspan="5"] { width: 100%; }
-.cll-sequence-table .report_key { width: auto; }
-.cll-sequence-table .cll-highlight { background: #ffffe0; }
-.cll-sequence-table .cll-text { white-space: pre-wrap; }
-.cll-sequence-table tr.detail-wide-row > td.report_comment { width: auto; }
-.genexus-detail .report_key { font-size: 7.5pt; }
-.genexus-detail .report_variant_header { font-weight: 700; }
+/* JSON columns and grid spans determine the content layout. */
+.cell-highlight { background: #ffffe0; }
+.cell-plain { white-space: pre-wrap; }
+.grid-table th.report_variant_header { text-align: center; }
+.grid-table .report_key { width: auto; }
+.grid-table .detail-wide-row > .report_comment { width: auto; }
 
 @page { margin-top: 65.0mm; margin-bottom: 38.0mm; }
 .report-application-logo { width: 13.75mm; }
@@ -183,10 +168,10 @@ p, li { orphans: 3; widows: 3; }
 </header><div class="report-brand-rule" aria-hidden="true"></div><section class="report-metadata" aria-label="Provinformation">
 <h2 class="report-metadata-heading">Provinformation</h2>
 <table class="report-patient-table"><colgroup><col class="metadata-label"><col><col class="metadata-label"><col><col class="metadata-label"><col></colgroup><tbody>
-<tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Provtyp</th><td>Syntetiskt prov</td><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td><th scope="row">Rapporttyp</th><td>Positiv</td></tr><tr><th scope="row">Submission</th><td>submission_demo</td><th scope="row">Rapportdatum</th><td>2026-01-01</td><th scope="row">Skapad av</th><td>Demo User</td></tr><tr><th scope="row">Rapport-ID</th><td colspan="5">DEMO-REPORT-001</td></tr></tbody></table></section></div>
+<tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Provtyp</th><td>Syntetiskt prov</td><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td><th scope="row">Rapportdatum</th><td>2026-01-01</td></tr><tr><th scope="row">Skapad av</th><td>Demo User</td><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 <img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div>
-<div class="report-page-number-footer"><span class="template-version">cll_genie template v1.8.0</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">cll_genie template v2.0.0</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-product-brand">
 <div class="report-logo-identity"><img class="report-application-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDgwIDQ4Ij4KPHRpdGxlPkV4YW1wbGUgYXBwbGljYXRpb24gaWNvbjwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI3OCIgaGVpZ2h0PSI0NiIgcng9IjgiIGZpbGw9IiNmNGYwZjgiIHN0cm9rZT0iIzc2NjQ4NiIvPgo8cGF0aCBkPSJNMTMgMjQgMjEgMTYgMjkgMjQgMjEgMzJaIiBmaWxsPSIjNzY2NDg2Ii8+Cjx0ZXh0IHg9IjQ5IiB5PSIyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1MTQ2NWMiPkFQUDwvdGV4dD4KPC9zdmc+Cg==" alt="cll_genie"></div><div><strong>CLL Genie</strong></div>
@@ -202,28 +187,50 @@ p, li { orphans: 3; widows: 3; }
 </header><div class="screen-metadata"><section class="report-metadata" aria-label="Provinformation">
 <h2 class="report-metadata-heading">Provinformation</h2>
 <table class="report-patient-table"><colgroup><col class="metadata-label"><col><col class="metadata-label"><col></colgroup><tbody>
-<tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td><th scope="row">Provtyp</th><td>Syntetiskt prov</td></tr><tr><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Rapporttyp</th><td>Positiv</td><th scope="row">Submission</th><td>submission_demo</td></tr><tr><th scope="row">Rapportdatum</th><td>2026-01-01</td><th scope="row">Skapad av</th><td>Demo User</td></tr><tr><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
+<tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td><th scope="row">Provtyp</th><td>Syntetiskt prov</td></tr><tr><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Rapportdatum</th><td>2026-01-01</td><th scope="row">Skapad av</th><td>Demo User</td></tr><tr><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <section id="cll-sequences" class="section">
-<h2 class="report_header">Analysresultat</h2><table class="results variant_table"><thead><tr><th scope="col">Sekvens-ID</th><th scope="col">Sekvenslängd</th><th scope="col">V-gen identitet</th><th scope="col">IGHV-mutationsstatus</th><th scope="col">CLL subset</th></tr></thead><tbody>
-<tr><td>Seq1</td><td>321</td><td>97.5% (313/321) [97.2% (312/321)]</td><td>Borderline (granskad)</td><td>#2</td></tr></tbody></table></section>
-<section id="summary" class="section report-summary break-before">
+<h2 class="report_header">Analysresultat</h2><table class="results variant_table"><colgroup><col style="width: 20.0%"><col style="width: 20.0%"><col style="width: 20.0%"><col style="width: 20.0%"><col style="width: 20.0%"></colgroup>
+<thead><tr><th scope="col">Sekvens-ID</th><th scope="col">Sekvenslängd</th><th scope="col">V-gen identitet</th><th scope="col">IGHV-mutationsstatus</th><th scope="col">CLL subset</th></tr></thead><tbody>
+<tr><td class="cell-plain">Seq1</td><td class="cell-plain">321</td><td class="cell-plain">97.5% (313/321) [97.2% (312/321)]</td><td class="cell-plain">Borderline (granskad)</td><td class="cell-plain">#2</td></tr></tbody></table></section>
+<section id="summary" class="section report-summary">
 <h2 class="report_header">Slutsats</h2><div class="results_summary plain">Exempel på granskad slutsats. Endast för demonstration.</div>
 </section>
-<section id="cll-detail-0" class="section">
-<h2 class="report_header">Detaljerade analysresultat</h2><article class="cll-sequence" data-sequence-id="Seq1">
-<table class="report_variant detail-flow cll-sequence-table" style="--detail-label-width: 20%">
-<thead><tr><th class="report_variant_header" colspan="5">Seq1 - 321 nt (Borderline (granskad))</th></tr></thead>
-<tbody>
-<tr><th scope="row" class="report_key">Seq ID</th><td>Seq1</td><th scope="row" class="report_key">CLL subset</th><td class="cll-highlight">#2</td><td class="cll-highlight"><strong>Sekvensanalyskategori:</strong> Single productive rearrangement (synthetic)</td></tr>
-<tr class="detail-wide-row"><th scope="row" class="report_key">Indel summary</th><td class="report_comment cll-highlight cll-text" colspan="4">Synthetic insertion/deletion description supplied by CLL Genie.</td></tr><tr><th scope="row" class="report_key" colspan="2">V-Domain functionality after removal of Indels</th><td class="cll-highlight" colspan="3">Produktiv</td></tr>
-<tr class="detail-wide-row"><th scope="row" class="report_key">Kommentar</th><td class="report_comment cll-highlight cll-text" colspan="4">Reviewed synthetic result supplied by CLL Genie.</td></tr><tr><th scope="row" class="report_key">V-GENE and allele</th><td>IGHV3-21*01</td><td><strong>Score:</strong> 1500</td><td class="cll-highlight" colspan="2"><strong>Identity:</strong> 97.5% (313/321) [97.2% (312/321)]</td></tr>
-<tr><th scope="row" class="report_key">J-GENE and allele</th><td>IGHJ6*02</td><td><strong>Score:</strong> 230</td><td colspan="2"><strong>Identity:</strong> 100.0% (60/60)</td></tr>
-<tr><th scope="row" class="report_key" colspan="3">D-GENE and allele by IMGT/JunctionAnalysis</th><td>IGHD3-3*01</td><td><strong>D-REGION reading frame:</strong> 2</td></tr>
-<tr><th scope="row" class="report_key" colspan="2">FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION</th><td>[25.17.38.11]</td><td>[8.8.14]</td><td>SYNTHETIC</td></tr>
-<tr><th scope="row" class="report_key" colspan="2">JUNCTION length (in nt) and decryption</th><td colspan="2">42 nt = DEMO-V {N1} DEMO-D {N2} DEMO-J</td><td>(3′V)3′{N1}5′(D)3′{N2}5′(5′J)</td></tr>
-<tr><th scope="row" class="report_key">Merge count</th><td>1200</td><th scope="row" class="report_key">Totala läsningar</th><td colspan="2">0.0%</td></tr>
-<tr class="detail-wide-row"><th scope="row" class="report_key">JUNCTION-nt nb</th><td class="report_comment cll-text" colspan="4">42</td></tr></tbody></table></article>
-</section>
+<section id="cll-details" class="section">
+<h2 class="report_header">Detaljerade analysresultat</h2><article class="finding-detail grid-detail" id="cll-details-1">
+<table class="report_variant detail-flow grid-table"><thead><tr><th class="report_variant_header" colspan="5">Seq1 - 321 nt (Borderline (granskad))</th></tr></thead><tbody>
+<tr>
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">Seq ID</th><td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">Seq1</td>
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">CLL subset</th><td colspan="1" class="var_report_val cell-highlight cell-plain" style="width: 20.0%">#2</td>
+<td colspan="1" class="var_report_val cell-highlight cell-plain" style="width: 20.0%"><strong>Sekvensanalyskategori:</strong> Single productive rearrangement (synthetic)</td>
+</tr><tr class="detail-wide-row" style="--detail-label-width: 20.0%">
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">Indel summary</th><td colspan="4" class="report_comment cell-highlight cell-plain">Synthetic insertion/deletion description supplied by CLL Genie.</td>
+</tr><tr class="detail-wide-row" style="--detail-label-width: 40.0%">
+<th scope="row" class="report_key" colspan="2" style="width: 40.0%">V-Domain functionality after removal of Indels</th><td colspan="3" class="report_comment cell-highlight cell-plain">Produktiv</td>
+</tr><tr class="detail-wide-row" style="--detail-label-width: 20.0%">
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">Kommentar</th><td colspan="4" class="report_comment cell-highlight cell-plain">Reviewed synthetic result supplied by CLL Genie.</td>
+</tr><tr>
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">V-GENE and allele</th><td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">IGHV3-21*01</td>
+<td colspan="1" class="var_report_val cell-plain" style="width: 20.0%"><strong>Score:</strong> 1500</td>
+<td colspan="2" class="var_report_val cell-highlight cell-plain" style="width: 40.0%"><strong>Identity:</strong> 97.5% (313/321) [97.2% (312/321)]</td>
+</tr><tr>
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">J-GENE and allele</th><td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">IGHJ6*02</td>
+<td colspan="1" class="var_report_val cell-plain" style="width: 20.0%"><strong>Score:</strong> 230</td>
+<td colspan="2" class="var_report_val cell-plain" style="width: 40.0%"><strong>Identity:</strong> 100.0% (60/60)</td>
+</tr><tr>
+<th scope="row" class="report_key" colspan="3" style="width: 60.0%">D-GENE and allele by IMGT/JunctionAnalysis</th><td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">IGHD3-3*01</td>
+<td colspan="1" class="var_report_val cell-plain" style="width: 20.0%"><strong>D-REGION reading frame:</strong> 2</td>
+</tr><tr>
+<td colspan="2" class="report_key cell-plain" style="width: 40.0%">FR-IMGT lengths, CDR-IMGT lengths and AA JUNCTION</td>
+<td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">[25.17.38.11]</td>
+<td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">[8.8.14]</td>
+<td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">SYNTHETIC</td>
+</tr><tr>
+<th scope="row" class="report_key" colspan="2" style="width: 40.0%">JUNCTION length (in nt) and decryption</th><td colspan="2" class="var_report_val cell-plain" style="width: 40.0%">42 nt = DEMO-V {N1} DEMO-D {N2} DEMO-J</td>
+<td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">(3′V)3′{N1}5′(D)3′{N2}5′(5′J)</td>
+</tr><tr>
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">Merge count</th><td colspan="1" class="var_report_val cell-plain" style="width: 20.0%">1200</td>
+<th scope="row" class="report_key" colspan="1" style="width: 20.0%">Totala läsningar</th><td colspan="2" class="var_report_val cell-plain" style="width: 40.0%">0.0%</td>
+</tr></tbody></table></article></section>
 <section id="description" class="section">
 <h2 class="report_header">Analysbeskrivning</h2><div class="plain">Syntetisk analysbeskrivning. Inga kliniska beslut fattas här.</div>
 </section>
@@ -231,5 +238,5 @@ p, li { orphans: 3; widows: 3; }
 <h2 class="report_header">Referenser</h2><div class="plain">Example reference supplied by the application; demonstration only.</div>
 </section>
 </main>
-<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">cll_genie template v1.8.0</span></footer>
+<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">cll_genie template v2.0.0</span></footer>
 </div></body></html>

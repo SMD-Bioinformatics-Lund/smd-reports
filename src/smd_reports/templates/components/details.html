@@ -1,20 +1,22 @@
-{% if not section.records %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}
-{% for record in section.records %}
-{% set detail = namespace(rows=[], pending=[], flowing=false) %}
-{% for field in record.fields %}
-{% if field.full_width or field.format == 'markdown' %}
+{% if not section.rows %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}
+{% set indexes = namespace(compact=[], wide=[], all=[]) %}
+{% for column in section.columns %}{% set index = loop.index0 %}{% if column.full_width or column.format == 'markdown' %}{% set _ = indexes.wide.append(index) %}{% else %}{% set _ = indexes.compact.append(index) %}{% endif %}{% set _ = indexes.all.append(index) %}{% endfor %}
+{% set ordered = indexes.compact + indexes.wide if section.full_width_last else indexes.all %}
+{% for values in section.rows %}
+{% set record_index = loop.index0 %}
+{% set detail = namespace(rows=[], pending=[]) %}
+{% for index in ordered %}{% set column = section.columns[index] %}
+{% if column.full_width or column.format == 'markdown' %}
 {% if detail.pending %}{% set _ = detail.rows.append((detail.pending, false)) %}{% set detail.pending = [] %}{% endif %}
-{% set _ = detail.rows.append(([field], true)) %}{% set detail.flowing = true %}
-{% else %}
-{% set _ = detail.pending.append(field) %}
+{% set _ = detail.rows.append(([index], true)) %}
+{% else %}{% set _ = detail.pending.append(index) %}
 {% if detail.pending|length == section.fields_per_row %}{% set _ = detail.rows.append((detail.pending, false)) %}{% set detail.pending = [] %}{% endif %}
-{% endif %}
-{% endfor %}
+{% endif %}{% endfor %}
 {% if detail.pending %}{% set _ = detail.rows.append((detail.pending, false)) %}{% endif %}
-<article class="finding-detail" id="{{ section.key }}-{{ record.key }}" style="--detail-label-width: {{ 100 / (section.fields_per_row * 2) }}%">
-<table class="report_variant{% if detail.flowing %} detail-flow{% endif %}">
-<thead><tr><th class="report_variant_header" colspan="{{ section.fields_per_row * 2 }}">{{ record.title }}</th></tr></thead>
+<article class="finding-detail" id="{{ section.key }}-{{ record_index + 1 }}" style="--detail-label-width: {{ 100 / (section.fields_per_row * 2) }}%">
+<table class="report_variant{% if indexes.wide %} detail-flow{% endif %}">
+<thead><tr><th class="report_variant_header" colspan="{{ section.fields_per_row * 2 }}">{{ section|heading(values, record_index) }}</th></tr></thead>
 <tbody>{% for row, wide in detail.rows %}<tr{% if wide %} class="detail-wide-row"{% endif %}>
-{% for field in row %}<th scope="row" class="report_key">{{ field.label }}</th><td class="{% if wide %}report_comment{% else %}var_report_val{% endif %}{% if field.emphasis %} emphasis{% endif %}"{% if wide %} colspan="{{ section.fields_per_row * 2 - 1 }}"{% elif loop.last and row|length < section.fields_per_row %} colspan="{{ (section.fields_per_row - row|length) * 2 + 1 }}"{% endif %}>{% if field.format == 'markdown' %}{{ field.value|display|markdown }}{% else %}{{ field.value|display }}{% endif %}</td>{% endfor %}
+{% for index in row %}{% set column = section.columns[index] %}<th scope="row" class="report_key">{{ column.label|ui }}</th><td class="{% if wide %}report_comment{% else %}var_report_val{% endif %}{% if column.emphasis %} emphasis{% endif %}{% if column.highlight %} cell-highlight{% endif %}{% if column.format == 'plain' %} cell-plain{% endif %}"{% if wide %} colspan="{{ section.fields_per_row * 2 - 1 }}"{% elif loop.last and row|length < section.fields_per_row %} colspan="{{ (section.fields_per_row - row|length) * 2 + 1 }}"{% endif %}>{% if column.format == 'markdown' %}{{ values[index]|display|markdown }}{% else %}{{ values[index]|display }}{% endif %}</td>{% endfor %}
 </tr>{% endfor %}</tbody></table></article>
 {% endfor %}

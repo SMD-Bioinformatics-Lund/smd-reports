@@ -26,7 +26,7 @@ python -m build
 
 PDF checks also require the native libraries described in [installation](installation.md).
 Run `python examples/reports.py --pdf` to generate synthetic HTML/JSON/PDF artifacts in
-`.artifacts/examples/`. Regenerate JSON input examples with `python examples/json_inputs.py`.
+`.artifacts/examples/`. The example JSON files are the source inputs.
 
 The four curated HTML/PDF pairs in `examples/rendered/` are intentionally versioned so
 users can inspect report output without installing the package. Regenerate them with:
@@ -53,14 +53,14 @@ building documentation does not publish it. Add new pages to the navigation in `
 Commit the changes on the work branch and run the relevant verification in
 [validation and releases](validation.md). Open a PR targeting `dev` using the
 development template at `.github/PULL_REQUEST_TEMPLATE/development.md`. Include
-content/layout evidence and version impacts appropriate to the affected plugins.
+a description of the change and its test results.
 
 After review and required checks, squash-merge the work branch into `dev`.
 Create subsequent work branches from the updated `dev`.
 
 ## Release PR
 
-Prepare the release version, template/plugin revisions, changelog and validation evidence
+Prepare the release version, template revisions, changelog and validation evidence
 on a work branch and merge them into `dev` through the normal development review.
 When the release candidate is ready, open a PR from `dev` to `master` using the
 release template at `.github/PULL_REQUEST_TEMPLATE/release.md`.

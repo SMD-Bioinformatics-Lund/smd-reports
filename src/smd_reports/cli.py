@@ -7,7 +7,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from .loading import INPUT_MODELS, ReportAssetError, ReportLoader
+from .loading import APPLICATIONS, ReportAssetError, ReportLoader
 from .rendering import PDFUnavailableError, ReportRenderer
 
 
@@ -16,7 +16,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="smd-reports", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     schema = commands.add_parser("schema", help="Export an application JSON Schema")
-    schema.add_argument("--application", choices=INPUT_MODELS, required=True)
+    schema.add_argument("--application", choices=APPLICATIONS)
     schema.add_argument("--output", type=Path, required=True)
     for name in ("validate", "normalize", "render"):
         command = commands.add_parser(name)

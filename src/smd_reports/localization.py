@@ -52,12 +52,6 @@ ENGLISH = {
 
 def label(value: str, language: str) -> str:
     """Translate a known framework label; preserve unknown caller wording."""
+    if isinstance(value, dict):
+        return value.get(language, value.get("en", next(iter(value.values()))))
     return ENGLISH.get(value, value) if language == "en" else value
-
-
-def localize_table(section, language):
-    """Translate only a builder-generated table's labels and default empty message."""
-    section.title = label(section.title, language)
-    for column in section.columns:
-        column.label = label(column.label, language)
-    section.empty_text = label(section.empty_text, language)

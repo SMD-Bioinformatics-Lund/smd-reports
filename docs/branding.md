@@ -1,103 +1,60 @@
 # Center branding
 
-Every application's data model accepts `branding=Branding(...)`. JSON inputs use the
-equivalent top-level `branding` object. The same configuration applies across applications.
-
-## Load local artwork
-
-```python
-from smd_reports import Branding
-
-branding = Branding.from_files(
-    center_logo="/path/to/center.svg",
-    accreditation_logo="/path/to/accreditation.svg",
-    organization="Example Molecular Diagnostics Center",
-    department="Molecular Diagnostics",
-    address="Postal address",
-    telephone="Center telephone",
-    email="contact@example.org",
-    website="center.example.org",
-    accredited=True,
-    accreditation_label="Accreditation mark",
-)
-```
-
-Python paths resolve against the process's working directory. Logo paths in JSON resolve
-against the JSON file's directory. Absolute paths are supported. `from_files()` reads the
-files once and embeds their contents; subsequent rendering does not depend on those paths.
-
-For embedded artwork, construct `Branding` directly with base64 data URI strings.
-
-## Header and footer fields
-
-| Field | Placement | Default |
-| --- | --- | --- |
-| `organization` | Header | Empty |
-| `department`, `address`, `telephone`, `email`, `website` | Header, when supplied | Empty |
-| `application_logo` | Coyote3/CLL Genie header beside application name | None |
-| `center_logo` | Header beside center details | None |
-| `accreditation_logo` | Footer, when `accredited` is true | None |
-| `accredited` | Application-provided assay eligibility | False |
-| `accreditation_label` | Artwork alternative text | `Ackreditering` |
-
-Contact strings are escaped display text. They are not interpreted as HTML or external
-resource URLs. Header information repeats on PDF pages; the HTML preview shows it once.
-
-### Application identity
-
-| Application | Name treatment | Optional application logo |
-| --- | --- | --- |
-| Coyote3 | Purple/orange application name | Shown to the left of the name |
-| CLL Genie | Dark orange application name | Shown to the left of the name |
-| Genexus | Center header without an application name block | Not displayed |
-| PGx | Center header without an application name block | Not displayed |
-
-For Coyote3 or CLL Genie, provide the optional logo in JSON:
+Add a `branding` object to the JSON document:
 
 ```json
 {
   "branding": {
-    "application_logo": "logos/application.png",
+    "application_logo": "logos/application.svg",
     "center_logo": "logos/center.png",
-    "organization": "Center name"
+    "accreditation_logo": "logos/accreditation.svg",
+    "organization": "Example Diagnostics Center",
+    "department": "Molecular Diagnostics",
+    "address": "Example address 1",
+    "telephone": "000-000000",
+    "email": "demo@example.org",
+    "accredited": true,
+    "accreditation_label": {"en": "Accreditation mark", "sv": "Ackrediteringsmärke"}
   }
 }
 ```
 
-Omit `application_logo` or set it to null to show the colored application name alone.
-The name treatment is selected by `application`; it does not depend on a logo being present.
-Application themes still apply to section headings and tables for all four applications.
+Paths resolve relative to the JSON file. Absolute paths and base64 image data URIs are
+also accepted. The loader embeds local artwork automatically; generated HTML and portable
+JSON no longer depend on those files. When loading JSON text, use `loads(..., base_dir=...)`
+for relative paths.
 
-## Artwork dimensions
+## Header and footer
 
-| Field | Default | Range |
+| Field | Placement |
+| --- | --- |
+| `organization` | Center name in the header |
+| `department`, `address`, `telephone`, `email`, `website` | Header contact information |
+| `application_logo` | Optional Coyote3/CLL Genie header icon |
+| `center_logo` | Header beside center details |
+| `accreditation_logo` | Left footer when `accredited` is true |
+| `accreditation_label` | Logo alternative text |
+
+Coyote3 shows a purple/orange application name; CLL Genie uses dark orange. Genexus and
+PGx use center-only headers. Omitting the application logo retains the colored name.
+No institutional logos or center information are supplied as defaults.
+
+## Dimensions
+
+| Setting | Default | Range |
 | --- | --- | --- |
-| `center_logo_width_mm` | 11.64 | 5–35 |
-| `application_logo_width_mm` | 13.75 | 5–30 |
-| `accreditation_logo_width_mm` | 25 | 10–35 |
+| `branding.center_logo_width_mm` | 11.64 | 5–35 |
+| `branding.application_logo_width_mm` | 13.75 | 5–30 |
+| `branding.accreditation_logo_width_mm` | 25 | 10–35 |
+| `presentation.header_height_mm` | 65 | 40–120 |
+| `presentation.footer_height_mm` | 38 | 22–50 |
 
-Artwork aspect ratios are retained and print heights are constrained. Use approved logo
-artwork and check its final printed size. The `accredited` flag does not validate an assay's
-accreditation status; the application supplies that decision.
+Artwork keeps its aspect ratio. Header information repeats on PDF pages. The footer places
+the accreditation image on the left and template/page numbering on the right. Without
+accreditation artwork, the PDF uses a 22 mm footer.
 
-For more center details or patient fields, increase `ReportConfig.header_height_mm`
-from its 65 mm default. The allowed range is 40–120 mm. Review the longest expected
-metadata together with the chosen logos and contact fields.
+## Image formats
 
-For eligible accreditation artwork, `ReportConfig.footer_height_mm` reserves 38 mm by
-default (range 22–50 mm). This accommodates portrait artwork at 25 mm wide,
-including the footer rule and padding. Reports without that artwork use a 22 mm footer.
-The mark is placed at the left; template revision and page numbering stay at the right.
-
-## Supported image formats
-
-PNG, JPEG and restricted static SVG are accepted. SVG supports static shapes, text and
-local fragment references. Scripts, entities, processing instructions, CSS URL resources,
-external references and embedded documents are rejected. Outline text or convert to PNG
-when an SVG source relies on unsupported CSS, embedded images or external fonts.
-
-Missing files and invalid artwork fail loading rather than silently omitting the logo.
-
-Public examples use generic application, center and accreditation placeholders. They do not
-represent a real organization or accreditation body. Production JSON supplies the deploying
-center's chosen artwork and assay eligibility; no institutional logo is bundled as a default.
+PNG, JPEG and static SVG are supported. SVG scripts, external references, entities,
+embedded documents and CSS URL resources are rejected. Missing or unsupported artwork
+produces a loading error. Public examples use generic artwork from `examples/assets/`.
