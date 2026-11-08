@@ -27,7 +27,7 @@ dependencies = ["pydantic>=2.10,<3", "Jinja2>=3.1.6,<4", "Markdown>=3.6,<4", "bl
 
 [project.urls]
 Homepage = "https://github.com/SMD-Bioinformatics-Lund/smd-reports"
-Documentation = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki"
+Documentation = "https://smd-reports.readthedocs.io/en/latest/"
 Repository = "https://github.com/SMD-Bioinformatics-Lund/smd-reports"
 Issues = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/issues"
 Changelog = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md"
