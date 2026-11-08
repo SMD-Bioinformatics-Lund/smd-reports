@@ -22,13 +22,22 @@ Its `template_name` and `template_version` properties identify the selected layo
 | --- | --- |
 | `pydantic.ValidationError` | Invalid fields, row lengths, translations or layout references |
 | `json.JSONDecodeError` | Invalid JSON syntax |
-| `ValueError` | Duplicate JSON keys, non-finite JSON constants or an unknown theme |
+| `ReportInputError` (`ValueError`) | Duplicate JSON keys, non-finite JSON constants or an unknown theme |
 | `TypeError` | `loads()` received something other than JSON text/bytes |
-| `OSError` | Input/output file could not be read or written |
+| `OSError` | Input file could not be read |
+| `UnicodeError` | Input is not valid Unicode text |
 | `ReportAssetError` | An image could not be loaded; identifies its JSON field |
-| `PDFUnavailableError` | PDF Python/native dependencies are unavailable |
+| `ReportRenderError` | HTML templates, installed assets or the PDF engine failed |
+| `PDFUnavailableError` (`ReportRenderError`) | PDF Python/native dependencies are unavailable |
 
-`ReportAssetError`, `PDFUnavailableError` and `Theme` are also exported from `smd_reports`.
+`ReportInputError`, `ReportAssetError`, `ReportRenderError`, `PDFUnavailableError`,
+`format_validation_error` and `Theme` are exported from `smd_reports`.
+`ReportAssetError` extends `ReportInputError` and exposes `field` and `reason`.
+
+`format_validation_error(error: ValidationError) -> str` formats up to ten field errors
+and reports the remaining count. It excludes input values and unknown JSON keys. Raw
+Pydantic exceptions retain their normal debugging details; use the formatter for messages
+shown to users. See [Python usage](python-api.md#handle-errors) for error handling and logging.
 
 ## Theme
 

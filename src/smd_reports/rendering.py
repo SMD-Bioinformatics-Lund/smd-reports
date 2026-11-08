@@ -1,21 +1,28 @@
 """Render standalone HTML and load the optional PDF renderer when needed."""
 
+import logging
 import re
 from html import escape
 from importlib.resources import files
 
 import bleach
 import markdown
-from jinja2 import Environment, PackageLoader, StrictUndefined, pass_context, select_autoescape
+from jinja2 import (
+    Environment,
+    PackageLoader,
+    StrictUndefined,
+    TemplateError,
+    pass_context,
+    select_autoescape,
+)
 from markupsafe import Markup
 
 from .core import Report
+from .errors import PDFUnavailableError, ReportInputError, ReportRenderError
 from .localization import label
 from .themes import Theme, default_themes
 
-
-class PDFUnavailableError(RuntimeError):
-    """The optional renderer or its native runtime is unavailable."""
+logger = logging.getLogger(__name__)
 
 
 def format_markdown(value: str) -> Markup:
@@ -237,7 +244,7 @@ class ReportRenderer:
             pydantic.ValidationError: The theme contains invalid design tokens.
         """
         if theme.name in self.themes:
-            raise ValueError(f"Theme already registered: {theme.name}")
+            raise ReportInputError("Theme already registered; choose a different theme name.")
         self.themes[theme.name] = Theme.model_validate(theme.model_dump())
 
     def render_html(self, report: Report, *, theme: str | None = None) -> str:
@@ -253,18 +260,40 @@ class ReportRenderer:
         Raises:
             ValueError: A theme or embedded image is invalid.
             pydantic.ValidationError: The report was modified into an invalid state.
+            ReportRenderError: Templates, package assets or the rendering engine failed.
         """
-        report = Report.model_validate(report.model_dump())
-        selected = theme or report.application
-        if selected not in self.themes:
-            raise ValueError(f"Unknown theme: {selected}")
-        assets = files("smd_reports").joinpath("static")
-        return self.environment.get_template("clinical.html").render(
-            report=report,
-            theme=self.themes[selected],
-            css=assets.joinpath("report.css").read_text(encoding="utf-8"),
-            fonts=assets.joinpath("fonts.css").read_text(encoding="utf-8"),
-        )
+        logger.info("Rendering report HTML")
+        try:
+            if not isinstance(report, Report):
+                raise TypeError("Supply a report returned by ReportLoader.load() or loads().")
+            report = Report.model_validate(report.model_dump())
+            selected = theme or report.application
+            if selected not in self.themes:
+                raise ReportInputError(
+                    "Unknown theme; choose a built-in theme or register it before rendering."
+                )
+            assets = files("smd_reports").joinpath("static")
+            html = self.environment.get_template("clinical.html").render(
+                report=report,
+                theme=self.themes[selected],
+                css=assets.joinpath("report.css").read_text(encoding="utf-8"),
+                fonts=assets.joinpath("fonts.css").read_text(encoding="utf-8"),
+            )
+        except (TemplateError, OSError) as exc:
+            logger.error("Report HTML rendering failed")
+            raise ReportRenderError(
+                "Could not render report HTML. Check the installed templates and package assets."
+            ) from exc
+        except (TypeError, ValueError):
+            logger.error("Report HTML rendering failed: invalid report, image or theme")
+            raise
+        except Exception as exc:
+            logger.error("Report HTML rendering failed")
+            raise ReportRenderError(
+                "Could not render report HTML. Check the installed templates and package assets."
+            ) from exc
+        logger.info("Report HTML rendered")
+        return html
 
     def render_pdf(self, report: Report, *, theme: str | None = None) -> bytes:
         """Convert the standalone report HTML into PDF bytes.
@@ -280,13 +309,40 @@ class ReportRenderer:
             PDFUnavailableError: WeasyPrint or its native libraries are unavailable.
             ValueError: A theme or embedded image is invalid.
             pydantic.ValidationError: The report was modified into an invalid state.
+            ReportRenderError: Templates, package assets or the rendering engine failed.
         """
+        logger.info("Rendering report PDF")
         try:
             from weasyprint import HTML
         except (ImportError, OSError) as exc:
+            logger.error("PDF rendering is unavailable: missing PDF dependencies")
             raise PDFUnavailableError(
-                "Install smd-reports[pdf] and the WeasyPrint native runtime to render PDFs"
+                "Install smd-reports[pdf] and the WeasyPrint native runtime to render PDFs."
             ) from exc
-        return HTML(
-            string=self.render_html(report, theme=theme), url_fetcher=offline_fetcher
-        ).write_pdf(custom_metadata=True)
+        html = self.render_html(report, theme=theme)
+        resource_failed = False
+
+        def fetch_resource(url, **kwargs):
+            nonlocal resource_failed
+            try:
+                return offline_fetcher(url, **kwargs)
+            except Exception:
+                resource_failed = True
+                raise
+
+        try:
+            result = HTML(string=html, url_fetcher=fetch_resource).write_pdf(custom_metadata=True)
+            # WeasyPrint can continue after a failed fetch; do not return an incomplete report.
+            if resource_failed:
+                raise ReportRenderError(
+                    "PDF resources could not be loaded. Check embedded images and fonts."
+                )
+        except Exception as exc:
+            logger.error("Report PDF rendering failed")
+            if isinstance(exc, ReportRenderError):
+                raise
+            raise ReportRenderError(
+                "Could not generate the PDF. Check the PDF runtime and installed package assets."
+            ) from exc
+        logger.info("Report PDF rendered")
+        return result

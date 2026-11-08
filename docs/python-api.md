@@ -57,3 +57,61 @@ schema = ReportLoader().schema()
 See the [JSON guide](json-inputs.md) for dynamic columns, localized labels, detailed
 finding cards and grouped grids. Method signatures and exceptions are listed in the
 [Python API reference](reference.md).
+
+## Handle errors
+
+Loading preserves standard Python exceptions for file access and JSON syntax, and
+Pydantic's `ValidationError` for invalid fields. Use `format_validation_error()` to turn
+validation errors into readable field messages without including report values.
+
+```python
+import json
+from pydantic import ValidationError
+from smd_reports import (
+    ReportInputError, ReportLoader, ReportRenderError, ReportRenderer,
+    format_validation_error,
+)
+
+try:
+    report = ReportLoader().load("report.json")
+    html = ReportRenderer().render_html(report)
+except ValidationError as error:
+    message = format_validation_error(error)
+except json.JSONDecodeError as error:
+    message = f"Invalid JSON at line {error.lineno}, column {error.colno}."
+except ReportInputError as error:
+    message = str(error)
+except ReportRenderError as error:
+    message = str(error)
+except UnicodeError:
+    message = "Save report JSON with UTF-8 encoding."
+except OSError:
+    message = "Cannot read the report file; check its location and permissions."
+```
+
+`ReportAssetError` is a `ReportInputError` with `field` and `reason` attributes. Field paths
+use array indexes, for example `sections[2].images[0].source`. `PDFUnavailableError` is a
+`ReportRenderError` that explains which optional dependencies are needed. Rendering errors
+preserve the original exception as `__cause__` for debugging.
+
+## Enable event logging
+
+The package uses Python's standard `logging` module and installs a `NullHandler`. It does
+not configure the root logger or write log files. Enable events through your application's
+logging configuration, for example:
+
+```python
+import logging
+
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter("%(levelname)s %(name)s: %(message)s"))
+logger = logging.getLogger("smd_reports")
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
+logger.propagate = False
+```
+
+`INFO` records mark JSON loading, completed validation, schema export and HTML/PDF
+rendering. `ERROR` records identify failed stages. Package events omit report values,
+image contents and file paths. Dependency loggers, including `weasyprint`, can be configured
+separately with Python logging.

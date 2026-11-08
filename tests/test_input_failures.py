@@ -44,7 +44,7 @@ def test_svg_frame_selection_reports_the_field(payloads, load):
     data["sections"] = [
         {"kind": "image", "key": "plot", "source": "../assets/cnv-example.svg", "frame": 1}
     ]
-    with pytest.raises(ReportAssetError, match=r"sections\.plot\.images\.0"):
+    with pytest.raises(ReportAssetError, match=r"sections\[0\]\.source"):
         load(data)
 
 

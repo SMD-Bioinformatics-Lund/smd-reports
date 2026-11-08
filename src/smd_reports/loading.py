@@ -1,10 +1,16 @@
 """Read report JSON and embed local artwork."""
 
 import json
+import logging
 from pathlib import Path
+
+from pydantic import ValidationError
 
 from .assets import embed_image, prepare_image
 from .core import Report
+from .errors import ReportAssetError, ReportInputError
+
+logger = logging.getLogger(__name__)
 
 APPLICATIONS = ("generic", "coyote3", "genexus", "cll_genie", "pgx")
 
@@ -24,7 +30,7 @@ def unique_object(pairs):
     result = {}
     for key, value in pairs:
         if key in result:
-            raise ValueError("Duplicate JSON key")
+            raise ReportInputError("Duplicate JSON keys are not allowed; remove the repeated key.")
         result[key] = value
     return result
 
@@ -38,19 +44,7 @@ def reject_constant(value):
     Raises:
         ValueError: Always, because the token is not a finite JSON number.
     """
-    raise ValueError("Non-finite JSON numbers are prohibited")
-
-
-class ReportAssetError(ValueError):
-    """An image-loading error identified by its JSON field name."""
-
-    def __init__(self, field):
-        """Initialize an asset error without exposing image bytes or file paths.
-
-        Args:
-            field: Dotted JSON field name for the image that could not be loaded.
-        """
-        super().__init__(f"Cannot load {field}; supply valid local or embedded artwork")
+    raise ReportInputError("Non-finite JSON numbers are prohibited; use null or a finite value.")
 
 
 class ReportLoader:
@@ -68,12 +62,18 @@ class ReportLoader:
 
         Raises:
             OSError: The JSON file cannot be read.
+            UnicodeError: The JSON file is not UTF-8 encoded.
             ValueError: JSON syntax, numeric constants, or object keys are invalid.
             pydantic.ValidationError: Document fields do not match the input format.
             ReportAssetError: Referenced artwork cannot be loaded.
         """
         path = Path(path)
-        return self.loads(path.read_text(encoding="utf-8-sig"), base_dir=path.parent)
+        try:
+            source = path.read_text(encoding="utf-8-sig")
+        except (OSError, UnicodeError):
+            logger.error("Unable to read report JSON file")
+            raise
+        return self.loads(source, base_dir=path.parent)
 
     def loads(self, source: str | bytes, *, base_dir: str | Path | None = None) -> Report:
         """Validate JSON text or bytes and embed referenced images.
@@ -92,46 +92,86 @@ class ReportLoader:
             pydantic.ValidationError: Report fields fail validation.
             ReportAssetError: An image, frame, or accepted format is invalid.
         """
+        logger.info("Loading report JSON")
         if not isinstance(source, (str, bytes)):
-            raise TypeError("Supply JSON text or bytes")
-        document = Report.model_validate(
-            json.loads(
-                source,
-                object_pairs_hook=unique_object,
-                parse_constant=reject_constant,
+            logger.error("Report input is not JSON text or bytes")
+            raise TypeError("Supply JSON text or UTF-8 bytes; use load() for a JSON file.")
+        try:
+            values = json.loads(
+                source, object_pairs_hook=unique_object, parse_constant=reject_constant
             )
-        )
+        except (ValueError, UnicodeError):
+            logger.error("Report JSON parsing failed")
+            raise
+        try:
+            document = Report.model_validate(values)
+        except ValidationError:
+            logger.error("Report validation failed")
+            raise
 
         def image(value, field):
+            """Embed one image using a structural field path for errors."""
             if value is None or value.startswith("data:"):
                 return value
+            path = Path(value)
+            if not path.is_absolute():
+                if base_dir is None:
+                    raise ReportAssetError(field, "Relative image paths require base_dir.")
+                path = Path(base_dir) / path
             try:
-                path = Path(value)
-                if not path.is_absolute():
-                    if base_dir is None:
-                        raise ValueError("Relative artwork requires base_dir")
-                    path = Path(base_dir) / path
                 return embed_image(path)
+            except FileNotFoundError as exc:
+                raise ReportAssetError(
+                    field, "Image file not found. Check the local image path."
+                ) from exc
+            except PermissionError as exc:
+                raise ReportAssetError(field, "Permission denied while reading the image.") from exc
+            except IsADirectoryError as exc:
+                raise ReportAssetError(
+                    field, "The image path is a directory; choose an image file."
+                ) from exc
+            except ReportInputError as exc:
+                raise ReportAssetError(field, str(exc)) from exc
             except (OSError, ValueError) as exc:
-                raise ReportAssetError(field) from exc
+                raise ReportAssetError(field, "Image could not be read or decoded.") from exc
 
-        for key in ("application_logo", "center_logo", "accreditation_logo"):
-            setattr(
-                document.branding, key, image(getattr(document.branding, key), f"branding.{key}")
-            )
-        for section in document.sections:
-            assets = section.images + ([section] if section.kind == "image" else [])
-            for index, asset in enumerate(assets):
-                field = f"sections.{section.key}.images.{index}"
-                asset.source = image(asset.source, field)
-                try:
-                    prepare_image(
-                        asset.source,
-                        frame=asset.frame,
-                        accepted_formats=document.presentation.accepted_image_formats,
-                    )
-                except (OSError, ValueError) as exc:
-                    raise ReportAssetError(field) from exc
+        image_count = 0
+        try:
+            for key in ("application_logo", "center_logo", "accreditation_logo"):
+                value = image(getattr(document.branding, key), f"branding.{key}")
+                setattr(document.branding, key, value)
+                image_count += value is not None
+            for section_index, section in enumerate(document.sections):
+                assets = [
+                    (asset, f"sections[{section_index}].images[{index}].source")
+                    for index, asset in enumerate(section.images)
+                ]
+                if section.kind == "image":
+                    assets.append((section, f"sections[{section_index}].source"))
+                for asset, field in assets:
+                    asset.source = image(asset.source, field)
+                    try:
+                        prepare_image(
+                            asset.source,
+                            frame=asset.frame,
+                            accepted_formats=document.presentation.accepted_image_formats,
+                        )
+                    except ReportInputError as exc:
+                        raise ReportAssetError(field, str(exc)) from exc
+                    except (OSError, ValueError) as exc:
+                        raise ReportAssetError(
+                            field, "Image could not be decoded or prepared."
+                        ) from exc
+                    image_count += 1
+        except ReportAssetError as exc:
+            logger.error("Report asset loading failed at %s", exc.field)
+            raise
+        logger.info(
+            "Report loaded: preset=%s, sections=%d, images=%d",
+            document.application,
+            len(document.sections),
+            image_count,
+        )
         return document
 
     def schema(self, application: str | None = None) -> dict:
@@ -147,8 +187,12 @@ class ReportLoader:
             ValueError: The requested preset name is unknown.
         """
         if application is not None and application not in APPLICATIONS:
-            raise ValueError("Unknown application")
+            logger.error("Report schema export failed: unknown preset")
+            raise ReportInputError(
+                "Unknown preset. Choose generic, coyote3, genexus, cll_genie or pgx."
+            )
         result = Report.model_json_schema()
         if application is not None:
             result["properties"]["application"] = {"type": "string", "const": application}
+        logger.info("Report JSON Schema exported")
         return result

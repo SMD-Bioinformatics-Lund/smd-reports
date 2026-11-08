@@ -14,6 +14,7 @@ from pydantic import Field, field_serializer, field_validator, model_validator
 
 from ._models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .assets import ImageFormat, validate_image_reference
+from .errors import ReportInputError
 from .pages import PAGE_SIZES_MM, PageSize
 
 
@@ -104,7 +105,7 @@ class ReportMetadata(Model):
             ValueError: The timestamp has no UTC offset.
         """
         if value.utcoffset() is None:
-            raise ValueError("generated_at must include a timezone")
+            raise ReportInputError("generated_at must include a timezone")
         return value
 
 
@@ -148,14 +149,16 @@ class Presentation(Model):
         """
         if self.page_size == "custom":
             if self.custom_width_mm is None or self.custom_height_mm is None:
-                raise ValueError("Custom pages require custom_width_mm and custom_height_mm")
+                raise ReportInputError("Custom pages require custom_width_mm and custom_height_mm")
         elif self.custom_width_mm is not None or self.custom_height_mm is not None:
-            raise ValueError("Custom dimensions require page_size custom")
+            raise ReportInputError("Custom dimensions require page_size custom")
         width, height = self.dimensions_mm
         if width <= 52 or height <= self.header_height_mm + self.footer_height_mm + 20:
-            raise ValueError("Page dimensions must leave room for margins, headers and content")
+            raise ReportInputError(
+                "Page dimensions must leave room for margins, headers and content"
+            )
         if len(set(self.accepted_image_formats)) != len(self.accepted_image_formats):
-            raise ValueError("Duplicate accepted image formats")
+            raise ReportInputError("Duplicate accepted image formats")
         return self
 
 
@@ -257,13 +260,17 @@ class MatrixSection(SectionBase):
                 has the wrong length, or the total width is not finite.
         """
         if any(len(labels) != self.column_count for labels in self.columns.values()):
-            raise ValueError("Column labels must have the same count in every language")
+            raise ReportInputError("Column labels must have the same count in every language")
         if any(int(index) >= self.column_count for index in self.column_options):
-            raise ValueError("Column options reference an undeclared column")
+            raise ReportInputError("Column options reference an undeclared column")
         if not isfinite(sum(column.width for column in self.render_columns)):
-            raise ValueError("The total column width must be finite")
-        if any(len(row) != self.column_count for row in self.rows):
-            raise ValueError("Every row must contain exactly one value per declared column")
+            raise ReportInputError("The total column width must be finite")
+        for index, row in enumerate(self.rows):
+            if len(row) != self.column_count:
+                raise ReportInputError(
+                    f"Row {index} must contain exactly one value per declared column "
+                    f"(expected {self.column_count}, received {len(row)})"
+                )
         return self
 
 
@@ -286,7 +293,13 @@ def validate_heading(pattern: LocalizedText | None, columns: int):
     if pattern is None:
         return
     for text in [pattern] if isinstance(pattern, str) else pattern.values():
-        for _, name, spec, conversion in Formatter().parse(text):
+        try:
+            fields = list(Formatter().parse(text))
+        except ValueError as exc:
+            raise ReportInputError(
+                "Malformed record heading; use {0}, {1}, etc. and escape literal braces as {{ or }}"
+            ) from exc
+        for _, name, spec, conversion in fields:
             if name is not None and (
                 not name.isascii()
                 or not name.isdigit()
@@ -294,7 +307,7 @@ def validate_heading(pattern: LocalizedText | None, columns: int):
                 or spec
                 or conversion
             ):
-                raise ValueError("Headings accept only column indexes such as {0} or {1}")
+                raise ReportInputError("Headings accept only column indexes such as {0} or {1}")
 
 
 class RecordSection(MatrixSection):
@@ -315,7 +328,7 @@ class RecordSection(MatrixSection):
         """
         validate_heading(self.record_heading, self.column_count)
         if self.record_titles is not None and len(self.record_titles) != len(self.rows):
-            raise ValueError("record_titles must have one title per row")
+            raise ReportInputError("record_titles must have one title per row")
         return self
 
 
@@ -347,7 +360,7 @@ class GridCell(Model):
             ValueError: A pair leaves no room for its value.
         """
         if self.mode == "pair" and self.label_span >= self.span:
-            raise ValueError("A pair needs space for both its label and value")
+            raise ReportInputError("A pair needs space for both its label and value")
         return self
 
 
@@ -377,9 +390,9 @@ class GridSection(RecordSection):
         """
         for row in self.layout:
             if sum(cell.span for cell in row.cells) != self.grid_columns:
-                raise ValueError("Each layout row must fill grid_columns exactly")
+                raise ReportInputError("Each layout row must fill grid_columns exactly")
             if any(cell.column >= self.column_count for cell in row.cells):
-                raise ValueError("A grid cell references an undeclared column")
+                raise ReportInputError("A grid cell references an undeclared column")
         return self
 
 
@@ -488,5 +501,5 @@ class Report(Model):
         """
         keys = [section.key for section in self.sections]
         if len(keys) != len(set(keys)):
-            raise ValueError("Duplicate section keys")
+            raise ReportInputError("Duplicate section keys")
         return self

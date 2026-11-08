@@ -11,3 +11,4 @@ First release.
 - English/Swedish labels, plain text and Markdown, and summaries on separate pages.
 - Preset/custom paper sizes, plot format and frame selection, and automatic renderer metadata.
 - Python interface, command-line tools, JSON Schema export and complete HTML/PDF examples.
+- Field-specific errors and standard Python event logging, with verbose command-line output.

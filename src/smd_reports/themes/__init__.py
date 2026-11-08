@@ -5,6 +5,7 @@ import re
 from pydantic import Field, field_validator
 
 from ..core import Model
+from ..errors import ReportInputError
 
 
 class Theme(Model):
@@ -41,7 +42,7 @@ class Theme(Model):
             ValueError: The color is not in #RRGGBB form.
         """
         if not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
-            raise ValueError("Expected a six-digit hex color")
+            raise ReportInputError("Expected a six-digit hex color")
         return value
 
 

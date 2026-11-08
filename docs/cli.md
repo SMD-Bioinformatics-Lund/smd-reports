@@ -12,10 +12,28 @@ smd-reports schema --output report.schema.json
 ```
 
 `validate` checks JSON and artwork. `render` writes HTML or PDF. `normalize` writes the
-same JSON format with embedded images and renderer versions. `schema` exports JSON Schema;
+same JSON format with embedded images. Package and template versions are computed when
+rendering. `schema` exports JSON Schema;
 optionally add `--application generic`, `coyote3`, `genexus`, `cll_genie` or `pgx` to restrict the identity.
 
 `--output` is required for commands that write a file. An output path cannot overwrite
 the input JSON. Parent directories must already exist. Invalid JSON, assets or output
-locations return exit status 2; success returns 0. PDF generation needs the PDF extra and
-native dependencies described in [installation](installation.md).
+locations return exit status 2. Rendering failures, including unavailable PDF dependencies,
+return 1; success returns 0. PDF generation needs the PDF extra and native dependencies
+described in [installation](installation.md).
+
+Errors identify the failing field or operation. JSON syntax errors include the line and
+column; validation errors describe the expected value without printing report data.
+Existing output files are replaced only after the complete output has been written.
+
+## Event logging
+
+Use `--verbose` before the command to send loading, validation, rendering and output events
+to stderr. The normal command result remains on stdout.
+
+```sh
+smd-reports --verbose render report.json --format html --output report.html
+```
+
+Messages include the operation, preset and section/image counts, without report values,
+image data or file paths. Without `--verbose`, commands print their result or error only.
