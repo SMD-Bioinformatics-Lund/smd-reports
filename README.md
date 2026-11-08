@@ -2,11 +2,11 @@
 
 ![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/f809a167384ecd28b34be9cbc5efa0ca64055766/docs/assets/smd-reports-logo.svg)
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Installation)
 [![Package version](https://img.shields.io/badge/package-0.1.0-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/actions/workflows/quality.yml)
-[![Documentation](https://img.shields.io/badge/docs-MkDocs-009688?style=flat-square&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/index.md)
-[![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/rendering.md)
+[![Documentation](https://img.shields.io/badge/docs-wiki-009688?style=flat-square&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Home)
+[![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/HTML-and-PDF)
 [![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE)
 
 Render JSON reports as standalone HTML and PDF with shared layouts, configurable branding
@@ -28,7 +28,7 @@ python -m pip install "smd-reports[pdf]"
 ```
 
 The distribution name is `smd-reports`; the Python import name is `smd_reports`.
-PDF rendering also requires native Pango libraries. See [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md).
+PDF rendering also requires native Pango libraries. See [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Installation).
 
 ## Use from Python
 
@@ -44,7 +44,7 @@ Path("report.pdf").write_bytes(renderer.render_pdf(report))
 ```
 
 Load JSON text with `ReportLoader().loads(json_text)` or files with `load(path)`.
-The [Python guide](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/python-api.md) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/quickstart.md) include examples.
+The [Python guide](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Python-usage) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Quickstart) include examples.
 Custom columns and detail fields are configured in JSON, including English/Swedish labels.
 
 ## Use from the command line
@@ -61,12 +61,14 @@ The same commands are available with `python -m smd_reports`.
 
 ## Documentation
 
-- [Overview](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/index.md), [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/installation.md) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/quickstart.md)
-- [Python usage](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/python-api.md) and [Python API reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/reference.md)
-- [Report examples and presets](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/integration.md), [JSON format](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/json-inputs.md)
-  and [Command-line reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/cli.md)
-- [Center branding](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/branding.md) and [HTML/PDF rendering](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/rendering.md)
-- [Contributing](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/contributing.md), [testing and releases](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/docs/validation.md)
+Read the [documentation wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki) for installation, Python usage, JSON inputs and rendering.
+
+- [Overview](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Home), [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Installation) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Quickstart)
+- [Python usage](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Python-usage) and [Python API reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Python-reference)
+- [Report examples and presets](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Report-examples), [JSON format](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/JSON-format)
+  and [Command-line reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Command-line)
+- [Center branding](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Center-branding) and [HTML/PDF rendering](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/HTML-and-PDF)
+- [Contributing](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Contributing), [testing and releases](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Testing-and-releases)
   and [changelog](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 
 Runnable synthetic examples and complete JSON inputs are in [examples/](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/).

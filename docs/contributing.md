@@ -62,6 +62,26 @@ The coverage minimum is 75%, including branches. Add tests for observable behavi
 failure cases; see [testing and releases](validation.md) for distribution checks.
 Use `python -m mkdocs serve` to preview documentation locally.
 
+## Documentation hosting
+
+The `.readthedocs.yaml` file configures Read the Docs to build `mkdocs.yml` with Python
+3.12 and the package's `docs` extra. Documentation warnings fail the build, as they do in CI.
+
+To enable hosting:
+
+1. Sign in to [Read the Docs](https://app.readthedocs.org/) and connect GitHub.
+2. Add a project and import `SMD-Bioinformatics-Lund/smd-reports` through the GitHub integration.
+3. Select a branch containing `.readthedocs.yaml`. Use `master` for release documentation;
+   development branches can be activated separately for previews.
+4. Run the first build and verify the published documentation URL.
+5. Update the GitHub website field, README documentation links and package documentation URL
+   to the published site.
+
+After import, the GitHub integration rebuilds enabled versions when their source changes.
+The project must be imported into Read the Docs before pushes can publish documentation.
+Until a hosted site is available, the [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki)
+is the public documentation link.
+
 ## Example reports
 
 JSON files in `examples/inputs/` are the source for the report examples. Regenerate the
