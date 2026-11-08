@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="574" viewBox="0 0 1120 574" role="img" aria-labelledby="title description">
+<title id="title">Documentation publishing</title>
+<desc id="description">Documentation source is built by MkDocs using Python 3.12, the docs extra and the Read the Docs theme. Hosting on Read the Docs still requires repository import and version activation. The live GitHub wiki uses Markdown pages and is updated separately from the MkDocs site.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="m1 1 8 4-8 4" fill="none" stroke="#3c6585" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="1118" height="572" rx="22" fill="#f8fafb" stroke="#dce4eb"/>
+<g font-family="DejaVu Sans, Arial, sans-serif">
+<text x="32" y="51" fill="#253747" font-size="27" font-weight="600">Documentation publishing</text>
+<text x="32" y="80" fill="#526579" font-size="15" font-weight="400">Source files support the documentation site and GitHub wiki.</text>
+<rect x="36" y="143" width="300" height="168" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="36" y="140" width="300" height="168" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="54" y="158" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(63 167)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 4C8 1 3 2 2 3v18c3-2 7-2 10 0 3-2 7-2 10 0V3c-3-2-7-2-10 1zm0 0v17"/>
+</g>
+<text x="110" y="185" fill="#253747" font-size="19" font-weight="600">Source files</text>
+<text x="56" y="228" fill="#526579" font-size="14" font-weight="400">docs/*.md</text>
+<text x="56" y="253" fill="#526579" font-size="14" font-weight="400">mkdocs.yml</text>
+<text x="56" y="278" fill="#526579" font-size="14" font-weight="400">Read the Docs configuration</text>
+<rect x="410" y="143" width="300" height="168" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="410" y="140" width="300" height="168" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="428" y="158" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(437 167)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6z"/>
+<path d="m7 12 3 3 7-7"/>
+</g>
+<text x="484" y="185" fill="#253747" font-size="19" font-weight="600">MkDocs build</text>
+<text x="430" y="228" fill="#526579" font-size="14" font-weight="400">Python 3.12 + docs extra</text>
+<text x="430" y="253" fill="#526579" font-size="14" font-weight="400">Warnings fail the build</text>
+<text x="430" y="278" fill="#526579" font-size="14" font-weight="400">Read the Docs theme</text>
+<rect x="784" y="143" width="300" height="168" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="784" y="140" width="300" height="168" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="802" y="158" width="42" height="42" rx="12" fill="#3c6585" opacity=".09"/>
+<g transform="translate(811 167)" fill="none" stroke="#3c6585" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M6 19h12a5 5 0 0 0 1-10A7 7 0 0 0 5 8a5.5 5.5 0 0 0 1 11z"/>
+</g>
+<text x="858" y="185" fill="#253747" font-size="19" font-weight="600">Read the Docs</text>
+<text x="804" y="228" fill="#526579" font-size="14" font-weight="400">Import repository</text>
+<text x="804" y="253" fill="#526579" font-size="14" font-weight="400">Activate documentation versions</text>
+<text x="804" y="278" fill="#526579" font-size="14" font-weight="400">Build and host the site</text>
+<path d="M348 224H398" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M722 224H772" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="5 6"/>
+<rect x="798" y="326" width="272" height="32" rx="16" fill="#fff4df" stroke="#e8cf9d"/>
+<text x="816" y="347" fill="#a46c16" font-size="14" font-weight="600">Hosting setup required</text>
+<path d="M186 320V438H398" fill="none" stroke="#3c6585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="410" y="389" width="674" height="114" rx="16" fill="#e9eef2" opacity=".65"/>
+<rect x="410" y="386" width="674" height="114" rx="16" fill="#fff" stroke="#cbd5df"/>
+<rect x="428" y="404" width="42" height="42" rx="12" fill="#176b68" opacity=".09"/>
+<g transform="translate(437 413)" fill="none" stroke="#176b68" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 4C8 1 3 2 2 3v18c3-2 7-2 10 0 3-2 7-2 10 0V3c-3-2-7-2-10 1zm0 0v17"/>
+</g>
+<text x="484" y="431" fill="#253747" font-size="19" font-weight="600">GitHub wiki</text>
+<text x="430" y="474" fill="#526579" font-size="14" font-weight="400">Markdown pages, navigation and copyright footer</text>
+<rect x="970" y="406" width="88" height="28" rx="14" fill="#edf7f5" stroke="#cce3de"/>
+<text x="990" y="425" fill="#176b68" font-size="13" font-weight="600">Live</text>
+<text x="36" y="478" fill="#526579" font-size="13" font-weight="400">Wiki pages are updated</text>
+<text x="36" y="499" fill="#526579" font-size="13" font-weight="400">separately from MkDocs.</text>
+<text x="36" y="545" fill="#526579" font-size="14" font-weight="400">Read the Docs rebuilds enabled versions after repository import. The wiki is available independently.</text>
+</g>
+</svg>
