@@ -1,4 +1,5 @@
 site_name: smd-reports
+site_url: https://smd-reports.readthedocs.io/en/latest/
 site_description: JSON reports with portable HTML/PDF rendering
 copyright: Copyright &copy; 2026 Ram Nanduri
 exclude_docs: |

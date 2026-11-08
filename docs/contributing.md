@@ -64,25 +64,19 @@ Use `python -m mkdocs serve` to preview documentation locally.
 
 ## Documentation hosting
 
-The `.readthedocs.yaml` file configures Read the Docs to build `mkdocs.yml` with Python
-3.12 and the package's `docs` extra. Documentation warnings fail the build, as they do in CI.
+Documentation is hosted at [smd-reports.readthedocs.io/en/latest/](https://smd-reports.readthedocs.io/en/latest/).
+The `.readthedocs.yaml` file configures builds using `mkdocs.yml`, Python 3.12 and the
+package's `docs` extra. Documentation warnings fail the build, as they do in CI.
 
 ![Documentation source, Read the Docs and GitHub wiki workflow](assets/documentation-workflow.svg)
 
-To enable hosting:
+The Read the Docs GitHub integration rebuilds enabled versions when their source changes.
+Use `master` for release documentation; additional branches and tags can be enabled in the
+Read the Docs project settings. Keep the GitHub website field, README and package
+Documentation URL pointed at the hosted site.
 
-1. Sign in to [Read the Docs](https://app.readthedocs.org/) and connect GitHub.
-2. Add a project and import `SMD-Bioinformatics-Lund/smd-reports` through the GitHub integration.
-3. Select a branch containing `.readthedocs.yaml`. Use `master` for release documentation;
-   development branches can be activated separately for previews.
-4. Run the first build and verify the published documentation URL.
-5. Update the GitHub website field, README documentation links and package documentation URL
-   to the published site.
-
-After import, the GitHub integration rebuilds enabled versions when their source changes.
-The project must be imported into Read the Docs before pushes can publish documentation.
-Until a hosted site is available, the [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki)
-is the public documentation link.
+The [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki) is also
+maintained from the same source files.
 
 ## Wiki publishing
 
