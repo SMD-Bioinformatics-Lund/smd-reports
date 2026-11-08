@@ -2,12 +2,12 @@
 
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 
 Language = Literal["en", "sv"]
 Translations = Annotated[dict[Language, str], Field(min_length=1)]
 LocalizedText = str | Translations
-Scalar = str | int | float | bool | None
+Scalar = StrictBool | StrictInt | StrictFloat | StrictStr | None
 CellValue = Scalar | Translations
 
 

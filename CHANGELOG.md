@@ -4,6 +4,7 @@
 
 - Standardize input on JSON files/text with one shared document format. Remove Python
   data builders and TSV ingestion before the first public release.
+- Preserve boolean and numeric cell types during JSON export and reloading.
 - Define table and detail columns once and supply values as row matrices. Add configurable
   grouped grids, localized labels and record-heading formats; template revisions are 2.0.0.
 - Remove the separate schema-version field; export JSON Schema for the installed package.

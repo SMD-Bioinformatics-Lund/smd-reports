@@ -17,15 +17,22 @@ payload = {
     "language": "en", "report": {"report_id": "DEMO", "sample_id": "SYNTHETIC",
                                    "generated_at": "2026-01-01T12:00:00Z"},
     "sections": [{"kind": "details", "key": "details", "record_heading": "{0}",
-                  "columns": [{"label": "Gene"}, {"label": "Added field"}],
-                  "rows": [["EXAMPLE", "DYNAMIC-VALUE"]]}],
+                  "columns": [{"label": "Gene"}, {"label": "Added field"}, {"label": "Flag"},
+                              {"label": "Count"}, {"label": "Rate"}],
+                  "rows": [["EXAMPLE", "DYNAMIC-VALUE", False, 0, 0.0]]}],
 }
 report = ReportLoader().loads(json.dumps(payload))
 html = ReportRenderer().render_html(report)
 assert 'data:font/woff2;base64,' in html
 assert 'Installed distribution' in html
 assert 'Added field' in html and 'DYNAMIC-VALUE' in html
-assert 'schema_version' not in report.model_dump_json()
+serialized = report.model_dump_json()
+assert json.loads(serialized)['sections'][0]['rows'][0][2] is False
+restored = ReportLoader().loads(serialized)
+assert type(restored.sections[0].rows[0][3]) is int
+assert type(restored.sections[0].rows[0][4]) is float
+assert ReportRenderer().render_html(restored) == html
+assert 'schema_version' not in serialized
 print('Isolated JSON/HTML installation passed')
 """
 

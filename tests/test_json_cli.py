@@ -1,5 +1,6 @@
 """JSON files/text, portable normalized output and CLI commands."""
 
+import json
 import os
 import subprocess
 import sys
@@ -109,3 +110,19 @@ HTML(filename=sys.argv[1]).write_pdf(sys.argv[2])
     text = "\n".join(page.get_text() for page in pdf)
     assert "SYNTHETIC-001" in text
     assert "PLACEHOLDER" in text
+
+
+@pytest.mark.parametrize("value", [True, False, 0, 1, 0.0, 1.25, "0", None, {"en": "Text"}])
+def test_json_export_preserves_cell_value_types(payloads, load, value):
+    data = payloads["pgx"]
+    data["sections"] = [
+        {"kind": "table", "key": "scalars", "columns": [{"label": "Value"}], "rows": [[value]]}
+    ]
+    document = load(data)
+    serialized = document.model_dump_json()
+    exported = json.loads(serialized)["sections"][0]["rows"][0][0]
+    assert type(exported) is type(value)
+    assert exported == value
+    restored = ReportLoader().loads(serialized)
+    assert type(restored.sections[0].rows[0][0]) is type(value)
+    assert ReportRenderer().render_html(restored) == ReportRenderer().render_html(document)
