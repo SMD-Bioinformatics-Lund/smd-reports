@@ -3,7 +3,7 @@
 ![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/master/docs/assets/smd-reports-logo.svg)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://smd-reports.readthedocs.io/en/latest/installation/)
-[![Package version](https://img.shields.io/badge/package-0.2.0-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
+[![Package version](https://img.shields.io/badge/package-0.2.1-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/actions/workflows/quality.yml)
 [![Documentation](https://readthedocs.org/projects/smd-reports/badge/?version=latest&style=flat-square)](https://smd-reports.readthedocs.io/en/latest/)
 [![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_70.0-D44A3A?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/)
