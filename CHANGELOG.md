@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Use a transparent SVG logo with outlined lettering for light and dark backgrounds.
+
 ## 0.1.2 - 2026-11-09
 
 - Run CI tests with two workers and reuse example setup with isolated copies per test.

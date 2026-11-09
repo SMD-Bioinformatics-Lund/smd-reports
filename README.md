@@ -1,6 +1,6 @@
 # smd-reports
 
-![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/f809a167384ecd28b34be9cbc5efa0ca64055766/docs/assets/smd-reports-logo.svg)
+![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/master/docs/assets/smd-reports-logo.svg)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://smd-reports.readthedocs.io/en/latest/installation/)
 [![Package version](https://img.shields.io/badge/package-0.1.2-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
