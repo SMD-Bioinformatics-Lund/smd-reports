@@ -2,7 +2,7 @@
 
 import logging
 import re
-from html import escape
+from html import escape, unescape
 from importlib.resources import files
 
 import bleach
@@ -17,6 +17,7 @@ from jinja2 import (
 )
 from markupsafe import Markup
 
+from ._compact import column_widths
 from ._svg import svg_font_css, validate_font_uri
 from .core import Report
 from .errors import PDFUnavailableError, ReportInputError, ReportRenderError
@@ -182,6 +183,64 @@ def image_uri(context, value, frame=0, plot=False):
     return prepare_image(value, frame=frame, accepted_formats=formats)
 
 
+def _compact_tables(report, theme):
+    """Prepare single-line cells and fitted column widths for compact tables.
+
+    Args:
+        report: Validated report and its selected language and page dimensions.
+        theme: Theme supplying the normal report text size.
+
+    Returns:
+        Prepared rows and column widths indexed by section key.
+
+    Raises:
+        ReportInputError: Cell content requires multiple lines or exceeds the page width.
+    """
+    result = {}
+    for section in report.sections:
+        if section.kind != "compact_table":
+            continue
+        values, texts = [], []
+        for item in section.items:
+            if isinstance(item, dict):
+                item = label(item, report.language)
+            if item is None or (isinstance(item, str) and not item.strip()):
+                continue
+            text = " ".join(display(item, report.language).split())
+            if section.format == "markdown":
+                rendered = str(format_markdown(text))
+                tags = re.findall(r"</?([a-z][a-z0-9]*)\b[^>]*>", rendered)
+                if set(tags) - {"p", "strong", "em", "code"} or tags.count("p") > 2:
+                    raise ReportInputError(
+                        "Compact table items support single-line text and inline Markdown only."
+                    )
+                rendered = rendered.removeprefix("<p>").removesuffix("</p>")
+                text = unescape(bleach.clean(rendered, tags=[], strip=True))
+                value = Markup(rendered)
+            else:
+                value = text
+            if not text.strip():
+                continue
+            values.append(value)
+            texts.append(text)
+        widths = column_widths(
+            texts,
+            theme.body_pt - 2,
+            report.presentation.dimensions_mm[0] - 32,
+            columns=section.columns,
+            markdown=section.format == "markdown",
+        )
+        count = len(widths)
+        result[section.key] = {
+            "rows": [values[index : index + count] for index in range(0, len(values), count)]
+            if count
+            else [],
+            "widths": widths,
+            "width": sum(widths),
+        }
+    return result
+
+
 def offline_fetcher(url, **kwargs):
     """Fetch embedded image/font data without accessing files or the network.
 
@@ -329,6 +388,7 @@ class ReportRenderer:
                 css=assets.joinpath("report.css").read_text(encoding="utf-8"),
                 fonts=fonts,
                 svg_fonts=svg_font_css(artwork, fonts),
+                compact_tables=_compact_tables(report, self.themes[selected]),
             )
         except (TemplateError, OSError) as exc:
             logger.error("Report HTML rendering failed")

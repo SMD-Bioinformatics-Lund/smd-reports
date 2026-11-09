@@ -24,7 +24,7 @@
 }
 
 :root { --heading: #665271; --accent: #a58ab8; --tint: #f4eff8;
---rule-end: #d9b18a; --page-width: 210mm; --body-size: 9.25pt; }
+--rule-end: #d9b18a; --page-width: 210mm; --body-size: 9.25pt; --compact-size: 7.25pt; }
 /* Shared screen and print layout for report documents. */
 :root { --report-border: #b8bec5; }
 @page {
@@ -157,10 +157,19 @@ p, li { orphans: 3; widows: 3; }
 .report-image { margin: 8px 0; max-width: 100%; break-inside: avoid; }
 .report-image img { display: block; width: 100%; height: auto; object-fit: contain; }
 
-/* Description tables fit whole items across each row before wrapping. */
-.compact-table { display: flex; flex-wrap: wrap; list-style: none; max-width: 100%; margin: 5px 0 9px; padding: 0; }
-.compact-cell { flex: 0 1 auto; width: var(--compact-cell-width, auto); max-width: 100%; min-width: 0; min-height: 0; margin: 0 -1px -1px 0; padding: 2px 5px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: 8.5pt; line-height: 1.2; overflow-wrap: anywhere; }
+/* Compact matrices retain whole items and share borders between adjacent rows. */
+.compact-caption { margin: 6px 0 3px; break-after: avoid; }
+.compact-caption strong { font-weight: 600; }
+.compact-table { max-width: 100%; margin: 0 0 8px; border-collapse: collapse; table-layout: fixed; font-size: var(--compact-size); line-height: 1.15; }
+.compact-table .compact-cell { padding: 0 3px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; }
+.compact-cell code { font-family: inherit; }
 .variant_table tr.row-highlight > td { background: #ffe6e6; }
+@media screen {
+  .compact-table { display: flex; flex-wrap: wrap; width: fit-content !important; max-width: 100%; overflow-x: auto; }
+  .compact-table colgroup { display: none; }
+  .compact-table tbody, .compact-table tr { display: contents; }
+  .compact-table .compact-cell { display: block; flex: 0 0 auto; min-height: 0; margin: 0 -1px -1px 0; }
+}
 
 @page { size: 210mm 297mm; margin-top: 65.0mm; margin-bottom: 38.0mm; }
 .report-application-logo { width: 13.75mm; }
@@ -296,8 +305,10 @@ p, li { orphans: 3; widows: 3; }
 <p>Demonstration av rapportens innehåll och layout.</p></div>
 </section>
 <section id="covered-genes" class="section">
-<h2 class="report_header">Tabell 1: Analyserade gener</h2><ul class="compact-table">
-<li class="compact-cell cell-plain">BRAF</li><li class="compact-cell cell-plain">EML4</li><li class="compact-cell cell-plain">ALK</li><li class="compact-cell cell-plain">EXAMPLE1</li></ul>
+<p class="compact-caption"><strong>Tabell 1: Analyserade gener</strong></p><table class="compact-table" style="width: 139px" aria-label="Tabell 1: Analyserade gener">
+<colgroup><col style="width: 31px"><col style="width: 31px"><col style="width: 25px"><col style="width: 52px"></colgroup>
+<tbody><tr><td class="compact-cell">BRAF</td><td class="compact-cell">EML4</td><td class="compact-cell">ALK</td><td class="compact-cell">EXAMPLE1</td></tr></tbody>
+</table>
 </section>
 <section id="classification-description" class="section">
 <h2 class="report_header">Klassificeringsbeskrivning</h2><div class="plain">Exempel på klassificeringsbeskrivning.</div>

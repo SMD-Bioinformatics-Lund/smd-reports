@@ -32,7 +32,7 @@ rendering metadata; PDF output from `ReportRenderer` includes it by default.
 Reports default to A4 with repeating center branding and compact report metadata.
 Ordinary tables repeat headers across pages. Column widths follow the JSON definitions;
 text wraps within each column. Compact tables wrap independent items across the available
-width and continue across pages. Finding cards and grouped grids use their JSON layout.
+width with shared cell borders and continue across pages. Cell text stays on one line. Finding cards and grouped grids use their JSON layout.
 
 Sections with `kind: "summary"` use the yellow summary box and always have page
 breaks before and after. Long summaries and full-width detail comments can span pages.

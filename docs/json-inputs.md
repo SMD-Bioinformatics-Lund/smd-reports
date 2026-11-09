@@ -204,18 +204,25 @@ available width is filled. There is no separate column-header row.
 ```
 
 Place this section after an analysis description or another narrative section. Supply
-items in their display order; repeated values are retained. Labels, item translations,
-zero, false and missing values use the same formatting rules as other report cells.
-Long values wrap within the available cell width. Long lists continue across PDF pages.
-Both HTML and PDF use the available report width, including custom paper dimensions.
+items in their display order; repeated values are retained. Item translations, zero and
+false use the same formatting rules as other report cells. Null, empty and whitespace-only
+values are omitted. The final row contains only supplied items, with no empty boxes.
 
-Omit `columns` for automatic wrapping. Supply a positive column count to use equal-width
-cells, for example `"columns": 10` for a gene panel or `"columns": 5` for longer haplotype
-labels. The supported range is 1–64. Item text still wraps within each cell.
+Column counts are calculated from the bundled font and the selected paper width. Whole
+items continue onto consecutive rows with shared borders and no vertical cell padding.
+Text stays on one line in each cell and is two points smaller than normal report text.
+The caption uses normal body size, bold weight and black text. Long lists continue across
+PDF pages. Custom paper dimensions are supported.
 
-`format` defaults to `plain`; `markdown` enables the same sanitized formatting used by
-other report sections. An empty `items` list displays `empty_text`, which can contain
-English and Swedish translations. Plain items are escaped for HTML.
+Omit `columns` for automatic sizing. Set a positive upper limit for equal-width cells,
+for example `"columns": 10` for a gene panel or `"columns": 5` for longer haplotype labels.
+Fewer columns are used when needed to fit the page. The supported range is 1–64. An item
+that cannot fit on one line raises `ReportInputError`; use a wider page, shorter label or
+an ordinary table. Characters must be available in the bundled report font.
+
+`format` defaults to `plain`; `markdown` supports inline bold, italic and code formatting.
+Block elements are rejected. Plain items are escaped for HTML. An empty table displays
+`empty_text`, which can contain English and Swedish translations.
 
 A haplotype item can combine its display values in a single string, such as
 `"EXAMPLE-*2 (rsDEMO)"`. All compact-table options are included in the exported JSON Schema

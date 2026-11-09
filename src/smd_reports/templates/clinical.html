@@ -6,7 +6,7 @@
 {% for key, value in report.rendering_metadata.items() %}<meta name="smd-reports:{{ key }}" content="{{ value }}">{% endfor %}
 <style>{{ fonts | safe }}{{ svg_fonts | safe }}
 :root { --heading: {{ theme.heading }}; --accent: {{ theme.accent }}; --tint: {{ theme.tint }};
---rule-end: {{ theme.rule_end }}; --page-width: {{ report.presentation.dimensions_mm[0] }}mm; --body-size: {{ theme.body_pt }}pt; }
+--rule-end: {{ theme.rule_end }}; --page-width: {{ report.presentation.dimensions_mm[0] }}mm; --body-size: {{ theme.body_pt }}pt; --compact-size: {{ theme.body_pt - 2 }}pt; }
 {{ css | safe }}
 @page { size: {{ report.presentation.dimensions_mm[0] }}mm {{ report.presentation.dimensions_mm[1] }}mm; margin-top: {{ report.header_height_mm }}mm; margin-bottom: {% if report.branding.accredited and report.branding.accreditation_logo %}{{ report.footer_height_mm }}{% else %}22{% endif %}mm; }
 .report-application-logo { width: {{ report.branding.application_logo_width_mm }}mm; }
@@ -26,7 +26,7 @@
 <div class="screen-metadata">{% include 'components/metadata.html' %}</div>
 {% for section in report.sections %}
 <section id="{{ section.key }}" class="section{% if section.kind == 'summary' %} report-summary{% endif %}{% if section.page_break_before %} break-before{% endif %}">
-{% if section.heading %}<h2 class="report_header">{{ section.heading|ui }}</h2>{% endif %}
+{% if section.heading %}{% if section.kind == 'compact_table' %}<p class="compact-caption"><strong>{{ section.heading|ui }}</strong></p>{% else %}<h2 class="report_header">{{ section.heading|ui }}</h2>{% endif %}{% endif %}
 {% if section.kind == 'table' %}{% include 'components/table.html' %}
 {% elif section.kind == 'compact_table' %}{% include 'components/compact_table.html' %}
 {% elif section.kind == 'details' %}{% include 'components/details.html' %}
