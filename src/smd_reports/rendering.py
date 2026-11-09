@@ -17,6 +17,7 @@ from jinja2 import (
 )
 from markupsafe import Markup
 
+from ._svg import svg_font_css, validate_font_uri
 from .core import Report
 from .errors import PDFUnavailableError, ReportInputError, ReportRenderError
 from .localization import label
@@ -189,7 +190,7 @@ def offline_fetcher(url, **kwargs):
         **kwargs: Options forwarded to WeasyPrint's data fetcher.
 
     Returns:
-        The resource dictionary expected by WeasyPrint.
+        The resource response expected by WeasyPrint.
 
     Raises:
         ValueError: The URL is external or its embedded image is invalid.
@@ -206,9 +207,48 @@ def offline_fetcher(url, **kwargs):
         from .assets import validate_image
 
         validate_image(url)
-    from weasyprint import default_url_fetcher
+    elif url.startswith("data:font/woff2;base64,"):
+        validate_font_uri(url)
+    from weasyprint.urls import URLFetcher
 
-    return default_url_fetcher(url, **kwargs)
+    return URLFetcher(allowed_protocols={"data"}, allow_redirects=False).fetch(url, **kwargs)
+
+
+def _offline_url_fetcher():
+    """Create a restricted fetcher that records failures swallowed by the PDF engine.
+
+    Returns:
+        A WeasyPrint URLFetcher restricted to validated embedded resources.
+    """
+    from weasyprint.urls import URLFetcher
+
+    class EmbeddedResourceFetcher(URLFetcher):
+        """Validate embedded resources and retain their failure status."""
+
+        failed = False
+
+        def fetch(self, url, headers=None):
+            """Fetch one validated resource and record failures.
+
+            Args:
+                url: Embedded image or font URL.
+                headers: Optional headers supplied by WeasyPrint.
+
+            Returns:
+                A validated embedded resource response.
+
+            Raises:
+                Exception: Validation or decoding of the resource fails.
+            """
+            try:
+                return offline_fetcher(url, headers=headers)
+            except Exception:
+                self.failed = True
+                raise
+
+    return EmbeddedResourceFetcher(
+        allowed_protocols={"data"}, allow_redirects=False, fail_on_errors=True
+    )
 
 
 class ReportRenderer:
@@ -273,11 +313,22 @@ class ReportRenderer:
                     "Unknown theme; choose a built-in theme or register it before rendering."
                 )
             assets = files("smd_reports").joinpath("static")
+            fonts = assets.joinpath("fonts.css").read_text(encoding="utf-8")
+            artwork = [report.branding.center_logo]
+            if report.application in {"coyote3", "cll_genie"}:
+                artwork.append(report.branding.application_logo)
+            if report.branding.accredited:
+                artwork.append(report.branding.accreditation_logo)
+            for section in report.sections:
+                artwork.extend(image.source for image in section.images)
+                if section.kind == "image":
+                    artwork.append(section.source)
             html = self.environment.get_template("clinical.html").render(
                 report=report,
                 theme=self.themes[selected],
                 css=assets.joinpath("report.css").read_text(encoding="utf-8"),
-                fonts=assets.joinpath("fonts.css").read_text(encoding="utf-8"),
+                fonts=fonts,
+                svg_fonts=svg_font_css(artwork, fonts),
             )
         except (TemplateError, OSError) as exc:
             logger.error("Report HTML rendering failed")
@@ -314,30 +365,22 @@ class ReportRenderer:
         logger.info("Rendering report PDF")
         try:
             from weasyprint import HTML
+            from weasyprint.urls import FatalURLFetchingError
         except (ImportError, OSError) as exc:
             logger.error("PDF rendering is unavailable: missing PDF dependencies")
             raise PDFUnavailableError(
                 "Install smd-reports[pdf] and the WeasyPrint native runtime to render PDFs."
             ) from exc
         html = self.render_html(report, theme=theme)
-        resource_failed = False
-
-        def fetch_resource(url, **kwargs):
-            nonlocal resource_failed
-            try:
-                return offline_fetcher(url, **kwargs)
-            except Exception:
-                resource_failed = True
-                raise
-
         try:
-            result = HTML(string=html, url_fetcher=fetch_resource).write_pdf(custom_metadata=True)
+            fetcher = _offline_url_fetcher()
+            result = HTML(string=html, url_fetcher=fetcher).write_pdf(custom_metadata=True)
             # WeasyPrint can continue after a failed fetch; do not return an incomplete report.
-            if resource_failed:
+            if fetcher.failed:
                 raise ReportRenderError(
                     "PDF resources could not be loaded. Check embedded images and fonts."
                 )
-        except Exception as exc:
+        except (Exception, FatalURLFetchingError) as exc:
             logger.error("Report PDF rendering failed")
             if isinstance(exc, ReportRenderError):
                 raise

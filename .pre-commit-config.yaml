@@ -1,4 +1,4 @@
-minimum_pre_commit_version: '4.0.0'
+minimum_pre_commit_version: '4.6.2'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -17,7 +17,7 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.3
+    rev: v0.17.4
     hooks:
       - id: ruff-check
         args: [--fix]

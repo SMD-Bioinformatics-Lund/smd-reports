@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.2 - 2026-11-09
+
+- Run CI tests with two workers and reuse example setup with isolated copies per test.
+- Set template revisions to the package release in which each template last changed.
+- Fit accreditation logos within the footer while preserving their aspect ratio.
+- Exclude hidden logos from document font definitions and accept inert SVG metadata values.
+- Update dependencies and development tools, including the pinned WeasyPrint 70.0 renderer.
+- Configure Dependabot for private alerts with automatic update pull requests disabled.
+- Accept self-contained SVG styles, editor metadata and validated embedded WOFF2 fonts.
+- Preserve original SVG artwork and expose its embedded fonts for standalone HTML/PDF conversion.
+- Reject unsafe CSS, encoded external references, malformed fonts and XML processing instructions.
+
 ## 0.1.1 - 2026-11-09
 
 - Enforce version increases and nonempty changelog entries for release PRs and publishing.

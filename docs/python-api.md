@@ -38,7 +38,8 @@ and validation.
 from pathlib import Path
 
 Path("report.portable.json").write_text(
-    report.model_dump_json(indent=2), encoding="utf-8",
+    report.model_dump_json(indent=2),
+    encoding="utf-8",
 )
 ```
 
@@ -68,7 +69,10 @@ validation errors into readable field messages without including report values.
 import json
 from pydantic import ValidationError
 from smd_reports import (
-    ReportInputError, ReportLoader, ReportRenderError, ReportRenderer,
+    ReportInputError,
+    ReportLoader,
+    ReportRenderError,
+    ReportRenderer,
     format_validation_error,
 )
 

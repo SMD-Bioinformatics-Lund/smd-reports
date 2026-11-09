@@ -26,19 +26,19 @@ jobs:
           if base == 'dev' and head == 'master' and same_repository:
               raise SystemExit('Development changes must target dev from a work branch.')
           print(f'Accepted PR flow: {head} -> {base}')
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         if: github.base_ref == 'master'
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7.1.0
         if: github.base_ref == 'master'
         with:
           python-version: '3.12'
       - name: Install release-check dependency
         if: github.base_ref == 'master'
-        run: python -m pip install 'packaging>=24,<27'
+        run: python -m pip install 'packaging>=26.3,<27'
       - name: Check release version and changelog
         if: github.base_ref == 'master'
         run: python scripts/check_release.py --base-ref "$BASE_SHA"

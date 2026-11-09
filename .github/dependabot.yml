@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Alerts are enabled separately. Keep dependency changes under maintainer review.
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0

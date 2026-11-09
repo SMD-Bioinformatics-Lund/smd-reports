@@ -85,3 +85,62 @@ def test_missing_and_relative_in_memory_assets_have_clear_errors(payloads):
 
     with pytest.raises(ReportAssetError, match="branding.center_logo"):
         ReportLoader().loads(json.dumps(payloads["pgx"]))
+
+
+@pytest.mark.parametrize("footer_height", [22, 38, 50])
+@pytest.mark.parametrize("dimensions", [(20, 100), (100, 20)])
+@pytest.mark.parametrize("image_format", ["svg", "png"])
+def test_accreditation_artwork_fits_footer_without_distortion(
+    payloads, load, footer_height, dimensions, image_format
+):
+    pytest.importorskip("weasyprint")
+    pymupdf = pytest.importorskip("pymupdf")
+    from io import BytesIO
+
+    from PIL import Image
+
+    width, height = dimensions
+    if image_format == "svg":
+        raw = (
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
+            f'viewBox="0 0 {width} {height}"><rect width="{width}" height="{height}" '
+            'fill="#123456"/></svg>'
+        ).encode()
+        mime = "image/svg+xml"
+    else:
+        output = BytesIO()
+        Image.new("RGB", dimensions, (0x12, 0x34, 0x56)).save(output, format="PNG")
+        raw = output.getvalue()
+        mime = "image/png"
+    uri = f"data:{mime};base64," + base64.b64encode(raw).decode()
+    data = payloads["generic"]
+    data["branding"] = {"accredited": True, "accreditation_logo": uri}
+    data["presentation"] = {"footer_height_mm": footer_height}
+    data["sections"] = [
+        {"kind": "text", "key": "first", "text": "First page"},
+        {"kind": "text", "key": "second", "text": "Second page", "page_break_before": True},
+    ]
+    report = load(data)
+    html = ReportRenderer().render_html(report)
+    assert uri in html
+    pdf = pymupdf.open(stream=ReportRenderer().render_pdf(report), filetype="pdf")
+    assert len(pdf) == 2
+    points_per_mm = 72 / 25.4
+    for page in pdf:
+        if image_format == "svg":
+            marks = [
+                drawing["rect"]
+                for drawing in page.get_drawings()
+                if drawing.get("fill")
+                and tuple(round(component * 255) for component in drawing["fill"])
+                == (0x12, 0x34, 0x56)
+            ]
+        else:
+            marks = [rect for image in page.get_images() for rect in page.get_image_rects(image[0])]
+        assert len(marks) == 1
+        mark = marks[0]
+        assert mark.width / mark.height == pytest.approx(width / height, rel=0.001)
+        assert mark.x0 == pytest.approx(16 * points_per_mm, abs=0.1)
+        assert mark.x1 <= page.rect.width - 16 * points_per_mm
+        assert mark.y0 >= page.rect.height - footer_height * points_per_mm
+        assert mark.y1 <= page.rect.height - 5 * points_per_mm
