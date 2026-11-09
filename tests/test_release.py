@@ -217,7 +217,9 @@ def test_release_checks_are_part_of_required_branch_flow_job():
     )
     assert check["if"] == "github.base_ref == 'master'"
     assert check["run"] == 'python scripts/check_release.py --base-ref "$BASE_SHA"'
-    checkout = next(step for step in job["steps"] if step.get("uses") == "actions/checkout@v4")
+    checkout = next(
+        step for step in job["steps"] if step.get("uses", "").startswith("actions/checkout@")
+    )
     assert checkout["with"]["ref"] == "${{ github.event.pull_request.head.sha }}"
     assert checkout["with"]["fetch-depth"] == "0"
     publish = yaml.load(

@@ -109,7 +109,7 @@ def test_markdown_placeholders_can_be_replaced_in_html_before_pdf(payloads, load
     pymupdf = pytest.importorskip("pymupdf")
     from weasyprint import HTML
 
-    from smd_reports.rendering import offline_fetcher
+    from smd_reports.rendering import _offline_url_fetcher
 
     data = payloads["pgx"]
     data["sections"] = [
@@ -121,10 +121,10 @@ def test_markdown_placeholders_can_be_replaced_in_html_before_pdf(payloads, load
         }
     ]
     html = ReportRenderer().render_html(load(data))
-    before = HTML(string=html, url_fetcher=offline_fetcher).write_pdf()
+    before = HTML(string=html, url_fetcher=_offline_url_fetcher()).write_pdf()
     replacement = "Example & Demo"
     html = html.replace("&lt;PATIENT_NAME&gt;", escape(replacement))
-    after = HTML(string=html, url_fetcher=offline_fetcher).write_pdf()
+    after = HTML(string=html, url_fetcher=_offline_url_fetcher()).write_pdf()
     with pymupdf.open(stream=before, filetype="pdf") as document:
         page = next(page for page in document if "Patient:" in page.get_text())
         assert page.get_text().count("<PATIENT_NAME>") == 3

@@ -54,10 +54,40 @@ No institutional logos or center information are supplied as defaults.
 
 Artwork keeps its aspect ratio. Header information repeats on PDF pages. The footer places
 the accreditation image on the left and template/page numbering on the right. Without
-accreditation artwork, the PDF uses a 22 mm footer.
+accreditation artwork, the PDF uses a 22 mm footer. Accreditation logos fit within their
+configured width and the available footer height while preserving their aspect ratio.
+The footer reserves 9 mm for spacing and its border; taller artwork is reduced to fit.
 
 ## Image formats
 
-PNG, JPEG, static SVG, WebP, GIF, TIFF and BMP are supported. SVG scripts, external references, entities,
-embedded documents and CSS URL resources are rejected. Missing or unsupported artwork
-produces a loading error. Public examples use generic logos and a synthetic CNV plot from `examples/assets/`.
+PNG, JPEG, static SVG, WebP, GIF, TIFF and BMP are supported. Missing or unsupported
+artwork produces a loading error. Public examples use generic logos and a synthetic
+CNV plot from `examples/assets/`.
+
+### Self-contained SVG
+
+SVG artwork is embedded unchanged, including its colours, text, static CSS and fonts.
+Supported content includes `<style>` rules, `@font-face`, plain metadata, RDF/Dublin Core,
+Creative Commons/XMP metadata, and Inkscape/Sodipodi editor metadata. CSS presentation
+properties, inline styles and local fragment references such as `fill: url(#gradient)`
+are accepted. Other at-rules, unsupported elements and unsupported CSS properties or
+functions produce an error rather than being removed.
+
+Embed fonts with `src: url("data:font/woff2;base64,...") format("woff2")`. The package
+checks base64 encoding, WOFF2 headers, compressed contents and OpenType tables. Each font
+is limited to 2 MiB compressed and 16 MiB expanded; fonts containing SVG glyph documents
+are unsupported. External fonts and `local()` font sources are rejected. Without an
+embedded font, SVG text uses fonts installed on the conversion machine.
+
+Original SVG bytes and inert metadata values are retained. Validated font-face rules are also included in the HTML
+stylesheet for converters that do not load font-face rules inside SVG images, including
+WeasyPrint 63. This keeps embedded typography available when converting the HTML elsewhere, without
+rasterizing the artwork. Only artwork displayed by the selected layout contributes font
+definitions. Use distinct artwork font-family names: conflicting definitions
+between artwork and report fonts produce an error instead of changing report typography.
+
+Scripts, event handlers, animation, `foreignObject`, embedded images/documents, external
+network/file references, DTDs, entities and XML processing instructions are rejected.
+CSS escapes are decoded before validating references; imports, active CSS and malformed
+font data also produce errors. Resource fetching during package PDF rendering remains
+restricted to validated embedded image and WOFF2 data URIs.

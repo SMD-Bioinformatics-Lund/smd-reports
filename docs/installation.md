@@ -3,7 +3,7 @@
 ## Requirements
 
 - Python 3.10 or newer.
-- For PDF generation: WeasyPrint 63.0 and its native Pango/font runtime.
+- For PDF generation: WeasyPrint 70.0 and its native Pango/font runtime.
 
 HTML rendering, JSON validation, schema export and normalization do not require WeasyPrint.
 The package does not require a web framework, database or application server.
@@ -33,9 +33,9 @@ python -m pip install "smd-reports[pdf]"
 For reproducible application deployments, pin the reviewed package version:
 
 ```sh
-python -m pip install "smd-reports==0.1.1"
+python -m pip install "smd-reports==0.1.2"
 # With PDF support:
-python -m pip install "smd-reports[pdf]==0.1.1"
+python -m pip install "smd-reports[pdf]==0.1.2"
 ```
 
 Use the same requirement in your application's dependency configuration. To upgrade
@@ -59,7 +59,7 @@ Installation methods differ on other operating systems. Prepare the native runti
 before calling `render_pdf()`. Missing Python/native renderer dependencies raise
 `PDFUnavailableError`; install both the extra and the native libraries to resolve it.
 
-The extra pins WeasyPrint 63.0. If an application already pins another version, resolve
+The extra pins WeasyPrint 70.0. If an application already pins another version, resolve
 that dependency choice and verify its PDF output before upgrading the environment.
 
 ## Verify the installation

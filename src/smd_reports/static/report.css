@@ -87,7 +87,7 @@ p, li { orphans: 3; widows: 3; }
 .template-version { display: block; color: #000; font-size: 6pt; line-height: 1.15; }
 .page-number { display: block; color: #000; margin-top: .6mm; font-size: 7.5pt; line-height: 1.2; }
 .page-number::after { content: "Sida " counter(page) " av " counter(pages); }
-.accreditation { display: block; height: auto; object-fit: contain; }
+.accreditation { display: block; height: auto; max-width: 100%; object-fit: contain; object-position: left top; }
 .screen-footer { display: table; width: 100%; border-top: 1px solid var(--report-border); margin-top: 12px; padding-top: 3mm; }
 .screen-footer > div, .screen-footer > span { display: table-cell; vertical-align: top; }
 .screen-footer > span { text-align: right; }

@@ -4,14 +4,14 @@
 <title>{{ report.title|ui }} - {{ report.metadata.report_id }}</title>
 <meta name="smd-reports:generated-at" content="{{ report.metadata.generated_at.isoformat() }}">
 {% for key, value in report.rendering_metadata.items() %}<meta name="smd-reports:{{ key }}" content="{{ value }}">{% endfor %}
-<style>{{ fonts | safe }}
+<style>{{ fonts | safe }}{{ svg_fonts | safe }}
 :root { --heading: {{ theme.heading }}; --accent: {{ theme.accent }}; --tint: {{ theme.tint }};
 --rule-end: {{ theme.rule_end }}; --page-width: {{ report.presentation.dimensions_mm[0] }}mm; --body-size: {{ theme.body_pt }}pt; }
 {{ css | safe }}
 @page { size: {{ report.presentation.dimensions_mm[0] }}mm {{ report.presentation.dimensions_mm[1] }}mm; margin-top: {{ report.header_height_mm }}mm; margin-bottom: {% if report.branding.accredited and report.branding.accreditation_logo %}{{ report.footer_height_mm }}{% else %}22{% endif %}mm; }
 .report-application-logo { width: {{ report.branding.application_logo_width_mm }}mm; }
 .center-logo { width: {{ report.branding.center_logo_width_mm }}mm; }
-.accreditation { width: {{ report.branding.accreditation_logo_width_mm }}mm; }
+.accreditation { width: {{ report.branding.accreditation_logo_width_mm }}mm; max-height: {{ report.footer_height_mm - 9 }}mm; }
 {% if report.language == 'en' %}.page-number::after { content: "Page " counter(page) " of " counter(pages); }{% endif %}
 </style></head>
 <body class="report-{{ report.application }}"><div class="page">

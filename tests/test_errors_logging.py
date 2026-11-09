@@ -176,6 +176,12 @@ def test_pdf_failure_is_wrapped_without_logging_engine_message(reports, monkeypa
         raise RuntimeError(PRIVATE)
 
     monkeypatch.setitem(sys.modules, "weasyprint", SimpleNamespace(HTML=fail))
+    monkeypatch.setitem(
+        sys.modules,
+        "weasyprint.urls",
+        SimpleNamespace(FatalURLFetchingError=type("FatalResourceError", (BaseException,), {})),
+    )
+    monkeypatch.setattr("smd_reports.rendering._offline_url_fetcher", lambda: None)
     with caplog.at_level(logging.INFO, logger="smd_reports"):
         with pytest.raises(ReportRenderError, match="Could not generate the PDF") as caught:
             ReportRenderer().render_pdf(reports["generic"])
@@ -194,7 +200,20 @@ def test_pdf_rejects_swallowed_resource_failure(reports, monkeypatch):
         def write_pdf(self, **kwargs):
             return b"incomplete PDF"
 
+    class FailedFetcher:
+        failed = False
+
+        def __call__(self, url):
+            self.failed = True
+            raise ValueError("External report resources are prohibited")
+
     monkeypatch.setitem(sys.modules, "weasyprint", SimpleNamespace(HTML=HTML))
+    monkeypatch.setitem(
+        sys.modules,
+        "weasyprint.urls",
+        SimpleNamespace(FatalURLFetchingError=type("FatalResourceError", (BaseException,), {})),
+    )
+    monkeypatch.setattr("smd_reports.rendering._offline_url_fetcher", FailedFetcher)
     with pytest.raises(ReportRenderError, match="PDF resources could not be loaded"):
         ReportRenderer().render_pdf(reports["generic"])
 

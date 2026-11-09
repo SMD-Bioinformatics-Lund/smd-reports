@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=77", "wheel"]
+requires = ["setuptools>=84.2.1", "wheel>=0.48"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -23,7 +23,17 @@ classifiers = [
 ]
 license = "GPL-3.0-only"
 license-files = ["LICENSE", "COPYRIGHT"]
-dependencies = ["pydantic>=2.10,<3", "Jinja2>=3.1.6,<4", "Markdown>=3.6,<4", "bleach>=6.2,<7", "defusedxml>=0.7,<1", "Pillow>=10,<14"]
+dependencies = [
+  "pydantic>=2.14.3,<3",
+  "Jinja2>=3.1.6,<4",
+  "Markdown>=3.10.3,<4",
+  "bleach>=6.4,<7",
+  "defusedxml>=0.7.1,<1",
+  "Pillow>=12.3,<14",
+  "tinycss2>=1.5.1,<2",
+  "fonttools>=4.65,<5",
+  "Brotli>=1.2.1,<2",
+]
 
 [project.urls]
 Homepage = "https://github.com/SMD-Bioinformatics-Lund/smd-reports"
@@ -33,10 +43,21 @@ Issues = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/issues"
 Changelog = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md"
 
 [project.optional-dependencies]
-docs = ["mkdocs>=1.6,<2", "pyyaml-env-tag>=1,<2"]
-pdf = ["weasyprint==63.0"]
-dev = ["pre-commit>=4,<5"]
-test = ["packaging>=24,<27", "pytest>=8,<9", "pytest-cov>=6,<8", "PyYAML>=6,<7", "pyyaml-env-tag>=1,<2", "PyMuPDF>=1.25,<2", "build>=1,<2", "ruff==0.13.3", "twine>=6.1,<7"]
+docs = ["mkdocs>=1.6.1,<2", "pyyaml-env-tag>=1.1,<2"]
+pdf = ["weasyprint==70.0"]
+dev = ["pre-commit>=4.6.2,<5"]
+test = [
+  "packaging>=26.3,<27",
+  "pytest>=9.2,<10",
+  "pytest-cov>=7.1,<8",
+  "pytest-xdist>=3.8,<4",
+  "PyYAML>=6.0.3,<7",
+  "pyyaml-env-tag>=1.1,<2",
+  "PyMuPDF>=1.28.2,<3",
+  "build>=1.6.1,<2",
+  "ruff==0.17.4",
+  "twine>=7,<8",
+]
 
 [project.scripts]
 smd-reports = "smd_reports.cli:main"
