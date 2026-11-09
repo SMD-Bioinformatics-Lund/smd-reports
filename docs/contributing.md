@@ -30,6 +30,18 @@ changed by maintainers when those form fields have not changed. Custom labels ar
 Labels are defined in `.github/labels.json`. The Issue management workflow synchronizes them
 when that file changes on `master`; it can also be run manually.
 
+## Dependency maintenance
+
+Dependabot provides private dependency alerts to authorized repository users. Automatic
+security-update pull requests are disabled in repository settings. The Dependabot
+configuration also disables version-update pull requests for Python packages and GitHub
+Actions. Review dependency updates manually on a development branch and run the full
+checks before merging.
+
+Report vulnerabilities through the private reporting link in `SECURITY.md`; keep findings
+out of public issues and workflow output. Publishing an advisory is a separate maintainer
+action. Public dependency versions and published third-party advisories remain visible.
+
 ## Development setup
 
 From a source checkout, create an environment and install the development tools:
@@ -54,7 +66,7 @@ Document public classes and functions with a concise description and relevant `A
 ## Tests and documentation
 
 ```sh
-python -m pytest -q --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=html
+python -m pytest -n 2 -q --durations=10 --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=html
 python -m mkdocs build --strict
 ```
 

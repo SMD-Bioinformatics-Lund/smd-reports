@@ -4,7 +4,7 @@
 
 ```sh
 python -m pre_commit run --all-files
-python -m pytest -q --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=xml --cov-report=html
+python -m pytest -n 2 -q --durations=10 --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=xml --cov-report=html
 python -m mkdocs build --strict
 python -m build
 python -m twine check --strict dist/*
@@ -13,12 +13,27 @@ python scripts/check_installation.py
 
 Tests cover JSON validation, scalar type preservation, dynamic column and grid layouts,
 localization, image loading, sanitized Markdown, standalone HTML, PDF content and pagination,
-and command-line behavior. Coverage measures the entire package, including branches, with
+and command-line behavior. SVG regressions cover static CSS, editor metadata, embedded
+WOFF2 fonts, encoded resource references, malformed fonts and vector PDF output. Coverage measures the entire package, including branches, with
 an enforced 75% minimum. HTML and XML reports are written to `.artifacts/coverage/`.
 
 CI runs core checks on Python 3.10, 3.12 and 3.14, and PDF checks on Python 3.12 with
-WeasyPrint 63.0. It also runs pre-commit, builds documentation and distributions, and checks
+WeasyPrint 70.0. It also runs pre-commit, builds documentation and distributions, and checks
 fresh wheel/source installations.
+
+An optional regression reads external SVG artwork without copying it into the repository:
+
+```sh
+SMD_REPORTS_REFERENCE_SVG=/path/to/accreditation.svg python -m pytest tests/test_svg.py -q
+```
+
+This checks JSON loading, unchanged embedded artwork, HTML and real vector PDF output.
+The regular tests use synthetic artwork and bundled fonts, with no institutional marks.
+
+Use `-n 2` for two test workers, or omit it when debugging a single process. The
+`--durations=10` summary identifies slow setup and test calls. Example inputs are loaded
+once per worker; each test receives an independent copy. PDF generation and comparisons
+still execute for each test.
 
 ## Report previews
 

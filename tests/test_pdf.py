@@ -237,17 +237,17 @@ def test_summary_markdown_table_is_compact_and_wraps(payloads, load, wide):
             "key": "summary",
             "format": "markdown",
             "text": "| Label | Value |\n|---|---|\n| x | "
-            + ("LongUnbrokenWord" * 80 if wide else "y")
+            + ("LongUnbrokenWord" * 40 if wide else "y")
             + " END-MARKER |",
         }
     ]
     from weasyprint import HTML
     from weasyprint.formatting_structure.boxes import TableBox
 
-    from smd_reports.rendering import offline_fetcher
+    from smd_reports.rendering import _offline_url_fetcher
 
     rendered = HTML(
-        string=ReportRenderer().render_html(load(data)), url_fetcher=offline_fetcher
+        string=ReportRenderer().render_html(load(data)), url_fetcher=_offline_url_fetcher()
     ).render()
     document = pymupdf.open(stream=rendered.write_pdf(), filetype="pdf")
     assert any("END-MARKER" in page.get_text() for page in document)

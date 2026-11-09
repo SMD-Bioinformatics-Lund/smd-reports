@@ -20,7 +20,7 @@ jobs:
     if: github.event_name != 'issues'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - run: python3 .github/scripts/manage_issues.py sync-labels
@@ -34,7 +34,7 @@ jobs:
       startsWith(github.event.label.name, 'status: '))
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - run: python3 .github/scripts/manage_issues.py label-issue

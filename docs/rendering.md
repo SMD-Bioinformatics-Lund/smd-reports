@@ -96,10 +96,15 @@ You can register a custom theme on a renderer:
 from smd_reports import ReportRenderer, Theme
 
 renderer = ReportRenderer()
-renderer.register_theme(Theme(
-    name="center", heading="#176B68", accent="#278780",
-    tint="#edf7f5", rule_end="#9dcac0",
-))
+renderer.register_theme(
+    Theme(
+        name="center",
+        heading="#176B68",
+        accent="#278780",
+        tint="#edf7f5",
+        rule_end="#9dcac0",
+    )
+)
 html = renderer.render_html(report, theme="center")
 ```
 
@@ -110,22 +115,23 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 ## Template and package versions
 
 Each report footer shows the template name, its revision and the installed package version,
-for example `Coyote3 DNA · Template 2.1.1 · smd-reports 0.1.1`.
+for example `Coyote3 DNA · Template 0.1.2 · smd-reports 0.1.2`.
 Swedish reports use `Mall` as the template label.
 
-Template revisions identify layout changes for each preset. Coyote3 DNA and RNA revisions
-are tracked separately. The package version identifies the installed Python distribution,
-including rendering code and dependencies; it is not used as a template revision.
+A template revision identifies the package release in which that template last changed.
+Unchanged templates retain their previous revision. Coyote3 DNA and RNA revisions are
+tracked separately. The package version identifies the installed Python distribution,
+including rendering code and dependencies, so it may differ from a template revision.
 Both values are supplied by the package and cannot be overridden in report JSON.
 
 | Template | Revision |
 | --- | --- |
-| Generic | 2.1.1 |
-| Coyote3 DNA | 2.1.1 |
-| Coyote3 RNA | 2.1.1 |
-| Genexus | 2.1.1 |
-| CLL Genie | 2.1.1 |
-| PGx | 2.1.1 |
+| Generic | 0.1.2 |
+| Coyote3 DNA | 0.1.2 |
+| Coyote3 RNA | 0.1.2 |
+| Genexus | 0.1.2 |
+| CLL Genie | 0.1.2 |
+| PGx | 0.1.2 |
 
 Inspect `report.template_name`, `report.template_version` and `report.rendering_metadata`
 from Python. A package release may update only the templates affected by its changes.

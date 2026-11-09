@@ -37,30 +37,30 @@ jobs:
           test "$CONFIRMATION" = publish
           case "$PUBLISH_INDEX" in testpypi|pypi) ;; *) exit 1 ;; esac
           git check-ref-format "refs/tags/$RELEASE_TAG"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           ref: ${{ inputs.tag }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.12'
       - name: Install release-check dependency
-        run: python -m pip install 'packaging>=24,<27'
+        run: python -m pip install 'packaging>=26.3,<27'
       - name: Verify changelog, version progression, tag and master ancestry
         run: python scripts/check_release.py "$RELEASE_TAG" --check-git
       - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
       - run: python -m pip install '.[pdf,test,docs]'
       - run: python -m ruff check src examples tests scripts
       - run: python -m ruff format --check src examples tests scripts
-      - run: python -m pytest -q --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=xml
+      - run: python -m pytest -n 2 -q --durations=10 --cov=smd_reports --cov-branch --cov-report=term-missing --cov-report=xml
       - run: python -m mkdocs build --strict
       - run: python -m build
       - run: python -m twine check --strict dist/*
       - run: python scripts/check_release.py "$RELEASE_TAG" --check-git --dist dist
       - run: python scripts/check_installation.py
       - run: python scripts/check_installation.py --source
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: release-distributions
           path: dist/*
@@ -73,12 +73,12 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8.0.2
         with:
           name: release-distributions
           path: dist/
       - name: Publish the checked distributions with Trusted Publishing
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@v1.14.3
         with:
           repository-url: ${{ inputs.index == 'pypi' && 'https://upload.pypi.org/legacy/' || 'https://test.pypi.org/legacy/' }}
   verify-testpypi:
@@ -88,10 +88,10 @@ jobs:
     env:
       RELEASE_TAG: ${{ inputs.tag }}
     steps:
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.12'
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8.0.2
         with:
           name: release-distributions
           path: dist/

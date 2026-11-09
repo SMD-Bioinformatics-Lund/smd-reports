@@ -1,13 +1,11 @@
 """Embed local report artwork and validate static SVG without external resources."""
 
 import base64
-import re
 from io import BytesIO
 from pathlib import Path
 from typing import Literal
 
-from defusedxml import ElementTree
-
+from ._svg import validate_svg
 from .errors import ReportInputError
 
 ImageFormat = Literal["png", "jpeg", "svg", "webp", "gif", "tiff", "bmp"]
@@ -52,31 +50,6 @@ def validate_image_reference(value: str) -> str:
     return value
 
 
-SVG_TAGS = {
-    "svg",
-    "g",
-    "path",
-    "rect",
-    "circle",
-    "ellipse",
-    "line",
-    "polyline",
-    "polygon",
-    "text",
-    "tspan",
-    "defs",
-    "use",
-    "symbol",
-    "clipPath",
-    "mask",
-    "linearGradient",
-    "radialGradient",
-    "stop",
-    "title",
-    "desc",
-}
-
-
 def validate_image(value: str) -> str:
     """Validate raster content or a restricted static SVG document.
 
@@ -99,27 +72,7 @@ def validate_image(value: str) -> str:
     if not raw:
         raise ReportInputError("Empty image")
     if prefix == "data:image/svg+xml;base64":
-        without_declaration = re.sub(rb"^\s*<\?xml\s[^?]*\?>", b"", raw)
-        if b"<?" in without_declaration or b"<!DOCTYPE" in raw.upper():
-            raise ReportInputError("SVG processing instructions and document types are prohibited")
-        try:
-            root = ElementTree.fromstring(raw)
-        except Exception as exc:
-            raise ReportInputError("Invalid or unsafe SVG") from exc
-        if root.tag.split("}")[-1] != "svg":
-            raise ReportInputError("Expected an SVG root")
-        for element in root.iter():
-            if element.tag.split("}")[-1] not in SVG_TAGS:
-                raise ReportInputError("SVG must contain static artwork only")
-            for name, attribute in element.attrib.items():
-                name = name.split("}")[-1].lower()
-                if name.startswith("on") or name in {"src", "base"}:
-                    raise ReportInputError("Active SVG attributes are prohibited")
-                if name == "href" and not re.fullmatch(r"#[A-Za-z_][\w.-]*", attribute):
-                    raise ReportInputError("SVG references must be local fragments")
-                # Disallow CSS escapes/imports and all URL functions, including encoded variants.
-                if "\\" in attribute or "@" in attribute or re.search(r"url\s*\(", attribute, re.I):
-                    raise ReportInputError("SVG URL/CSS resources are prohibited")
+        validate_svg(raw)
     else:
         from PIL import Image
 
