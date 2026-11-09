@@ -1,8 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 - 2026-11-09
 
 - Enforce version increases and nonempty changelog entries for release PRs and publishing.
+- Use Read the Docs for documentation links and version-aware canonical URLs.
+- Keep wiki generation and YAML checks compatible with versioned documentation builds.
 
 ## 0.1.0
 

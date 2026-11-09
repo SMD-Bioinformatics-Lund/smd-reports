@@ -39,7 +39,7 @@ visibility.
 After the development PR is merged into `dev` and the release PR is merged into `master`:
 
 1. Confirm the version in `src/smd_reports/__init__.py` and the changelog.
-2. Create the matching tag, for example `v0.1.0`, on the release commit in `master`.
+2. Create the matching tag, for example `v0.1.1`, on the release commit in `master`.
 3. Open GitHub Actions → **Publish package** → **Run workflow**.
 4. Select branch `master`, enter the tag, choose `testpypi` and type `publish`.
 5. Review the completed checks and TestPyPI installation verification.
