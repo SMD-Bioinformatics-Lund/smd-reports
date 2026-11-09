@@ -7,6 +7,7 @@ from pathlib import Path
 from urllib.parse import quote, unquote, urlsplit
 
 import yaml
+from yaml_env_tag import add_env_tag
 
 ROOT = Path(__file__).resolve().parents[1]
 # Retain published page URLs when MkDocs navigation labels differ.
@@ -20,6 +21,13 @@ PAGE_NAMES = {
 LINK = re.compile(r"(!?)\[([^\]\n]*)\]\(([^\s)]+)(\s+[\"'][^\n]*?[\"'])?\)")
 INLINE_CODE = re.compile(r"(`+).*?\1")
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+
+class WikiConfigLoader(yaml.SafeLoader):
+    """Load MkDocs environment tags without changing the global YAML loader."""
+
+
+add_env_tag(WikiConfigLoader)
 
 
 def navigation_pages(items):
@@ -133,7 +141,7 @@ def build_wiki(root, output, repository, revision):
         raise ValueError("Revision must be a full source commit hash")
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise ValueError("Wiki output directory must be empty")
-    config = yaml.safe_load((root / "mkdocs.yml").read_text(encoding="utf-8"))
+    config = yaml.load((root / "mkdocs.yml").read_text(encoding="utf-8"), Loader=WikiConfigLoader)
     pages = {}
     for label, filename in navigation_pages(config["nav"]):
         path = (root / "docs" / filename).resolve()

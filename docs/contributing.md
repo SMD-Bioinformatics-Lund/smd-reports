@@ -78,6 +78,32 @@ Documentation URL pointed at the hosted site.
 The [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki) is also
 maintained from the same source files.
 
+
+## Documentation versions
+
+Read the Docs builds each activated release tag from the documentation stored in that tag.
+`latest` follows the configured default branch, which should be `master` for this project.
+`stable` follows the highest stable release version. Individual tag URLs, such as
+`https://smd-reports.readthedocs.io/en/v0.1.0/`, keep the corresponding release documentation.
+
+In the Read the Docs project dashboard, add an Automation Rule with these settings:
+
+| Setting | Value |
+| --- | --- |
+| Version type | Tag |
+| Match | SemVer versions |
+| Action | Activate version |
+| Enabled | Yes |
+
+The GitHub integration then activates and builds future release tags automatically.
+Existing tags must be activated separately under **Versions** because new rules do not
+apply retroactively. Activate `v0.1.0` to publish its individual version URL. See the
+[Read the Docs automation guide](https://docs.readthedocs.com/platform/stable/guides/automation-rules.html).
+
+MkDocs uses `READTHEDOCS_CANONICAL_URL` for hosted builds so each version receives its
+configured canonical URL. Local builds fall back to the public `/en/latest/` URL.
+The wiki generator accepts the same environment-based configuration.
+
 ## Wiki publishing
 
 Edit documentation in `docs/` and navigation in `mkdocs.yml`. The **Publish wiki** workflow
