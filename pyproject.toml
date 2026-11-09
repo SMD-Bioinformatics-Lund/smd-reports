@@ -33,10 +33,10 @@ Issues = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/issues"
 Changelog = "https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md"
 
 [project.optional-dependencies]
-docs = ["mkdocs>=1.6,<2"]
+docs = ["mkdocs>=1.6,<2", "pyyaml-env-tag>=1,<2"]
 pdf = ["weasyprint==63.0"]
 dev = ["pre-commit>=4,<5"]
-test = ["pytest>=8,<9", "pytest-cov>=6,<8", "PyYAML>=6,<7", "PyMuPDF>=1.25,<2", "build>=1,<2", "ruff==0.13.3", "twine>=6.1,<7"]
+test = ["pytest>=8,<9", "pytest-cov>=6,<8", "PyYAML>=6,<7", "pyyaml-env-tag>=1,<2", "PyMuPDF>=1.25,<2", "build>=1,<2", "ruff==0.13.3", "twine>=6.1,<7"]
 
 [project.scripts]
 smd-reports = "smd_reports.cli:main"
