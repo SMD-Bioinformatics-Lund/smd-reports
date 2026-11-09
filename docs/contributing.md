@@ -64,25 +64,45 @@ Use `python -m mkdocs serve` to preview documentation locally.
 
 ## Documentation hosting
 
-The `.readthedocs.yaml` file configures Read the Docs to build `mkdocs.yml` with Python
-3.12 and the package's `docs` extra. Documentation warnings fail the build, as they do in CI.
+Documentation is hosted at [smd-reports.readthedocs.io/en/latest/](https://smd-reports.readthedocs.io/en/latest/).
+The `.readthedocs.yaml` file configures builds using `mkdocs.yml`, Python 3.12 and the
+package's `docs` extra. Documentation warnings fail the build, as they do in CI.
 
 ![Documentation source, Read the Docs and GitHub wiki workflow](assets/documentation-workflow.svg)
 
-To enable hosting:
+The Read the Docs GitHub integration rebuilds enabled versions when their source changes.
+Use `master` for release documentation; additional branches and tags can be enabled in the
+Read the Docs project settings. Keep the GitHub website field, README and package
+Documentation URL pointed at the hosted site.
 
-1. Sign in to [Read the Docs](https://app.readthedocs.org/) and connect GitHub.
-2. Add a project and import `SMD-Bioinformatics-Lund/smd-reports` through the GitHub integration.
-3. Select a branch containing `.readthedocs.yaml`. Use `master` for release documentation;
-   development branches can be activated separately for previews.
-4. Run the first build and verify the published documentation URL.
-5. Update the GitHub website field, README documentation links and package documentation URL
-   to the published site.
+The [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki) is also
+maintained from the same source files.
 
-After import, the GitHub integration rebuilds enabled versions when their source changes.
-The project must be imported into Read the Docs before pushes can publish documentation.
-Until a hosted site is available, the [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki)
-is the public documentation link.
+
+## Documentation versions
+
+Read the Docs builds each activated release tag from the documentation stored in that tag.
+`latest` follows the configured default branch, which should be `master` for this project.
+`stable` follows the highest stable release version. Individual tag URLs, such as
+`https://smd-reports.readthedocs.io/en/v0.1.0/`, keep the corresponding release documentation.
+
+In the Read the Docs project dashboard, add an Automation Rule with these settings:
+
+| Setting | Value |
+| --- | --- |
+| Version type | Tag |
+| Match | SemVer versions |
+| Action | Activate version |
+| Enabled | Yes |
+
+The GitHub integration then activates and builds future release tags automatically.
+Existing tags must be activated separately under **Versions** because new rules do not
+apply retroactively. Activate `v0.1.0` to publish its individual version URL. See the
+[Read the Docs automation guide](https://docs.readthedocs.com/platform/stable/guides/automation-rules.html).
+
+MkDocs uses `READTHEDOCS_CANONICAL_URL` for hosted builds so each version receives its
+configured canonical URL. Local builds fall back to the public `/en/latest/` URL.
+The wiki generator accepts the same environment-based configuration.
 
 ## Wiki publishing
 
@@ -135,6 +155,8 @@ up-to-date branch. The maintainer `ramsainanduri` may bypass the approving-revie
 for solo maintenance. Required CI checks and the other protections still apply, including to
 administrators. Force pushes and branch deletion are blocked. Required checks are `branch-flow`, `lint`, `docs`, `core (3.10)`, `core (3.12)`,
 `core (3.14)` and `pdf`. Release PRs to `master` must originate from this repository's `dev`
-branch. The PR templates in `.github/PULL_REQUEST_TEMPLATE/` describe the expected checks.
+branch. The required `branch-flow` job also checks version increases and matching release
+notes on PRs into `master`; see [release preparation](validation.md#release-preparation).
+The PR templates in `.github/PULL_REQUEST_TEMPLATE/` describe the expected checks.
 
 See [publishing setup](publishing.md) for release configuration and commands.

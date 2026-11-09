@@ -39,13 +39,14 @@ visibility.
 After the development PR is merged into `dev` and the release PR is merged into `master`:
 
 1. Confirm the version in `src/smd_reports/__init__.py` and the changelog.
-2. Create the matching tag, for example `v0.1.0`, on the release commit in `master`.
+2. Create the matching tag, for example `v0.1.1`, on the release commit in `master`.
 3. Open GitHub Actions → **Publish package** → **Run workflow**.
 4. Select branch `master`, enter the tag, choose `testpypi` and type `publish`.
 5. Review the completed checks and TestPyPI installation verification.
 6. Start the workflow separately with the same tag and index `pypi` when ready.
 
-The workflow checks tag/version agreement, tag existence and `master` ancestry, then runs
+The workflow requires a matching nonempty changelog entry and a version newer than previous
+release tags on `master`. It also checks tag/version agreement, tag existence and ancestry, then runs
 tests, lint, documentation, distribution checks and isolated wheel/source installation.
 Only the checked artifacts are passed to the publishing job. Package versions cannot be
 overwritten; an existing version requires a new release rather than replacement files.

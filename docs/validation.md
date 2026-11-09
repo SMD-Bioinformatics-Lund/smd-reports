@@ -38,6 +38,27 @@ Feature PRs target `dev`. Release PRs promote `dev` to `master` with a merge com
 Update the package version and changelog, run checks and review the generated examples.
 The package version is defined once in `src/smd_reports/__init__.py`.
 
+Release PRs into `master` must increase the version beyond the exact PR base version and
+any release tags already reachable from that base. Versions use Python packaging ordering,
+so `0.1.10` is newer than `0.1.9`. Ordinary PRs into `dev` do not require a version increase.
+These checks run inside the required `branch-flow` job; the maintainer review exception
+does not bypass them.
+
+`CHANGELOG.md` must contain exactly one entry matching the package version, with a heading
+such as `## 0.1.1` or `## [0.1.1] - 2026-11-08`. Include release changes beneath that heading.
+Empty sections, placeholder-only notes, comments and code examples do not count as release
+notes. Keep work in progress under `## Unreleased` until preparing a release.
+
+Before opening a release PR, check the candidate locally:
+
+```sh
+python scripts/check_release.py --base-ref origin/master
+```
+
+Publishing repeats changelog validation and checks the version against previous release
+tags on `master`, excluding the candidate's own tag. The first release is allowed when no
+previous package version or release tags exist.
+
 The publishing workflow is manual. Pushing a branch, merging a PR or adding a tag does
 not publish a distribution. See [publishing setup](publishing.md) for account configuration
 and release commands.
