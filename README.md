@@ -2,11 +2,11 @@
 
 ![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/f809a167384ecd28b34be9cbc5efa0ca64055766/docs/assets/smd-reports-logo.svg)
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Installation)
-[![Package version](https://img.shields.io/badge/package-0.1.0-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://smd-reports.readthedocs.io/en/latest/installation/)
+[![Package version](https://img.shields.io/badge/package-0.1.1-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/actions/workflows/quality.yml)
-[![Documentation](https://img.shields.io/badge/docs-wiki-009688?style=flat-square&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Home)
-[![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/HTML-and-PDF)
+[![Documentation](https://readthedocs.org/projects/smd-reports/badge/?version=latest&style=flat-square)](https://smd-reports.readthedocs.io/en/latest/)
+[![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_63.0-D44A3A?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/)
 [![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE)
 
 Render JSON reports as standalone HTML and PDF with shared layouts, configurable branding
@@ -21,8 +21,8 @@ descriptions and references as plain text or Markdown.
 
 ![JSON input to HTML and PDF report workflow](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/7b241f357134628486e72b9f6fcaa2aafd3c8689/docs/assets/report-workflow.svg)
 
-The [development and release workflow](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Contributing#pull-requests)
-and [documentation publishing workflow](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Contributing#documentation-hosting)
+The [development and release workflow](https://smd-reports.readthedocs.io/en/latest/contributing/#pull-requests)
+and [documentation publishing workflow](https://smd-reports.readthedocs.io/en/latest/contributing/#documentation-hosting)
 are described in the contribution guide.
 
 ## Install
@@ -36,7 +36,7 @@ python -m pip install "smd-reports[pdf]"
 ```
 
 The distribution name is `smd-reports`; the Python import name is `smd_reports`.
-PDF rendering also requires native Pango libraries. See [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Installation).
+PDF rendering also requires native Pango libraries. See [installation](https://smd-reports.readthedocs.io/en/latest/installation/).
 
 ## Use from Python
 
@@ -52,7 +52,7 @@ Path("report.pdf").write_bytes(renderer.render_pdf(report))
 ```
 
 Load JSON text with `ReportLoader().loads(json_text)` or files with `load(path)`.
-The [Python guide](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Python-usage) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Quickstart) include examples.
+The [Python guide](https://smd-reports.readthedocs.io/en/latest/python-api/) and [quickstart](https://smd-reports.readthedocs.io/en/latest/quickstart/) include examples.
 Custom columns and detail fields are configured in JSON, including English/Swedish labels.
 
 Group column labels by language and supply values in the same order:
@@ -69,7 +69,7 @@ Group column labels by language and supply values in the same order:
 
 Optional `column_options` configures widths and formatting by column index.
 Placeholders such as `<PATIENT_NAME>` remain visible in HTML and PDF output; see
-[placeholder values and replacement](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/JSON-format#placeholders-for-later-replacement).
+[placeholder values and replacement](https://smd-reports.readthedocs.io/en/latest/json-inputs/#placeholders-for-later-replacement).
 
 ## Use from the command line
 
@@ -85,15 +85,17 @@ The same commands are available with `python -m smd_reports`.
 
 ## Documentation
 
-Read the [documentation wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki) for installation, Python usage, JSON inputs and rendering.
+Read the [documentation](https://smd-reports.readthedocs.io/en/latest/) for installation, Python usage, JSON inputs and rendering.
 
-- [Overview](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Home), [installation](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Installation) and [quickstart](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Quickstart)
-- [Python usage](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Python-usage) and [Python API reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Python-reference)
-- [Report examples and presets](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Report-examples), [JSON format](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/JSON-format)
-  and [Command-line reference](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Command-line)
-- [Center branding](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Center-branding) and [HTML/PDF rendering](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/HTML-and-PDF)
-- [Contributing](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Contributing), [testing and releases](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki/Testing-and-releases)
+- [Overview](https://smd-reports.readthedocs.io/en/latest/), [installation](https://smd-reports.readthedocs.io/en/latest/installation/) and [quickstart](https://smd-reports.readthedocs.io/en/latest/quickstart/)
+- [Python usage](https://smd-reports.readthedocs.io/en/latest/python-api/) and [Python API reference](https://smd-reports.readthedocs.io/en/latest/reference/)
+- [Report examples and presets](https://smd-reports.readthedocs.io/en/latest/integration/), [JSON format](https://smd-reports.readthedocs.io/en/latest/json-inputs/)
+  and [Command-line reference](https://smd-reports.readthedocs.io/en/latest/cli/)
+- [Center branding](https://smd-reports.readthedocs.io/en/latest/branding/) and [HTML/PDF rendering](https://smd-reports.readthedocs.io/en/latest/rendering/)
+- [Contributing](https://smd-reports.readthedocs.io/en/latest/contributing/), [testing and releases](https://smd-reports.readthedocs.io/en/latest/validation/)
   and [changelog](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
+
+The [GitHub wiki](https://github.com/SMD-Bioinformatics-Lund/smd-reports/wiki) mirrors the documentation.
 
 Runnable synthetic examples and complete JSON inputs are in [examples/](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/).
 

@@ -5,6 +5,12 @@ repos:
     hooks:
       - id: check-json
       - id: check-yaml
+        exclude: ^mkdocs\.yml$
+      - id: check-yaml
+        # MkDocs validates !ENV tags; this hook checks YAML syntax.
+        name: Check MkDocs YAML
+        files: ^mkdocs\.yml$
+        args: [--unsafe]
       - id: check-toml
       - id: check-merge-conflict
       - id: end-of-file-fixer

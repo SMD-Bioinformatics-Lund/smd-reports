@@ -145,3 +145,27 @@ def test_publishing_is_restricted_to_master_and_ci_checks_generated_pages():
     assert any(
         "scripts/build_wiki.py" in step.get("run", "") for step in ci["jobs"]["docs"]["steps"]
     )
+
+
+@pytest.mark.parametrize(
+    "canonical",
+    [
+        None,
+        "https://smd-reports.readthedocs.io/en/v0.1.0/",
+        "https://smd-reports.readthedocs.io/en/stable/",
+    ],
+)
+def test_mkdocs_environment_url_and_wiki_generation(tmp_path, monkeypatch, canonical):
+    if canonical is None:
+        monkeypatch.delenv("READTHEDOCS_CANONICAL_URL", raising=False)
+    else:
+        monkeypatch.setenv("READTHEDOCS_CANONICAL_URL", canonical)
+    config = yaml.load((ROOT / "mkdocs.yml").read_text(), Loader=wiki.WikiConfigLoader)
+    assert config["site_url"] == (canonical or "https://smd-reports.readthedocs.io/en/latest/")
+    count, output = build(ROOT, tmp_path)
+    assert count == 13 and (output / "Home.md").is_file()
+
+
+def test_wiki_environment_support_does_not_modify_global_yaml_loader():
+    with pytest.raises(yaml.constructor.ConstructorError):
+        yaml.safe_load("site_url: !ENV READTHEDOCS_CANONICAL_URL")

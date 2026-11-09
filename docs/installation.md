@@ -33,9 +33,9 @@ python -m pip install "smd-reports[pdf]"
 For reproducible application deployments, pin the reviewed package version:
 
 ```sh
-python -m pip install "smd-reports==0.1.0"
+python -m pip install "smd-reports==0.1.1"
 # With PDF support:
-python -m pip install "smd-reports[pdf]==0.1.0"
+python -m pip install "smd-reports[pdf]==0.1.1"
 ```
 
 Use the same requirement in your application's dependency configuration. To upgrade
