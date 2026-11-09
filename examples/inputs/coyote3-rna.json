@@ -223,33 +223,21 @@
     {
       "key": "covered-genes",
       "page_break_before": false,
-      "kind": "table",
-      "columns": {
-        "en": ["Gene"],
-        "sv": ["Gen"]
-      },
-      "rows": [
-        [
-          "BRAF"
-        ],
-        [
-          "EML4"
-        ],
-        [
-          "ALK"
-        ],
-        [
-          "EXAMPLE1"
-        ]
-      ],
+      "kind": "compact_table",
       "empty_text": {
         "en": "No reportable results",
         "sv": "Inga rapporterbara resultat"
       },
       "heading": {
-        "en": "Analyzed genes",
-        "sv": "Analyserade gener"
-      }
+        "en": "Table 1: Analyzed genes",
+        "sv": "Tabell 1: Analyserade gener"
+      },
+      "items": [
+        "BRAF",
+        "EML4",
+        "ALK",
+        "EXAMPLE1"
+      ]
     },
     {
       "key": "classification-description",

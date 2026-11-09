@@ -31,7 +31,8 @@ rendering metadata; PDF output from `ReportRenderer` includes it by default.
 
 Reports default to A4 with repeating center branding and compact report metadata.
 Ordinary tables repeat headers across pages. Column widths follow the JSON definitions;
-text wraps within each column. Finding cards and grouped grids use their JSON layout.
+text wraps within each column. Compact tables wrap independent items across the available
+width and continue across pages. Finding cards and grouped grids use their JSON layout.
 
 Sections with `kind: "summary"` use the yellow summary box and always have page
 breaks before and after. Long summaries and full-width detail comments can span pages.
@@ -115,7 +116,7 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 ## Template and package versions
 
 Each report footer shows the template name, its revision and the installed package version,
-for example `Coyote3 DNA · Template 0.1.2 · smd-reports 0.1.2`.
+for example `Coyote3 DNA · Template 0.2.0 · smd-reports 0.2.0`.
 Swedish reports use `Mall` as the template label.
 
 A template revision identifies the package release in which that template last changed.
@@ -126,12 +127,12 @@ Both values are supplied by the package and cannot be overridden in report JSON.
 
 | Template | Revision |
 | --- | --- |
-| Generic | 0.1.2 |
-| Coyote3 DNA | 0.1.2 |
-| Coyote3 RNA | 0.1.2 |
-| Genexus | 0.1.2 |
-| CLL Genie | 0.1.2 |
-| PGx | 0.1.2 |
+| Generic | 0.2.0 |
+| Coyote3 DNA | 0.2.0 |
+| Coyote3 RNA | 0.2.0 |
+| Genexus | 0.2.0 |
+| CLL Genie | 0.2.0 |
+| PGx | 0.2.0 |
 
 Inspect `report.template_name`, `report.template_version` and `report.rendering_metadata`
 from Python. A package release may update only the templates affected by its changes.

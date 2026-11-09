@@ -69,7 +69,7 @@ validation. Use `null` for a missing cell; zero and false remain visible.
 | `language` | `sv` (default) or `en` |
 | `analyte` | Optional heading label, such as `dna` or `rna` |
 | `report` | Required report ID and timezone-aware generation timestamp; optional sample ID, author and metadata `fields` |
-| `sections` | Ordered list of text, table, details, grid or image sections |
+| `sections` | Ordered list of text, table, compact-table, details, grid or image sections |
 | `branding` | Logos and center information; see [branding](branding.md) |
 | `presentation` | Paper size/orientation, custom dimensions, reserved header/footer space and accepted image formats |
 | `provenance` | Optional application name/version, pipeline name/version and assay name |
@@ -166,6 +166,60 @@ configures the second column. It contains only the settings you want to change:
 Table widths come from `column_options`; unspecified columns use equal weights. Unknown
 settings and options referencing undeclared columns fail validation. The same column
 format is used by tables, detail cards and grouped grids.
+
+## Row highlighting
+
+Result tables accept `row_options`, indexed by zero-based row position:
+
+```json
+{
+  "kind": "table",
+  "key": "variants",
+  "columns": {"en": ["Gene", "Possible duplication"]},
+  "rows": [["EXAMPLE", true], ["OTHER", false]],
+  "row_options": {"0": {"highlight": true}}
+}
+```
+
+`highlight: true` gives every cell in the selected row a pale pink background. Other
+rows keep their normal styling. Row indexes must refer to supplied rows; unknown display
+options fail validation. Highlight settings are preserved in portable JSON.
+
+## Compact description tables
+
+Use `compact_table` for gene lists, panel contents and haplotype lists. Each item occupies
+a bordered cell. Cells use their content width and wrap onto another row when the
+available width is filled. There is no separate column-header row.
+
+```json
+{
+  "kind": "compact_table",
+  "key": "covered-genes",
+  "heading": {
+    "en": "Table 1: Genes included in the panel",
+    "sv": "Tabell 1: Gener inkluderade i panelen"
+  },
+  "items": ["APC", "BRAF", "EGFR", "ERBB2", "KRAS", "MET", "MLH1", "MSH2"]
+}
+```
+
+Place this section after an analysis description or another narrative section. Supply
+items in their display order; repeated values are retained. Labels, item translations,
+zero, false and missing values use the same formatting rules as other report cells.
+Long values wrap within the available cell width. Long lists continue across PDF pages.
+Both HTML and PDF use the available report width, including custom paper dimensions.
+
+Omit `columns` for automatic wrapping. Supply a positive column count to use equal-width
+cells, for example `"columns": 10` for a gene panel or `"columns": 5` for longer haplotype
+labels. The supported range is 1–64. Item text still wraps within each cell.
+
+`format` defaults to `plain`; `markdown` enables the same sanitized formatting used by
+other report sections. An empty `items` list displays `empty_text`, which can contain
+English and Swedish translations. Plain items are escaped for HTML.
+
+A haplotype item can combine its display values in a single string, such as
+`"EXAMPLE-*2 (rsDEMO)"`. All compact-table options are included in the exported JSON Schema
+and preserved when exporting and reloading reports.
 
 ## Detailed findings
 

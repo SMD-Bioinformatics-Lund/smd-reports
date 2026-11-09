@@ -1,7 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 - 2026-11-09
 
+- Add compact description tables with automatic wrapping and optional fixed column counts.
+- Add row highlighting to result tables through indexed JSON display options.
+- Update gene and haplotype examples to use compact tables.
 - Use a transparent SVG logo with outlined lettering for light and dark backgrounds.
 
 ## 0.1.2 - 2026-11-09

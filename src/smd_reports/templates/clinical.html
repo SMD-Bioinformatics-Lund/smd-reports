@@ -28,6 +28,7 @@
 <section id="{{ section.key }}" class="section{% if section.kind == 'summary' %} report-summary{% endif %}{% if section.page_break_before %} break-before{% endif %}">
 {% if section.heading %}<h2 class="report_header">{{ section.heading|ui }}</h2>{% endif %}
 {% if section.kind == 'table' %}{% include 'components/table.html' %}
+{% elif section.kind == 'compact_table' %}{% include 'components/compact_table.html' %}
 {% elif section.kind == 'details' %}{% include 'components/details.html' %}
 {% elif section.kind == 'grid' %}{% include 'components/grid.html' %}
 {% elif section.kind in ['text', 'summary', 'description', 'references'] %}<div class="{% if section.kind == 'summary' %}results_summary {% endif %}{{ section.format }}">{% if section.format == 'markdown' %}{{ section.text|ui|markdown }}{% else %}{{ section.text|ui }}{% endif %}</div>

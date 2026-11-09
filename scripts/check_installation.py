@@ -33,7 +33,11 @@ payload = {
                   "rows": [["EXAMPLE", "DYNAMIC-VALUE", False, 0, 0.0]],
                   "images": [{"source": plot, "caption": "Example plot"}]},
                  {"kind": "summary", "key": "summary",
-                  "format": "markdown", "text": "**Reviewed** <PATIENT_NAME>"}],
+                  "format": "markdown", "text": "**Reviewed** <PATIENT_NAME>"},
+                 {"kind": "compact_table", "key": "items",
+                  "items": ["COMPACT-FIRST", {"en": "COMPACT-LAST", "sv": "KOMPAKT-SISTA"}]},
+                 {"kind": "table", "key": "highlight", "columns": {"en": ["Value"]},
+                  "rows": [["HIGHLIGHTED-VALUE"]], "row_options": {"0": {"highlight": True}}}],
 }
 report = ReportLoader().loads(json.dumps(payload))
 html = ReportRenderer().render_html(report)
@@ -45,6 +49,8 @@ assert 'data:image/png;base64,' in html
 assert report.presentation.dimensions_mm == (300, 200)
 assert 'package_version' in report.rendering_metadata
 assert 'Added field' in html and 'DYNAMIC-VALUE' in html
+assert 'COMPACT-FIRST' in html and 'COMPACT-LAST' in html
+assert '<tr class="row-highlight">' in html and 'HIGHLIGHTED-VALUE' in html
 serialized = report.model_dump_json()
 assert json.loads(serialized)['sections'][0]['columns']['en'][1] == 'Added field'
 assert json.loads(serialized)['sections'][0]['column_options'] == {'1': {'emphasis': True}}

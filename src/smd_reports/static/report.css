@@ -129,3 +129,8 @@ p, li { orphans: 3; widows: 3; }
 
 .report-image { margin: 8px 0; max-width: 100%; break-inside: avoid; }
 .report-image img { display: block; width: 100%; height: auto; object-fit: contain; }
+
+/* Description tables fit whole items across each row before wrapping. */
+.compact-table { display: flex; flex-wrap: wrap; list-style: none; max-width: 100%; margin: 5px 0 9px; padding: 0; }
+.compact-cell { flex: 0 1 auto; width: var(--compact-cell-width, auto); max-width: 100%; min-width: 0; min-height: 0; margin: 0 -1px -1px 0; padding: 2px 5px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: 8.5pt; line-height: 1.2; overflow-wrap: anywhere; }
+.variant_table tr.row-highlight > td { background: #ffe6e6; }

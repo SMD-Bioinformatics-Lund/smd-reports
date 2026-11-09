@@ -1,0 +1,5 @@
+{% if section.items %}
+<ul class="compact-table"{% if section.columns %} style="--compact-cell-width: {{ 100 / section.columns }}%"{% endif %}>
+{% for item in section.items %}<li class="compact-cell{% if section.format == 'plain' %} cell-plain{% else %} markdown{% endif %}">{% if section.format == 'markdown' %}{{ item|display|markdown }}{% else %}{{ item|display }}{% endif %}</li>{% endfor %}
+</ul>
+{% else %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}
