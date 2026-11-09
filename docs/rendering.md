@@ -116,7 +116,7 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 ## Template and package versions
 
 Each report footer shows the template name, its revision and the installed package version,
-for example `Coyote3 DNA · Template 0.2.0 · smd-reports 0.2.0`.
+for example `Coyote3 DNA · Template 0.2.0 · smd-reports 0.2.1`.
 Swedish reports use `Mall` as the template label.
 
 A template revision identifies the package release in which that template last changed.

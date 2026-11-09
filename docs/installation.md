@@ -33,9 +33,9 @@ python -m pip install "smd-reports[pdf]"
 For reproducible application deployments, pin the reviewed package version:
 
 ```sh
-python -m pip install "smd-reports==0.2.0"
+python -m pip install "smd-reports==0.2.1"
 # With PDF support:
-python -m pip install "smd-reports[pdf]==0.2.0"
+python -m pip install "smd-reports[pdf]==0.2.1"
 ```
 
 Use the same requirement in your application's dependency configuration. To upgrade
@@ -48,12 +48,22 @@ python -m pip install --upgrade smd-reports
 ## Native PDF dependencies
 
 The `pdf` extra installs Python dependencies, not operating-system libraries. On
-Debian/Ubuntu, an administrator can install the native libraries with:
+Debian 12+ or Ubuntu 24.04+, an administrator can install the native libraries with:
 
 ```sh
 sudo apt-get update
-sudo apt-get install libpango-1.0-0 libpangoft2-1.0-0
+sudo apt-get install libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
 ```
+
+HarfBuzz-Subset 4.1.0 or newer is required for native font subsetting. When the library
+is missing or too old, WeasyPrint 70.0 uses fontTools and logs a warning for each font.
+Install or upgrade the native library and restart the application process to load it.
+Ubuntu 22.04 ships HarfBuzz 2.7.4 and does not provide this subset package. Use a newer
+rendering environment, such as an Ubuntu 24.04 container, for native font subsetting.
+WeasyPrint 70.0 can still generate PDFs on the older runtime using its fontTools fallback.
+A pip upgrade alone does not install this operating-system dependency. See the
+[WeasyPrint installation guide](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation)
+for platform-specific packages.
 
 Installation methods differ on other operating systems. Prepare the native runtime
 before calling `render_pdf()`. Missing Python/native renderer dependencies raise

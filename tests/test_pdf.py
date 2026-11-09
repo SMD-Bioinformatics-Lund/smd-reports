@@ -343,3 +343,43 @@ def test_pdf_includes_automatically_computed_rendering_metadata(reports):
     metadata = document.xref_object(int(reference.split()[0]))
     assert "smd-reports" in metadata
     assert reports["pgx"].template_version in metadata
+
+
+def test_browser_width_query_does_not_warn_or_change_print_layout(payloads, load, caplog):
+    from weasyprint import HTML
+
+    from smd_reports.rendering import _offline_url_fetcher
+
+    report = load(payloads["generic"])
+    html = ReportRenderer().render_html(report)
+    with caplog.at_level("WARNING", logger="weasyprint"):
+        rendered = HTML(string=html, url_fetcher=_offline_url_fetcher()).render()
+    messages = [
+        record.getMessage() for record in caplog.records if record.name.startswith("weasyprint")
+    ]
+    assert not any("media type" in message or "@media rule" in message for message in messages)
+    assert rendered.pages
+    page = rendered.pages[0]
+    assert page.width == pytest.approx(210 * 96 / 25.4)
+    assert page.height == pytest.approx(297 * 96 / 25.4)
+    page_box = next(
+        box
+        for box in page._page_box.descendants()
+        if box.element is not None and box.element.get("class") == "page"
+    )
+    assert page_box.margin_left == page_box.padding_left == 0
+
+
+def test_pdf_uses_native_font_subsetting_when_available(payloads, load, caplog):
+    from weasyprint.text.ffi import harfbuzz, harfbuzz_subset
+
+    if not harfbuzz_subset or not harfbuzz.hb_version_atleast(4, 1, 0):
+        pytest.skip("Native HarfBuzz-Subset 4.1.0 or newer is not installed")
+    with caplog.at_level("WARNING", logger="weasyprint"):
+        output = ReportRenderer().render_pdf(load(payloads["generic"]))
+    assert output.startswith(b"%PDF-")
+    assert not any(
+        "Using fontTools instead of HarfBuzz-Subset" in record.getMessage()
+        for record in caplog.records
+        if record.name.startswith("weasyprint")
+    )

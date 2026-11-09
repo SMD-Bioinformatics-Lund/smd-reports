@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 - 2026-11-09
+
+- Keep browser width queries out of print stylesheet parsing.
+- Include HarfBuzz-Subset in native PDF installation instructions and CI.
+
 ## 0.2.0 - 2026-11-09
 
 - Add compact description tables with fitted columns, continuous rows and smaller single-line text.
