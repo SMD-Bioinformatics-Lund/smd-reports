@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 - 2026-11-09
+
+- Add compact description tables with fitted columns, continuous rows and smaller single-line text.
+- Add row highlighting to result tables through indexed JSON display options.
+- Update gene and haplotype examples to use compact tables.
+- Use a transparent SVG logo with outlined lettering for light and dark backgrounds.
+
 ## 0.1.2 - 2026-11-09
 
 - Run CI tests with two workers and reuse example setup with isolated copies per test.

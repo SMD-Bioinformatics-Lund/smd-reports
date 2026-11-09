@@ -142,21 +142,16 @@
           "Möjlig duplikation"
         ]
       },
-      "rows": [
-        [
-          "DPYD",
-          "rsDEMO",
-          "DPYD-*2A",
-          "1:100",
-          "Hetero",
-          50.0,
-          false
-        ]
-      ],
+      "rows": [["DPYD", "rsDEMO", "DPYD-*2A", "1:100", "Hetero", 25.0, true]],
       "page_break_before": true,
       "heading": {
         "en": "Clinically relevant variants",
         "sv": "Kliniskt relevanta varianter"
+      },
+      "row_options": {
+        "0": {
+          "highlight": true
+        }
       }
     },
     {
@@ -166,14 +161,7 @@
         "en": ["rsID", "Haplotype", "Position", "Read depth"],
         "sv": ["rsID", "Haplotyp", "Position", "Läsdjup"]
       },
-      "rows": [
-        [
-          "rsLOW",
-          "DEMO",
-          "1:200",
-          72.0
-        ]
-      ],
+      "rows": [["rsLOW", "DEMO", "1:200", 72.0]],
       "heading": {
         "en": "Low-depth targets",
         "sv": "Mål med lågt läsdjup"
@@ -220,45 +208,22 @@
       }
     },
     {
-      "kind": "table",
+      "kind": "compact_table",
       "key": "pgx-genes",
-      "columns": {
-        "en": ["Gene"],
-        "sv": ["Gen"]
-      },
-      "rows": [
-        [
-          "DPYD"
-        ],
-        [
-          "TPMT"
-        ],
-        [
-          "NUDT15"
-        ]
-      ],
       "heading": {
-        "en": "Genes included in the PGx analysis",
-        "sv": "Gener som ingår i PGx-analysen"
-      }
+        "en": "Table 1: Genes included in the PGx analysis",
+        "sv": "Tabell 1: Gener som ingår i PGx-analysen"
+      },
+      "items": ["DPYD", "TPMT", "NUDT15"]
     },
     {
-      "kind": "table",
+      "kind": "compact_table",
       "key": "pgx-targets",
-      "columns": {
-        "en": ["rsID", "Haplotype"],
-        "sv": ["rsID", "Haplotyp"]
-      },
-      "rows": [
-        [
-          "rsDEMO",
-          "DPYD-*2A"
-        ]
-      ],
       "heading": {
-        "en": "Variants included in the PGx analysis",
-        "sv": "Varianter som ingår i PGx-analysen"
-      }
+        "en": "Table 2: Haplotypes included in the PGx analysis",
+        "sv": "Tabell 2: Haplotyper som ingår i PGx-analysen"
+      },
+      "items": ["DPYD-*2A (rsDEMO)"]
     },
     {
       "kind": "references",

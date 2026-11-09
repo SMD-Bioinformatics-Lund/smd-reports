@@ -47,10 +47,14 @@ hex strings. Optional `body_pt` defaults to 9.25 and accepts 8–12. See [render
 ## JSON definitions
 
 The [JSON guide](json-inputs.md) documents the input fields. `schema()` exports their
-machine-readable definitions, including table/detail row matrices, grouped grids, paper
+machine-readable definitions, including table/detail row matrices, wrapping item tables, grouped grids, paper
 sizes, text blocks and images. `report.rendering_metadata` exposes automatically computed
 package/template versions alongside the supplied provenance context.
 
 Table, detail and grid sections use `columns` with `en` and/or `sv` label lists. Optional
 `column_options` controls widths and formatting by zero-based column index. Both are
 preserved when exporting and reloading JSON.
+
+`CompactTableSection` uses `kind: "compact_table"`, an ordered `items` list, optional
+`columns`, and plain-text or Markdown formatting. Ordinary result tables also accept
+`row_options` for individual row highlights. See the [JSON guide](json-inputs.md#compact-description-tables).
