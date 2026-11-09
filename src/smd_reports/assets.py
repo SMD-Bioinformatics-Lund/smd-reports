@@ -5,8 +5,8 @@ from io import BytesIO
 from pathlib import Path
 from typing import Literal
 
-from ._svg import validate_svg
 from .errors import ReportInputError
+from .svg_validation import validate_svg
 
 ImageFormat = Literal["png", "jpeg", "svg", "webp", "gif", "tiff", "bmp"]
 IMAGE_MIMES = {

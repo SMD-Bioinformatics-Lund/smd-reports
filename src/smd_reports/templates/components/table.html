@@ -3,5 +3,5 @@
 {% set weight = columns|sum(attribute='width') %}
 <table class="results variant_table"><colgroup>{% for column in columns %}<col style="width: {{ column.width / weight * 100 }}%">{% endfor %}</colgroup>
 <thead><tr>{% for column in columns %}<th scope="col">{{ column.label|ui }}</th>{% endfor %}</tr></thead><tbody>
-{% for row in section.rows %}<tr>{% for column in columns %}{% set value = row[loop.index0] %}<td class="{% if column.emphasis %}emphasis {% endif %}{% if column.highlight %}cell-highlight {% endif %}{% if column.format == 'plain' %}cell-plain{% endif %}">{% if column.format == 'markdown' %}{{ value|display|markdown }}{% else %}{{ value|display }}{% endif %}</td>{% endfor %}</tr>{% endfor %}
+{% for row in section.rows %}{% set options = section.row_options.get(loop.index0|string) %}<tr{% if options and options.highlight %} class="row-highlight"{% endif %}>{% for column in columns %}{% set value = row[loop.index0] %}<td class="{% if column.emphasis %}emphasis {% endif %}{% if column.highlight %}cell-highlight {% endif %}{% if column.format == 'plain' %}cell-plain{% endif %}">{% if column.format == 'markdown' %}{{ value|display|markdown }}{% else %}{{ value|display }}{% endif %}</td>{% endfor %}</tr>{% endfor %}
 </tbody></table>{% else %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}

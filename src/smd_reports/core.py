@@ -12,9 +12,9 @@ from typing import Annotated, Literal
 
 from pydantic import Field, field_serializer, field_validator, model_validator
 
-from ._models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .assets import ImageFormat, validate_image_reference
 from .errors import ReportInputError
+from .models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .pages import PAGE_SIZES_MM, PageSize
 
 
@@ -274,10 +274,57 @@ class MatrixSection(SectionBase):
         return self
 
 
+class RowOptions(Model):
+    """Display options for one numbered result row."""
+
+    highlight: bool = False
+
+
 class TableSection(MatrixSection):
     """A result table whose headers are declared once for all rows."""
 
     kind: Literal["table"] = "table"
+    row_options: dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], RowOptions] = Field(
+        default_factory=dict
+    )
+
+    @model_validator(mode="after")
+    def valid_row_options(self):
+        """Require display options to reference an existing row.
+
+        Returns:
+            The validated table section.
+
+        Raises:
+            ValueError: An option references a row outside the supplied matrix.
+        """
+        if any(int(index) >= len(self.rows) for index in self.row_options):
+            raise ReportInputError("Row options reference an undeclared row")
+        return self
+
+    @field_serializer("row_options")
+    def serialize_row_options(self, value: dict[str, RowOptions]) -> dict[str, dict]:
+        """Serialize row display settings without repeating defaults.
+
+        Args:
+            value: Display options indexed by zero-based row position.
+
+        Returns:
+            Row indexes and their nondefault display settings.
+        """
+        return {
+            index: options.model_dump(exclude_defaults=True) for index, options in value.items()
+        }
+
+
+class CompactTableSection(SectionBase):
+    """A bordered sequence of cells that wraps to the available report width."""
+
+    kind: Literal["compact_table"] = "compact_table"
+    items: list[CellValue]
+    columns: int | None = Field(default=None, ge=1, le=64)
+    format: Literal["plain", "markdown"] = "plain"
+    empty_text: LocalizedText = "Inga rapporterbara resultat"
 
 
 def validate_heading(pattern: LocalizedText | None, columns: int):
@@ -403,7 +450,7 @@ class ImageSection(SectionBase, ImageAsset):
 
 
 ReportSection = Annotated[
-    TextSection | TableSection | DetailSection | GridSection | ImageSection,
+    TextSection | TableSection | CompactTableSection | DetailSection | GridSection | ImageSection,
     Field(discriminator="kind"),
 ]
 
