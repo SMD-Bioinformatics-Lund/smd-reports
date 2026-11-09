@@ -12,9 +12,9 @@ from typing import Annotated, Literal
 
 from pydantic import Field, field_serializer, field_validator, model_validator
 
-from ._models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .assets import ImageFormat, validate_image_reference
 from .errors import ReportInputError
+from .models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .pages import PAGE_SIZES_MM, PageSize
 
 

@@ -11,9 +11,9 @@ import pytest
 from pydantic import ValidationError
 
 from smd_reports import ReportInputError, ReportLoader, ReportRenderer
-from smd_reports._svg import validate_font_uri, validate_svg
 from smd_reports.assets import validate_image
 from smd_reports.rendering import _offline_url_fetcher, offline_fetcher
+from smd_reports.svg_validation import validate_font_uri, validate_svg
 
 FONT_CSS = Path(__file__).parents[1] / "src/smd_reports/static/fonts.css"
 

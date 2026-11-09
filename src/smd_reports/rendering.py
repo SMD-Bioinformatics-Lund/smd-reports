@@ -17,11 +17,11 @@ from jinja2 import (
 )
 from markupsafe import Markup
 
-from ._compact import column_widths
-from ._svg import svg_font_css, validate_font_uri
+from .compact_layout import column_widths
 from .core import Report
 from .errors import PDFUnavailableError, ReportInputError, ReportRenderError
 from .localization import label
+from .svg_validation import svg_font_css, validate_font_uri
 from .themes import Theme, default_themes
 
 logger = logging.getLogger(__name__)
