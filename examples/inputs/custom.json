@@ -8,6 +8,7 @@
     "report_id": "CUSTOM-001",
     "generated_at": "2026-01-01T12:00:00Z",
     "author": "Example User",
+    "author_label": {"en": "Prepared by", "sv": "Sammanställd av"},
     "fields": [
       {
         "label": {
