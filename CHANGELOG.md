@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1
+
+- Make all automatic metadata captions configurable with literal or translated labels in HTML and PDF headers.
+- Preserve the default English and Swedish captions when no override is supplied.
+
 ## 0.4.0
 
 - Remove extra outer paragraph spacing from Markdown cells in tables and finding cards.

@@ -64,6 +64,29 @@ list and the corresponding value to each row to extend a report.
 Unknown fields, duplicate object keys, mismatched row lengths and non-finite numbers fail
 validation. Use `null` for a missing cell; zero and false remain visible.
 
+## Automatic metadata labels
+
+Set the label options inside `report` to customize every automatic metadata caption:
+
+```json
+{
+  "report": {
+    "report_id": "DEMO-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Example User",
+    "author_label": {"en": "Prepared by", "sv": "Sammanställd av"},
+    "sample_id_label": {"en": "Case ID", "sv": "Ärende-ID"},
+    "generated_at_label": {"en": "Issued on", "sv": "Utfärdad"},
+    "report_id_label": {"en": "Document ID", "sv": "Dokument-ID"}
+  }
+}
+```
+
+The report language selects the caption in HTML and PDF headers. A literal string is
+also accepted. Omit a label option or set it to `null` to retain its built-in English/Swedish caption.
+See [report identity and metadata](configuration.md#report-identity-and-metadata) for
+fallback rules and blank labels.
+
 ## Themes, layouts and presets
 
 Every section type is available in every report. A theme supplies colors and typography;
