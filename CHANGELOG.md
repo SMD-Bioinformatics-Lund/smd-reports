@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+- Remove extra outer paragraph spacing from Markdown cells in tables and finding cards.
+- Add individual-cell font weights and italic styles to result tables, detail cards and grids.
+- Bundle matching bold, semibold italic and bold italic fonts for standalone HTML and PDF.
+- Show Tier I and Tier II rows with individual typography and preset badge colors.
+
 ## 0.3.0 - 2026-11-10
 
 - Select themes, layouts, product branding and metadata labels independently of presets.
