@@ -5,6 +5,7 @@ Add a `branding` object to the JSON document:
 ```json
 {
   "branding": {
+    "application_name": "Example Analytics",
     "application_logo": "logos/application.svg",
     "center_logo": "logos/center.png",
     "accreditation_logo": "logos/accreditation.svg",
@@ -27,19 +28,30 @@ also accepted. The loader embeds local artwork automatically; generated HTML and
 JSON no longer depend on those files. When loading JSON text, use `loads(..., base_dir=...)`
 for relative paths.
 
+Center `organization`, `department` and `address` accept either literal text or explicit
+translations such as `{"en": "Molecular diagnostics", "sv": "Molekylär diagnostik"}`.
+Literal center and product names are displayed unchanged. Translations follow the selected
+report language, with English used as the fallback when available.
+
 ## Header and footer
 
 | Field | Placement |
 | --- | --- |
 | `organization` | Center name in the header |
 | `department`, `address`, `telephone`, `email`, `website` | Header contact information |
-| `application_logo` | Optional Coyote3/CLL Genie header icon |
+| `application_name` | Literal or translated product name in any branded header |
+| `application_suffix` | Optional separately colored suffix; defaults to empty for a custom name |
+| `application_logo` | Optional icon in any branded header |
 | `center_logo` | Header beside center details |
 | `accreditation_logo` | Left footer when `accredited` is true |
 | `accreditation_label` | Logo alternative text |
 
 Coyote3 shows a purple/orange application name; CLL Genie uses dark orange. Generic, Genexus and
 PGx presets use center-only headers. Omitting the application logo retains the colored name.
+Select `layout.header: "branded"` to use a product name or logo with any theme or preset.
+Set `layout.header: "center"` for a center-only header. Both styles include the theme-colored
+separator; set `layout.header_rule: false` to omit it. Explicit names are escaped as text;
+set `application_name` to an empty string for a logo-only product identity.
 No institutional logos or center information are supplied as defaults.
 
 ## Dimensions

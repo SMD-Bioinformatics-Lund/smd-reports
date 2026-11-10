@@ -9,6 +9,7 @@ from pydantic import ValidationError
 from .assets import embed_image, prepare_image
 from .core import Report
 from .errors import ReportAssetError, ReportInputError
+from .presets import PRESETS
 
 logger = logging.getLogger(__name__)
 
@@ -168,17 +169,18 @@ class ReportLoader:
             raise
         logger.info(
             "Report loaded: preset=%s, sections=%d, images=%d",
-            document.application,
+            document.preset_name,
             len(document.sections),
             image_count,
         )
         return document
 
-    def schema(self, application: str | None = None) -> dict:
+    def schema(self, application: str | None = None, *, preset: str | None = None) -> dict:
         """Export validation rules for the installed JSON format.
 
         Args:
-            application: Optional preset name to constrain the exported identity.
+            application: Legacy preset constraint, retained for existing callers.
+            preset: Optional named preset to require in the exported document.
 
         Returns:
             The JSON Schema dictionary.
@@ -186,7 +188,9 @@ class ReportLoader:
         Raises:
             ValueError: The requested preset name is unknown.
         """
-        if application is not None and application not in APPLICATIONS:
+        if application is not None and preset is not None:
+            raise ReportInputError("Choose either preset or application for schema export")
+        if any(value is not None and value not in PRESETS for value in (application, preset)):
             logger.error("Report schema export failed: unknown preset")
             raise ReportInputError(
                 "Unknown preset. Choose generic, coyote3, genexus, cll_genie or pgx."
@@ -194,5 +198,8 @@ class ReportLoader:
         result = Report.model_json_schema()
         if application is not None:
             result["properties"]["application"] = {"type": "string", "const": application}
+        if preset is not None:
+            result["properties"]["preset"] = {"type": "string", "const": preset}
+            result["required"].append("preset")
         logger.info("Report JSON Schema exported")
         return result

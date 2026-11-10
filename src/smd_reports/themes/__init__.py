@@ -1,11 +1,12 @@
 """Validated design tokens and application theme defaults."""
 
 import re
+from typing import Literal
 
 from pydantic import Field, field_validator
 
-from ..core import Model
 from ..errors import ReportInputError
+from ..models import Model
 
 
 class Theme(Model):
@@ -18,6 +19,10 @@ class Theme(Model):
         tint: Table and metadata background color.
         rule_end: Secondary brand-rule color.
         body_pt: Body type size in points.
+        wordmark_size_pt: Product wordmark type size in points.
+        wordmark_weight: Product wordmark font weight.
+        wordmark_spacing_px: Product wordmark letter spacing in CSS pixels.
+        wordmark_suffix_color: Color of the optional product wordmark suffix.
     """
 
     name: str
@@ -27,7 +32,12 @@ class Theme(Model):
     rule_end: str
     body_pt: float = Field(default=9.25, ge=8, le=12)
 
-    @field_validator("heading", "accent", "tint", "rule_end")
+    wordmark_size_pt: float = Field(default=15, ge=8, le=24)
+    wordmark_weight: Literal[400, 600] = 600
+    wordmark_spacing_px: float = Field(default=2.4, ge=0, le=5)
+    wordmark_suffix_color: str = "#c47b4c"
+
+    @field_validator("heading", "accent", "tint", "rule_end", "wordmark_suffix_color")
     @classmethod
     def hex_color(cls, value: str) -> str:
         """Validate an opaque six-digit RGB color.
@@ -60,6 +70,17 @@ def default_themes() -> dict[str, Theme]:
         "pgx": ("#176B68", "#278780", "#edf7f5", "#9dcac0"),
     }
     return {
-        key: Theme(name=key, heading=p[0], accent=p[1], tint=p[2], rule_end=p[3])
+        key: Theme(
+            name=key,
+            heading=p[0],
+            accent=p[1],
+            tint=p[2],
+            rule_end=p[3],
+            **(
+                {"wordmark_size_pt": 16.5, "wordmark_weight": 400, "wordmark_spacing_px": 1.5}
+                if key == "coyote3"
+                else {}
+            ),
+        )
         for key, p in palettes.items()
     }

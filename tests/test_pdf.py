@@ -94,7 +94,7 @@ def test_long_table_keeps_all_rows_and_repeats_headers(payloads, load):
     assert len(doc) > 2
     for i in range(100):
         assert text.count(f"ROW-{i:03d}") == 1
-    assert all("Synthetic row" in p.get_text() for p in doc)
+    assert all("Synthetic row" in " ".join(p.get_text().split()) for p in doc)
 
 
 @pytest.mark.parametrize("kind", ["details", "grid"])

@@ -1,19 +1,21 @@
 # Python API reference
 
-The public interface is exported from `smd_reports`.
+The public interface is exported from `smd_reports`. The [configuration reference](configuration.md)
+lists all report, section, theme and command-line settings.
 
 | Method | Result | Description |
 | --- | --- | --- |
 | `ReportLoader.load(path: str \| Path)` | Validated document | Read JSON; resolve artwork relative to the file |
 | `ReportLoader.loads(source: str \| bytes, *, base_dir=None)` | Validated document | Read JSON text/bytes; resolve artwork relative to `base_dir` |
-| `ReportLoader.schema(application=None)` | `dict` | Export JSON Schema; optionally constrain the application identity |
+| `ReportLoader.schema(application=None, *, preset=None)` | `dict` | Export JSON Schema; optionally require a preset; legacy application constraints remain supported |
 | `ReportRenderer.render_html(report, *, theme=None)` | `str` | Return standalone HTML with embedded styles, fonts and images |
 | `ReportRenderer.render_pdf(report, *, theme=None)` | `bytes` | Return a PDF; requires the PDF extra |
 | `ReportRenderer.register_theme(theme: Theme)` | `None` | Add a named theme to this renderer |
 
 Loading and rendering return values without saving output files. The document returned
 by a loader supports `model_dump_json(indent=2)` for portable JSON export.
-Its `template_name` and `template_version` properties identify the selected layout;
+Its `preset_name`, `theme_name` and `resolved_layout` properties expose the effective settings.
+`template_name` and `template_version` identify the installed preset revision;
 `rendering_metadata` includes the installed package version.
 
 ## Exceptions
@@ -52,8 +54,9 @@ sizes, text blocks and images. `report.rendering_metadata` exposes automatically
 package/template versions alongside the supplied provenance context.
 
 Table, detail and grid sections use `columns` with `en` and/or `sv` label lists. Optional
-`column_options` controls widths and formatting by zero-based column index. Both are
-preserved when exporting and reloading JSON.
+`column_options` controls widths, formatting and optional badges by zero-based column index. Both are
+preserved when exporting and reloading JSON. Use `emphasis: true` for semibold column values,
+or Markdown formatting for bold and italic text; see [column text styling](json-inputs.md#column-text-styling).
 
 `CompactTableSection` uses `kind: "compact_table"`, an ordered `items` list, optional
 `columns`, and plain-text or Markdown formatting. Ordinary result tables also accept

@@ -1,11 +1,15 @@
 # JSON input format
 
-Reports use one JSON document format. Omit `application` for the neutral `generic` preset,
-or select `generic`, `coyote3`, `genexus`, `cll_genie` or `pgx` explicitly.
+See the [configuration reference](configuration.md) for every supported field, default,
+allowed value and cross-field constraint. This guide provides worked examples.
+
+Reports use one JSON document format. Themes, layout settings and sections can be selected
+independently. Omit `preset` for neutral defaults, or select `generic`, `coyote3`, `genexus`,
+`cll_genie` or `pgx` for a predefined combination. The legacy `application` selector remains supported.
 
 ```json
 {
-  "application": "genexus",
+  "preset": "genexus",
   "title": {
     "en": "NGS Analysis Report",
     "sv": "NGS-analysrapport"
@@ -60,11 +64,59 @@ list and the corresponding value to each row to extend a report.
 Unknown fields, duplicate object keys, mismatched row lengths and non-finite numbers fail
 validation. Use `null` for a missing cell; zero and false remain visible.
 
+## Themes, layouts and presets
+
+Every section type is available in every report. A theme supplies colors and typography;
+a layout controls the placement of branding, titles and metadata. Presets provide defaults
+for these settings. Explicit `theme` and `layout` values override the preset independently.
+
+```json
+{
+  "theme": "pgx",
+  "layout": {
+    "header": "branded",
+    "metadata_heading": {"en": "Document information", "sv": "Dokumentinformation"},
+    "document_label": {"en": "Analysis report", "sv": "Analysrapport"}
+  },
+  "branding": {
+    "application_name": "Example Analytics",
+    "application_logo": "logos/application.svg",
+    "organization": "Example Center"
+  }
+}
+```
+
+These are presentation fields to add to a report containing `title`, `report` and `sections`.
+No application identity is required. Record the originating application in `provenance`.
+The [custom example](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/custom.json)
+contains a complete document.
+
+| Layout field | Effect |
+| --- | --- |
+| `header` | `center` for center branding alone; `branded` for product and center branding |
+| `header_rule` | Show the theme-colored separator below either header style; defaults to `true` |
+| `repeat_title` | Repeat the document title in the printed header; omit the duplicate body title |
+| `black_title` | Use black for the document title and its label |
+| `metadata_borders` | Add top and bottom rules around metadata |
+| `metadata_heading` | Literal or translated metadata heading |
+| `document_label` | Literal or translated label above the title; `analyte` remains an optional prefix |
+
+Omitted or null layout fields inherit their preset defaults. Partial overrides remain partial
+when JSON is exported and reloaded. Use `preset` for new documents; when both `preset` and
+legacy `application` are present, the legacy selector must be `generic` or match `preset`.
+
+All configurations retain the common typography, table components, page numbering,
+accreditation footer and section ordering. Summary sections retain their pale yellow background,
+darker yellow left border and page breaks before and after, independently of the chosen theme.
+
 ## Document fields
 
 | Field | Description |
 | --- | --- |
-| `application` | Optional preset; defaults to `generic` |
+| `preset` | Optional presentation defaults; `generic` when omitted |
+| `application` | Legacy preset selector; retained for existing inputs |
+| `theme` | Independent built-in or registered theme name |
+| `layout` | Independent header, title and metadata settings |
 | `title` | Report title; plain text or translations |
 | `language` | `sv` (default) or `en` |
 | `analyte` | Optional heading label, such as `dna` or `rna` |
@@ -82,7 +134,8 @@ Titles, metadata labels, text, captions, record headings and cell values accept 
 or an object such as `{"en": "Gene", "sv": "Gen"}`. The selected language is used
 throughout the report. If that translation is missing, English is used when available,
 otherwise the supplied Swedish text. This is local text selection and works offline.
-Column labels use language-specific lists, as shown below.
+Column labels use language-specific lists, as shown below. Package labels use English
+source text; Swedish interface translations are selected only for `language: "sv"`.
 
 ## Placeholders for later replacement
 
@@ -157,15 +210,119 @@ configures the second column. It contains only the settings you want to change:
 
 | Column option | Default | Effect |
 | --- | --- | --- |
-| `width` | `1` | Relative width for ordinary table columns; `2` gets twice the width of `1` |
+| `width` | Automatic | Optional relative weight; when supplied, unspecified columns use `1` |
 | `format` | `plain` | Plain text or sanitized `markdown` |
-| `emphasis` | `false` | Bold values |
+| `emphasis` | `false` | Semibold values (font weight `600`) |
 | `highlight` | `false` | Yellow background |
+| `badge` | Omitted | Optional preset, custom-color or theme-colored badge |
 | `full_width` | `false` | Full-width row within a detail card |
 
-Table widths come from `column_options`; unspecified columns use equal weights. Unknown
-settings and options referencing undeclared columns fail validation. The same column
+Ordinary tables size their columns automatically from translated headings and displayed
+content when no `width` is supplied. Longer values receive more space; text wraps when
+the available width is insufficient. Table styling and the overall report width stay the same.
+
+Supplying any explicit `width` selects proportional widths for the entire table. Unspecified
+columns then use weight `1`; explicit weights, including `1`, survive JSON export and reload.
+Unknown settings and options referencing undeclared columns fail validation. The same column
 format is used by tables, detail cards and grouped grids.
+
+## Column text styling
+
+Set `emphasis: true` to make every value in a column semibold (font weight `600`).
+Column indexes are zero-based: `"0"` selects the first column and `"6"` selects the seventh.
+For example, the classification values in this table, including `Tier I`, are semibold:
+
+```json
+{
+  "kind": "table",
+  "key": "variants",
+  "columns": {
+    "en": ["Gene", "Chromosome", "Exon", "HGVS", "VAF", "Tier", "Classification"]
+  },
+  "column_options": {
+    "6": {"emphasis": true}
+  },
+  "rows": [["BRAF", "7", "15", "p.Val600Glu", "24%", "I", "Tier I"]]
+}
+```
+
+`emphasis` changes cell values; column headings retain their standard styling. The option
+also applies to value fields in detail cards and grouped grids. Omit it or set it to `false`
+for normal text.
+
+Bold and italic text use Markdown within individual values. Set `format: "markdown"`
+for the relevant columns, then add the markers to the values:
+
+```json
+{
+  "kind": "table",
+  "key": "formatted-values",
+  "columns": {"en": ["Gene", "Classification"]},
+  "column_options": {
+    "0": {"format": "markdown"},
+    "1": {"format": "markdown"}
+  },
+  "rows": [["*BRAF*", "**Tier I**"]]
+}
+```
+
+`*text*` renders italic, `**text**` renders bold, and `***text***` combines both.
+With `format: "plain"`, these markers remain literal text. There are no separate
+whole-column `bold`, `italic`, `font_weight` or `font_style` options.
+[Badge labels](#optional-badges) use their own semibold style and are always plain text.
+
+## Optional badges
+
+Tables, detail cards and grouped grids share the same `column_options.badge` setting.
+Omit it to retain normal text formatting. Badge styling never changes the supplied cell
+value or assigns a tier automatically.
+
+For a whole column, choose a predefined color. A value such as `Strong clinical significance`
+keeps that exact label and uses the Tier 1 color:
+
+```json
+{
+  "column_options": {
+    "1": {"badge": {"preset": "tier1"}}
+  }
+}
+```
+
+| Preset | Background color |
+| --- | --- |
+| `tier1` | `#af6246` |
+| `tier2` | `#ae8540` |
+| `tier3` | `#4f7d9f` |
+| `tier4` | `#4b8b76` |
+
+Use `"badge": {"color": "#4f7d9f"}` for a custom background, or `"badge": {}` to use
+the selected theme's heading color. Foreground text is automatically black or white for
+legibility. Custom colors must use six-digit hexadecimal notation (`#RRGGBB`). Choose a
+preset or a custom color, rather than combining both.
+
+When rows require different styles, map their displayed values once:
+
+```json
+{
+  "columns": {"en": ["Tier", "CLL subset"]},
+  "column_options": {
+    "0": {"badge": {"values": {"I": "tier1", "II": "tier2", "III": "tier3", "IV": "tier4"}}},
+    "1": {"badge": {"values": {"#2": {"color": "#4f7d9f"}}}}
+  },
+  "rows": [["I", "#2"], ["II", "#8"]]
+}
+```
+
+The first row shows two badges; `#8` in the second row remains ordinary text. Mapping
+keys match the displayed text in the selected report language. Each entry accepts a tier
+name or an object with `preset`, `color`, or no properties for the theme default.
+Use either a whole-column style or a value mapping. Unlisted values retain normal column
+formatting. Null and empty values keep the ordinary missing-value display without a badge;
+zero and false remain visible.
+
+Badge labels are escaped plain text, including when the column otherwise supports Markdown.
+Badges wrap within narrow cells and remain selectable text in PDF output. Colors and styles
+are embedded in HTML and require no external assets.
 
 ## Row highlighting
 
@@ -209,8 +366,8 @@ false use the same formatting rules as other report cells. Null, empty and white
 values are omitted. The final row contains only supplied items, with no empty boxes.
 
 Column counts are calculated from the bundled font and the selected paper width. Whole
-items continue onto consecutive rows with shared borders and no vertical cell padding.
-Text stays on one line in each cell and is two points smaller than normal report text.
+items continue onto consecutive rows with shared borders and minimal vertical cell padding.
+Text stays on one line in each cell and is 2.5 points smaller than normal report text.
 The caption uses normal body size, bold weight and black text. Long lists continue across
 PDF pages. Custom paper dimensions are supported.
 
