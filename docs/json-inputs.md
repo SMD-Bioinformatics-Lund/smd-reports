@@ -212,7 +212,9 @@ configures the second column. It contains only the settings you want to change:
 | --- | --- | --- |
 | `width` | Automatic | Optional relative weight; when supplied, unspecified columns use `1` |
 | `format` | `plain` | Plain text or sanitized `markdown` |
-| `emphasis` | `false` | Semibold values (font weight `600`) |
+| `emphasis` | `false` | Semibold values (font weight `600`), unless `font_weight` is set |
+| `font_weight` | `null` | `normal` (400), `semibold` (600), or `bold` (700) |
+| `italic` | `null` | `true` for italic; `false` for upright text |
 | `highlight` | `false` | Yellow background |
 | `badge` | Omitted | Optional preset, custom-color or theme-colored badge |
 | `full_width` | `false` | Full-width row within a detail card |
@@ -242,7 +244,10 @@ For example, the classification values in this table, including `Tier I`, are se
   "column_options": {
     "6": {"emphasis": true}
   },
-  "rows": [["BRAF", "7", "15", "p.Val600Glu", "24%", "I", "Tier I"]]
+  "rows": [
+    ["BRAF", "7", "15", "p.Val600Glu", "24%", "I", "Tier I"],
+    ["EXAMPLE2", "1", "2", "p.Example2del", "18%", "II", "Tier II"]
+  ]
 }
 ```
 
@@ -262,14 +267,64 @@ for the relevant columns, then add the markers to the values:
     "0": {"format": "markdown"},
     "1": {"format": "markdown"}
   },
-  "rows": [["*BRAF*", "**Tier I**"]]
+  "rows": [["*BRAF*", "**Tier I**"], ["*EXAMPLE2*", "Tier II"]]
 }
 ```
 
 `*text*` renders italic, `**text**` renders bold, and `***text***` combines both.
-With `format: "plain"`, these markers remain literal text. There are no separate
-whole-column `bold`, `italic`, `font_weight` or `font_style` options.
-[Badge labels](#optional-badges) use their own semibold style and are always plain text.
+Markdown cells trim the first block’s top margin and the last block’s bottom margin, so
+a single formatted paragraph adds no extra vertical spacing. Multiple paragraphs retain
+their internal spacing.
+
+With `format: "plain"`, these markers remain literal text. `font_weight` and `italic`
+can also be set in `column_options` without adding Markdown to the values.
+[Badge labels](#optional-badges) are plain text and default to semibold.
+
+## Individual cell text styling
+
+Use `cell_options` to format individual values without changing their text. The first key
+selects the zero-based data row; the second selects the zero-based column. Only cells that
+need an override are listed:
+
+```json
+{
+  "kind": "table",
+  "key": "classifications",
+  "columns": {"en": ["Gene", "Classification"]},
+  "rows": [["BRAF", "Tier I"], ["EXAMPLE1", "Tier II"], ["EXAMPLE2", "Tier III"]],
+  "cell_options": {
+    "0": {"0": {"italic": true}, "1": {"font_weight": "semibold"}},
+    "1": {"1": {"font_weight": "bold", "italic": true}},
+    "2": {"1": {"font_weight": "normal", "italic": false}}
+  }
+}
+```
+
+This renders *BRAF* in italic, `Tier I` in semibold, `Tier II` in bold italic and
+`Tier III` in normal upright text. Headings retain their standard styling.
+
+The [Coyote3 example](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/coyote3-dna.json)
+includes Tier I and Tier II rows with semibold and normal classification cells, respectively.
+
+| Cell option | Default | Effect |
+| --- | --- | --- |
+| `font_weight` | `null` | Inherit, or select `normal` (400), `semibold` (600), `bold` (700) |
+| `italic` | `null` | Inherit, or select italic (`true`) or upright (`false`) text |
+
+Cell settings override column settings, including `emphasis`. Omitted or `null` settings
+inherit the column style. Use `normal` and `false` to reset individual cells in a styled
+column. Badge text follows explicit cell typography; its color remains unchanged. Markdown
+inline emphasis remains available within a value; explicit Markdown bold or italic spans
+retain their own styles.
+
+The same options work in `details` and `grid` sections. Their outer key selects a data
+record in `rows`, not a visual row within the card or grid. Repeated grid references to a
+column in the same record use the same cell typography. Cell options do not change column
+widths, labels, layout or values. Unknown settings, malformed indexes and references outside
+the supplied rows or columns fail validation.
+
+Standalone HTML embeds Source Sans 3 regular, semibold and bold fonts with matching italic
+faces. PDF rendering uses the same bundled fonts without network access.
 
 ## Optional badges
 

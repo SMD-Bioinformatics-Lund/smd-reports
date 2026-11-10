@@ -54,8 +54,8 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .report_variant th.report_variant_header { padding: 4px 5px; background: var(--tint); font-size: 10pt; font-weight: 600; }
 .report_variant .report_key { width: var(--detail-label-width); background: var(--tint); }
 .report_variant td.emphasis { font-weight: 600; }
-.report_variant .report_comment > :first-child { margin-top: 0; }
-.report_variant .report_comment > :last-child { margin-bottom: 0; }
+.variant_table td > :first-child, .report_variant td > :first-child { margin-top: 0; }
+.variant_table td > :last-child, .report_variant td > :last-child { margin-bottom: 0; }
 /* Full-width clinical text can continue across pages, retaining all supplied text. */
 .report_variant.detail-flow { display: block; border: 0; break-inside: auto; }
 .detail-flow > thead, .detail-flow > tbody { display: block; }
