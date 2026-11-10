@@ -210,6 +210,10 @@ The `report` object contains:
 | `generated_at` | Required | ISO timestamp with timezone, for example `2026-01-01T12:00:00Z` |
 | `sample_id` | `""` | String; sample/reference identifier; omitted from display when empty |
 | `author` | `""` | String; report creator's displayed name |
+| `sample_id_label` | `null` | Literal or translated sample ID caption |
+| `generated_at_label` | `null` | Literal or translated generation date caption |
+| `report_id_label` | `null` | Literal or translated report ID caption |
+| `author_label` | `null` | Literal or translated text; override the automatic author label |
 | `fields` | `[]` | Ordered objects containing required `label` (text) and `value` (cell value) |
 
 Each entry in `report.fields` contains:
@@ -223,6 +227,23 @@ The metadata block includes the sample ID when present, generation date, author 
 ID. Additional fields retain their order; the sample ID is inserted after the first two
 additional fields. Screen metadata uses two label/value pairs per row and repeating print
 metadata uses three. Long printed metadata values can span the row.
+
+`report.sample_id_label`, `report.generated_at_label`, `report.author_label` and
+`report.report_id_label` override their captions in both screen metadata and repeating PDF
+headers. Omit it or use `null` for the built-in captions in the selected language.
+A string is displayed literally. An object selects `en` or `sv`, falling back to English
+or the available translation. An empty string leaves the caption blank and retains the
+author value. Labels are escaped plain text, without Markdown or HTML formatting.
+
+```json
+{
+  "author": "Example User",
+  "author_label": {"en": "Prepared by", "sv": "Sammanställd av"}
+}
+```
+
+Place these fields inside the `report` object. Additional `report.fields` entries do not
+replace the automatic author label.
 
 ## Provenance
 

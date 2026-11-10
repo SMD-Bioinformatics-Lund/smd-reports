@@ -85,6 +85,10 @@ class ReportMetadata(Model):
         sample_id: Optional sample or reference identifier.
         generated_at: Timezone-aware generation timestamp.
         author: Display name of the report creator.
+        author_label: Literal or translated author caption; null uses the default.
+        sample_id_label: Optional sample identifier caption.
+        generated_at_label: Optional generation date caption.
+        report_id_label: Optional report identifier caption.
         fields: Additional ordered labels and values.
     """
 
@@ -92,6 +96,10 @@ class ReportMetadata(Model):
     sample_id: str = ""
     generated_at: datetime
     author: str = ""
+    author_label: LocalizedText | None = None
+    sample_id_label: LocalizedText | None = None
+    generated_at_label: LocalizedText | None = None
+    report_id_label: LocalizedText | None = None
     fields: list[FieldValue] = Field(default_factory=list)
 
     @field_validator("generated_at")

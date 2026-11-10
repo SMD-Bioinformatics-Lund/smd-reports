@@ -1,18 +1,18 @@
 {
   "generic": {
-    "default": "0.4.0"
+    "default": "0.4.1"
   },
   "coyote3": {
-    "dna": "0.4.0",
-    "rna": "0.4.0"
+    "dna": "0.4.1",
+    "rna": "0.4.1"
   },
   "genexus": {
-    "default": "0.4.0"
+    "default": "0.4.1"
   },
   "cll_genie": {
-    "default": "0.4.0"
+    "default": "0.4.1"
   },
   "pgx": {
-    "default": "0.4.0"
+    "default": "0.4.1"
   }
 }
