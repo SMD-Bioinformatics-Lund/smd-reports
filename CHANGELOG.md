@@ -2,7 +2,7 @@
 
 ## 0.4.1
 
-- Allow literal or translated author labels through `report.author_label` in HTML and PDF headers.
+- Make all automatic metadata captions configurable with literal or translated labels in HTML and PDF headers.
 - Preserve the default English and Swedish captions when no override is supplied.
 
 ## 0.4.0
