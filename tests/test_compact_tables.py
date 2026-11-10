@@ -292,8 +292,8 @@ def test_matrix_has_touching_rows_smaller_text_and_plain_bold_caption(payloads, 
     rows = defaultdict(list)
     for cell in cells:
         rows[cell.position_y].append(cell)
-        assert cell.padding_top == cell.padding_bottom == 0
-        assert cell.style["font_size"] == pytest.approx((size - 2) * 96 / 72)
+        assert 0 < cell.padding_top == cell.padding_bottom <= 1
+        assert cell.style["font_size"] == pytest.approx((size - 2.5) * 96 / 72)
         lines = [box for box in cell.descendants() if type(box).__name__ == "LineBox"]
         assert len(lines) == 1
         assert lines[0].width <= cell.width

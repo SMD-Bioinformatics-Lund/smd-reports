@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 - 2026-11-10
+
+- Select themes, layouts, product branding and metadata labels independently of presets.
+- Add optional tier, custom-color and theme-colored badges to result tables and finding cards.
+- Fit result-table columns to their content, preserve explicit widths and correct highlighting.
+- Refine compact gene tables, description spacing and colored header separators.
+- Use English source labels with Swedish translations and localized center information.
+- Add a complete configuration reference and updated synthetic HTML/PDF examples.
+
 ## 0.2.1 - 2026-11-09
 
 - Keep browser width queries out of print stylesheet parsing.

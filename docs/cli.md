@@ -14,7 +14,8 @@ smd-reports schema --output report.schema.json
 `validate` checks JSON and artwork. `render` writes HTML or PDF. `normalize` writes the
 same JSON format with embedded images. Package and template versions are computed when
 rendering. `schema` exports JSON Schema;
-optionally add `--application generic`, `coyote3`, `genexus`, `cll_genie` or `pgx` to restrict the identity.
+optionally add `--preset generic`, `coyote3`, `genexus`, `cll_genie` or `pgx` to require a preset.
+The legacy `--application` option remains available.
 
 `--output` is required for commands that write a file. An output path cannot overwrite
 the input JSON. Parent directories must already exist. Invalid JSON, assets or output

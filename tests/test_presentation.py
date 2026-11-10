@@ -121,7 +121,7 @@ def test_invalid_paper_dimensions_fail(payloads, load, presentation):
 @pytest.mark.parametrize(
     "name,template_name",
     [
-        ("generic", "Rapport"),
+        ("generic", "Report"),
         ("coyote3-dna", "Coyote3 DNA"),
         ("coyote3-rna", "Coyote3 RNA"),
         ("genexus", "Genexus"),
@@ -137,7 +137,7 @@ def test_footer_identifies_template_and_package_versions(
     data["language"] = language
     document = load(data)
     assert document.template_name == template_name
-    displayed_name = "Report" if name == "generic" and language == "en" else template_name
+    displayed_name = "Rapport" if name == "generic" and language == "sv" else template_name
     expected = f"{displayed_name} · {label} {document.template_version} · smd-reports {__version__}"
     html = ReportRenderer().render_html(document)
     # The screen and repeating PDF footers must show the same version information.

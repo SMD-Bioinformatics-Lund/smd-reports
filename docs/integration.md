@@ -1,7 +1,7 @@
 # Report examples and presets
 
-The neutral `generic` preset is the default. Omit `application` to use it, or select a
-preset explicitly. Every preset uses the same [JSON format](json-inputs.md), section
+The neutral `generic` preset is the default. Omit `preset` to use it, or select a
+preset explicitly. Independent `theme` and `layout` settings override its defaults. Every preset uses the same [JSON format](json-inputs.md), section
 components and rendering methods. Choosing a preset changes the theme and header identity;
 columns and content are supplied by the JSON document.
 
@@ -39,3 +39,12 @@ The Coyote3 and Genexus examples place analyzed genes in `compact_table` section
 the analysis description. The PGx example uses the same component for genes and haplotypes,
 and `row_options` for a highlighted variant row. Use ordered `items` for compact tables
 and the standard column/row matrix for result tables.
+
+## Independent presentation example
+
+The [custom JSON report](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/custom.json)
+selects the dark-orange theme and a branded header without an application preset.
+Its [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.html)
+and [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.pdf)
+use the same table, summary, description and footer components as the bundled presets.
+Its badge example includes all four tier presets, a custom subset color and theme-colored labels.

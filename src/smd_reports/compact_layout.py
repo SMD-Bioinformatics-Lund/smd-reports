@@ -80,7 +80,7 @@ def column_widths(texts, size_pt, width_mm, *, columns=None, markdown=False):
         measured = max(face.getlength(text, **options) for face in faces)
         # Leave room for inline emphasis, padding, borders and fractional renderer rounding.
         emphasis = len(text) * size_pt * 96 / 72 * 0.04 if markdown else 0
-        width = math.ceil(measured + emphasis) + 9
+        width = math.ceil(measured + emphasis) + 7
         if width > available:
             raise ReportInputError(
                 "A compact table item cannot fit on one line; use a wider page or a shorter item."

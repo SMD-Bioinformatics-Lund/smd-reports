@@ -13,9 +13,11 @@ from typing import Annotated, Literal
 from pydantic import Field, field_serializer, field_validator, model_validator
 
 from .assets import ImageFormat, validate_image_reference
+from .badges import BadgeOptions
 from .errors import ReportInputError
 from .models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .pages import PAGE_SIZES_MM, PageSize
+from .presets import PRESETS, HeaderStyle, PresetName
 
 
 @lru_cache(maxsize=1)
@@ -29,14 +31,16 @@ def template_versions():
 
 
 class Branding(Model):
-    """Header and footer artwork, contact details, and image dimensions."""
+    """Product identity, center contacts, footer artwork and image dimensions."""
 
-    organization: str = ""
-    department: str = ""
-    address: str = ""
+    organization: LocalizedText = ""
+    department: LocalizedText = ""
+    address: LocalizedText = ""
     telephone: str = ""
     email: str = ""
     website: str = ""
+    application_name: LocalizedText | None = None
+    application_suffix: str | None = None
     application_logo: str | None = None
     center_logo: str | None = None
     accreditation_logo: str | None = None
@@ -44,7 +48,7 @@ class Branding(Model):
     center_logo_width_mm: float = Field(default=11.64, ge=5, le=35)
     application_logo_width_mm: float = Field(default=13.75, ge=5, le=30)
     accreditation_logo_width_mm: float = Field(default=25, ge=10, le=35)
-    accreditation_label: LocalizedText = "Ackreditering"
+    accreditation_label: LocalizedText = "Accreditation"
 
     @field_validator("application_logo", "center_logo", "accreditation_logo")
     @classmethod
@@ -109,6 +113,28 @@ class ReportMetadata(Model):
         return value
 
 
+class Layout(Model):
+    """Independent layout options; null values inherit the selected preset defaults.
+
+    Attributes:
+        header: Center branding alone or a product and center branding pair.
+        header_rule: Show the theme-colored separator below the branding.
+        repeat_title: Repeat the document title in the printed page header.
+        black_title: Use black for the title and document label.
+        metadata_borders: Add top and bottom rules to the metadata block.
+        metadata_heading: Literal or translated metadata block heading.
+        document_label: Literal or translated label above the document title.
+    """
+
+    header: HeaderStyle | None = None
+    header_rule: bool | None = None
+    repeat_title: bool | None = None
+    black_title: bool | None = None
+    metadata_borders: bool | None = None
+    metadata_heading: LocalizedText | None = None
+    document_label: LocalizedText | None = None
+
+
 class Presentation(Model):
     """Paper dimensions, reserved print areas, and accepted plot formats."""
 
@@ -163,9 +189,9 @@ class Presentation(Model):
 
 
 TEXT_HEADINGS = {
-    "summary": {"en": "Conclusion", "sv": "Slutsats"},
-    "description": {"en": "Analysis description", "sv": "Analysbeskrivning"},
-    "references": {"en": "References", "sv": "Referenser"},
+    "summary": "Conclusion",
+    "description": "Analysis description",
+    "references": "References",
 }
 
 
@@ -193,13 +219,14 @@ class TextSection(SectionBase):
 
 
 class ColumnOptions(Model):
-    """Optional column widths, text formatting, and detail-card layout settings."""
+    """Optional column widths, badges, text formatting and detail-card layout settings."""
 
     width: float = Field(default=1, gt=0)
     format: Literal["plain", "markdown"] = "plain"
     full_width: bool = False
     emphasis: bool = False
     highlight: bool = False
+    badge: BadgeOptions | None = None
 
 
 class Column(ColumnOptions):
@@ -216,7 +243,7 @@ class MatrixSection(SectionBase):
         Field(default_factory=dict)
     )
     rows: list[list[CellValue]] = Field(default_factory=list)
-    empty_text: LocalizedText = "Inga rapporterbara resultat"
+    empty_text: LocalizedText = "No reportable results"
 
     @property
     def column_count(self) -> int:
@@ -244,9 +271,13 @@ class MatrixSection(SectionBase):
         Returns:
             The same indexes with only nondefault formatting settings.
         """
-        return {
-            index: options.model_dump(exclude_defaults=True) for index, options in value.items()
-        }
+        result = {}
+        for index, options in value.items():
+            settings = options.model_dump(exclude_defaults=True)
+            if "width" in options.model_fields_set:
+                settings["width"] = options.width
+            result[index] = settings
+        return result
 
     @model_validator(mode="after")
     def rectangular_rows(self):
@@ -288,6 +319,13 @@ class TableSection(MatrixSection):
         default_factory=dict
     )
 
+    @property
+    def automatic_widths(self):
+        """Whether column widths should follow their headings and content."""
+        return not any(
+            "width" in options.model_fields_set for options in self.column_options.values()
+        )
+
     @model_validator(mode="after")
     def valid_row_options(self):
         """Require display options to reference an existing row.
@@ -324,7 +362,7 @@ class CompactTableSection(SectionBase):
     items: list[CellValue]
     columns: int | None = Field(default=None, ge=1, le=64)
     format: Literal["plain", "markdown"] = "plain"
-    empty_text: LocalizedText = "Inga rapporterbara resultat"
+    empty_text: LocalizedText = "No reportable results"
 
 
 def validate_heading(pattern: LocalizedText | None, columns: int):
@@ -459,7 +497,10 @@ class Report(Model):
     """A validated JSON report with a neutral default presentation.
 
     Attributes:
-        application: Optional preset identity; defaults to generic.
+        application: Legacy preset selector; defaults to generic.
+        preset: Optional named defaults for presentation.
+        theme: Optional independent theme registry key.
+        layout: Independent header, title and metadata options.
         title: Literal or translated document title.
         language: Language used for interface labels and translations.
         report: Document identity and metadata fields.
@@ -469,7 +510,10 @@ class Report(Model):
         sections: Ordered report contents.
     """
 
-    application: Literal["generic", "coyote3", "genexus", "cll_genie", "pgx"] = "generic"
+    application: PresetName = "generic"
+    preset: PresetName | None = None
+    theme: str | None = Field(default=None, min_length=1)
+    layout: Layout = Field(default_factory=Layout)
     title: LocalizedText
     language: Language = "sv"
     analyte: str = ""
@@ -478,6 +522,45 @@ class Report(Model):
     provenance: Provenance = Field(default_factory=Provenance)
     presentation: Presentation = Field(default_factory=Presentation)
     sections: list[ReportSection] = Field(default_factory=list)
+
+    @property
+    def preset_name(self):
+        """The effective preset, including the legacy application selector."""
+        return self.preset or self.application
+
+    @property
+    def theme_name(self):
+        """The explicit theme or the selected preset's default theme."""
+        return self.theme or PRESETS[self.preset_name].theme
+
+    @property
+    def resolved_layout(self):
+        """Independent layout options filled with the selected preset defaults."""
+        defaults = PRESETS[self.preset_name]
+        return Layout(
+            **{
+                name: getattr(defaults, name) if value is None else value
+                for name, value in self.layout.model_dump().items()
+            }
+        )
+
+    @property
+    def application_name(self):
+        """The explicit product name or the selected preset's default wordmark."""
+        value = self.branding.application_name
+        return PRESETS[self.preset_name].application_name if value is None else value
+
+    @property
+    def application_suffix(self):
+        """The optional separately colored suffix in the product wordmark."""
+        value = self.branding.application_suffix
+        if value is not None:
+            return value
+        return (
+            PRESETS[self.preset_name].application_suffix
+            if self.branding.application_name is None
+            else ""
+        )
 
     @property
     def metadata(self):
@@ -496,22 +579,17 @@ class Report(Model):
 
     @property
     def template_name(self):
-        """The template display name, including the Coyote3 DNA or RNA variant."""
-        name = {
-            "generic": "Rapport",
-            "coyote3": "Coyote3",
-            "genexus": "Genexus",
-            "cll_genie": "CLL Genie",
-            "pgx": "PGx",
-        }[self.application]
-        if self.application == "coyote3" and self.analyte in {"dna", "rna"}:
+        """The preset display name, including its optional analyte variant."""
+        preset = PRESETS[self.preset_name]
+        name = preset.template_name
+        if self.analyte in preset.template_analytes:
             return f"{name} {self.analyte.upper()}"
         return name
 
     @property
     def template_version(self):
         """The installed template revision for the selected preset and analyte."""
-        revisions = template_versions()[self.application]
+        revisions = template_versions()[self.preset_name]
         return revisions.get(self.analyte, revisions.get("default", next(iter(revisions.values()))))
 
     @property
@@ -544,8 +622,10 @@ class Report(Model):
             The validated report.
 
         Raises:
-            ValueError: Two sections share the same key.
+            ValueError: Preset selectors conflict or two sections share the same key.
         """
+        if self.preset is not None and self.application not in {"generic", self.preset}:
+            raise ReportInputError("preset and application must select the same preset")
         keys = [section.key for section in self.sections]
         if len(keys) != len(set(keys)):
             raise ReportInputError("Duplicate section keys")

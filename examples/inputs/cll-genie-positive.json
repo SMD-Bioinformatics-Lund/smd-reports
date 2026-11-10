@@ -84,8 +84,8 @@
   },
   "branding": {
     "organization": "Example Diagnostics Center",
-    "department": "Molekylär diagnostik",
-    "address": "Exempeladress 1",
+    "department": {"en": "Molecular diagnostics", "sv": "Molekylär diagnostik"},
+    "address": {"en": "Example address 1", "sv": "Exempeladress 1"},
     "telephone": "000-000000",
     "email": "demo@example.org",
     "website": "",
@@ -129,6 +129,17 @@
           "IGHV-mutationsstatus",
           "CLL subset"
         ]
+      },
+      "column_options": {
+        "4": {
+          "badge": {
+            "values": {
+              "#2": {
+                "color": "#4f7d9f"
+              }
+            }
+          }
+        }
       },
       "rows": [
         [
@@ -217,7 +228,14 @@
       },
       "column_options": {
         "3": {
-          "highlight": true
+          "highlight": true,
+          "badge": {
+            "values": {
+              "#2": {
+                "color": "#4f7d9f"
+              }
+            }
+          }
         },
         "4": {
           "highlight": true

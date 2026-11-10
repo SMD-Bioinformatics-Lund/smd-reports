@@ -37,11 +37,12 @@ def build(source, tmp_path, name="wiki"):
 def test_builds_all_current_pages_and_preserves_existing_urls(tmp_path):
     count, output = build(ROOT, tmp_path)
     published = {path.name for path in output.glob("*.md")}
-    assert count == 13
+    assert count == len(list((ROOT / "docs").glob("*.md")))
     assert {
         "Home.md",
         "Python-usage.md",
         "Python-reference.md",
+        "Configuration-reference.md",
         "Report-examples.md",
         "Command-line.md",
         "Publishing.md",
@@ -163,7 +164,8 @@ def test_mkdocs_environment_url_and_wiki_generation(tmp_path, monkeypatch, canon
     config = yaml.load((ROOT / "mkdocs.yml").read_text(), Loader=wiki.WikiConfigLoader)
     assert config["site_url"] == (canonical or "https://smd-reports.readthedocs.io/en/latest/")
     count, output = build(ROOT, tmp_path)
-    assert count == 13 and (output / "Home.md").is_file()
+    assert count == len(list((ROOT / "docs").glob("*.md")))
+    assert (output / "Home.md").is_file() and (output / "Configuration-reference.md").is_file()
 
 
 def test_wiki_environment_support_does_not_modify_global_yaml_loader():
