@@ -218,7 +218,14 @@ class TextSection(SectionBase):
         return data
 
 
-class ColumnOptions(Model):
+class CellOptions(Model):
+    """Typography overrides for one cell, independent of its column defaults."""
+
+    font_weight: Literal["normal", "semibold", "bold"] | None = None
+    italic: bool | None = None
+
+
+class ColumnOptions(CellOptions):
     """Optional column widths, badges, text formatting and detail-card layout settings."""
 
     width: float = Field(default=1, gt=0)
@@ -234,6 +241,17 @@ class Column(ColumnOptions):
 
     label: LocalizedText
 
+    @property
+    def text_style(self) -> str:
+        """Validated inline typography, leaving unspecified styles inherited."""
+        declarations = []
+        if self.font_weight is not None:
+            weight = {"normal": 400, "semibold": 600, "bold": 700}[self.font_weight]
+            declarations.append(f"font-weight: {weight};")
+        if self.italic is not None:
+            declarations.append(f"font-style: {'italic' if self.italic else 'normal'};")
+        return " ".join(declarations)
+
 
 class MatrixSection(SectionBase):
     """Column labels grouped by language and equally sized rows of cell values."""
@@ -242,6 +260,10 @@ class MatrixSection(SectionBase):
     column_options: dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], ColumnOptions] = (
         Field(default_factory=dict)
     )
+    cell_options: dict[
+        Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")],
+        dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], CellOptions],
+    ] = Field(default_factory=dict)
     rows: list[list[CellValue]] = Field(default_factory=list)
     empty_text: LocalizedText = "No reportable results"
 
@@ -260,6 +282,39 @@ class MatrixSection(SectionBase):
             )
             for index in range(self.column_count)
         ]
+
+    def columns_for(self, row_index: int) -> list[Column]:
+        """Resolve column defaults and typography for a single row or record.
+
+        Args:
+            row_index: Zero-based data row or record position.
+
+        Returns:
+            Independent columns with non-null cell settings applied.
+        """
+        columns = self.render_columns
+        for index, options in self.cell_options.get(str(row_index), {}).items():
+            columns[int(index)] = columns[int(index)].model_copy(
+                update=options.model_dump(exclude_none=True)
+            )
+        return columns
+
+    @field_serializer("cell_options")
+    def serialize_cell_options(self, value: dict[str, dict[str, CellOptions]]) -> dict:
+        """Omit inherited typography while preserving explicit cell resets.
+
+        Args:
+            value: Cell settings indexed by zero-based row and column positions.
+
+        Returns:
+            The same indexes with only non-null typography settings.
+        """
+        return {
+            row: {
+                column: options.model_dump(exclude_none=True) for column, options in cells.items()
+            }
+            for row, cells in value.items()
+        }
 
     @field_serializer("column_options")
     def serialize_column_options(self, value: dict[str, ColumnOptions]) -> dict[str, dict]:
@@ -294,6 +349,11 @@ class MatrixSection(SectionBase):
             raise ReportInputError("Column labels must have the same count in every language")
         if any(int(index) >= self.column_count for index in self.column_options):
             raise ReportInputError("Column options reference an undeclared column")
+        for row_index, options in self.cell_options.items():
+            if int(row_index) >= len(self.rows):
+                raise ReportInputError("Cell options reference an undeclared row")
+            if any(int(index) >= self.column_count for index in options):
+                raise ReportInputError("Cell options reference an undeclared column")
         if not isfinite(sum(column.width for column in self.render_columns)):
             raise ReportInputError("The total column width must be finite")
         for index, row in enumerate(self.rows):

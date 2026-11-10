@@ -131,9 +131,12 @@
           }
         },
         "6": {
-          "emphasis": true,
           "width": 2.5
         }
+      },
+      "cell_options": {
+        "0": {"6": {"font_weight": "semibold"}},
+        "1": {"6": {"font_weight": "normal"}}
       },
       "rows": [
         [
@@ -144,6 +147,15 @@
           "24%",
           "I",
           "Tier I"
+        ],
+        [
+          "EXAMPLE2",
+          "1",
+          "2",
+          "p.Example2del",
+          "18%",
+          "II",
+          "Tier II"
         ]
       ],
       "empty_text": {

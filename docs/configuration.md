@@ -16,7 +16,7 @@ it does not change the report input format. Unknown JSON fields are rejected.
   Zero and false are preserved. Ordinary `null` and empty-string cells display `-`.
 - **Image reference:** a local path or validated base64 image data URI. Remote URLs are
   rejected. See [image fields](#image-fields).
-- **Index:** a zero-based position. Index keys in `column_options` and `row_options` are
+- **Index:** a zero-based position. Index keys in `column_options`, `cell_options` and `row_options` are
   JSON strings such as `"0"`, `"1"` and `"6"`; leading zeros are rejected.
 - **Required:** the field must be supplied. `{}` and `[]` defaults are independent objects
   for each report. `null` is accepted only where the table explicitly allows it.
@@ -334,6 +334,7 @@ have narrower Markdown support, and badge labels are always literal text.
 | `columns` | Required | Object containing nonempty `en` and/or `sv` label lists |
 | `rows` | `[]` | List of row lists, with one cell value per declared column |
 | `column_options` | `{}` | Column-index keys mapped to the display options below |
+| `cell_options` | `{}` | Row-index keys mapped to column-index keys and typography overrides |
 | `empty_text` | `No reportable results` | Text; displayed when no rows are supplied |
 
 All translated label lists must have the same length. An options index must reference a
@@ -343,7 +344,9 @@ declared column. Rows with too few or too many values are rejected.
 | --- | --- | --- |
 | `width` | Automatic for tables | Positive relative weight; supplying any weight selects proportional result-table widths; other columns then use weight 1 |
 | `format` | `plain` | `plain` or `markdown` |
-| `emphasis` | `false` | Boolean; semibold cell values, font weight 600 |
+| `emphasis` | `false` | Boolean; semibold cell values unless `font_weight` is set |
+| `font_weight` | `null` | Inherit, or `normal` (400), `semibold` (600), `bold` (700) |
+| `italic` | `null` | Inherit, or italic (`true`) or upright (`false`) text |
 | `highlight` | `false` | Boolean; yellow cell background |
 | `full_width` | `false` | Boolean; render a detail-card field across the full row |
 | `badge` | `null` | Null for normal formatting, or [badge options](#badges) |
@@ -353,9 +356,17 @@ content. Explicit widths, including weight 1, survive normalization; their total
 control detail-card pair widths or grid spans; those use their section layout fields.
 Markdown fields also occupy full-width rows in detail cards.
 
-`emphasis` applies to values, not headings. For italic and bold text, enable Markdown and
-use `*text*`, `**text**`, or `***text***`. There are no separate whole-column `bold`,
-`italic`, `font_weight` or `font_style` options. See [text styling examples](json-inputs.md#column-text-styling).
+`emphasis`, `font_weight` and `italic` apply to values, not headings. Explicit
+`font_weight` takes precedence over `emphasis`. Markdown also supports `*text*`, `**text**`
+and `***text***` within individual values.
+
+`cell_options` accepts `font_weight` and `italic` for a single data cell. For example,
+`"cell_options": {"0": {"6": {"font_weight": "semibold"}}}` styles only the seventh value
+in the first row. Omitted or `null` options inherit the column style. `normal` and `false`
+reset the inherited weight and italic style. Both index levels must reference supplied
+rows and columns; for cards and grids, the row index selects the data record. Other
+column options, such as width, format and highlighting, remain column settings. See
+[individual cell text styling](json-inputs.md#individual-cell-text-styling).
 
 ## Result tables
 

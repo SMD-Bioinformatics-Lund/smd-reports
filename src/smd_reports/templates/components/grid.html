@@ -1,6 +1,5 @@
-{% set columns = section.render_columns %}
 {% if not section.rows %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}
-{% for values in section.rows %}<article class="finding-detail grid-detail" id="{{ section.key }}-{{ loop.index }}">
+{% for values in section.rows %}{% set columns = section.columns_for(loop.index0) %}<article class="finding-detail grid-detail" id="{{ section.key }}-{{ loop.index }}">
 <table class="report_variant detail-flow grid-table"><thead><tr><th class="report_variant_header" colspan="{{ section.grid_columns }}">{{ section|heading(values, loop.index0) }}</th></tr></thead><tbody>
 {% for row in section.layout %}{% if row|grid_row_visible(values) %}
 {% set wide = row.cells|length == 1 and row.cells[0].mode == 'pair' %}
@@ -8,5 +7,5 @@
 {% for cell in row.cells %}{% set column = columns[cell.column] %}{% set caption = cell.label if cell.label is not none else column.label %}
 {% if cell.mode == 'pair' %}<th scope="row" class="report_key" colspan="{{ cell.label_span }}" style="width: {{ cell.label_span / section.grid_columns * 100 }}%">{{ caption|ui }}</th>{% endif %}
 {% set span = cell.span - cell.label_span if cell.mode == 'pair' else cell.span %}
-<td colspan="{{ span }}" class="{% if cell.mode == 'label' %}report_key{% elif wide %}report_comment{% else %}var_report_val{% endif %}{% if column.emphasis %} emphasis{% endif %}{% if column.highlight %} cell-highlight{% endif %}{% if column.format == 'plain' %} cell-plain{% endif %}"{% if not wide %} style="width: {{ span / section.grid_columns * 100 }}%"{% endif %}>{% if cell.mode == 'label' %}{{ caption|ui }}{% else %}{% if cell.mode == 'inline' %}<strong>{{ caption|ui }}:</strong> {% endif %}{{ values[cell.column]|cell(column) }}{% endif %}</td>
+<td colspan="{{ span }}" class="{% if cell.mode == 'label' %}report_key{% elif wide %}report_comment{% else %}var_report_val{% endif %}{% if column.emphasis %} emphasis{% endif %}{% if column.highlight %} cell-highlight{% endif %}{% if column.format == 'plain' %} cell-plain{% endif %}"{% if not wide or column.text_style %} style="{% if not wide %}width: {{ span / section.grid_columns * 100 }}%; {% endif %}{{ column.text_style }}"{% endif %}>{% if cell.mode == 'label' %}{{ caption|ui }}{% else %}{% if cell.mode == 'inline' %}<strong>{{ caption|ui }}:</strong> {% endif %}{{ values[cell.column]|cell(column) }}{% endif %}</td>
 {% endfor %}</tr>{% endif %}{% endfor %}</tbody></table></article>{% endfor %}

@@ -111,8 +111,10 @@ def render_cell(context, value, column):
         if style is not None:
             background, foreground = badge_colors(style, context["theme"].heading)
             return Markup(
-                '<span class="report-badge" style="background-color: {}; color: {};">{}</span>'
-            ).format(background, foreground, text)
+                '<span class="report-badge" style="background-color: {}; color: {};{}">{}</span>'
+            ).format(
+                background, foreground, " " + column.text_style if column.text_style else "", text
+            )
     return format_markdown(text) if column.format == "markdown" else Markup.escape(text)
 
 
