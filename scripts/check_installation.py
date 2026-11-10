@@ -20,6 +20,8 @@ Image.new("RGB", (10, 3), (20, 60, 120)).save(image, format="PNG")
 plot = "data:image/png;base64," + base64.b64encode(image.getvalue()).decode()
 payload = {
     "application": "coyote3", "analyte": "dna", "title": "Installed distribution",
+    "theme": "pgx", "layout": {"header": "branded"},
+    "branding": {"application_name": "Installed example"},
     "language": "en", "report": {"report_id": "DEMO", "sample_id": "SYNTHETIC",
                                    "generated_at": "2026-01-01T12:00:00Z"},
     "presentation": {"page_size": "custom", "custom_width_mm": 300, "custom_height_mm": 200},
@@ -37,12 +39,15 @@ payload = {
                  {"kind": "compact_table", "key": "items",
                   "items": ["COMPACT-FIRST", {"en": "COMPACT-LAST", "sv": "KOMPAKT-SISTA"}]},
                  {"kind": "table", "key": "highlight", "columns": {"en": ["Value"]},
-                  "rows": [["HIGHLIGHTED-VALUE"]], "row_options": {"0": {"highlight": True}}}],
+                  "rows": [["HIGHLIGHTED-VALUE"]],
+                  "column_options": {"0": {"badge": {"preset": "tier1"}}},
+                  "row_options": {"0": {"highlight": True}}}],
 }
 report = ReportLoader().loads(json.dumps(payload))
 html = ReportRenderer().render_html(report)
 assert 'data:font/woff2;base64,' in html
 assert 'Installed distribution' in html
+assert 'Installed example' in html and '#176B68' in html
 assert 'Conclusion' in html and '<strong>Reviewed</strong>' in html
 assert '&lt;PATIENT_NAME&gt;' in html and '<PATIENT_NAME>' not in html
 assert 'data:image/png;base64,' in html
@@ -50,6 +55,7 @@ assert report.presentation.dimensions_mm == (300, 200)
 assert 'package_version' in report.rendering_metadata
 assert 'Added field' in html and 'DYNAMIC-VALUE' in html
 assert 'COMPACT-FIRST' in html and 'COMPACT-LAST' in html
+assert '<span class="report-badge"' in html and 'background-color: #af6246;' in html
 assert '<tr class="row-highlight">' in html and 'HIGHLIGHTED-VALUE' in html
 serialized = report.model_dump_json()
 assert json.loads(serialized)['sections'][0]['columns']['en'][1] == 'Added field'

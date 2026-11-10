@@ -42,7 +42,8 @@ Save this as `report.json`:
 }
 ```
 
-Omitting `application` selects the neutral default theme. `sample_id` is optional.
+Omitting `preset` selects neutral defaults. Set `theme` and `layout` independently as
+needed; existing `application` selectors remain supported. `sample_id` is optional.
 Choose a [preset](integration.md) when you want a different report identity.
 
 Validate and render:

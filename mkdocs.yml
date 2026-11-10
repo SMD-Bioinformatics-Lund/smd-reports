@@ -23,6 +23,7 @@ nav:
       - Center branding: branding.md
       - HTML and PDF: rendering.md
   - Reference:
+      - Configuration reference: configuration.md
       - Python API reference: reference.md
       - Command-line reference: cli.md
   - Development:

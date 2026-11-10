@@ -84,8 +84,8 @@
   },
   "branding": {
     "organization": "Example Diagnostics Center",
-    "department": "Molekylär diagnostik",
-    "address": "Exempeladress 1",
+    "department": {"en": "Molecular diagnostics", "sv": "Molekylär diagnostik"},
+    "address": {"en": "Example address 1", "sv": "Exempeladress 1"},
     "telephone": "000-000000",
     "email": "demo@example.org",
     "website": "",

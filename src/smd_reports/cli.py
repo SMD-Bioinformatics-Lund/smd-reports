@@ -82,7 +82,9 @@ def _run(args) -> int:
     operation = "read the input JSON file"
     try:
         if args.command == "schema":
-            output = json.dumps(loader.schema(args.application), ensure_ascii=False, indent=2)
+            output = json.dumps(
+                loader.schema(args.application, preset=args.preset), ensure_ascii=False, indent=2
+            )
         else:
             if hasattr(args, "output") and (
                 args.output.resolve() == args.input.resolve()
@@ -95,7 +97,7 @@ def _run(args) -> int:
                 raise ReportInputError("Output must not overwrite input JSON; choose another file.")
             report = loader.load(args.input)
             if args.command == "validate":
-                print(f"Valid {report.application} report ({report.language})")
+                print(f"Valid {report.preset_name} report ({report.language})")
                 return 0
             if args.command == "normalize":
                 output = report.model_dump_json(indent=2)
@@ -153,7 +155,9 @@ def main(argv=None) -> int:
     parser.add_argument("--verbose", action="store_true", help="Log main events to stderr")
     commands = parser.add_subparsers(dest="command", required=True)
     schema = commands.add_parser("schema", help="Export a report JSON Schema")
-    schema.add_argument("--application", choices=APPLICATIONS)
+    selection = schema.add_mutually_exclusive_group()
+    selection.add_argument("--preset", choices=APPLICATIONS)
+    selection.add_argument("--application", choices=APPLICATIONS, help="Legacy preset selector")
     schema.add_argument("--output", type=Path, required=True)
     for name in ("validate", "normalize", "render"):
         command = commands.add_parser(name)

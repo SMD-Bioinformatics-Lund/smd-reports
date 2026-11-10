@@ -30,8 +30,8 @@ rendering metadata; PDF output from `ReportRenderer` includes it by default.
 ## Print layout
 
 Reports default to A4 with repeating center branding and compact report metadata.
-Ordinary tables repeat headers across pages. Column widths follow the JSON definitions;
-text wraps within each column. Compact tables wrap independent items across the available
+Ordinary tables repeat headers across pages and fit columns to their headings and content.
+Explicit JSON width weights select proportional widths instead. Text wraps when needed. Compact tables wrap independent items across the available
 width with shared cell borders and continue across pages. Cell text stays on one line. Finding cards and grouped grids use their JSON layout.
 
 Sections with `kind: "summary"` use the yellow summary box and always have page
@@ -83,13 +83,21 @@ include both translations in JSON. See [translations](json-inputs.md#translation
 
 ## Themes
 
-| Preset | Colors |
+| Theme key | Colors |
 | --- | --- |
-| Generic (default) | Slate |
-| Coyote3 | Purple/orange |
-| Genexus | Blue |
-| CLL Genie | Dark orange |
-| PGx | Teal |
+| `generic` (default) | Slate |
+| `coyote3` | Purple/orange |
+| `genexus` | Blue |
+| `cll_genie` | Dark orange |
+| `pgx` | Teal |
+
+Set `theme` in JSON to select colors independently of the preset and layout. Precedence
+is the renderer's `theme=` argument, then JSON `theme`, then the selected preset's theme.
+The selected key is recorded in the HTML `smd-reports:theme` metadata.
+
+Themes retain the existing heading colors, table tints and header rules. Wordmark typography
+uses `wordmark_size_pt`, `wordmark_weight`, `wordmark_spacing_px` and
+`wordmark_suffix_color`. Shared summary-box styling is independent of theme colors.
 
 You can register a custom theme on a renderer:
 
@@ -116,7 +124,7 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 ## Template and package versions
 
 Each report footer shows the template name, its revision and the installed package version,
-for example `Coyote3 DNA · Template 0.2.0 · smd-reports 0.2.1`.
+for example `Coyote3 DNA · Template 0.3.0 · smd-reports 0.3.0`.
 Swedish reports use `Mall` as the template label.
 
 A template revision identifies the package release in which that template last changed.
@@ -127,12 +135,12 @@ Both values are supplied by the package and cannot be overridden in report JSON.
 
 | Template | Revision |
 | --- | --- |
-| Generic | 0.2.0 |
-| Coyote3 DNA | 0.2.0 |
-| Coyote3 RNA | 0.2.0 |
-| Genexus | 0.2.0 |
-| CLL Genie | 0.2.0 |
-| PGx | 0.2.0 |
+| Generic | 0.3.0 |
+| Coyote3 DNA | 0.3.0 |
+| Coyote3 RNA | 0.3.0 |
+| Genexus | 0.3.0 |
+| CLL Genie | 0.3.0 |
+| PGx | 0.3.0 |
 
 Inspect `report.template_name`, `report.template_version` and `report.rendering_metadata`
 from Python. A package release may update only the templates affected by its changes.

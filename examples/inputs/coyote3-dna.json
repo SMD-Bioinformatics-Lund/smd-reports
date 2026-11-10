@@ -70,8 +70,8 @@
   },
   "branding": {
     "organization": "Example Diagnostics Center",
-    "department": "Molekylär diagnostik",
-    "address": "Exempeladress 1",
+    "department": {"en": "Molecular diagnostics", "sv": "Molekylär diagnostik"},
+    "address": {"en": "Example address 1", "sv": "Exempeladress 1"},
     "telephone": "000-000000",
     "email": "demo@example.org",
     "website": "",
@@ -120,7 +120,15 @@
           "width": 0.9
         },
         "5": {
-          "width": 0.8
+          "width": 0.8,
+          "badge": {
+            "values": {
+              "I": "tier1",
+              "II": "tier2",
+              "III": "tier3",
+              "IV": "tier4"
+            }
+          }
         },
         "6": {
           "emphasis": true,

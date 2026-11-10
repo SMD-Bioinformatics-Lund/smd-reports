@@ -17,10 +17,11 @@ from jinja2 import (
 )
 from markupsafe import Markup
 
+from .badges import badge_colors
 from .compact_layout import column_widths
 from .core import Report
 from .errors import PDFUnavailableError, ReportInputError, ReportRenderError
-from .localization import label
+from .localization import label, localized_text
 from .svg_validation import svg_font_css, validate_font_uri
 from .themes import Theme, default_themes
 
@@ -86,8 +87,33 @@ def display(value, language="sv"):
     if value is None or value == "":
         return "-"
     if isinstance(value, bool):
-        return ("Yes" if value else "No") if language == "en" else ("Ja" if value else "Nej")
+        return label("Yes" if value else "No", language)
     return str(value)
+
+
+@pass_context
+def render_cell(context, value, column):
+    """Render a cell using optional badges or its existing text format.
+
+    Args:
+        context: Template context containing the report language and selected theme.
+        value: Scalar or translated cell value.
+        column: Validated column display options.
+
+    Returns:
+        Escaped text, sanitized Markdown, or a badge with validated inline colors.
+    """
+    language = context["report"].language
+    text = display(value, language)
+    original = label(value, language) if isinstance(value, dict) else value
+    if column.badge is not None and original is not None and original != "" and text.strip():
+        style = column.badge.style_for(text)
+        if style is not None:
+            background, foreground = badge_colors(style, context["theme"].heading)
+            return Markup(
+                '<span class="report-badge" style="background-color: {}; color: {};">{}</span>'
+            ).format(background, foreground, text)
+    return format_markdown(text) if column.format == "markdown" else Markup.escape(text)
 
 
 @pass_context
@@ -102,6 +128,20 @@ def display_in_language(context, value):
         The cell's display text.
     """
     return display(value, context["report"].language)
+
+
+@pass_context
+def localized_in_language(context, value):
+    """Select localized branding text while preserving literal names.
+
+    Args:
+        context: Template context containing the report language.
+        value: Literal text or a translation mapping.
+
+    Returns:
+        The supplied text in the selected report language.
+    """
+    return localized_text(value, context["report"].language)
 
 
 @pass_context
@@ -225,7 +265,7 @@ def _compact_tables(report, theme):
             texts.append(text)
         widths = column_widths(
             texts,
-            theme.body_pt - 2,
+            theme.body_pt - 2.5,
             report.presentation.dimensions_mm[0] - 32,
             columns=section.columns,
             markdown=section.format == "markdown",
@@ -325,8 +365,10 @@ class ReportRenderer:
         )
         self.environment.filters.update(
             markdown=format_markdown,
+            cell=render_cell,
             display=display_in_language,
             ui=ui_label,
+            localized=localized_in_language,
             heading=record_heading,
             grid_row_visible=grid_row_visible,
             image_uri=image_uri,
@@ -351,7 +393,7 @@ class ReportRenderer:
 
         Args:
             report: Validated document returned by ReportLoader.
-            theme: Optional registered theme name overriding the report preset.
+            theme: Optional registered name overriding the JSON theme and preset defaults.
 
         Returns:
             A standalone HTML document.
@@ -366,7 +408,8 @@ class ReportRenderer:
             if not isinstance(report, Report):
                 raise TypeError("Supply a report returned by ReportLoader.load() or loads().")
             report = Report.model_validate(report.model_dump())
-            selected = theme or report.application
+            selected = theme or report.theme_name
+            layout = report.resolved_layout
             if selected not in self.themes:
                 raise ReportInputError(
                     "Unknown theme; choose a built-in theme or register it before rendering."
@@ -374,7 +417,7 @@ class ReportRenderer:
             assets = files("smd_reports").joinpath("static")
             fonts = assets.joinpath("fonts.css").read_text(encoding="utf-8")
             artwork = [report.branding.center_logo]
-            if report.application in {"coyote3", "cll_genie"}:
+            if layout.header == "branded":
                 artwork.append(report.branding.application_logo)
             if report.branding.accredited:
                 artwork.append(report.branding.accreditation_logo)
@@ -384,6 +427,8 @@ class ReportRenderer:
                     artwork.append(section.source)
             html = self.environment.get_template("clinical.html").render(
                 report=report,
+                layout=layout,
+                selected_theme=selected,
                 theme=self.themes[selected],
                 css=assets.joinpath("report.css").read_text(encoding="utf-8"),
                 fonts=fonts,
@@ -411,7 +456,7 @@ class ReportRenderer:
 
         Args:
             report: Validated document returned by ReportLoader.
-            theme: Optional registered theme name overriding the report preset.
+            theme: Optional registered name overriding the JSON theme and preset defaults.
 
         Returns:
             PDF bytes containing the report and automatic rendering metadata.

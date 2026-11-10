@@ -18,6 +18,7 @@ def main():
     sources = (
         {
             "generic": "generic",
+            "custom": "custom",
             "coyote3": "coyote3-dna",
             "genexus": "genexus-en",
             "cll-genie": "cll-genie-positive",

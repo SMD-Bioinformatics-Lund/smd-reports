@@ -4,7 +4,7 @@ Render validated JSON documents as standalone HTML and PDF from Python or the co
 The package provides reusable report sections, configurable branding, English/Swedish labels
 and print layouts with repeating headers, footers and page numbers.
 
-Use the neutral default theme or select a built-in preset. Define columns once and supply
+Select a theme and layout independently, or use a built-in preset. Define columns once and supply
 values as lists of rows. Add fields, translations, detail cards and plots through JSON.
 HTML embeds styles, fonts and artwork for offline viewing and conversion.
 
