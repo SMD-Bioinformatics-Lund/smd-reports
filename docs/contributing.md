@@ -56,7 +56,9 @@ python -m pre_commit run --all-files
 
 PDF tests require the native libraries listed in [installation](installation.md).
 Pre-commit runs Ruff linting and formatting, checks JSON/YAML/TOML, and checks whitespace
-and merge conflict markers. CI runs the same hooks. Ruff uses a 100-character line limit
+and merge conflict markers. CI runs the same hooks. Quality runs only for pull requests into `dev` and `master`;
+branch pushes and release tags do not start additional Quality runs. A newer commit
+cancels the superseded run for that PR. Ruff uses a 100-character line limit
 and Google-style docstrings; EditorConfig supplies matching editor defaults.
 
 Document public classes and functions with a concise description and relevant `Args`,
@@ -154,6 +156,17 @@ python examples/reports.py --previews --pdf --output examples/rendered
 
 Review the PDFs and keep their data and artwork synthetic. Other generated output belongs
 under `.artifacts/`.
+
+## CI workload
+
+The supported-Python matrix runs tests on 3.10, 3.12 and 3.14. Lint runs once, and
+distributions are built and installed once on Python 3.12. The PDF job retains full
+branch coverage, native rendering tests and example checks. PR artifacts are retained
+for seven days. Required branch-protection check names remain unchanged.
+
+Release publishing verifies successful checks on identical release-PR contents before
+building distributions; it does not repeat the PR test suite. Wiki publishing generates
+and synchronizes the documentation already checked by the PR documentation job.
 
 ## Pull requests
 

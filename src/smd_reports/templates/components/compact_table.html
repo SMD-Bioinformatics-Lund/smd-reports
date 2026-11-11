@@ -1,7 +1,7 @@
 {% set layout = compact_tables[section.key] %}
 {% if layout.rows %}
-<table class="compact-table" style="width: {{ layout.width }}px"{% if section.heading %} aria-label="{{ section.heading|ui }}"{% endif %}>
+<table class="compact-table" style="width: {{ layout.width }}px"{% if section.caption is not none %} aria-labelledby="{{ section.key }}-table-caption"{% elif section.heading %} aria-label="{{ section.heading|ui }}"{% endif %}>
 <colgroup>{% for width in layout.widths %}<col style="width: {{ width }}px">{% endfor %}</colgroup>
-<tbody>{% for row in layout.rows %}<tr>{% for value in row %}<td class="compact-cell">{{ value }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+<tbody>{% for row in layout.rows %}<tr>{% for value in row %}<td class="compact-cell" style="width: {{ layout.widths[0] }}px">{{ value }}</td>{% endfor %}</tr>{% endfor %}</tbody>
 </table>
 {% else %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}

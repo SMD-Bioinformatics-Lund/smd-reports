@@ -17,7 +17,7 @@ and command-line behavior. SVG regressions cover static CSS, editor metadata, em
 WOFF2 fonts, encoded resource references, malformed fonts and vector PDF output. Coverage measures the entire package, including branches, with
 an enforced 75% minimum. HTML and XML reports are written to `.artifacts/coverage/`.
 
-CI runs core checks on Python 3.10, 3.12 and 3.14, and PDF checks on Python 3.12 with
+CI runs on pull requests into `dev` and `master`, without duplicate push/tag runs. It runs core checks on Python 3.10, 3.12 and 3.14, and PDF checks on Python 3.12 with
 WeasyPrint 70.0. It also runs pre-commit, builds documentation and distributions, and checks
 fresh wheel/source installations.
 

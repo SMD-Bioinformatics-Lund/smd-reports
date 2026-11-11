@@ -1,0 +1,6 @@
+{% if section.caption is not none %}
+<figure class="report-table-figure">
+<figcaption class="table-caption" id="{{ section.key }}-table-caption">{{ section.caption|localized }}</figcaption>
+{% endif %}
+{% if section.kind == 'table' %}{% include 'components/table.html' %}{% else %}{% include 'components/compact_table.html' %}{% endif %}
+{% if section.caption is not none %}</figure>{% endif %}

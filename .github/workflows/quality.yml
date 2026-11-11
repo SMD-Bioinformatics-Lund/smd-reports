@@ -1,9 +1,12 @@
 name: Quality
 on:
-  push:
   pull_request:
+    branches: [dev, master]
 permissions:
   contents: read
+concurrency:
+  group: quality-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 jobs:
   lint:
     runs-on: ubuntu-24.04
@@ -12,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.12'
-      - run: python -m pip install '.[dev]'
+      - run: python -m pip install 'pre-commit>=4.6.2,<5'
       - uses: actions/cache@v6.1.0
         with:
           path: ~/.cache/pre-commit
@@ -33,6 +36,7 @@ jobs:
         with:
           name: documentation
           path: site/
+          retention-days: 7
   core:
     runs-on: ubuntu-24.04
     strategy:
@@ -44,16 +48,19 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: python -m pip install '.[test]'
-      - run: python -m ruff check src examples tests scripts .github/scripts
-      - run: python -m ruff format --check src examples tests scripts .github/scripts
       - run: python -m pytest -n 2 -q --durations=10 --ignore=tests/test_pdf.py
       - run: python -m build
+        if: matrix.python == '3.12'
       - run: python -m twine check --strict dist/*
+        if: matrix.python == '3.12'
       - run: python scripts/check_installation.py
+        if: matrix.python == '3.12'
       - uses: actions/upload-artifact@v7.0.2
+        if: matrix.python == '3.12'
         with:
           name: distributions-${{ matrix.python }}
           path: dist/*
+          retention-days: 7
   pdf:
     runs-on: ubuntu-24.04
     steps:
@@ -72,3 +79,4 @@ jobs:
         with:
           name: example-reports
           path: .artifacts/
+          retention-days: 7

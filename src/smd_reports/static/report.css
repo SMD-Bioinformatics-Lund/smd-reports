@@ -72,6 +72,8 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 
 .results_summary > :first-child { margin-top: 0; }
 .results_summary > :last-child { margin-bottom: 0; }
+/* Justify narrative paragraphs while retaining heading and table alignment. */
+.justified-text > p, .justified-text.plain { text-align: justify; }
 /* Keep description subheadings close to the paragraphs they introduce. */
 .report-description .markdown h1, .report-description .markdown h2,
 .report-description .markdown h3, .report-description .markdown h4,
@@ -152,3 +154,10 @@ p, li { orphans: 3; widows: 3; }
 
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
 .report-badge { display: inline-block; max-width: 100%; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; font-weight: 600; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; vertical-align: baseline; }
+
+/* Explicit table captions share typography independently of table width. */
+.report-table-figure { width: 100%; margin: 0; break-inside: auto; }
+.report-table-figure > .table-caption { margin: 6px 0 3px; color: #000; font-size: var(--body-size); font-weight: 600; line-height: 1.2; text-align: left; break-after: avoid; }
+.report-table-figure > table { margin-top: 0; }
+.variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: calc(var(--body-size) - 1pt); line-height: 1.2; }
+.variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }

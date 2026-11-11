@@ -449,7 +449,13 @@ Text stays on one line in each cell and is 2.5 points smaller than normal report
 The caption uses normal body size, bold weight and black text. Long lists continue across
 PDF pages. Custom paper dimensions are supported.
 
-Omit `columns` for automatic sizing. Set a positive upper limit for equal-width cells,
+For multi-row compact matrices, the measured longest item sets the minimum cell width.
+The renderer fits as many equal-width columns as possible and divides the remaining
+usable width evenly across them. Single-row lists retain their compact natural width.
+
+
+Every cell uses the width required by the longest displayed item, including padding and
+borders. Short lists stay compact. Omit `columns` for automatic sizing or set an upper limit,
 for example `"columns": 10` for a gene panel or `"columns": 5` for longer haplotype labels.
 Fewer columns are used when needed to fit the page. The supported range is 1–64. An item
 that cannot fit on one line raises `ReportInputError`; use a wider page, shorter label or
@@ -782,3 +788,70 @@ smd-reports schema --output report.schema.json
 
 The exported JSON Schema describes the format supported by the installed package and can
 be used by editors or validators. Pin the package version when you need a fixed input format.
+
+## Numbered captions and bordered reference tables
+
+Use `heading` for a report section title and `caption` for a numbered table title.
+The following sections use the same caption style without changing their supplied text:
+
+```json
+{
+  "sections": [
+    {
+      "key": "panel-genes",
+      "kind": "compact_table",
+      "caption": "Tabell 1: Gener inkluderade i hematology_myeloid insilico-panel",
+      "items": [
+        "CALR",
+        "JAK2",
+        "MPL"
+      ],
+      "columns": 15
+    },
+    {
+      "key": "classification",
+      "kind": "table",
+      "caption": "Tabell 2: Förklaring av klassificering",
+      "style": "reference",
+      "show_header": false,
+      "columns": {
+        "sv": [
+          "",
+          ""
+        ]
+      },
+      "column_options": {
+        "0": {
+          "width": 1
+        },
+        "1": {
+          "width": 12
+        }
+      },
+      "rows": [
+        [
+          "Tier I",
+          "Variant av stark klinisk signifikans (genmutationer som är diagnostiska, behandlingsstyrande eller riskstratifierande enligt gällande riktlinjer)"
+        ],
+        [
+          "Tier II",
+          "Variant av potentiell klinisk signifikans (mutationer i gener beskrivna i ett flertal publikationer)"
+        ],
+        [
+          "Tier III",
+          "Variant av oklar klinisk signifikans (mutationer i gener beskrivna i ett fåtal publikationer)"
+        ],
+        [
+          "Tier IV",
+          "Variant bedömd som benign eller sannolikt benign"
+        ]
+      ]
+    }
+  ]
+}
+```
+
+Add these sections to a report document. `show_header: false` hides the header row;
+the declared columns still validate both values in each row. Widths of 1 and 12 give
+the explanation column twelve times the width of the Tier column. Caption and section
+heading are independent. Omitting the new fields preserves the previous presentation.
