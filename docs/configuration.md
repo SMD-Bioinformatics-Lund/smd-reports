@@ -328,7 +328,8 @@ onto later pages. All sections retain the shared page header and footer.
 ## Text, summary, description and references
 
 Description prose uses the reusable `justified-text` CSS class in both plain text and
-Markdown. Paragraphs are justified; headings and table cells retain their own alignment.
+Markdown. Paragraphs are justified, use text 1.25 pt smaller than the report body, and
+have a 1.2 line height. Headings and table cells retain their own typography.
 
 | Field | Default | Accepted value and effect |
 | --- | --- | --- |
@@ -453,7 +454,8 @@ Automatic layout measures the longest item in the bundled font, including paddin
 borders, and uses that width for every cell. The available paper width determines the
 column count. An explicit count is an upper limit; fewer columns are used if needed.
 Null, empty and whitespace-only items are omitted. Order and repeated values are preserved;
-the final row has no filler cells.
+the final row has no filler cells. Browser matrices reflow within their available width
+without a horizontal scrollbar, preserving equal-width bordered cells.
 
 For multi-row compact matrices, the measured longest item sets the minimum cell width.
 The renderer fits as many equal-width columns as possible and divides the remaining

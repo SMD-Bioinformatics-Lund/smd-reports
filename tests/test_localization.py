@@ -23,7 +23,7 @@ def test_english_defaults_render_in_swedish_when_requested(payloads, load):
     html = ReportRenderer().render_html(report)
     assert "Rapportinformation" in html and "Inga rapporterbara resultat" in html
     assert 'class="report_header">Slutsats</h2>' in html
-    assert "Rapport · Mall" in html
+    assert "Rapport · Template" in html
     assert '"Sida " counter(page) " av " counter(pages)' in html
 
 

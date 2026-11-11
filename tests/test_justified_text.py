@@ -36,3 +36,5 @@ def test_description_prose_is_justified_in_screen_and_print(payloads, load, form
             )
         ]
         assert prose and all(box.style["text_align_all"] == "justify" for box in prose)
+        assert all(box.style["font_size"] == pytest.approx(8 * 96 / 72) for box in prose)
+        assert all(box.style["line_height"] == pytest.approx(1.2) for box in prose)
