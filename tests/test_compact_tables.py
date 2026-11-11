@@ -28,10 +28,14 @@ def test_items_are_localized_escaped_and_preserved_in_portable_json(
     }
     report = document(payloads, definition, language=language)
     html = ReportRenderer().render_html(report)
-    assert f">{word}</td>" in html
-    assert f">{boolean}</td>" in html and ">0</td>" in html and ">-</td>" not in html
-    assert "&lt;PATIENT_NAME&gt;</td>" in html
-    assert html.count(">BRAF</td>") == 2
+    assert f">{word}</span></td>" in html
+    assert (
+        f">{boolean}</span></td>" in html
+        and ">0</span></td>" in html
+        and ">-</span></td>" not in html
+    )
+    assert "&lt;PATIENT_NAME&gt;</span></td>" in html
+    assert html.count(">BRAF</span></td>") == 2
     exported = json.loads(report.model_dump_json())["sections"][0]
     assert exported["items"] == definition["items"]
     assert type(exported["items"][2]) is int and type(exported["items"][3]) is bool
