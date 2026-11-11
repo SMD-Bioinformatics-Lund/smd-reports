@@ -23,6 +23,12 @@ def test_browser_matrices_have_borders_and_no_horizontal_scroll(
         {"kind": "compact_table", "key": "small", "items": ["CALR", "JAK2", "MPL"]},
         {"kind": "compact_table", "key": "large", "items": genes, "columns": columns},
         {"kind": "compact_table", "key": "long", "items": ["LONG-GENE-" * 10]},
+        {
+            "kind": "compact_table",
+            "key": "styled",
+            "items": ["**BRAF** GENE"],
+            "format": "markdown",
+        },
         {"kind": "description", "key": "description", "text": "Compact narrative prose. " * 40},
     ]
     source = tmp_path / "report.html"
@@ -33,7 +39,7 @@ def test_browser_matrices_have_borders_and_no_horizontal_scroll(
             page = browser.new_page(viewport={"width": width, "height": 1000})
             page.goto(source.as_uri())
             page.evaluate("document.fonts.ready")
-            for key, expected in [("small", 3), ("large", len(genes)), ("long", 1)]:
+            for key, expected in [("small", 3), ("large", len(genes)), ("long", 1), ("styled", 1)]:
                 result = page.locator(f"#{key} .compact-table").evaluate(
                     """table => {
                       const rect = table.getBoundingClientRect();
@@ -70,6 +76,8 @@ def test_browser_matrices_have_borders_and_no_horizontal_scroll(
                 expected_text = ["CALR", "JAK2", "MPL"] if key == "small" else genes
                 if key == "long":
                     expected_text = ["LONG-GENE-" * 10]
+                if key == "styled":
+                    expected_text = ["BRAF GENE"]
                 assert [cell["text"] for cell in cells if cell["text"].strip()] == expected_text
                 assert result["scroll"] <= result["client"] + 1
                 assert result["overflow"] not in {"auto", "scroll"}
@@ -81,6 +89,13 @@ def test_browser_matrices_have_borders_and_no_horizontal_scroll(
                 assert all(cell["scroll"] <= cell["client"] + 1 for cell in cells), (key, cells)
                 assert all(cell["right"] <= result["right"] + 0.1 for cell in cells)
                 assert all(cell["bottom"] <= result["bottom"] + 0.1 for cell in cells)
+            gap = page.locator("#styled .compact-value").evaluate(
+                "e => { const r = document.createRange();"
+                "r.setStart(e.lastChild, 1); r.setEnd(e.lastChild, 2);"
+                "return r.getBoundingClientRect().left - "
+                "e.firstChild.getBoundingClientRect().right; }"
+            )
+            assert gap > 0
             prose = page.locator(".justified-text").evaluate(
                 "e => ({size: parseFloat(getComputedStyle(e).fontSize), "
                 "line: parseFloat(getComputedStyle(e).lineHeight)})"
