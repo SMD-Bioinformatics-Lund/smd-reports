@@ -423,8 +423,8 @@ options fail validation. Highlight settings are preserved in portable JSON.
 ## Compact description tables
 
 Use `compact_table` for gene lists, panel contents and haplotype lists. Each item occupies
-a bordered cell. Cells use their content width and wrap onto another row when the
-available width is filled. There is no separate column-header row.
+a bordered cell in a full-width, equal-column matrix. Rows fill from left to right;
+there is no separate column-header row.
 
 ```json
 {
@@ -441,7 +441,8 @@ available width is filled. There is no separate column-header row.
 Place this section after an analysis description or another narrative section. Supply
 items in their display order; repeated values are retained. Item translations, zero and
 false use the same formatting rules as other report cells. Null, empty and whitespace-only
-values are omitted. The final row contains only supplied items, with no empty boxes.
+values are omitted. Empty bordered cells complete the final row. They are presentation-only
+and do not change the supplied items or exported JSON.
 
 Column counts are calculated from the bundled font and the selected paper width. Whole
 items continue onto consecutive rows with shared borders and minimal vertical cell padding.
@@ -449,13 +450,14 @@ Text stays on one line in each cell and is 2.5 points smaller than normal report
 The caption uses normal body size, bold weight and black text. Long lists continue across
 PDF pages. Custom paper dimensions are supported.
 
-For multi-row compact matrices, the measured longest item sets the minimum cell width.
-The renderer fits as many equal-width columns as possible and divides the remaining
-usable width evenly across them. Single-row lists retain their compact natural width.
+The measured longest item sets the minimum cell width, including padding and borders.
+The renderer fits as many equal-width columns as possible and divides the full available
+width evenly across them. Gene names are centered horizontally and vertically. Every row
+has the same height, white cells, black text and thin neutral borders. Browser layouts
+recalculate the column count at narrower widths; exceptionally long items scale down
+only when a single cell cannot fit the browser width. Print text keeps its configured size.
 
-
-Every cell uses the width required by the longest displayed item, including padding and
-borders. Short lists stay compact. Omit `columns` for automatic sizing or set an upper limit,
+Omit `columns` for automatic sizing or set an upper limit,
 for example `"columns": 10` for a gene panel or `"columns": 5` for longer haplotype labels.
 Fewer columns are used when needed to fit the page. The supported range is 1–64. An item
 that cannot fit on one line raises `ReportInputError`; use a wider page, shorter label or

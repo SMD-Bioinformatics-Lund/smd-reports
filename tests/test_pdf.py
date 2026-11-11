@@ -98,8 +98,9 @@ def test_long_table_keeps_all_rows_and_repeats_headers(payloads, load):
 
 
 @pytest.mark.parametrize("kind", ["details", "grid"])
-def test_long_detail_comment_continues_without_truncation(payloads, load, kind):
-    data = payloads["cll-genie-positive"]
+@pytest.mark.parametrize("preset", ["cll-genie-positive", "coyote3-dna", "coyote3-rna"])
+def test_long_detail_comment_continues_without_truncation(payloads, load, kind, preset):
+    data = payloads[preset]
     section = {
         "kind": kind,
         "key": "details",

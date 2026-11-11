@@ -63,7 +63,7 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .detail-flow th.report_variant_header { width: 100%; }
 .detail-flow tr + tr th, .detail-flow tr + tr td { border-top: 0; }
 .detail-flow tr.detail-wide-row { display: block; break-inside: auto; border: 1px solid var(--report-border); border-top: 0; }
-.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: transparent; }
+.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: var(--tint); }
 .detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
@@ -138,8 +138,8 @@ p, li { orphans: 3; widows: 3; }
 /* Compact matrices retain whole items and share borders between adjacent rows. */
 .compact-caption { margin: 6px 0 3px; break-after: avoid; }
 .compact-caption strong { font-weight: 600; }
-.compact-table { max-width: 100%; margin: 0 0 8px; border-collapse: collapse; table-layout: fixed; font-size: var(--compact-size); line-height: 1.05; }
-.compact-table .compact-cell { padding: 0.5px 2px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; }
+.compact-table { width: 100%; max-width: 100%; margin: 0 0 8px; border-collapse: collapse; table-layout: fixed; font-size: var(--compact-size); line-height: 1.05; }
+.compact-table .compact-cell { padding: 0.5px 2px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; text-align: center; vertical-align: middle; }
 .compact-cell code { font-family: inherit; }
 .variant_table tr.row-highlight > td { background: #ffe6e6; }
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
@@ -151,3 +151,5 @@ p, li { orphans: 3; widows: 3; }
 .report-table-figure > table { margin-top: 0; }
 .variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: var(--reference-size); line-height: 1.2; }
 .variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
+
+.compact-screen-fillers { display: none; }

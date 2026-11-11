@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Example Report - GENERIC-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.5.1"><meta name="smd-reports:template_version" content="0.5.1"><meta name="smd-reports:theme" content="generic">
+<meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.5.2"><meta name="smd-reports:template_version" content="0.5.2"><meta name="smd-reports:theme" content="generic">
 <style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
@@ -114,7 +114,7 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .detail-flow th.report_variant_header { width: 100%; }
 .detail-flow tr + tr th, .detail-flow tr + tr td { border-top: 0; }
 .detail-flow tr.detail-wide-row { display: block; break-inside: auto; border: 1px solid var(--report-border); border-top: 0; }
-.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: transparent; }
+.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: var(--tint); }
 .detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
@@ -189,8 +189,8 @@ p, li { orphans: 3; widows: 3; }
 /* Compact matrices retain whole items and share borders between adjacent rows. */
 .compact-caption { margin: 6px 0 3px; break-after: avoid; }
 .compact-caption strong { font-weight: 600; }
-.compact-table { max-width: 100%; margin: 0 0 8px; border-collapse: collapse; table-layout: fixed; font-size: var(--compact-size); line-height: 1.05; }
-.compact-table .compact-cell { padding: 0.5px 2px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; }
+.compact-table { width: 100%; max-width: 100%; margin: 0 0 8px; border-collapse: collapse; table-layout: fixed; font-size: var(--compact-size); line-height: 1.05; }
+.compact-table .compact-cell { padding: 0.5px 2px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; text-align: center; vertical-align: middle; }
 .compact-cell code { font-family: inherit; }
 .variant_table tr.row-highlight > td { background: #ffe6e6; }
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
@@ -203,6 +203,8 @@ p, li { orphans: 3; widows: 3; }
 .variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: var(--reference-size); line-height: 1.2; }
 .variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
 
+.compact-screen-fillers { display: none; }
+
 @page { size: 210mm 297mm; margin-top: 65.0mm; margin-bottom: 22mm; }
 .report-application-logo { width: 13.75mm; }
 .center-logo { width: 11.64mm; }
@@ -213,10 +215,14 @@ p, li { orphans: 3; widows: 3; }
 html { color-scheme: light; }
 .page { box-shadow: 0 2px 8px #392b430a, 0 16px 48px #392b4314; }
 @media (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
-.compact-table { display: grid; grid-template-columns: repeat(auto-fill, min(100%, calc(var(--compact-cell-width) - 1px))); padding: 0 1px 1px 0; }
-.compact-table colgroup { display: none; }
+/* Fit the same measured cells to the browser's available content width. */
+.compact-matrix { container-type: inline-size; }
+.compact-table { display: grid; grid-auto-rows: 1fr; grid-template-columns: repeat(var(--compact-columns, 1), minmax(0, 1fr)); border-top: 1px solid var(--report-border); border-left: 1px solid var(--report-border); }
+.compact-table colgroup, .compact-table .compact-empty { display: none; }
 .compact-table tbody, .compact-table tr { display: contents; }
-.compact-table .compact-cell { display: block; max-width: calc(100% + 1px); min-height: 0; margin: 0 0 -1px; }
+.compact-table .compact-cell { display: flex; justify-content: center; align-items: center; border: 0; border-right: 1px solid var(--report-border); border-bottom: 1px solid var(--report-border); }
+.compact-table .compact-empty, .compact-screen-fillers .compact-cell { display: none; }
+
 </style></head>
 <body class="report-generic header-center"><div class="page">
 <div class="report-page-header"><header class="report-brand-header">
@@ -228,7 +234,7 @@ html { color-scheme: light; }
 <tr><th scope="row">Project</th><td>Example project</td><th scope="row">Generated at</th><td>2026-01-01</td><th scope="row">Generated by</th><td>Example User</td></tr><tr><th scope="row">Report ID</th><td colspan="5">GENERIC-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 </div>
-<div class="report-page-number-footer"><span class="template-version">Report · Template 0.5.1 · smd-reports 0.5.1</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">Report · Template 0.5.2 · smd-reports 0.5.2</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-center-brand"><div class="report-center-lockup"><div class="report-center-contact">
 <span>Example Center</span><span>demo@example.org</span></div><div class="report-center-logo-cell"><img class="center-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iOTAiIHZpZXdCb3g9IjAgMCAxMjAgOTAiPgo8dGl0bGU+RXhhbXBsZSBjZW50ZXIgbG9nbzwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSIxMTgiIGhlaWdodD0iODgiIHJ4PSI4IiBmaWxsPSIjZjNmNmY3IiBzdHJva2U9IiM2ODdkODYiLz4KPHRleHQgeD0iNjAiIHk9IjQyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzM1NDk1MiI+RVhBTVBMRTwvdGV4dD4KPHRleHQgeD0iNjAiIHk9IjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzM1NDk1MiI+Q0VOVEVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example Center"></div></div></div>
@@ -254,5 +260,5 @@ html { color-scheme: light; }
 <p>Add columns and sections directly in JSON.</p></div>
 </section>
 </main>
-<footer class="screen-footer"><div></div><span class="template-version">Report · Template 0.5.1 · smd-reports 0.5.1</span></footer>
+<footer class="screen-footer"><div></div><span class="template-version">Report · Template 0.5.2 · smd-reports 0.5.2</span></footer>
 </div></body></html>

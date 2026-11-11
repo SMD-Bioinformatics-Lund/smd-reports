@@ -17,7 +17,16 @@
 .accreditation { width: {{ report.branding.accreditation_logo_width_mm }}mm; max-height: {{ report.footer_height_mm - 9 }}mm; }
 .page-number::after { content: "{{ 'Page'|ui }} " counter(page) " {{ 'of'|ui }} " counter(pages); }
 </style>
-<style media="screen">{{ screen_css | safe }}</style></head>
+<style media="screen">{{ screen_css | safe }}
+{% for layout in compact_tables.values() %}{% if layout.rows %}
+.{{ layout.css_class }} { font-size: min(var(--compact-size), calc((100cqw - 8px) * {{ (theme.body_pt - 2.5) * 96 / 72 * 0.97 / (layout.minimum_width - 5.5) }})); }
+{% endif %}{% for fillers in layout.screen_fillers %}
+@container (min-width: {{ loop.index * layout.minimum_width + 1 }}px) {
+.{{ layout.css_class }} { --compact-columns: {{ loop.index }}; }
+.{{ layout.css_class }} .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
+{% if fillers %}.{{ layout.css_class }} .compact-screen-fillers .compact-cell:nth-child(-n+{{ fillers }}) { display: flex; }{% endif %}
+}
+{% endfor %}{% endfor %}</style></head>
 <body class="report-{{ report.preset_name }} header-{{ layout.header }}{% if layout.repeat_title %} repeat-title{% endif %}{% if layout.black_title %} black-title{% endif %}{% if layout.metadata_borders %} bordered-metadata{% endif %}"><div class="page">
 <div class="report-page-header">{% with brand_instance='print' %}{% include 'components/header.html' %}{% endwith %}{% if layout.repeat_title %}{% include 'components/document_heading.html' %}{% endif %}{% with compact_metadata=true %}{% include 'components/metadata.html' %}{% endwith %}</div>
 <div class="report-page-footer">
