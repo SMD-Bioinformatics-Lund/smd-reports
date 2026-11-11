@@ -327,6 +327,9 @@ onto later pages. All sections retain the shared page header and footer.
 
 ## Text, summary, description and references
 
+Description prose uses the reusable `justified-text` CSS class in both plain text and
+Markdown. Paragraphs are justified; headings and table cells retain their own alignment.
+
 | Field | Default | Accepted value and effect |
 | --- | --- | --- |
 | `kind` | Required in section JSON | `text`, `summary`, `description`, `references`; supply explicitly in report JSON |
@@ -395,10 +398,14 @@ With `kind: "table"`, add the common section and matrix fields, plus:
 
 | Field | Default | Accepted value and effect |
 | --- | --- | --- |
+| `caption` | `null` | Literal or translated numbered table caption, independent of `heading` |
+| `style` | `default` | `default` or neutral bordered `reference` presentation |
+| `show_header` | `true` | Render the declared column-header row |
 | `row_options` | `{}` | Row-index keys mapped to objects with `highlight` |
 
 Each row option has `highlight: false` by default; setting it true applies a pale-pink
-background. The row index must exist. Pink row highlighting takes precedence over yellow
+background in the default table style. Reference tables retain white cell backgrounds.
+The row index must exist. Pink row highlighting takes precedence over yellow
 column highlighting in that row. Badges retain their own background colors. See [row highlighting](json-inputs.md#row-highlighting).
 
 ## Badges
@@ -436,15 +443,22 @@ Use `kind: "compact_table"` with the common section fields and:
 
 | Field | Default | Accepted value and effect |
 | --- | --- | --- |
+| `caption` | `null` | Literal or translated numbered caption, independent of `heading` |
 | `items` | Required | Ordered cell-value list; gene symbols or haplotype labels, for example |
 | `columns` | `null` | Integer 1–64 or null for automatic column count |
 | `format` | `plain` | `plain` or inline `markdown` |
 | `empty_text` | `No reportable results` | Text; used when no visible items remain |
 
-Automatic layout measures the bundled font and available paper width. An explicit column
-count is an upper limit and uses equal-width cells; fewer columns are used if needed.
+Automatic layout measures the longest item in the bundled font, including padding and
+borders, and uses that width for every cell. The available paper width determines the
+column count. An explicit count is an upper limit; fewer columns are used if needed.
 Null, empty and whitespace-only items are omitted. Order and repeated values are preserved;
 the final row has no filler cells.
+
+For multi-row compact matrices, the measured longest item sets the minimum cell width.
+The renderer fits as many equal-width columns as possible and divides the remaining
+usable width evenly across them. Single-row lists retain their compact natural width.
+
 
 Items remain on one line. An item too wide for the page raises `ReportInputError`;
 characters must be supported by the bundled font. Markdown allows inline bold, italic and
@@ -665,3 +679,26 @@ rules such as row lengths, grid span totals and available page space are also ch
 the loader. Schema export needs no report data or PDF runtime. Inspect
 `report.preset_name`, `report.theme_name`, `report.resolved_layout`, `report.template_name`
 and `report.template_version` for resolved settings and installed revisions.
+
+## Explicit table captions and reference tables
+
+Both `table` and `compact_table` accept `caption` as literal text or an `en`/`sv`
+translation object. Captions render exactly as supplied; numbers are never generated or
+changed. The shared black, semibold caption uses the report body size and spans the
+available width, including above narrow gene matrices. A figure/figcaption wrapper and
+`aria-labelledby` associate each nonempty table with its caption. Empty tables retain
+the caption and their empty-state message. Captions stay with the start of the table
+where possible, while long tables can continue onto later pages.
+
+`heading` remains an independent section heading when `caption` is supplied. Omitting
+`caption` retains the legacy heading presentation, including compact-table captions.
+
+For `table`, choose `style: "reference"` for a white background, black text and thin
+neutral borders around every cell and the perimeter. Text is 1 pt smaller than the
+report body, with 2px vertical/4px horizontal padding and 1.2 line height. Column weights
+remain configurable through `column_options`. This style adds no colored header bands
+or row decorations. Explicit text and badge options remain available.
+
+`show_header: false` removes the header row completely. Declare columns as usual: row
+lengths are still validated, and empty labels do not imply a hidden header. These
+options do not change compact-table font measurement, ordering or column fitting.

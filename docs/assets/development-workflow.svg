@@ -69,7 +69,7 @@
 </g>
 <text x="494" y="449" fill="#253747" font-size="19" font-weight="600">Publish workflow</text>
 <text x="440" y="492" fill="#526579" font-size="14" font-weight="400">Manual publish confirmation</text>
-<text x="440" y="517" fill="#526579" font-size="14" font-weight="400">Tests and distribution checks</text>
+<text x="440" y="517" fill="#526579" font-size="14" font-weight="400">Verified CI and package checks</text>
 <rect x="804" y="407" width="280" height="150" rx="16" fill="#e9eef2" opacity=".65"/>
 <rect x="804" y="404" width="280" height="150" rx="16" fill="#fff" stroke="#cbd5df"/>
 <rect x="822" y="422" width="42" height="42" rx="12" fill="#3c6585" opacity=".09"/>

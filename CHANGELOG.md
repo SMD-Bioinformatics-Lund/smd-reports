@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0
+
+- Limit Quality to protected-branch PRs, cancel superseded runs and build distributions once per PR.
+- Reuse verified release-PR validation during publication instead of rerunning the test suite.
+- Add shared explicit table captions and a compact bordered reference-table presentation.
+- Allow regular table headers to be hidden through JSON without changing row validation.
+- Justify description prose through the reusable `justified-text` style.
+- Fit compact gene matrices with equal-width cells based on the longest item and page width.
+
 ## 0.4.1
 
 - Make all automatic metadata captions configurable with literal or translated labels in HTML and PDF headers.
