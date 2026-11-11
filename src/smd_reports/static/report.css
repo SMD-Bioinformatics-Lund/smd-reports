@@ -153,3 +153,5 @@ p, li { orphans: 3; widows: 3; }
 .variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
 
 .compact-screen-fillers { display: none; }
+
+.compact-table.compact-single-row { width: var(--compact-natural-width); }

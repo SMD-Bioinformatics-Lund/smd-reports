@@ -9,3 +9,6 @@ html { color-scheme: light; }
 .compact-table tbody, .compact-table tr { display: contents; }
 .compact-table .compact-cell { display: flex; justify-content: center; align-items: center; border: 0; border-right: 1px solid var(--report-border); border-bottom: 1px solid var(--report-border); }
 .compact-table .compact-empty, .compact-screen-fillers .compact-cell { display: none; }
+
+/* Allow for browser font rounding while keeping short lists at their natural width. */
+.compact-table.compact-single-row { width: min(100%, calc(var(--compact-natural-width) * 1.03)); }

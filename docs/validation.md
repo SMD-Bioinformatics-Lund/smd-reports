@@ -42,7 +42,7 @@ python examples/reports.py --previews --pdf --output examples/rendered
 python scripts/visual_review.py examples/rendered
 ```
 
-These commands regenerate the five example reports, render PDF pages as images,
+These commands regenerate the six example reports, render PDF pages as images,
 and record page sizes, image hashes and rendering versions under `.artifacts/`.
 Use `--baseline PATH` to compare with an existing capture. Inspect wrapping, page breaks,
 headers and footers when a rendering change affects the previews.
@@ -58,8 +58,8 @@ SMD_REPORTS_CHROMIUM=/path/to/chromium python -m pytest tests/test_screen_layout
 ```
 
 These checks use synthetic standalone HTML at mobile and desktop widths. They verify
-cell borders, equal widths, text fit, scrollbar-free matrices and compact description
-text. They are skipped when Chromium is not configured and do not download a browser.
+cell borders, equal widths, compact single-row lists, full-width multi-row panels, text fit,
+scrollbar-free matrices and compact description text. They are skipped when Chromium is not configured and do not download a browser.
 
 ## Release preparation
 

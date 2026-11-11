@@ -88,4 +88,6 @@ def matrix_columns(texts, size_pt, width_mm, *, columns=None, markdown=False):
         widths.append(width)
     cell_width = max(widths)
     count = min(len(widths), columns or len(widths), math.floor(available / cell_width))
-    return [available / count] * count, cell_width
+    if len(widths) > count:
+        cell_width = available / count
+    return [cell_width] * count, max(widths)
