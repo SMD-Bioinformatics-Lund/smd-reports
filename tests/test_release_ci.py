@@ -130,3 +130,4 @@ def test_workflows_avoid_duplicate_validation_and_preserve_required_checks():
     assert not any("pytest" in step.get("run", "") for step in steps)
     assert any("check_installation.py --source" in step.get("run", "") for step in steps)
     assert release["permissions"]["actions"] == "read"
+    assert release["permissions"]["pull-requests"] == "read"
