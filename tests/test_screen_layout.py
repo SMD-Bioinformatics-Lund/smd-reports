@@ -59,11 +59,14 @@ def test_browser_matrices_have_borders_and_no_horizontal_scroll(
                 )
                 cells = result["cells"]
                 assert len([cell for cell in cells if cell["text"].strip()]) == expected
-                assert result["right"] == pytest.approx(
-                    page.locator(f"#{key}").bounding_box()["x"]
-                    + page.locator(f"#{key}").bounding_box()["width"],
-                    abs=0.1,
-                )
+                available = page.locator(f"#{key}").bounding_box()
+                if key == "large":
+                    assert result["right"] == pytest.approx(
+                        available["x"] + available["width"], abs=0.1
+                    )
+                if key == "small":
+                    assert result["right"] - available["x"] < 100
+
                 assert max(cell["height"] for cell in cells) == pytest.approx(
                     min(cell["height"] for cell in cells), abs=0.05
                 ), cells

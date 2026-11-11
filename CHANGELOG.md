@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.3
+
+- Keep single-row gene lists at their measured width while retaining full-width multi-row panels.
+- Clarify compact-table sizing, column limits, captions and empty final-row cells.
+
 ## 0.5.2
 
 - Restore theme-tinted full-width labels in detail and grid sections.

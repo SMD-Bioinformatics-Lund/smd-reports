@@ -446,21 +446,23 @@ Use `kind: "compact_table"` with the common section fields and:
 | --- | --- | --- |
 | `caption` | `null` | Literal or translated numbered caption, independent of `heading` |
 | `items` | Required | Ordered cell-value list; gene symbols or haplotype labels, for example |
-| `columns` | `null` | Integer 1–64 or null for automatic column count |
+| `columns` | `null` | Maximum column count, 1–64; null selects automatic sizing |
 | `format` | `plain` | `plain` or inline `markdown` |
 | `empty_text` | `No reportable results` | Text; used when no visible items remain |
 
-Automatic layout measures the longest item in the bundled font, including padding and
-borders, and uses that width for every cell. The available paper width determines the
-column count. An explicit count is an upper limit; fewer columns are used if needed.
-Null, empty and whitespace-only items are omitted. Order and repeated values are preserved;
-the final row has no filler cells. Browser matrices reflow within their available width
-without a horizontal scrollbar, preserving equal-width bordered cells.
+The longest item, measured in the bundled font, sets the minimum cell width including
+padding and borders. The available page width determines how many columns fit; `columns`
+can set a lower maximum. All cells have equal widths, and items fill rows from left to right.
 
-For multi-row compact matrices, the measured longest item sets the minimum cell width.
-The renderer fits as many equal-width columns as possible and divides the remaining
-usable width evenly across them. Single-row lists retain their compact natural width.
+A list that fits on one row uses only its measured width. For example, `CALR`, `JAK2`
+and `MPL` appear as three small adjacent cells. Multi-row panels fill the available width,
+with empty bordered cells completing the final row. These empty cells are presentation-only
+and are excluded from the report data and exported JSON. Captions span the report width
+independently of the table's width.
 
+Null, empty and whitespace-only items are omitted. Supplied order and repeated values
+are preserved. Browser tables reduce their column count as space narrows, without horizontal
+scrollbars. Gene names remain centered in equal-width cells.
 
 Items remain on one line. An item too wide for the page raises `ReportInputError`;
 characters must be supported by the bundled font. Markdown allows inline bold, italic and

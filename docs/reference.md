@@ -59,5 +59,7 @@ preserved when exporting and reloading JSON. Use `emphasis: true` for semibold c
 or Markdown formatting for bold and italic text; see [column text styling](json-inputs.md#column-text-styling).
 
 `CompactTableSection` uses `kind: "compact_table"`, an ordered `items` list, optional
-`columns`, and plain-text or Markdown formatting. Ordinary result tables also accept
-`row_options` for individual row highlights. See the [JSON guide](json-inputs.md#compact-description-tables).
+`columns` as a maximum, and plain-text or Markdown formatting. Single-row lists use their
+measured width; multi-row panels fill the available width with equal cells. Captions remain
+full width, and presentation-only empty cells complete the final row. Ordinary result tables
+also accept `row_options` for individual row highlights. See the [JSON guide](json-inputs.md#compact-description-tables).

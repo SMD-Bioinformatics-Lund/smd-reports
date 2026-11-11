@@ -13,11 +13,12 @@ from smd_reports import ReportLoader, ReportRenderer
     [
         ([], 15),
         (["CALR"], 15),
+        (["CALR", "JAK2", "MPL"], 15),
         (["CALR", "JAK2", "MPL"], 2),
         (["C7orf55-LUC7L2", "A", "BRAF"] * 21, 15),
     ],
 )
-def test_print_matrix_is_full_width_centered_and_rectangular(payloads, load, items, maximum):
+def test_print_matrix_uses_fitted_width_and_rectangular_cells(payloads, load, items, maximum):
     pytest.importorskip("weasyprint")
     from weasyprint import HTML
 
@@ -53,6 +54,11 @@ def test_print_matrix_is_full_width_centered_and_rectangular(payloads, load, ite
         return
     layout = _compact_tables(report, renderer.themes[report.theme_name])["genes"]
     count = len(layout["widths"])
+    if len(items) <= count:
+        assert layout["width"] == pytest.approx(count * layout["minimum_width"])
+        assert layout["width"] < 178 * 96 / 25.4
+    else:
+        assert layout["width"] == pytest.approx(178 * 96 / 25.4 - 1)
     assert count <= maximum
     assert len(cells) == ((len(items) + count - 1) // count) * count
     assert max(c.border_width() for c in cells) == pytest.approx(
@@ -84,7 +90,7 @@ def test_print_matrix_is_full_width_centered_and_rectangular(payloads, load, ite
     assert {len(row) for row in rows.values()} == {count}
     for row in rows.values():
         right = row[-1].position_x + row[-1].border_width()
-        assert right - row[0].position_x == pytest.approx(178 * 96 / 25.4 - 1, abs=1)
+        assert right - row[0].position_x == pytest.approx(layout["width"], abs=1)
 
 
 @pytest.mark.parametrize("preset", ["coyote3-dna", "coyote3-rna"])
