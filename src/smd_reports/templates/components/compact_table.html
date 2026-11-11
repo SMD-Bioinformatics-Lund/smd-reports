@@ -1,7 +1,7 @@
 {% set layout = compact_tables[section.key] %}
 {% if layout.rows %}
 <div class="compact-matrix">
-<table class="compact-table {{ layout.css_class }}"{% if section.caption is not none %} aria-labelledby="{{ anchors[section.key].caption }}"{% elif section.heading %} aria-label="{{ section.heading|ui }}"{% endif %}>
+<table class="compact-table {{ layout.css_class }}{% if layout.rows|length == 1 %} compact-single-row{% endif %}"{% if layout.rows|length == 1 %} style="--compact-natural-width: {{ layout.width + 1 }}px"{% endif %}{% if section.caption is not none %} aria-labelledby="{{ anchors[section.key].caption }}"{% elif section.heading %} aria-label="{{ section.heading|ui }}"{% endif %}>
 <colgroup>{% for width in layout.widths %}<col style="width: {{ 100 / layout.widths|length }}%">{% endfor %}</colgroup>
 <tbody>{% for row in layout.rows %}<tr>{% for value in row %}<td class="compact-cell"><span class="compact-value">{{ value }}</span></td>{% endfor %}{% if loop.last %}{% for _ in range(layout.widths|length - row|length) %}<td class="compact-cell compact-empty" aria-hidden="true"></td>{% endfor %}{% endif %}</tr>{% endfor %}
 <tr class="compact-screen-fillers" aria-hidden="true">{% for _ in range(layout.widths|length - 1) %}<td class="compact-cell compact-filler"></td>{% endfor %}</tr>

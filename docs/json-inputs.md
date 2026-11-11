@@ -423,18 +423,18 @@ options fail validation. Highlight settings are preserved in portable JSON.
 ## Compact description tables
 
 Use `compact_table` for gene lists, panel contents and haplotype lists. Each item occupies
-a bordered cell in a full-width, equal-column matrix. Rows fill from left to right;
-there is no separate column-header row.
+a bordered cell. All columns have equal widths, and rows fill from left to right.
+There is no separate column-header row.
 
 ```json
 {
   "kind": "compact_table",
   "key": "covered-genes",
-  "heading": {
+  "caption": {
     "en": "Table 1: Genes included in the panel",
     "sv": "Tabell 1: Gener inkluderade i panelen"
   },
-  "items": ["APC", "BRAF", "EGFR", "ERBB2", "KRAS", "MET", "MLH1", "MSH2"]
+  "items": ["CALR", "JAK2", "MPL"]
 }
 ```
 
@@ -450,9 +450,10 @@ Text stays on one line in each cell and is 2.5 points smaller than normal report
 The caption uses normal body size, bold weight and black text. Long lists continue across
 PDF pages. Custom paper dimensions are supported.
 
-The measured longest item sets the minimum cell width, including padding and borders.
-The renderer fits as many equal-width columns as possible and divides the full available
-width evenly across them. Gene names are centered horizontally and vertically. Every row
+The longest item sets the minimum cell width, including padding and borders. A list that
+fits on one row uses only the width required by its cells. The example above renders as
+three small adjacent cells. Multi-row panels divide the available report width evenly
+across their columns. Captions retain the full report width regardless of table size. Gene names are centered horizontally and vertically. Every row
 has the same height, white cells, black text and thin neutral borders. Browser layouts
 recalculate the column count at narrower widths; exceptionally long items scale down
 only when a single cell cannot fit the browser width. Print text keeps its configured size.
