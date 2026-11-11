@@ -8,9 +8,9 @@
   @bottom-right { content: element(report-page-number-footer); width: 25%; vertical-align: top; border-top: 1px solid var(--report-border); padding-top: 3mm; padding-bottom: 5mm; }
 }
 * { box-sizing: border-box; }
-html { background: #f2f1f4; color-scheme: light; }
+html { background: #f2f1f4; }
 body { margin: 0; color: #000; font: var(--body-size)/1.35 "Source Sans 3", sans-serif; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.page { width: var(--page-width); max-width: 100%; margin: 24px auto; padding: 14mm 16mm 18mm; background: #fff; box-shadow: 0 2px 8px #392b430a, 0 16px 48px #392b4314; }
+.page { width: var(--page-width); max-width: 100%; margin: 24px auto; padding: 14mm 16mm 18mm; background: #fff; }
 .report-brand-header { display: table; width: 100%; table-layout: fixed; border-spacing: 0; padding-bottom: 8px; margin-bottom: 0; break-inside: avoid; }
 .report-brand-rule { height: 2px; margin-bottom: 9px; background: linear-gradient(90deg, var(--accent), var(--rule-end)); }
 .report-product-brand { display: table-cell; width: 50%; vertical-align: middle; }
@@ -73,7 +73,7 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .results_summary > :first-child { margin-top: 0; }
 .results_summary > :last-child { margin-bottom: 0; }
 /* Justify narrative paragraphs while retaining heading and table alignment. */
-.justified-text > p, .justified-text.plain { text-align: justify; }
+.justified-text > p, .justified-text.plain { font-size: var(--description-size); line-height: 1.2; text-align: justify; }
 /* Keep description subheadings close to the paragraphs they introduce. */
 .report-description .markdown h1, .report-description .markdown h2,
 .report-description .markdown h3, .report-description .markdown h4,
@@ -104,7 +104,7 @@ p, li { orphans: 3; widows: 3; }
 .bordered-metadata .report-metadata { border-top: 1px solid var(--report-border); border-bottom: 1px solid var(--report-border); }
 @media print {
   html, body { background: #fff; }
-  .page { width: auto; margin: 0; padding: 0; box-shadow: none; }
+  .page { width: auto; margin: 0; padding: 0; }
   .report-page-header { display: block; position: running(report-page-header); padding-bottom: 3mm; }
   .report-page-footer { display: block; position: running(report-page-footer); }
   .report-page-number-footer { display: block; position: running(report-page-number-footer); }
@@ -125,9 +125,6 @@ p, li { orphans: 3; widows: 3; }
   .break-before { break-before: page; }
   .report-summary { break-before: page; break-after: page; }
 }
-@media screen {
-  @media (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
-}
 /* JSON columns and grid spans determine the content layout. */
 .cell-highlight, .variant_table td.cell-highlight { background: #ffffe0; }
 .cell-plain { white-space: pre-wrap; }
@@ -145,13 +142,6 @@ p, li { orphans: 3; widows: 3; }
 .compact-table .compact-cell { padding: 0.5px 2px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; }
 .compact-cell code { font-family: inherit; }
 .variant_table tr.row-highlight > td { background: #ffe6e6; }
-@media screen {
-  .compact-table { display: flex; flex-wrap: wrap; width: fit-content !important; max-width: 100%; overflow-x: auto; }
-  .compact-table colgroup { display: none; }
-  .compact-table tbody, .compact-table tr { display: contents; }
-  .compact-table .compact-cell { display: block; flex: 0 0 auto; min-height: 0; margin: 0 -1px -1px 0; }
-}
-
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
 .report-badge { display: inline-block; max-width: 100%; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; font-weight: 600; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; vertical-align: baseline; }
 
@@ -159,5 +149,5 @@ p, li { orphans: 3; widows: 3; }
 .report-table-figure { width: 100%; margin: 0; break-inside: auto; }
 .report-table-figure > .table-caption { margin: 6px 0 3px; color: #000; font-size: var(--body-size); font-weight: 600; line-height: 1.2; text-align: left; break-after: avoid; }
 .report-table-figure > table { margin-top: 0; }
-.variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: calc(var(--body-size) - 1pt); line-height: 1.2; }
+.variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: var(--reference-size); line-height: 1.2; }
 .variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }

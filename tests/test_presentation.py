@@ -129,7 +129,7 @@ def test_invalid_paper_dimensions_fail(payloads, load, presentation):
         ("pgx", "PGx"),
     ],
 )
-@pytest.mark.parametrize("language,label", [("en", "Template"), ("sv", "Mall")])
+@pytest.mark.parametrize("language,label", [("en", "Template"), ("sv", "Template")])
 def test_footer_identifies_template_and_package_versions(
     payloads, load, name, template_name, language, label
 ):
@@ -156,6 +156,6 @@ def test_coyote_dna_and_rna_template_revisions_are_independent(monkeypatch, repo
         report = reports[name]
         html = ReportRenderer().render_html(report)
         assert report.template_version == revision
-        assert f"Mall {revision}" in html
+        assert f"Template {revision}" in html
         assert f"smd-reports {__version__}" in html
         assert report.rendering_metadata["package_version"] == __version__

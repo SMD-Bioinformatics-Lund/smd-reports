@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1
+
+- Keep the footer label Template in English for every report language.
+- Prevent generated caption and finding anchors from colliding with section IDs.
+- Isolate browser-only styling from PDF parsing and precompute print font sizes.
+- Render compact gene matrices as bordered browser grids without horizontal scrollbars.
+- Tighten justified description prose with smaller text and reduced line spacing.
+
 ## 0.5.0
 
 - Limit Quality to protected-branch PRs, cancel superseded runs and build distributions once per PR.

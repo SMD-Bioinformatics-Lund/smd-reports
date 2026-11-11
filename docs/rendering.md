@@ -124,8 +124,8 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 ## Template and package versions
 
 Each report footer shows the template name, its revision and the installed package version,
-for example `Coyote3 DNA · Template 0.5.0 · smd-reports 0.5.0`.
-Swedish reports use `Mall` as the template label.
+for example `Coyote3 DNA · Template 0.5.1 · smd-reports 0.5.1`.
+The footer label `Template` remains in English for every report language.
 
 A template revision identifies the package release in which that template last changed.
 Unchanged templates retain their previous revision. Coyote3 DNA and RNA revisions are
@@ -135,12 +135,20 @@ Both values are supplied by the package and cannot be overridden in report JSON.
 
 | Template | Revision |
 | --- | --- |
-| Generic | 0.5.0 |
-| Coyote3 DNA | 0.5.0 |
-| Coyote3 RNA | 0.5.0 |
-| Genexus | 0.5.0 |
-| CLL Genie | 0.5.0 |
-| PGx | 0.5.0 |
+| Generic | 0.5.1 |
+| Coyote3 DNA | 0.5.1 |
+| Coyote3 RNA | 0.5.1 |
+| Genexus | 0.5.1 |
+| CLL Genie | 0.5.1 |
+| PGx | 0.5.1 |
 
 Inspect `report.template_name`, `report.template_version` and `report.rendering_metadata`
 from Python. A package release may update only the templates affected by its changes.
+
+## Embedded screen and print styling
+
+Standalone HTML embeds shared print-compatible CSS and a separate `media="screen"`
+stylesheet for browser effects and responsive layouts. PDF converters skip browser-only
+properties. Description and reference-table font sizes are computed by the renderer and
+emitted as point values. Generated caption and finding IDs avoid collisions with supplied
+section keys; section IDs retain their application-supplied values.

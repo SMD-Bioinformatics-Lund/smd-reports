@@ -352,6 +352,42 @@ def _offline_url_fetcher():
     )
 
 
+def _section_anchors(report):
+    """Allocate unique generated IDs without changing application section keys.
+
+    Args:
+        report: Validated report with ordered sections.
+
+    Returns:
+        Caption and record IDs indexed by section key.
+    """
+    reserved = {section.key for section in report.sections}
+
+    def allocate(candidate):
+        """Reserve a generated ID, suffixing only when its original name collides."""
+        anchor = candidate
+        suffix = 2
+        while anchor in reserved:
+            anchor = f"{candidate}-{suffix}"
+            suffix += 1
+        reserved.add(anchor)
+        return anchor
+
+    result = {}
+    for section in report.sections:
+        result[section.key] = {
+            "caption": allocate(f"{section.key}-table-caption")
+            if section.kind in {"table", "compact_table"} and section.caption is not None
+            else None,
+            "records": [
+                allocate(f"{section.key}-{index + 1}") for index in range(len(section.rows))
+            ]
+            if section.kind in {"details", "grid"}
+            else [],
+        }
+    return result
+
+
 class ReportRenderer:
     """Render reports using built-in templates and registered themes."""
 
@@ -433,6 +469,8 @@ class ReportRenderer:
                 selected_theme=selected,
                 theme=self.themes[selected],
                 css=assets.joinpath("report.css").read_text(encoding="utf-8"),
+                screen_css=assets.joinpath("screen.css").read_text(encoding="utf-8"),
+                anchors=_section_anchors(report),
                 fonts=fonts,
                 svg_fonts=svg_font_css(artwork, fonts),
                 compact_tables=_compact_tables(report, self.themes[selected]),
