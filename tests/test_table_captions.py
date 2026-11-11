@@ -124,7 +124,7 @@ def test_pdf_geometry_caption_width_borders_typography_and_no_header(payloads, l
     ]
     assert len(captions) == len(tables) == 2
     assert captions[0].width == pytest.approx(captions[1].width)
-    assert captions[0].width > tables[0].width * 2
+    assert captions[0].width == pytest.approx(tables[0].border_width(), abs=0.1)
     for caption in captions:
         assert caption.style["font_size"] == pytest.approx(9.25 * 96 / 72)
         assert caption.style["font_weight"] == 600

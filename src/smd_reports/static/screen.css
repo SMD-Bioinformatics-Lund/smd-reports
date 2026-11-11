@@ -2,7 +2,10 @@
 html { color-scheme: light; }
 .page { box-shadow: 0 2px 8px #392b430a, 0 16px 48px #392b4314; }
 @media (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
-.compact-table { display: grid; grid-template-columns: repeat(auto-fill, min(100%, calc(var(--compact-cell-width) - 1px))); padding: 0 1px 1px 0; }
-.compact-table colgroup { display: none; }
+/* Fit the same measured cells to the browser's available content width. */
+.compact-matrix { container-type: inline-size; }
+.compact-table { display: grid; grid-auto-rows: 1fr; grid-template-columns: repeat(var(--compact-columns, 1), minmax(0, 1fr)); border-top: 1px solid var(--report-border); border-left: 1px solid var(--report-border); }
+.compact-table colgroup, .compact-table .compact-empty { display: none; }
 .compact-table tbody, .compact-table tr { display: contents; }
-.compact-table .compact-cell { display: block; max-width: calc(100% + 1px); min-height: 0; margin: 0 0 -1px; }
+.compact-table .compact-cell { display: flex; justify-content: center; align-items: center; border: 0; border-right: 1px solid var(--report-border); border-bottom: 1px solid var(--report-border); }
+.compact-table .compact-empty, .compact-screen-fillers .compact-cell { display: none; }

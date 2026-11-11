@@ -18,7 +18,7 @@ from jinja2 import (
 from markupsafe import Markup
 
 from .badges import badge_colors
-from .compact_layout import column_widths
+from .compact_layout import matrix_columns
 from .core import Report
 from .errors import PDFUnavailableError, ReportInputError, ReportRenderError
 from .localization import label, localized_text
@@ -265,7 +265,7 @@ def _compact_tables(report, theme):
                 continue
             values.append(value)
             texts.append(text)
-        widths = column_widths(
+        widths, minimum_width = matrix_columns(
             texts,
             theme.body_pt - 2.5,
             report.presentation.dimensions_mm[0] - 32,
@@ -279,6 +279,9 @@ def _compact_tables(report, theme):
             else [],
             "widths": widths,
             "width": sum(widths),
+            "minimum_width": minimum_width,
+            "css_class": f"compact-layout-{len(result)}",
+            "screen_fillers": [(-len(values)) % n for n in range(1, count + 1)],
         }
     return result
 
