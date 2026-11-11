@@ -146,6 +146,56 @@
       ]
     },
     {
+      "key": "panel-genes",
+      "kind": "compact_table",
+      "caption": "Tabell 1: Gener inkluderade i hematology_myeloid insilico-panel",
+      "items": [
+        "CALR",
+        "JAK2",
+        "MPL"
+      ],
+      "columns": 15
+    },
+    {
+      "key": "classification",
+      "kind": "table",
+      "caption": "Tabell 2: Förklaring av klassificering",
+      "style": "reference",
+      "show_header": false,
+      "columns": {
+        "sv": [
+          "",
+          ""
+        ]
+      },
+      "column_options": {
+        "0": {
+          "width": 1
+        },
+        "1": {
+          "width": 12
+        }
+      },
+      "rows": [
+        [
+          "Tier I",
+          "Variant av stark klinisk signifikans (genmutationer som är diagnostiska, behandlingsstyrande eller riskstratifierande enligt gällande riktlinjer)"
+        ],
+        [
+          "Tier II",
+          "Variant av potentiell klinisk signifikans (mutationer i gener beskrivna i ett flertal publikationer)"
+        ],
+        [
+          "Tier III",
+          "Variant av oklar klinisk signifikans (mutationer i gener beskrivna i ett fåtal publikationer)"
+        ],
+        [
+          "Tier IV",
+          "Variant bedömd som benign eller sannolikt benign"
+        ]
+      ]
+    },
+    {
       "kind": "summary",
       "key": "summary",
       "format": "markdown",

@@ -383,6 +383,9 @@ class TableSection(MatrixSection):
     """A result table whose headers are declared once for all rows."""
 
     kind: Literal["table"] = "table"
+    caption: LocalizedText | None = None
+    style: Literal["default", "reference"] = "default"
+    show_header: bool = True
     row_options: dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], RowOptions] = Field(
         default_factory=dict
     )
@@ -427,6 +430,7 @@ class CompactTableSection(SectionBase):
     """A bordered sequence of cells that wraps to the available report width."""
 
     kind: Literal["compact_table"] = "compact_table"
+    caption: LocalizedText | None = None
     items: list[CellValue]
     columns: int | None = Field(default=None, ge=1, le=64)
     format: Literal["plain", "markdown"] = "plain"

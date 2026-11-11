@@ -48,7 +48,7 @@ def _fonts(size_pt):
 
 
 def column_widths(texts, size_pt, width_mm, *, columns=None, markdown=False):
-    """Choose the largest matrix that fits complete, single-line items.
+    """Choose equal-width columns that fit complete, single-line items.
 
     Args:
         texts: Visible cell text in its display order.
@@ -78,19 +78,16 @@ def column_widths(texts, size_pt, width_mm, *, columns=None, markdown=False):
             )
         faces = fonts if markdown else fonts[:1]
         measured = max(face.getlength(text, **options) for face in faces)
-        # Leave room for inline emphasis, padding, borders and fractional renderer rounding.
+        # Include 4px horizontal padding, 1px collapsed borders and 0.5px rounding safety.
         emphasis = len(text) * size_pt * 96 / 72 * 0.04 if markdown else 0
-        width = math.ceil(measured + emphasis) + 7
+        width = measured + emphasis + 5.5
         if width > available:
             raise ReportInputError(
                 "A compact table item cannot fit on one line; use a wider page or a shorter item."
             )
         widths.append(width)
-    limit = min(len(widths), columns or len(widths), available // min(widths))
-    for count in range(limit, 0, -1):
-        sizes = [max(widths[index::count]) for index in range(count)]
-        if columns:
-            sizes = [max(sizes)] * count
-        if sum(sizes) <= available:
-            return sizes
-    raise ReportInputError("Compact table cells cannot fit within the report margins")
+    cell_width = max(widths)
+    count = min(len(widths), columns or len(widths), math.floor(available / cell_width))
+    if len(widths) > count:
+        cell_width = available / count
+    return [cell_width] * count

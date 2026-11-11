@@ -4,6 +4,9 @@ on:
     branches: [dev, master]
 permissions:
   contents: read
+concurrency:
+  group: branch-flow-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 jobs:
   branch-flow:
     runs-on: ubuntu-24.04

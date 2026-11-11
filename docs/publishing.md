@@ -47,6 +47,13 @@ After the development PR is merged into `dev` and the release PR is merged into 
 
 The workflow requires a matching nonempty changelog entry and a version newer than previous
 release tags on `master`. It also checks tag/version agreement, tag existence and ancestry, then runs
-tests, lint, documentation, distribution checks and isolated wheel/source installation.
+a successful merged release PR with exactly the same Git tree. Its Quality run must
+have passed lint, documentation, every supported Python version and PDF tests, and its
+branch-flow checks must have passed. Fork runs, skipped checks and changed release
+contents do not satisfy this requirement.
+
+Publication then builds and checks distributions and verifies isolated wheel/source
+installation. It reuses the completed PR validation instead of repeating the full test
+suite for TestPyPI and PyPI. Each index still requires its own explicit dispatch.
 Only the checked artifacts are passed to the publishing job. Package versions cannot be
 overwritten; an existing version requires a new release rather than replacement files.

@@ -279,7 +279,7 @@ def test_matrix_has_touching_rows_smaller_text_and_plain_bold_caption(payloads, 
     )
     html = renderer.render_html(report, theme="sized")
     assert '<p class="compact-caption"><strong>Panel genes</strong></p>' in html
-    assert html.count('<td class="compact-cell">') == len(items)
+    assert html.count('<td class="compact-cell"') == len(items)
     rendered = HTML(string=html, url_fetcher=_offline_url_fetcher()).render()
     cells = [
         box
@@ -332,3 +332,50 @@ def test_blank_values_do_not_create_cells(payloads):
     html = ReportRenderer().render_html(report)
     assert '<table class="compact-table"' not in html
     assert '<p class="empty">' in html
+
+
+@pytest.mark.parametrize("width", [110, 210, 297])
+def test_automatic_matrix_equal_widths_fit_mixed_length_names(payloads, width):
+    pytest.importorskip("weasyprint")
+    from weasyprint import HTML
+
+    from smd_reports.rendering import _offline_url_fetcher
+
+    items = ["A", "BRAF", "C7orf55-LUC7L2", "CALR", "EXAMPLE"] * 9
+    report = document(
+        payloads,
+        {"kind": "compact_table", "key": "genes", "items": items},
+        presentation={"page_size": "custom", "custom_width_mm": width, "custom_height_mm": 297},
+    )
+    rendered = HTML(
+        string=ReportRenderer().render_html(report), url_fetcher=_offline_url_fetcher()
+    ).render()
+    cells = [
+        box
+        for page in rendered.pages
+        for box in page._page_box.descendants()
+        if type(box).__name__ == "TableCellBox" and box.element.get("class") == "compact-cell"
+    ]
+    assert len(cells) == len(items)
+    assert (
+        max(cell.border_width() for cell in cells) - min(cell.border_width() for cell in cells)
+        < 0.01
+    )
+    for cell in cells:
+        assert cell.position_x + cell.border_width() <= width * 96 / 25.4 - 16 * 96 / 25.4 + 1
+        lines = [box for box in cell.descendants() if type(box).__name__ == "LineBox"]
+        assert len(lines) == 1 and lines[0].width <= cell.width
+
+
+def test_a4_matrix_fits_sixteen_equal_columns_without_wasted_cell_space(payloads):
+    from smd_reports.rendering import _compact_tables
+
+    renderer = ReportRenderer()
+    items = ["SMARCB1", "BRAF", "ALK", "APC"] * 10 + ["TP53", "PTEN", "JAK2"]
+    report = document(payloads, {"kind": "compact_table", "key": "genes", "items": items})
+    layout = _compact_tables(report, renderer.themes[report.theme_name])["genes"]
+    assert [len(row) for row in layout["rows"]] == [16, 16, 11]
+    assert max(layout["widths"]) == min(layout["widths"])
+    assert 669 <= layout["width"] <= 673
+    result = pdf(report)
+    assert all(token in result[0].get_text() for token in ["SMARCB1", "TP53", "PTEN", "JAK2"])

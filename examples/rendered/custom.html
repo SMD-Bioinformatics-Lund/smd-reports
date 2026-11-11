@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Example Report - CUSTOM-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.4.1"><meta name="smd-reports:template_version" content="0.4.1"><meta name="smd-reports:theme" content="cll_genie">
+<meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.5.0"><meta name="smd-reports:template_version" content="0.5.0"><meta name="smd-reports:theme" content="cll_genie">
 <style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
@@ -123,6 +123,8 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 
 .results_summary > :first-child { margin-top: 0; }
 .results_summary > :last-child { margin-bottom: 0; }
+/* Justify narrative paragraphs while retaining heading and table alignment. */
+.justified-text > p, .justified-text.plain { text-align: justify; }
 /* Keep description subheadings close to the paragraphs they introduce. */
 .report-description .markdown h1, .report-description .markdown h2,
 .report-description .markdown h3, .report-description .markdown h4,
@@ -204,6 +206,13 @@ p, li { orphans: 3; widows: 3; }
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
 .report-badge { display: inline-block; max-width: 100%; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; font-weight: 600; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; vertical-align: baseline; }
 
+/* Explicit table captions share typography independently of table width. */
+.report-table-figure { width: 100%; margin: 0; break-inside: auto; }
+.report-table-figure > .table-caption { margin: 6px 0 3px; color: #000; font-size: var(--body-size); font-weight: 600; line-height: 1.2; text-align: left; break-after: avoid; }
+.report-table-figure > table { margin-top: 0; }
+.variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: calc(var(--body-size) - 1pt); line-height: 1.2; }
+.variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
+
 @page { size: 210mm 297mm; margin-top: 65.0mm; margin-bottom: 38.0mm; }
 .report-application-logo { width: 13.75mm; }
 .center-logo { width: 11.64mm; }
@@ -222,7 +231,7 @@ p, li { orphans: 3; widows: 3; }
 <tr><th scope="row">Project</th><td>Example project</td><th scope="row">Issued on</th><td>2026-01-01</td><th scope="row">Prepared by</th><td>Example User</td></tr><tr><th scope="row">Document ID</th><td colspan="5">CUSTOM-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 <img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Accreditation"></div>
-<div class="report-page-number-footer"><span class="template-version">Report · Template 0.4.1 · smd-reports 0.4.1</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">Report · Template 0.5.0 · smd-reports 0.5.0</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-product-brand">
 <div class="report-logo-identity"><img class="report-application-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDgwIDQ4Ij4KPHRpdGxlPkV4YW1wbGUgYXBwbGljYXRpb24gaWNvbjwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI3OCIgaGVpZ2h0PSI0NiIgcng9IjgiIGZpbGw9IiNmNGYwZjgiIHN0cm9rZT0iIzc2NjQ4NiIvPgo8cGF0aCBkPSJNMTMgMjQgMjEgMTYgMjkgMjQgMjEgMzJaIiBmaWxsPSIjNzY2NDg2Ii8+Cjx0ZXh0IHg9IjQ5IiB5PSIyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1MTQ2NWMiPkFQUDwvdGV4dD4KPC9zdmc+Cg==" alt="Example Analytics"></div><div><strong class="application-name">Example Analytics</strong></div></div>
@@ -243,15 +252,28 @@ p, li { orphans: 3; widows: 3; }
 <section id="badge-examples" class="section">
 <h2 class="report_header">Badge examples</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Tier</th><th scope="col">Meaning</th><th scope="col">CLL subset</th><th scope="col">Status</th></tr></thead><tbody>
 <tr><td class="cell-plain"><span class="report-badge" style="background-color: #af6246; color: #000000;">Tier 1</span></td><td class="cell-plain">Strong clinical significance</td><td class="cell-plain"><span class="report-badge" style="background-color: #4f7d9f; color: #000000;">#2</span></td><td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Reviewed</span></td></tr><tr><td class="cell-plain"><span class="report-badge" style="background-color: #ae8540; color: #000000;">Tier 2</span></td><td class="cell-plain">Potential clinical significance</td><td class="cell-plain">#8</td><td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Reviewed</span></td></tr><tr><td class="cell-plain"><span class="report-badge" style="background-color: #4f7d9f; color: #000000;">Tier 3</span></td><td class="cell-plain">Uncertain significance</td><td class="cell-plain">-</td><td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Pending</span></td></tr><tr><td class="cell-plain"><span class="report-badge" style="background-color: #4b8b76; color: #000000;">Tier 4</span></td><td class="cell-plain">Benign example</td><td class="cell-plain">-</td><td class="cell-plain">-</td></tr></tbody></table></section>
+<section id="panel-genes" class="section">
+<figure class="report-table-figure">
+<figcaption class="table-caption" id="panel-genes-table-caption">Tabell 1: Gener inkluderade i hematology_myeloid insilico-panel</figcaption>
+<table class="compact-table" style="width: 75.09375px" aria-labelledby="panel-genes-table-caption">
+<colgroup><col style="width: 25.03125px"><col style="width: 25.03125px"><col style="width: 25.03125px"></colgroup>
+<tbody><tr><td class="compact-cell" style="width: 25.03125px">CALR</td><td class="compact-cell" style="width: 25.03125px">JAK2</td><td class="compact-cell" style="width: 25.03125px">MPL</td></tr></tbody>
+</table>
+</figure></section>
+<section id="classification" class="section">
+<figure class="report-table-figure">
+<figcaption class="table-caption" id="classification-table-caption">Tabell 2: Förklaring av klassificering</figcaption>
+<table class="results variant_table reference-table" aria-labelledby="classification-table-caption"><colgroup><col style="width: 7.6923076923076925%"><col style="width: 92.3076923076923%"></colgroup><tbody>
+<tr><td class="cell-plain">Tier I</td><td class="cell-plain">Variant av stark klinisk signifikans (genmutationer som är diagnostiska, behandlingsstyrande eller riskstratifierande enligt gällande riktlinjer)</td></tr><tr><td class="cell-plain">Tier II</td><td class="cell-plain">Variant av potentiell klinisk signifikans (mutationer i gener beskrivna i ett flertal publikationer)</td></tr><tr><td class="cell-plain">Tier III</td><td class="cell-plain">Variant av oklar klinisk signifikans (mutationer i gener beskrivna i ett fåtal publikationer)</td></tr><tr><td class="cell-plain">Tier IV</td><td class="cell-plain">Variant bedömd som benign eller sannolikt benign</td></tr></tbody></table></figure></section>
 <section id="summary" class="section report-summary">
 <h2 class="report_header">Conclusion</h2><div class="results_summary markdown"><p><strong>Summary:</strong> Example A has been reviewed.</p></div>
 </section>
 <section id="description" class="section report-description">
-<h2 class="report_header">Analysis description</h2><div class="markdown"><h3>Method</h3>
+<h2 class="report_header">Analysis description</h2><div class="justified-text markdown"><h3>Method</h3>
 <p>This example uses the default report layout.</p>
 <h3>Notes</h3>
 <p>Add columns and sections directly in JSON.</p></div>
 </section>
 </main>
-<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Accreditation"></div><span class="template-version">Report · Template 0.4.1 · smd-reports 0.4.1</span></footer>
+<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Accreditation"></div><span class="template-version">Report · Template 0.5.0 · smd-reports 0.5.0</span></footer>
 </div></body></html>
