@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.2
+
+- Restore theme-tinted full-width labels in detail and grid sections.
+- Fill compact gene tables with equal, centered cells and complete bordered final rows.
+- Fit compact columns to the available print and browser width without changing input data.
+
 ## 0.5.1
 
 - Keep the footer label Template in English for every report language.

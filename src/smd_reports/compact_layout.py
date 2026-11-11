@@ -47,7 +47,7 @@ def _fonts(size_pt):
     )
 
 
-def column_widths(texts, size_pt, width_mm, *, columns=None, markdown=False):
+def matrix_columns(texts, size_pt, width_mm, *, columns=None, markdown=False):
     """Choose equal-width columns that fit complete, single-line items.
 
     Args:
@@ -58,16 +58,16 @@ def column_widths(texts, size_pt, width_mm, *, columns=None, markdown=False):
         markdown: Allow for the widest bundled emphasis face.
 
     Returns:
-        Column widths in CSS pixels, excluding empty cells in the final row.
+        Equal column widths and the minimum measured cell width, in CSS pixels.
 
     Raises:
         ReportInputError: An item cannot fit on one line or uses unsupported characters.
     """
     if not texts:
-        return []
+        return [], 0
     fonts = _fonts(size_pt)
     characters = _font_data()[0][1]
-    available = math.floor(width_mm * 96 / 25.4) - 2
+    available = width_mm * 96 / 25.4 - 1
     options = {"features": ["tnum"]} if features.check_feature("raqm") else {}
     widths = []
     for text in texts:
@@ -88,6 +88,4 @@ def column_widths(texts, size_pt, width_mm, *, columns=None, markdown=False):
         widths.append(width)
     cell_width = max(widths)
     count = min(len(widths), columns or len(widths), math.floor(available / cell_width))
-    if len(widths) > count:
-        cell_width = available / count
-    return [cell_width] * count
+    return [available / count] * count, cell_width
