@@ -1,5 +1,5 @@
 {% if not section.rows %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}
-{% for values in section.rows %}{% set columns = section.columns_for(loop.index0) %}<article class="finding-detail grid-detail" id="{{ section.key }}-{{ loop.index }}">
+{% for values in section.rows %}{% set columns = section.columns_for(loop.index0) %}<article class="finding-detail grid-detail" id="{{ anchors[section.key].records[loop.index0] }}">
 <table class="report_variant detail-flow grid-table"><thead><tr><th class="report_variant_header" colspan="{{ section.grid_columns }}">{{ section|heading(values, loop.index0) }}</th></tr></thead><tbody>
 {% for row in section.layout %}{% if row|grid_row_visible(values) %}
 {% set wide = row.cells|length == 1 and row.cells[0].mode == 'pair' %}

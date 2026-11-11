@@ -47,6 +47,20 @@ and record page sizes, image hashes and rendering versions under `.artifacts/`.
 Use `--baseline PATH` to compare with an existing capture. Inspect wrapping, page breaks,
 headers and footers when a rendering change affects the previews.
 
+## Browser layout checks
+
+Install Playwright in a development environment and provide a local Chromium executable
+to run the optional browser regressions:
+
+```sh
+python -m pip install playwright
+SMD_REPORTS_CHROMIUM=/path/to/chromium python -m pytest tests/test_screen_layout.py -q
+```
+
+These checks use synthetic standalone HTML at mobile and desktop widths. They verify
+cell borders, equal widths, text fit, scrollbar-free matrices and compact description
+text. They are skipped when Chromium is not configured and do not download a browser.
+
 ## Release preparation
 
 Feature PRs target `dev`. Release PRs promote `dev` to `master` with a merge commit.

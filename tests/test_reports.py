@@ -133,3 +133,29 @@ def test_public_input_is_json_only(payloads):
     assert not hasattr(smd_reports, "PGxFiles")
     assert not hasattr(smd_reports, "CoyoteData")
     assert "schema_version" not in json.dumps(ReportLoader().schema())
+
+
+def test_generated_anchors_preserve_section_ids_and_remain_unique(payloads, load):
+    import re
+
+    data = payloads["generic"]
+    data["sections"] = [
+        {
+            "kind": "table",
+            "key": "results",
+            "caption": "Caption",
+            "columns": {"en": ["Value"]},
+            "rows": [["Reviewed"]],
+        },
+        {"kind": "text", "key": "results-table-caption", "text": "Reserved section ID"},
+        {"kind": "text", "key": "results-table-caption-2", "text": "Second reserved ID"},
+        {"kind": "details", "key": "finding", "columns": {"en": ["Gene"]}, "rows": [["BRAF"]]},
+        {"kind": "text", "key": "finding-1", "text": "Reserved finding ID"},
+    ]
+    html = ReportRenderer().render_html(load(data))
+    ids = re.findall(r'\bid="([^"]+)"', html)
+    assert len(ids) == len(set(ids))
+    assert all(section["key"] in ids for section in data["sections"])
+    assert 'aria-labelledby="results-table-caption-3"' in html
+    assert 'id="results-table-caption-3"' in html
+    assert 'id="finding-1-2"' in html

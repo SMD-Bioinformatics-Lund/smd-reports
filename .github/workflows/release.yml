@@ -19,6 +19,7 @@ on:
 permissions:
   contents: read
   actions: read
+  pull-requests: read
 concurrency:
   group: publish-${{ inputs.index }}-${{ inputs.tag }}
   cancel-in-progress: false

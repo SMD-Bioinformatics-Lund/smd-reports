@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IGHV-mutationsanalys - DEMO-REPORT-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:application_name" content="CLL Genie"><meta name="smd-reports:application_version" content="DEMO"><meta name="smd-reports:pipeline_name" content="Example pipeline"><meta name="smd-reports:pipeline_version" content="DEMO"><meta name="smd-reports:assay_name" content="Example assay"><meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.5.0"><meta name="smd-reports:template_version" content="0.5.0"><meta name="smd-reports:theme" content="cll_genie">
+<meta name="smd-reports:application_name" content="CLL Genie"><meta name="smd-reports:application_version" content="DEMO"><meta name="smd-reports:pipeline_name" content="Example pipeline"><meta name="smd-reports:pipeline_version" content="DEMO"><meta name="smd-reports:assay_name" content="Example assay"><meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.5.1"><meta name="smd-reports:template_version" content="0.5.1"><meta name="smd-reports:theme" content="cll_genie">
 <style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
@@ -48,7 +48,7 @@
 :root { --heading: #7B4925; --accent: #DF7849; --tint: #FFF8F5;
 --wordmark-size: 15pt; --wordmark-weight: 600;
 --wordmark-spacing: 2.4px; --wordmark-suffix: #c47b4c;
---rule-end: #dca37b; --page-width: 210mm; --body-size: 9.25pt; --compact-size: 6.75pt; }
+--rule-end: #dca37b; --page-width: 210mm; --body-size: 9.25pt; --compact-size: 6.75pt; --description-size: 8.0pt; --reference-size: 8.25pt; }
 /* Shared screen and print layout for report documents. */
 :root { --report-border: #b8bec5; }
 @page {
@@ -59,9 +59,9 @@
   @bottom-right { content: element(report-page-number-footer); width: 25%; vertical-align: top; border-top: 1px solid var(--report-border); padding-top: 3mm; padding-bottom: 5mm; }
 }
 * { box-sizing: border-box; }
-html { background: #f2f1f4; color-scheme: light; }
+html { background: #f2f1f4; }
 body { margin: 0; color: #000; font: var(--body-size)/1.35 "Source Sans 3", sans-serif; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.page { width: var(--page-width); max-width: 100%; margin: 24px auto; padding: 14mm 16mm 18mm; background: #fff; box-shadow: 0 2px 8px #392b430a, 0 16px 48px #392b4314; }
+.page { width: var(--page-width); max-width: 100%; margin: 24px auto; padding: 14mm 16mm 18mm; background: #fff; }
 .report-brand-header { display: table; width: 100%; table-layout: fixed; border-spacing: 0; padding-bottom: 8px; margin-bottom: 0; break-inside: avoid; }
 .report-brand-rule { height: 2px; margin-bottom: 9px; background: linear-gradient(90deg, var(--accent), var(--rule-end)); }
 .report-product-brand { display: table-cell; width: 50%; vertical-align: middle; }
@@ -124,7 +124,7 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .results_summary > :first-child { margin-top: 0; }
 .results_summary > :last-child { margin-bottom: 0; }
 /* Justify narrative paragraphs while retaining heading and table alignment. */
-.justified-text > p, .justified-text.plain { text-align: justify; }
+.justified-text > p, .justified-text.plain { font-size: var(--description-size); line-height: 1.2; text-align: justify; }
 /* Keep description subheadings close to the paragraphs they introduce. */
 .report-description .markdown h1, .report-description .markdown h2,
 .report-description .markdown h3, .report-description .markdown h4,
@@ -155,7 +155,7 @@ p, li { orphans: 3; widows: 3; }
 .bordered-metadata .report-metadata { border-top: 1px solid var(--report-border); border-bottom: 1px solid var(--report-border); }
 @media print {
   html, body { background: #fff; }
-  .page { width: auto; margin: 0; padding: 0; box-shadow: none; }
+  .page { width: auto; margin: 0; padding: 0; }
   .report-page-header { display: block; position: running(report-page-header); padding-bottom: 3mm; }
   .report-page-footer { display: block; position: running(report-page-footer); }
   .report-page-number-footer { display: block; position: running(report-page-number-footer); }
@@ -176,9 +176,6 @@ p, li { orphans: 3; widows: 3; }
   .break-before { break-before: page; }
   .report-summary { break-before: page; break-after: page; }
 }
-@media screen {
-  @media (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
-}
 /* JSON columns and grid spans determine the content layout. */
 .cell-highlight, .variant_table td.cell-highlight { background: #ffffe0; }
 .cell-plain { white-space: pre-wrap; }
@@ -196,13 +193,6 @@ p, li { orphans: 3; widows: 3; }
 .compact-table .compact-cell { padding: 0.5px 2px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; }
 .compact-cell code { font-family: inherit; }
 .variant_table tr.row-highlight > td { background: #ffe6e6; }
-@media screen {
-  .compact-table { display: flex; flex-wrap: wrap; width: fit-content !important; max-width: 100%; overflow-x: auto; }
-  .compact-table colgroup { display: none; }
-  .compact-table tbody, .compact-table tr { display: contents; }
-  .compact-table .compact-cell { display: block; flex: 0 0 auto; min-height: 0; margin: 0 -1px -1px 0; }
-}
-
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
 .report-badge { display: inline-block; max-width: 100%; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; font-weight: 600; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; vertical-align: baseline; }
 
@@ -210,7 +200,7 @@ p, li { orphans: 3; widows: 3; }
 .report-table-figure { width: 100%; margin: 0; break-inside: auto; }
 .report-table-figure > .table-caption { margin: 6px 0 3px; color: #000; font-size: var(--body-size); font-weight: 600; line-height: 1.2; text-align: left; break-after: avoid; }
 .report-table-figure > table { margin-top: 0; }
-.variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: calc(var(--body-size) - 1pt); line-height: 1.2; }
+.variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: var(--reference-size); line-height: 1.2; }
 .variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
 
 @page { size: 210mm 297mm; margin-top: 65.0mm; margin-bottom: 38.0mm; }
@@ -218,6 +208,15 @@ p, li { orphans: 3; widows: 3; }
 .center-logo { width: 11.64mm; }
 .accreditation { width: 25.0mm; max-height: 29.0mm; }
 .page-number::after { content: "Sida " counter(page) " av " counter(pages); }
+</style>
+<style media="screen">/* Browser-only presentation is excluded from PDF stylesheet parsing. */
+html { color-scheme: light; }
+.page { box-shadow: 0 2px 8px #392b430a, 0 16px 48px #392b4314; }
+@media (max-width: 800px) { .page { width: 100%; margin: 0; padding: 16px; } }
+.compact-table { display: grid; grid-template-columns: repeat(auto-fill, min(100%, calc(var(--compact-cell-width) - 1px))); padding: 0 1px 1px 0; }
+.compact-table colgroup { display: none; }
+.compact-table tbody, .compact-table tr { display: contents; }
+.compact-table .compact-cell { display: block; max-width: calc(100% + 1px); min-height: 0; margin: 0 0 -1px; }
 </style></head>
 <body class="report-cll_genie header-branded"><div class="page">
 <div class="report-page-header"><header class="report-brand-header">
@@ -231,7 +230,7 @@ p, li { orphans: 3; widows: 3; }
 <tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Provtyp</th><td>&lt;SAMPLE_TYPE&gt;</td><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td><th scope="row">Rapporttyp</th><td>Positiv</td></tr><tr><th scope="row">Submission</th><td>submission_demo</td><th scope="row">Rapportdatum</th><td>2026-01-01</td><th scope="row">Skapad av</th><td>Demo User</td></tr><tr><th scope="row">Rapport-ID</th><td colspan="5">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 <img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div>
-<div class="report-page-number-footer"><span class="template-version">CLL Genie · Mall 0.5.0 · smd-reports 0.5.0</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">CLL Genie · Template 0.5.1 · smd-reports 0.5.1</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-product-brand">
 <div class="report-logo-identity"><img class="report-application-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDgwIDQ4Ij4KPHRpdGxlPkV4YW1wbGUgYXBwbGljYXRpb24gaWNvbjwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI3OCIgaGVpZ2h0PSI0NiIgcng9IjgiIGZpbGw9IiNmNGYwZjgiIHN0cm9rZT0iIzc2NjQ4NiIvPgo8cGF0aCBkPSJNMTMgMjQgMjEgMTYgMjkgMjQgMjEgMzJaIiBmaWxsPSIjNzY2NDg2Ii8+Cjx0ZXh0IHg9IjQ5IiB5PSIyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1MTQ2NWMiPkFQUDwvdGV4dD4KPC9zdmc+Cg==" alt="CLL Genie"></div><div><strong class="application-name">CLL Genie</strong></div></div>
@@ -314,5 +313,5 @@ p, li { orphans: 3; widows: 3; }
 </ol></div>
 </section>
 </main>
-<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">CLL Genie · Mall 0.5.0 · smd-reports 0.5.0</span></footer>
+<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">CLL Genie · Template 0.5.1 · smd-reports 0.5.1</span></footer>
 </div></body></html>

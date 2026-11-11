@@ -67,7 +67,7 @@ def test_pdfs_retain_identity_headers_fonts_and_footer(reports, name):
         assert footer_images(page)
         footer = " ".join(page.get_text().split())
         assert reports[name].template_name in footer
-        assert f"Mall {reports[name].template_version}" in footer
+        assert f"Template {reports[name].template_version}" in footer
         assert f"smd-reports {__version__}" in footer
         assert round(page.rect.width) == 595 and round(page.rect.height) == 842
         assert any("Source" in str(font) for font in page.get_fonts())
@@ -383,3 +383,42 @@ def test_pdf_uses_native_font_subsetting_when_available(payloads, load, caplog):
         for record in caplog.records
         if record.name.startswith("weasyprint")
     )
+
+
+@pytest.mark.parametrize(
+    "name", ["generic", "custom", "coyote3-dna", "genexus-en", "cll-genie-positive", "pgx"]
+)
+def test_portable_html_print_styles_have_no_warnings(example_reports, name, caplog):
+    from weasyprint import HTML
+
+    from smd_reports.rendering import _offline_url_fetcher
+
+    html = ReportRenderer().render_html(example_reports[name])
+    assert '<style media="screen">' in html
+    shared = html.split('<style media="screen">')[0]
+    assert "color-scheme" not in shared and "box-shadow" not in shared
+    assert "font-size: calc(" not in shared
+    with caplog.at_level("WARNING", logger="weasyprint"):
+        rendered = HTML(string=html, url_fetcher=_offline_url_fetcher()).render()
+    warnings = [
+        record.getMessage()
+        for record in caplog.records
+        if record.name.startswith("weasyprint") and record.levelno >= 30
+    ]
+    assert not warnings
+    assert rendered.pages
+
+
+def test_supported_native_pdf_export_is_warning_free(example_reports, caplog):
+    from weasyprint.text.ffi import harfbuzz, harfbuzz_subset
+
+    if not harfbuzz_subset or not harfbuzz.hb_version_atleast(4, 1, 0):
+        pytest.skip("Native HarfBuzz-Subset 4.1.0 or newer is not installed")
+    with caplog.at_level("WARNING", logger="weasyprint"):
+        output = ReportRenderer().render_pdf(example_reports["custom"])
+    assert output.startswith(b"%PDF-")
+    assert not [
+        record.getMessage()
+        for record in caplog.records
+        if record.name.startswith("weasyprint") and record.levelno >= 30
+    ]
