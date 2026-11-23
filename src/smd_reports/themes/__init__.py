@@ -17,7 +17,7 @@ class Theme(Model):
         revision: Optional version of a custom theme.
         heading: Section-heading color.
         accent: Primary brand-rule color.
-        tint: Table and metadata background color.
+        tint: Analysis table and detail label background color.
         rule_end: Secondary brand-rule color.
         body_pt: Body type size in points.
         wordmark_size_pt: Product wordmark type size in points.

@@ -96,7 +96,8 @@ is the renderer's `theme=` argument, then JSON `theme`, then the selected preset
 JSON accepts a registered name or an [inline palette](configuration.md#theme-registration).
 The selected theme name and optional revision are recorded in the HTML metadata.
 
-Themes retain the existing heading colors, table tints and header rules. Wordmark typography
+Themes set analysis heading colors, table tints and header rules. Patient and report
+information use a fixed gray heading and label cells with white value cells. Wordmark typography
 uses `wordmark_size_pt`, `wordmark_weight`, `wordmark_spacing_px` and
 `wordmark_suffix_color`. Shared summary-box styling is independent of theme colors.
 

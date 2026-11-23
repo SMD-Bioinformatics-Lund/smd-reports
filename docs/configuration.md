@@ -579,7 +579,7 @@ Define a custom palette directly in JSON or register a Python `Theme`:
 | `revision` | `null` | Optional custom theme revision for rendering metadata |
 | `heading` | Required | Section-heading, product-name and default badge color |
 | `accent` | Required | Start color of the header separator |
-| `tint` | Required | Table and metadata background tint |
+| `tint` | Required | Analysis table and detail label background tint |
 | `rule_end` | Required | End color of the header separator |
 | `body_pt` | `9.25` | Number, 8–12 points |
 | `wordmark_size_pt` | `15` | Number, 8–24 points |
