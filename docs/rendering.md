@@ -90,6 +90,7 @@ include both translations in JSON. See [translations](json-inputs.md#translation
 | `genexus` | Blue |
 | `cll_genie` | Dark orange |
 | `pgx` | Teal |
+| `breaxpress` | Soft sage green |
 
 Set `theme` in JSON to select colors independently of the preset and layout. Precedence
 is the renderer's `theme=` argument, then JSON `theme`, then the selected preset's theme.

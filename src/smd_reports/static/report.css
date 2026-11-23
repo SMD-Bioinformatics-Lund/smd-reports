@@ -96,6 +96,7 @@ figure { margin: 6px 0; }
 figure img { max-width: 100%; height: auto; }
 figcaption { font-size: 8pt; color: #555; }
 tr { break-inside: avoid; }
+.variant_table tr.keep-with-next { break-after: avoid; }
 thead { display: table-header-group; }
 p, li { orphans: 3; widows: 3; }
 .report-page-header, .report-page-footer, .report-page-number-footer { display: none; }

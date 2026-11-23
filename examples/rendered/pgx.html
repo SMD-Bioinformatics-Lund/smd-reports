@@ -147,6 +147,7 @@ figure { margin: 6px 0; }
 figure img { max-width: 100%; height: auto; }
 figcaption { font-size: 8pt; color: #555; }
 tr { break-inside: avoid; }
+.variant_table tr.keep-with-next { break-after: avoid; }
 thead { display: table-header-group; }
 p, li { orphans: 3; widows: 3; }
 .report-page-header, .report-page-footer, .report-page-number-footer { display: none; }
@@ -275,13 +276,33 @@ html { color-scheme: light; }
 <tr><th scope="row">Patientnamn</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personnummer</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Prov-ID</th><td>SYNTHETIC-001</td><th scope="row">Provtyp</th><td>&lt;SAMPLE_TYPE&gt;</td></tr><tr><th scope="row">Registreringsdatum</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Frågeställning</th><td>Syntetisk analys</td></tr><tr><th scope="row">Analysmetod</th><td>NGS - syntetisk demonstration</td><th scope="row">Analys genomförd av</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Rapportdatum</th><td>2026-01-01</td><th scope="row">Skapad av</th><td>Demo User</td></tr><tr><th scope="row">Rapport-ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <section id="pgx-recommendations" class="section">
 <h2 class="report_header">Kliniska rekommendationer</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Gen</th><th scope="col">Haplotyp</th><th scope="col">Klinisk rekommendation</th></tr></thead><tbody>
-<tr><td class="cell-plain">DPYD</td><td class="cell-plain">*1/*2A</td><td class="cell-plain">Syntetiskt rekommendationsexempel.</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">DPYD</td>
+<td class="cell-plain">*1/*2A</td>
+<td class="cell-plain">Syntetiskt rekommendationsexempel.</td>
+</tr>
+</tbody></table></section>
 <section id="pgx-variants" class="section break-before">
 <h2 class="report_header">Kliniskt relevanta varianter</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Gen</th><th scope="col">rsID</th><th scope="col">Möjliga haplotyper</th><th scope="col">Position</th><th scope="col">Zygositet</th><th scope="col">Variantfrekvens (%)</th><th scope="col">Möjlig duplikation</th></tr></thead><tbody>
-<tr class="row-highlight"><td class="cell-plain">DPYD</td><td class="cell-plain">rsDEMO</td><td class="cell-plain">DPYD-*2A</td><td class="cell-plain">1:100</td><td class="cell-plain">Hetero</td><td class="cell-plain">25.0</td><td class="cell-plain">Ja</td></tr></tbody></table></section>
+<tr class="row-highlight">
+<td class="cell-plain">DPYD</td>
+<td class="cell-plain">rsDEMO</td>
+<td class="cell-plain">DPYD-*2A</td>
+<td class="cell-plain">1:100</td>
+<td class="cell-plain">Hetero</td>
+<td class="cell-plain">25.0</td>
+<td class="cell-plain">Ja</td>
+</tr>
+</tbody></table></section>
 <section id="pgx-depth" class="section">
 <h2 class="report_header">Mål med lågt läsdjup</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">rsID</th><th scope="col">Haplotyp</th><th scope="col">Position</th><th scope="col">Läsdjup</th></tr></thead><tbody>
-<tr><td class="cell-plain">rsLOW</td><td class="cell-plain">DEMO</td><td class="cell-plain">1:200</td><td class="cell-plain">72.0</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">rsLOW</td>
+<td class="cell-plain">DEMO</td>
+<td class="cell-plain">1:200</td>
+<td class="cell-plain">72.0</td>
+</tr>
+</tbody></table></section>
 <section id="summary" class="section report-summary">
 <h2 class="report_header">Slutsats</h2><div class="results_summary markdown"><p>Exempel på granskad slutsats. Endast för demonstration.</p>
 <table>

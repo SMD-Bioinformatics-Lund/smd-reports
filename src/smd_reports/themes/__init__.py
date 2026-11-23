@@ -72,6 +72,7 @@ def default_themes() -> dict[str, Theme]:
         "genexus": ("#3c6585", "#3c6585", "#f0f6fb", "#91b5cd"),
         "cll_genie": ("#7B4925", "#DF7849", "#FFF8F5", "#dca37b"),
         "pgx": ("#176B68", "#278780", "#edf7f5", "#9dcac0"),
+        "breaxpress": ("#376c59", "#6d9e89", "#eaf3ee", "#a6c7b5"),
     }
     return {
         key: Theme(

@@ -44,6 +44,20 @@ def test_coyote4_reuses_coyote3_presentation_with_its_own_identity(payloads, loa
     assert ReportLoader().schema(preset="coyote4")["properties"]["preset"]["const"] == "coyote4"
 
 
+def test_breaxpress_example_uses_shared_layout_and_its_own_theme(reports):
+    document = reports["breaxpress"]
+    html = ReportRenderer().render_html(document)
+    assert document.resolved_layout.header == "branded"
+    assert document.template_name == "Breaxpress"
+    assert '<meta name="smd-reports:theme" content="breaxpress">' in html
+    assert "--accent: #6d9e89" in html
+    assert "Breaxpress DEMO | smd-reports v" in html
+    assert 'id="expression-results"' in html
+    assert 'id="risk-classification"' in html
+    assert 'id="analysis-description"' in html
+    assert ReportLoader().loads(document.model_dump_json()) == document
+
+
 @pytest.mark.parametrize(
     "language,name,heading",
     [("en", "Example tool", "Document details"), ("sv", "Exempelverktyg", "Dokumentinformation")],

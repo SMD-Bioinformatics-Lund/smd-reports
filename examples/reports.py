@@ -11,26 +11,23 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path(".artifacts/examples"))
     parser.add_argument("--pdf", action="store_true")
-    parser.add_argument("--previews", action="store_true")
+    parser.add_argument(
+        "--previews", action="store_true", help="Keep established names for primary previews."
+    )
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     root = Path(__file__).parent / "inputs"
-    sources = (
-        {
-            "generic": "generic",
-            "custom": "custom",
-            "coyote3": "coyote3-dna",
-            "coyote4": "coyote4-dna",
-            "genexus": "genexus-en",
-            "cll-genie": "cll-genie-positive",
-            "pgx": "pgx",
-        }
-        if args.previews
-        else {path.stem: path.stem for path in sorted(root.glob("*.json"))}
-    )
+    preview_names = {
+        "coyote3-dna": "coyote3",
+        "coyote4-dna": "coyote4",
+        "genexus-en": "genexus",
+        "genexus": "genexus-sv",
+        "cll-genie-positive": "cll-genie",
+    }
     renderer = ReportRenderer()
-    for name, source in sources.items():
-        report = ReportLoader().load(root / f"{source}.json")
+    for source in sorted(root.glob("*.json")):
+        name = preview_names.get(source.stem, source.stem) if args.previews else source.stem
+        report = ReportLoader().load(source)
         args.output.joinpath(name + ".html").write_text(
             renderer.render_html(report) + "\n", encoding="utf-8"
         )

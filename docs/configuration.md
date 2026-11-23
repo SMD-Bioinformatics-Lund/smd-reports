@@ -30,7 +30,7 @@ it does not change the report input format. Unknown JSON fields are rejected.
 | `title` | Required | Text; the document title |
 | `report` | Required | [Report identity](#report-identity-and-metadata) object |
 | `language` | `sv` | `en` or `sv`; selects interface labels and supplied translations |
-| `preset` | `null` | `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie` or `pgx`; supplies presentation defaults |
+| `preset` | `null` | `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie`, `pgx` or `breaxpress`; supplies presentation defaults |
 | `application` | `generic` | Legacy preset selector; the same five choices |
 | `theme` | `null` | Registered theme name or inline theme object; overrides the preset's theme |
 | `layout` | `{}` | [Layout overrides](#layout) |
@@ -147,6 +147,7 @@ The theme name matches the preset name. All presets show the colored header rule
 | `genexus` | `center` | Empty | `repeat_title`, `black_title`, `metadata_borders` |
 | `cll_genie` | `branded` | CLL Genie | None |
 | `pgx` | `center` | Empty | None |
+| `breaxpress` | `branded` | Breaxpress | None |
 
 `repeat_title`, `black_title` and `metadata_borders` default to false except for Genexus.
 Generic metadata uses `Report information` and its document label is `Report`.
@@ -360,7 +361,7 @@ have narrower Markdown support, and badge labels are always literal text.
 | `columns` | Required | Object containing nonempty `en` and/or `sv` label lists |
 | `rows` | `[]` | List of row lists, with one cell value per declared column |
 | `column_options` | `{}` | Column-index keys mapped to the display options below |
-| `cell_options` | `{}` | Row-index keys mapped to column-index keys and typography overrides |
+| `cell_options` | `{}` | Row-index keys mapped to column-index keys and cell options |
 | `empty_text` | `No reportable results` | Text; displayed when no rows are supplied |
 
 All translated label lists must have the same length. An options index must reference a
@@ -411,6 +412,13 @@ Each row option has `highlight: false` by default; setting it true applies a pal
 background in the default table style. Reference tables retain white cell backgrounds.
 The row index must exist. Pink row highlighting takes precedence over yellow
 column highlighting in that row. Badges retain their own background colors. See [row highlighting](json-inputs.md#row-highlighting).
+
+For result and reference tables, `cell_options` also accepts `row_span` and `col_span`
+as positive integers. Each option applies to the cell at the supplied row and column.
+The span starts at that cell and extends down, across, or both. Keep every row the
+same length as the header and use JSON `null` in positions covered by the span. The
+renderer skips those positions. Spans must fit within the table, and covered positions
+cannot contain data or their own options. See [spanning cells](json-inputs.md#spanning-table-cells).
 
 ## Badges
 
@@ -560,7 +568,7 @@ See [SVG compatibility](branding.md#self-contained-svg).
 
 ## Theme registration
 
-Built-in themes are `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie` and `pgx`.
+Built-in themes are `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie`, `pgx` and `breaxpress`.
 Their colors are listed below; all values are six-digit hexadecimal strings.
 
 | Theme | Heading | Accent | Tint | Rule end |
@@ -570,6 +578,7 @@ Their colors are listed below; all values are six-digit hexadecimal strings.
 | `genexus` | `#3c6585` | `#3c6585` | `#f0f6fb` | `#91b5cd` |
 | `cll_genie` | `#7B4925` | `#DF7849` | `#FFF8F5` | `#dca37b` |
 | `pgx` | `#176B68` | `#278780` | `#edf7f5` | `#9dcac0` |
+| `breaxpress` | `#376c59` | `#6d9e89` | `#eaf3ee` | `#a6c7b5` |
 
 Define a custom palette directly in JSON or register a Python `Theme`:
 

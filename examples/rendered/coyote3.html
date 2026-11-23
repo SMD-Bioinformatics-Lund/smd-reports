@@ -147,6 +147,7 @@ figure { margin: 6px 0; }
 figure img { max-width: 100%; height: auto; }
 figcaption { font-size: 8pt; color: #555; }
 tr { break-inside: avoid; }
+.variant_table tr.keep-with-next { break-after: avoid; }
 thead { display: table-header-group; }
 p, li { orphans: 3; widows: 3; }
 .report-page-header, .report-page-footer, .report-page-number-footer { display: none; }
@@ -317,16 +318,47 @@ html { color-scheme: light; }
 </section>
 <section id="snvs" class="section">
 <h2 class="report_header">Kliniskt relevanta mutationer (SNVs och små INDELs)</h2><table class="results variant_table"><colgroup><col style="width: 10.0%"><col style="width: 12.0%"><col style="width: 9.0%"><col style="width: 27.0%"><col style="width: 9.0%"><col style="width: 8.0%"><col style="width: 25.0%"></colgroup><thead><tr><th scope="col">Gen</th><th scope="col">Kromosom</th><th scope="col">Exon</th><th scope="col">HGVS</th><th scope="col">VAF</th><th scope="col">Tier</th><th scope="col">Klassificering</th></tr></thead><tbody>
-<tr><td class="cell-plain">BRAF</td><td class="cell-plain">7</td><td class="cell-plain">15</td><td class="cell-plain">p.Val600Glu</td><td class="cell-plain">24%</td><td class="cell-plain"><span class="report-badge" style="background-color: #af6246; color: #000000;">I</span></td><td class="cell-plain" style="font-weight: 600;">Tier I</td></tr><tr><td class="cell-plain">EXAMPLE2</td><td class="cell-plain">1</td><td class="cell-plain">2</td><td class="cell-plain">p.Example2del</td><td class="cell-plain">18%</td><td class="cell-plain"><span class="report-badge" style="background-color: #ae8540; color: #000000;">II</span></td><td class="cell-plain" style="font-weight: 400;">Tier II</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">BRAF</td>
+<td class="cell-plain">7</td>
+<td class="cell-plain">15</td>
+<td class="cell-plain">p.Val600Glu</td>
+<td class="cell-plain">24%</td>
+<td class="cell-plain"><span class="report-badge" style="background-color: #af6246; color: #000000;">I</span></td>
+<td class="cell-plain" style="font-weight: 600;">Tier I</td>
+</tr>
+<tr>
+<td class="cell-plain">EXAMPLE2</td>
+<td class="cell-plain">1</td>
+<td class="cell-plain">2</td>
+<td class="cell-plain">p.Example2del</td>
+<td class="cell-plain">18%</td>
+<td class="cell-plain"><span class="report-badge" style="background-color: #ae8540; color: #000000;">II</span></td>
+<td class="cell-plain" style="font-weight: 400;">Tier II</td>
+</tr>
+</tbody></table></section>
 <section id="cnvs" class="section">
 <h2 class="report_header">Kopietalsförändringar</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Gen</th><th scope="col">Kopietal</th></tr></thead><tbody>
-<tr><td class="cell-plain">EXAMPLE1</td><td class="cell-plain">6</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">EXAMPLE1</td>
+<td class="cell-plain">6</td>
+</tr>
+</tbody></table></section>
 <section id="biomarkers" class="section">
 <h2 class="report_header">Kliniskt relevanta biomarkörer</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Biomarkör</th><th scope="col">Resultat</th><th scope="col">Bedömning</th></tr></thead><tbody>
-<tr><td class="cell-plain">TMB</td><td class="cell-plain">12 mut/Mb</td><td class="cell-plain">Hög</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">TMB</td>
+<td class="cell-plain">12 mut/Mb</td>
+<td class="cell-plain">Hög</td>
+</tr>
+</tbody></table></section>
 <section id="translocations" class="section">
 <h2 class="report_header">Translokationer</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Fusion</th><th scope="col">Klassificering</th></tr></thead><tbody>
-<tr><td class="cell-plain">EML4::ALK</td><td class="cell-plain">Tier II</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">EML4::ALK</td>
+<td class="cell-plain">Tier II</td>
+</tr>
+</tbody></table></section>
 <section id="summary" class="section report-summary">
 <h2 class="report_header">Slutsats – Misstänkt myeloisk neoplasi</h2><div class="results_summary markdown"><p>Exempel på granskad slutsats. Endast för demonstration.</p>
 <table>

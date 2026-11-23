@@ -148,6 +148,7 @@ figure { margin: 6px 0; }
 figure img { max-width: 100%; height: auto; }
 figcaption { font-size: 8pt; color: #555; }
 tr { break-inside: avoid; }
+.variant_table tr.keep-with-next { break-after: avoid; }
 thead { display: table-header-group; }
 p, li { orphans: 3; widows: 3; }
 .report-page-header, .report-page-footer, .report-page-number-footer { display: none; }
@@ -276,10 +277,44 @@ html { color-scheme: light; }
 <tr><th scope="row">Project</th><td>Example project</td><th scope="row">Issued on</th><td>2026-01-01</td></tr><tr><th scope="row">Prepared by</th><td>Example User</td><th scope="row">Document ID</th><td>CUSTOM-001</td></tr></tbody></table></section></div>
 <section id="results" class="section">
 <h2 class="report_header">Results</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Measure</th><th scope="col">Value</th><th scope="col">Status</th></tr></thead><tbody>
-<tr><td class="cell-plain">Example A</td><td class="cell-plain">12</td><td class="cell-plain">Reviewed</td></tr><tr><td class="cell-plain">Example B</td><td class="cell-plain">0</td><td class="cell-plain">Pending</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">Example A</td>
+<td class="cell-plain">12</td>
+<td class="cell-plain">Reviewed</td>
+</tr>
+<tr>
+<td class="cell-plain">Example B</td>
+<td class="cell-plain">0</td>
+<td class="cell-plain">Pending</td>
+</tr>
+</tbody></table></section>
 <section id="badge-examples" class="section">
 <h2 class="report_header">Badge examples</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Tier</th><th scope="col">Meaning</th><th scope="col">CLL subset</th><th scope="col">Status</th></tr></thead><tbody>
-<tr><td class="cell-plain"><span class="report-badge" style="background-color: #af6246; color: #000000;">Tier 1</span></td><td class="cell-plain">Strong clinical significance</td><td class="cell-plain"><span class="report-badge" style="background-color: #4f7d9f; color: #000000;">#2</span></td><td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Reviewed</span></td></tr><tr><td class="cell-plain"><span class="report-badge" style="background-color: #ae8540; color: #000000;">Tier 2</span></td><td class="cell-plain">Potential clinical significance</td><td class="cell-plain">#8</td><td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Reviewed</span></td></tr><tr><td class="cell-plain"><span class="report-badge" style="background-color: #4f7d9f; color: #000000;">Tier 3</span></td><td class="cell-plain">Uncertain significance</td><td class="cell-plain">-</td><td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Pending</span></td></tr><tr><td class="cell-plain"><span class="report-badge" style="background-color: #4b8b76; color: #000000;">Tier 4</span></td><td class="cell-plain">Benign example</td><td class="cell-plain">-</td><td class="cell-plain">-</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain"><span class="report-badge" style="background-color: #af6246; color: #000000;">Tier 1</span></td>
+<td class="cell-plain">Strong clinical significance</td>
+<td class="cell-plain"><span class="report-badge" style="background-color: #4f7d9f; color: #000000;">#2</span></td>
+<td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Reviewed</span></td>
+</tr>
+<tr>
+<td class="cell-plain"><span class="report-badge" style="background-color: #ae8540; color: #000000;">Tier 2</span></td>
+<td class="cell-plain">Potential clinical significance</td>
+<td class="cell-plain">#8</td>
+<td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Reviewed</span></td>
+</tr>
+<tr>
+<td class="cell-plain"><span class="report-badge" style="background-color: #4f7d9f; color: #000000;">Tier 3</span></td>
+<td class="cell-plain">Uncertain significance</td>
+<td class="cell-plain">-</td>
+<td class="cell-plain"><span class="report-badge" style="background-color: #7B4925; color: #ffffff;">Pending</span></td>
+</tr>
+<tr>
+<td class="cell-plain"><span class="report-badge" style="background-color: #4b8b76; color: #000000;">Tier 4</span></td>
+<td class="cell-plain">Benign example</td>
+<td class="cell-plain">-</td>
+<td class="cell-plain">-</td>
+</tr>
+</tbody></table></section>
 <section id="panel-genes" class="section">
 <figure class="report-table-figure">
 <figcaption class="table-caption" id="panel-genes-table-caption">Tabell 1: Gener inkluderade i hematology_myeloid insilico-panel</figcaption>
@@ -293,7 +328,23 @@ html { color-scheme: light; }
 <figure class="report-table-figure">
 <figcaption class="table-caption" id="classification-table-caption">Tabell 2: Förklaring av klassificering</figcaption>
 <table class="results variant_table reference-table" aria-labelledby="classification-table-caption"><colgroup><col style="width: 7.6923076923076925%"><col style="width: 92.3076923076923%"></colgroup><tbody>
-<tr><td class="cell-plain">Tier I</td><td class="cell-plain">Variant av stark klinisk signifikans (genmutationer som är diagnostiska, behandlingsstyrande eller riskstratifierande enligt gällande riktlinjer)</td></tr><tr><td class="cell-plain">Tier II</td><td class="cell-plain">Variant av potentiell klinisk signifikans (mutationer i gener beskrivna i ett flertal publikationer)</td></tr><tr><td class="cell-plain">Tier III</td><td class="cell-plain">Variant av oklar klinisk signifikans (mutationer i gener beskrivna i ett fåtal publikationer)</td></tr><tr><td class="cell-plain">Tier IV</td><td class="cell-plain">Variant bedömd som benign eller sannolikt benign</td></tr></tbody></table></figure></section>
+<tr>
+<td class="cell-plain">Tier I</td>
+<td class="cell-plain">Variant av stark klinisk signifikans (genmutationer som är diagnostiska, behandlingsstyrande eller riskstratifierande enligt gällande riktlinjer)</td>
+</tr>
+<tr>
+<td class="cell-plain">Tier II</td>
+<td class="cell-plain">Variant av potentiell klinisk signifikans (mutationer i gener beskrivna i ett flertal publikationer)</td>
+</tr>
+<tr>
+<td class="cell-plain">Tier III</td>
+<td class="cell-plain">Variant av oklar klinisk signifikans (mutationer i gener beskrivna i ett fåtal publikationer)</td>
+</tr>
+<tr>
+<td class="cell-plain">Tier IV</td>
+<td class="cell-plain">Variant bedömd som benign eller sannolikt benign</td>
+</tr>
+</tbody></table></figure></section>
 <section id="summary" class="section report-summary">
 <h2 class="report_header">Conclusion</h2><div class="results_summary markdown"><p><strong>Summary:</strong> Example A has been reviewed.</p></div>
 </section>

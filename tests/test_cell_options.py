@@ -188,3 +188,86 @@ def test_markdown_cell_spacing_preserves_internal_and_narrative_paragraphs(
     assert paragraphs["MIDDLE"].margin_bottom > 0
     assert paragraphs["BODY"].margin_top > 0
     assert paragraphs["BODY"].margin_bottom > 0
+
+
+def test_table_spans_keep_columns_aligned_in_html_and_pdf(payloads, load):
+    weasyprint = pytest.importorskip("weasyprint")
+
+    from smd_reports.rendering import _offline_url_fetcher
+
+    payload = payloads["generic"]
+    payload["sections"] = [
+        {
+            "kind": "table",
+            "key": "spans",
+            "style": "reference",
+            "columns": {"en": ["Group", "Interval", "Result"]},
+            "rows": [
+                ["TOP", "MIDDLE", "RIGHT"],
+                ["GROUP", "A-ONE", "B-ONE"],
+                [None, "A-TWO", "B-TWO"],
+                [None, "MERGED", None],
+                ["BLOCK", None, "B-THREE"],
+                [None, None, "B-FOUR"],
+            ],
+            "cell_options": {
+                "1": {"0": {"row_span": 3}},
+                "3": {"1": {"col_span": 2}},
+                "4": {"0": {"row_span": 2, "col_span": 2, "font_weight": "semibold"}},
+            },
+        }
+    ]
+    document = load(payload)
+    renderer = ReportRenderer()
+    html = renderer.render_html(document)
+    assert 'rowspan="3"' in cell_tag(html, "GROUP")
+    assert 'colspan="2"' in cell_tag(html, "MERGED")
+    assert 'rowspan="2" colspan="2"' in cell_tag(html, "BLOCK")
+    assert renderer.render_html(ReportLoader().loads(document.model_dump_json())) == html
+
+    pdf = weasyprint.HTML(string=html, url_fetcher=_offline_url_fetcher()).render()
+    cells = {
+        "".join(box.element.itertext()): box
+        for page in pdf.pages
+        for box in page._page_box.descendants()
+        if type(box).__name__ == "TableCellBox" and box.element_tag == "td"
+    }
+    assert cells["GROUP"].rowspan == 3
+    assert cells["MERGED"].colspan == 2
+    assert cells["BLOCK"].rowspan == cells["BLOCK"].colspan == 2
+    assert cells["BLOCK"].style["font_weight"] == 600
+    assert cells["MIDDLE"].position_x == cells["A-ONE"].position_x == cells["A-TWO"].position_x
+    assert cells["RIGHT"].position_x == cells["B-TWO"].position_x == cells["B-FOUR"].position_x
+
+
+@pytest.mark.parametrize(
+    "options,rows,error",
+    [
+        ({"0": {"0": {"row_span": 3}}}, [[1, 2], [None, 3]], "exceeds the table"),
+        ({"0": {"1": {"col_span": 2}}}, [[1, 2]], "exceeds the table"),
+        ({"0": {"0": {"row_span": 0}}}, [[1, 2]], "greater than or equal to 1"),
+        ({"0": {"0": {"col_span": True}}}, [[1, 2]], "valid integer"),
+        ({"0": {"0": {"col_span": 2}}}, [[1, "keep me"]], "must be null"),
+        ({"0": {"0": {"col_span": 2}, "1": {"italic": True}}}, [[1, None]], "cover cell options"),
+        (
+            {"0": {"1": {"row_span": 2}}, "1": {"0": {"col_span": 2}}},
+            [[1, 2], [3, None]],
+            "overlap",
+        ),
+    ],
+)
+def test_invalid_spans_are_rejected(payloads, load, options, rows, error):
+    section = matrix("table")
+    section.update(rows=rows, cell_options=options)
+    payloads["pgx"]["sections"] = [section]
+    with pytest.raises(ValidationError, match=error):
+        load(payloads["pgx"])
+
+
+@pytest.mark.parametrize("kind", ["details", "grid"])
+def test_table_spans_are_only_allowed_in_tables(payloads, load, kind):
+    section = matrix(kind)
+    section["cell_options"] = {"0": {"0": {"row_span": 2}}}
+    payloads["pgx"]["sections"] = [section]
+    with pytest.raises(ValidationError, match="Extra inputs"):
+        load(payloads["pgx"])

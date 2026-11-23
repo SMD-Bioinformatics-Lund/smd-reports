@@ -126,6 +126,8 @@ def test_invalid_paper_dimensions_fail(payloads, load, presentation):
         ("coyote3-dna", "Coyote3 DNA"),
         ("coyote3-rna", "Coyote3 RNA"),
         ("coyote4-dna", "Coyote4 DNA"),
+        ("coyote4-rna", "Coyote4 RNA"),
+        ("breaxpress", "Breaxpress"),
         ("genexus", "Genexus"),
         ("cll-genie-positive", "CLL Genie"),
         ("pgx", "PGx"),
