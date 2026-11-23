@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-import json
 from datetime import datetime
-from functools import lru_cache
-from importlib.resources import files
 from math import isfinite
 from string import Formatter
 from typing import Annotated, Literal
@@ -18,16 +15,7 @@ from .errors import ReportInputError
 from .models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .pages import PAGE_SIZES_MM, PageSize
 from .presets import PRESETS, HeaderStyle, PresetName
-
-
-@lru_cache(maxsize=1)
-def template_versions():
-    """Read and cache the installed template revision registry.
-
-    Returns:
-        A mapping of preset names to their template revision strings.
-    """
-    return json.loads(files("smd_reports").joinpath("themes/versions.json").read_text())
+from .themes import Theme
 
 
 class Branding(Model):
@@ -571,7 +559,7 @@ class Report(Model):
     Attributes:
         application: Legacy preset selector; defaults to generic.
         preset: Optional named defaults for presentation.
-        theme: Optional independent theme registry key.
+        theme: Optional registry key or inline theme definition.
         layout: Independent header, title and metadata options.
         title: Literal or translated document title.
         language: Language used for interface labels and translations.
@@ -584,7 +572,7 @@ class Report(Model):
 
     application: PresetName = "generic"
     preset: PresetName | None = None
-    theme: str | None = Field(default=None, min_length=1)
+    theme: Annotated[str, Field(min_length=1)] | Theme | None = None
     layout: Layout = Field(default_factory=Layout)
     title: LocalizedText
     language: Language = "sv"
@@ -603,6 +591,8 @@ class Report(Model):
     @property
     def theme_name(self):
         """The explicit theme or the selected preset's default theme."""
+        if isinstance(self.theme, Theme):
+            return self.theme.name
         return self.theme or PRESETS[self.preset_name].theme
 
     @property
@@ -660,20 +650,20 @@ class Report(Model):
 
     @property
     def template_version(self):
-        """The installed template revision for the selected preset and analyte."""
-        revisions = template_versions()[self.preset_name]
-        return revisions.get(self.analyte, revisions.get("default", next(iter(revisions.values()))))
+        """The package version, retained as an alias for existing callers."""
+        from . import __version__
+
+        return __version__
 
     @property
     def rendering_metadata(self):
-        """The supplied context and automatically computed package/template versions."""
+        """The supplied context and installed package version."""
         from . import __version__
 
         return {
             **{key: value for key, value in self.provenance.model_dump().items() if value},
             "package_name": "smd-reports",
             "package_version": __version__,
-            "template_version": self.template_version,
         }
 
     @property

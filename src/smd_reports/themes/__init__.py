@@ -14,6 +14,7 @@ class Theme(Model):
 
     Attributes:
         name: Registry key for the theme.
+        revision: Optional version of a custom theme.
         heading: Section-heading color.
         accent: Primary brand-rule color.
         tint: Table and metadata background color.
@@ -25,11 +26,12 @@ class Theme(Model):
         wordmark_suffix_color: Color of the optional product wordmark suffix.
     """
 
-    name: str
+    name: str = Field(min_length=1)
     heading: str
     accent: str
     tint: str
     rule_end: str
+    revision: str | None = Field(default=None, min_length=1)
     body_pt: float = Field(default=9.25, ge=8, le=12)
 
     wordmark_size_pt: float = Field(default=15, ge=8, le=24)

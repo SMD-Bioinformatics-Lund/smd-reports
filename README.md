@@ -3,22 +3,11 @@
 ![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/master/docs/assets/smd-reports-logo.svg)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://smd-reports.readthedocs.io/en/latest/installation/)
-[![Package version](https://img.shields.io/badge/package-0.5.4-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
+[![Package version](https://img.shields.io/badge/package-0.6.0-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/actions/workflows/quality.yml)
 [![Documentation](https://readthedocs.org/projects/smd-reports/badge/?version=latest&style=flat-square)](https://smd-reports.readthedocs.io/en/latest/)
 [![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_70.0-D44A3A?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/)
 [![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE)
-
-Report template revisions:
-
-[![Generic template](https://img.shields.io/badge/Generic-0.5.4-64748B?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Coyote3 DNA template](https://img.shields.io/badge/Coyote3_DNA-0.5.4-665271?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Coyote3 RNA template](https://img.shields.io/badge/Coyote3_RNA-0.5.4-A58AB8?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Coyote4 DNA template](https://img.shields.io/badge/Coyote4_DNA-0.1.0-665271?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Coyote4 RNA template](https://img.shields.io/badge/Coyote4_RNA-0.1.0-A58AB8?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Genexus template](https://img.shields.io/badge/Genexus-0.5.4-3C6585?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![CLL Genie template](https://img.shields.io/badge/CLL_Genie-0.5.4-DF7849?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![PGx template](https://img.shields.io/badge/PGx-0.5.4-176B68?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
 
 Render JSON reports as standalone HTML and PDF with shared layouts, configurable branding
 and Swedish/English labels. Select themes and layouts independently, or use a built-in preset.

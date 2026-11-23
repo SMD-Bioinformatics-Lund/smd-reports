@@ -5,7 +5,7 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from smd_reports import ReportInputError, ReportLoader, ReportRenderer, Theme
+from smd_reports import ReportInputError, ReportLoader, ReportRenderer, Theme, __version__
 from smd_reports.cli import main
 
 
@@ -40,7 +40,7 @@ def test_coyote4_reuses_coyote3_presentation_with_its_own_identity(payloads, loa
     assert coyote4.template_name == f"Coyote4 {analyte.upper()}"
     html = renderer.render_html(coyote4)
     assert 'class="application-name">Coyote<span>4</span>' in html
-    assert f"{coyote4.template_name} · Template {coyote4.template_version}" in html
+    assert f"{coyote4.template_name} | smd-reports v{__version__}" in html
     assert ReportLoader().schema(preset="coyote4")["properties"]["preset"]["const"] == "coyote4"
 
 
@@ -129,6 +129,28 @@ def test_json_theme_and_render_override_select_registered_themes(payloads, load)
     html = renderer.render_html(report, theme="coyote3")
     assert '<meta name="smd-reports:theme" content="coyote3">' in html
     assert "#665271" in html and report.theme == "custom"
+
+
+def test_inline_theme_round_trips_and_applies_in_cli(payloads, load, tmp_path):
+    payload = payloads["custom"]
+    report = load(payload)
+    assert ReportLoader().loads(report.model_dump_json()) == report
+    assert report.theme_name == "example-lab"
+    source = tmp_path / "report.json"
+    output = tmp_path / "report.html"
+    source.write_text(report.model_dump_json(), encoding="utf-8")
+    assert main(["render", str(source), "--format", "html", "--output", str(output)]) == 0
+    html = output.read_text(encoding="utf-8")
+    assert "--heading: #7B4925" in html
+    assert 'name="smd-reports:theme" content="example-lab"' in html
+    assert 'name="smd-reports:theme_revision" content="1.0"' in html
+    overridden = ReportRenderer().render_html(report, theme="generic")
+    assert 'name="smd-reports:theme" content="generic"' in overridden
+    assert 'name="smd-reports:theme_revision"' not in overridden
+
+    payload["theme"]["heading"] = "red"
+    with pytest.raises(ValidationError, match="six-digit hex color"):
+        load(payload)
 
 
 @pytest.mark.parametrize(

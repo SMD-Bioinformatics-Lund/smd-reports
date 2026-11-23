@@ -67,8 +67,7 @@ def test_pdfs_retain_identity_headers_fonts_and_footer(reports, name):
         assert footer_images(page)
         footer = " ".join(page.get_text().split())
         assert reports[name].template_name in footer
-        assert f"Template {reports[name].template_version}" in footer
-        assert f"smd-reports {__version__}" in footer
+        assert f"{reports[name].template_name} | smd-reports v{__version__}" in footer
         assert round(page.rect.width) == 595 and round(page.rect.height) == 842
         assert any("Source" in str(font) for font in page.get_fonts())
         assert all(
@@ -343,7 +342,8 @@ def test_pdf_includes_automatically_computed_rendering_metadata(reports):
     assert kind == "xref"
     metadata = document.xref_object(int(reference.split()[0]))
     assert "smd-reports" in metadata
-    assert reports["pgx"].template_version in metadata
+    assert __version__ in metadata
+    assert "template_version" not in metadata
 
 
 def test_browser_width_query_does_not_warn_or_change_print_layout(payloads, load, caplog):

@@ -32,7 +32,7 @@ it does not change the report input format. Unknown JSON fields are rejected.
 | `language` | `sv` | `en` or `sv`; selects interface labels and supplied translations |
 | `preset` | `null` | `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie` or `pgx`; supplies presentation defaults |
 | `application` | `generic` | Legacy preset selector; the same five choices |
-| `theme` | `null` | Nonempty built-in or registered theme name; overrides the preset's theme |
+| `theme` | `null` | Registered theme name or inline theme object; overrides the preset's theme |
 | `layout` | `{}` | [Layout overrides](#layout) |
 | `analyte` | `""` | Free-text label, rendered uppercase before the document label |
 | `branding` | `{}` | [Product, center and accreditation branding](#branding) |
@@ -153,8 +153,8 @@ Generic metadata uses `Report information` and its document label is `Report`.
 The other presets use `Sample information` and `Analysis report`, respectively.
 
 These labels use English source text and the selected report language. The Coyote3 and Coyote4 `dna`
-and `rna` analytes identify independently tracked template revisions and appear in its
-footer template name. Other analyte strings still appear in the document label.
+and `rna` analytes identify variants and appear in the
+footer report name. Other analyte strings still appear in the document label.
 
 ## Layout
 
@@ -258,7 +258,7 @@ All fields default to `""` and accept strings:
 | `pipeline_version` | Pipeline version |
 | `assay_name` | Assay name |
 
-The package supplies `package_name`, `package_version` and `template_version` automatically
+The package supplies `package_name` and `package_version` automatically
 when rendering. Do not send those fields, `schema_version`, or other version keys in the
 report JSON. Inspect `report.rendering_metadata` for the computed values. The actual theme
 key is recorded separately as HTML metadata. See [version metadata](rendering.md#template-and-package-versions).
@@ -571,11 +571,12 @@ Their colors are listed below; all values are six-digit hexadecimal strings.
 | `cll_genie` | `#7B4925` | `#DF7849` | `#FFF8F5` | `#dca37b` |
 | `pgx` | `#176B68` | `#278780` | `#edf7f5` | `#9dcac0` |
 
-For a custom theme, create `Theme(...)` and register it on the renderer:
+Define a custom palette directly in JSON or register a Python `Theme`:
 
 | Theme field | Default | Accepted value and effect |
 | --- | --- | --- |
-| `name` | Required | Unique registry key |
+| `name` | Required | Theme identifier, used as a registry key for registered themes |
+| `revision` | `null` | Optional custom theme revision for rendering metadata |
 | `heading` | Required | Section-heading, product-name and default badge color |
 | `accent` | Required | Start color of the header separator |
 | `tint` | Required | Table and metadata background tint |
@@ -586,10 +587,25 @@ For a custom theme, create `Theme(...)` and register it on the renderer:
 | `wordmark_spacing_px` | `2.4` | Number, 0–5 CSS pixels |
 | `wordmark_suffix_color` | `#c47b4c` | Suffix color |
 
-Coyote3's built-in wordmark overrides size to 16.5 pt, weight to 400 and spacing to 1.5 px.
-The other built-in themes use the table's typography defaults. Body and wordmark settings
-are theme properties, not report JSON fields. JSON `theme` selects a registered name;
-inline theme objects are not supported. Existing names cannot be replaced by registration.
+The Coyote3 and Coyote4 wordmarks override size to 16.5 pt, weight to 400 and spacing to 1.5 px.
+Other built-in themes use the table's typography defaults. To define a palette for one
+report, supply a `theme` object. Both the CLI and Python renderer accept this format.
+
+```json
+{
+  "theme": {
+    "name": "example-lab",
+    "revision": "1.0",
+    "heading": "#176B68",
+    "accent": "#278780",
+    "tint": "#EDF7F5",
+    "rule_end": "#9DCAC0"
+  }
+}
+```
+
+To reuse a named Python theme across reports, register it on the renderer. A name can be
+registered once per renderer.
 
 ```python
 from smd_reports import ReportLoader, ReportRenderer, Theme
@@ -684,7 +700,7 @@ The schema describes field types, optional values, enums and numeric bounds. Cro
 rules such as row lengths, grid span totals and available page space are also checked by
 the loader. Schema export needs no report data or PDF runtime. Inspect
 `report.preset_name`, `report.theme_name`, `report.resolved_layout`, `report.template_name`
-and `report.template_version` for resolved settings and installed revisions.
+and `report.rendering_metadata` for resolved settings and the installed package version.
 
 ## Explicit table captions and reference tables
 

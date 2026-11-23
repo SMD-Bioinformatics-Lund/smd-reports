@@ -214,7 +214,14 @@
       }
     }
   ],
-  "theme": "cll_genie",
+  "theme": {
+    "name": "example-lab",
+    "revision": "1.0",
+    "heading": "#7B4925",
+    "accent": "#DF7849",
+    "tint": "#FFF8F5",
+    "rule_end": "#DCA37B"
+  },
   "layout": {
     "header": "branded",
     "metadata_heading": {

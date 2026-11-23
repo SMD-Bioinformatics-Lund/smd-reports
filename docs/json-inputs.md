@@ -138,7 +138,7 @@ darker yellow left border and page breaks before and after, independently of the
 | --- | --- |
 | `preset` | Optional presentation defaults; `generic` when omitted |
 | `application` | Legacy preset selector; retained for existing inputs |
-| `theme` | Independent built-in or registered theme name |
+| `theme` | Registered theme name or inline palette |
 | `layout` | Independent header, title and metadata settings |
 | `title` | Report title; plain text or translations |
 | `language` | `sv` (default) or `en` |
@@ -772,7 +772,7 @@ Input contains only the optional context supplied alongside the report:
 }
 ```
 
-The package computes its own name, installed package version and template revision.
+The package computes its own name and installed package version.
 These values are recorded in HTML metadata and exposed through `report.rendering_metadata`;
 they are not input fields. Portable JSON retains the supplied context without requiring
 manual renderer-version values.

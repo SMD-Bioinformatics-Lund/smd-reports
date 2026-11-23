@@ -12,7 +12,7 @@ smd-reports schema --output report.schema.json
 ```
 
 `validate` checks JSON and artwork. `render` writes HTML or PDF. `normalize` writes the
-same JSON format with embedded images. Package and template versions are computed when
+same JSON format with embedded images. The package version is recorded when
 rendering. `schema` exports JSON Schema;
 optionally add `--preset generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie` or `pgx` to require a preset.
 The legacy `--application` option remains available.

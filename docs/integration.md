@@ -44,7 +44,7 @@ and the standard column/row matrix for result tables.
 ## Independent presentation example
 
 The [custom JSON report](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/custom.json)
-selects the dark-orange theme and a branded header without an application preset.
+defines a custom dark-orange palette and selects a branded header without an application preset.
 Its [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.html)
 and [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.pdf)
 use the same table, summary, description and footer components as the bundled presets.

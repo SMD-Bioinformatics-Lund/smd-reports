@@ -65,6 +65,6 @@
 <rect x="32" y="446" width="1056" height="82" rx="14" fill="#edf7f5" stroke="#cce3de"/>
 <text x="52" y="477" fill="#176b68" font-size="16" font-weight="600">Report settings</text>
 <text x="52" y="505" fill="#526579" font-size="15" font-weight="400">Themes · center branding · dynamic columns · page size · image formats</text>
-<text x="32" y="560" fill="#526579" font-size="14" font-weight="400">Footers identify the template revision and package version. PDF output uses the generated HTML.</text>
+<text x="32" y="560" fill="#526579" font-size="14" font-weight="400">Footers show the report name and package version. PDF output uses the generated HTML.</text>
 </g>
 </svg>

@@ -4,8 +4,9 @@
 <title>{{ report.title|ui }} - {{ report.metadata.report_id }}</title>
 <meta name="smd-reports:generated-at" content="{{ report.metadata.generated_at.isoformat() }}">
 {% for key, value in report.rendering_metadata.items() %}<meta name="smd-reports:{{ key }}" content="{{ value }}">{% endfor %}
-<meta name="smd-reports:theme" content="{{ selected_theme }}">
-<style>{{ fonts | safe }}{{ svg_fonts | safe }}
+<meta name="smd-reports:theme" content="{{ theme.name }}">
+{% if theme.revision is not none %}<meta name="smd-reports:theme_revision" content="{{ theme.revision }}">
+{% endif %}<style>{{ fonts | safe }}{{ svg_fonts | safe }}
 :root { --heading: {{ theme.heading }}; --accent: {{ theme.accent }}; --tint: {{ theme.tint }};
 --wordmark-size: {{ theme.wordmark_size_pt }}pt; --wordmark-weight: {{ theme.wordmark_weight }};
 --wordmark-spacing: {{ theme.wordmark_spacing_px }}px; --wordmark-suffix: {{ theme.wordmark_suffix_color }};
