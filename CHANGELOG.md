@@ -3,7 +3,7 @@
 ## 0.6.0
 
 - Add Coyote4 DNA and RNA reports using the Coyote3 layout and colors.
-- Show the report name and package version in every footer.
+- Show the report name, optional application version and package version in every footer.
 - Accept inline JSON themes with an optional revision recorded in report metadata.
 - Keep column headings on empty result tables and show the semibold message in a single spanning cell.
 - End compact gene tables at the last gene, with columns aligned across rows.

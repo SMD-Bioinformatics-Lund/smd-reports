@@ -67,7 +67,8 @@ def test_pdfs_retain_identity_headers_fonts_and_footer(reports, name):
         assert footer_images(page)
         footer = " ".join(page.get_text().split())
         assert reports[name].template_name in footer
-        assert f"{reports[name].template_name} | smd-reports v{__version__}" in footer
+        version = "v3.1.2" if name.startswith("coyote3-") else "DEMO"
+        assert f"{reports[name].template_name} {version} | smd-reports v{__version__}" in footer
         assert round(page.rect.width) == 595 and round(page.rect.height) == 842
         assert any("Source" in str(font) for font in page.get_fonts())
         assert all(

@@ -140,7 +140,21 @@ def test_footer_identifies_report_and_package_version(
     document = load(data)
     assert document.template_name == template_name
     displayed_name = "Rapport" if name == "generic" and language == "sv" else template_name
-    expected = f"{displayed_name} | smd-reports v{__version__}"
+    version = {"coyote3-dna": " v3.1.2", "coyote3-rna": " v3.1.2"}.get(
+        name, " DEMO" if document.provenance.application_version else ""
+    )
+    expected = f"{displayed_name}{version} | smd-reports v{__version__}"
     html = ReportRenderer().render_html(document)
     # The screen and repeating PDF footers must show the same version information.
     assert html.count(expected) == 2
+
+
+@pytest.mark.parametrize(
+    "value,displayed",
+    [("", ""), ("  ", ""), ("3.1.2", " v3.1.2"), ("v3.1.2", " v3.1.2"), ("DEMO", " DEMO")],
+)
+def test_application_version_in_report_footer(payloads, load, value, displayed):
+    data = payloads["coyote3-dna"]
+    data["provenance"]["application_version"] = value
+    html = ReportRenderer().render_html(load(data))
+    assert html.count(f"Coyote3 DNA{displayed} | smd-reports v{__version__}") == 2

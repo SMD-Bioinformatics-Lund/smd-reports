@@ -40,7 +40,7 @@ def test_coyote4_reuses_coyote3_presentation_with_its_own_identity(payloads, loa
     assert coyote4.template_name == f"Coyote4 {analyte.upper()}"
     html = renderer.render_html(coyote4)
     assert 'class="application-name">Coyote<span>4</span>' in html
-    assert f"{coyote4.template_name} | smd-reports v{__version__}" in html
+    assert f"{coyote4.template_name} v3.1.2 | smd-reports v{__version__}" in html
     assert ReportLoader().schema(preset="coyote4")["properties"]["preset"]["const"] == "coyote4"
 
 

@@ -1,1 +1,2 @@
-<span class="template-version">{{ report.template_name|ui }} | smd-reports v{{ report.rendering_metadata.package_version }}</span>
+{% set app_version = report.provenance.application_version|trim %}
+<span class="template-version">{{ report.template_name|ui }}{% if app_version %} {% if app_version[0].isdigit() %}v{% endif %}{{ app_version }}{% endif %} | smd-reports v{{ report.rendering_metadata.package_version }}</span>

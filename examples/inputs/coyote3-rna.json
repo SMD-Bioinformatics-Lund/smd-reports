@@ -86,7 +86,7 @@
   },
   "provenance": {
     "application_name": "Coyote3",
-    "application_version": "DEMO",
+    "application_version": "3.1.2",
     "pipeline_name": "Example pipeline",
     "pipeline_version": "DEMO",
     "assay_name": "Example assay"

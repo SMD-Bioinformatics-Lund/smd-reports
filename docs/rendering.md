@@ -124,9 +124,11 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 
 ## Template and package versions
 
-Each report footer shows its name and the installed package version. For example,
-`Coyote4 DNA | smd-reports v0.6.0`. The package version identifies the shared template,
-preset defaults and built-in palettes.
+Each report footer shows its name and the installed package version. When JSON includes
+`provenance.application_version`, the footer also shows that value next to the report name.
+For example, `"application_version": "3.1.2"` produces
+`Coyote3 DNA v3.1.2 | smd-reports v0.6.0`. Numeric versions get a leading `v`.
+The package version identifies the shared template, preset defaults and built-in palettes.
 
 For custom palettes, set a theme name and an optional `revision`. The renderer records
 them in the HTML metadata as `smd-reports:theme` and `smd-reports:theme_revision`.

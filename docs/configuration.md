@@ -253,7 +253,7 @@ All fields default to `""` and accept strings:
 | Field | Meaning |
 | --- | --- |
 | `application_name` | Originating application |
-| `application_version` | Application version |
+| `application_version` | Application version shown beside the report name in the footer |
 | `pipeline_name` | Pipeline name |
 | `pipeline_version` | Pipeline version |
 | `assay_name` | Assay name |
