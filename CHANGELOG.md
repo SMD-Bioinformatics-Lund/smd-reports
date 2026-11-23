@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0
+
+- Support row spans in finding grids alongside column spans.
+- Use full-height theme tints beside long comments and left-align finding-grid headings.
+- Use the regular results style and heading for the Breaxpress risk classification table.
+- Center text vertically in all table cells and use smaller, centered tier badges.
+
 ## 0.6.1
 
 - Add circle and square badges with white tier labels and configurable text colors.

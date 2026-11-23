@@ -534,11 +534,12 @@ class DetailSection(RecordSection):
 
 
 class GridCell(Model):
-    """A column reference and its placement within a grouped detail grid."""
+    """A column reference with its horizontal and vertical detail-grid spans."""
 
     column: int = Field(ge=0)
     mode: Literal["pair", "inline", "value", "label"] = "pair"
     span: int = Field(default=2, ge=1)
+    row_span: int = Field(default=1, ge=1, strict=True)
     label_span: int = Field(default=1, ge=1)
     label: LocalizedText | None = None
 
@@ -560,16 +561,26 @@ class GridCell(Model):
 class GridRow(Model):
     """An ordered group of grid cells with optional empty-row suppression."""
 
-    cells: list[GridCell] = Field(min_length=1)
+    cells: list[GridCell]
     hide_if_empty: bool = False
 
 
 class GridSection(RecordSection):
-    """Repeated finding grids arranged using JSON-defined column spans."""
+    """Repeated finding grids arranged using JSON-defined column and row spans."""
 
     kind: Literal["grid"] = "grid"
     grid_columns: int = Field(default=5, ge=1, le=24)
     layout: list[GridRow] = Field(min_length=1)
+
+    @property
+    def spanning_row_boundaries(self) -> set[int]:
+        """Zero-based rows to keep with the next row when a cell extends across both."""
+        return {
+            boundary
+            for index, row in enumerate(self.layout)
+            for cell in row.cells
+            for boundary in range(index, index + cell.row_span - 1)
+        }
 
     @model_validator(mode="after")
     def valid_layout(self):
@@ -579,13 +590,33 @@ class GridSection(RecordSection):
             The validated grid section.
 
         Raises:
-            ValueError: Row spans do not fit or a referenced column is missing.
+            ValueError: Spans do not fit, a spanned row is conditional, or a column is missing.
         """
-        for row in self.layout:
-            if sum(cell.span for cell in row.cells) != self.grid_columns:
+        occupied_until = [0] * self.grid_columns
+        for index, row in enumerate(self.layout):
+            if row.hide_if_empty and (
+                any(end > index for end in occupied_until)
+                or any(cell.row_span > 1 for cell in row.cells)
+            ):
+                raise ReportInputError("Rows involved in a row span cannot use hide_if_empty")
+            start = 0
+            for cell in row.cells:
+                if cell.column >= self.column_count:
+                    raise ReportInputError("A grid cell references an undeclared column")
+                while start < self.grid_columns and occupied_until[start] > index:
+                    start += 1
+                end = start + cell.span
+                row_end = index + cell.row_span
+                if row_end > len(self.layout):
+                    raise ReportInputError("Grid cell row_span extends beyond the layout")
+                if end > self.grid_columns:
+                    raise ReportInputError("Each layout row must fill grid_columns exactly")
+                if any(until > index for until in occupied_until[start:end]):
+                    raise ReportInputError("A grid cell overlaps an existing row span")
+                occupied_until[start:end] = [row_end] * cell.span
+                start = end
+            if any(until <= index for until in occupied_until):
                 raise ReportInputError("Each layout row must fill grid_columns exactly")
-            if any(cell.column >= self.column_count for cell in row.cells):
-                raise ReportInputError("A grid cell references an undeclared column")
         return self
 
 

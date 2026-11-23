@@ -236,6 +236,8 @@ def test_table_spans_keep_columns_aligned_in_html_and_pdf(payloads, load):
     assert cells["MERGED"].colspan == 2
     assert cells["BLOCK"].rowspan == cells["BLOCK"].colspan == 2
     assert cells["BLOCK"].style["font_weight"] == 600
+    for text in ("GROUP", "MERGED", "BLOCK", "A-ONE"):
+        assert cells[text].style["vertical_align"] == "middle"
     assert cells["MIDDLE"].position_x == cells["A-ONE"].position_x == cells["A-TWO"].position_x
     assert cells["RIGHT"].position_x == cells["B-TWO"].position_x == cells["B-FOUR"].position_x
 

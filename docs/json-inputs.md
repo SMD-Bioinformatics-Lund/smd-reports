@@ -735,11 +735,39 @@ columns. The default `pair` mode renders a label and value, with `label_span: 1`
 `inline` places a bold label and value together; `label` or `value` shows just that part.
 An optional `label` overrides the column label for that placement.
 
-The spans in each layout row must add up to `grid_columns`. Add `hide_if_empty: true`
-to a layout row to omit it when all referenced values are null or empty strings.
+Each layout row must fill `grid_columns`, including positions occupied by earlier spans.
+Add `hide_if_empty: true` to omit a row when all its referenced values are null or empty
+strings. This option applies to rows outside vertical spans.
 Zero and false do not count as empty. The complete CLL Genie JSON example preserves
 sequence, subset, functionality, V/J scores and identities, D-region, FR/CDR, junction
 and count rows using this layout.
+
+### Merged cells in finding grids
+
+Use `row_span` to extend a grid cell over several layout rows. `span` controls its width.
+The renderer places each new cell in the first available grid column. In `pair` mode,
+both the label and value extend across the specified rows. Key cells use the report
+theme's tint across their full height, including beside wrapped comments.
+
+```json
+{
+  "kind": "grid",
+  "key": "evidence-details",
+  "record_heading": "Example finding",
+  "grid_columns": 5,
+  "columns": {"en": ["Evidence", "Source", "Assessment", "Comment"]},
+  "rows": [[null, "Example source", "Reviewed", "Example comment"]],
+  "layout": [
+    {"cells": [{"column": 0, "mode": "label", "span": 1, "row_span": 2}, {"column": 1, "span": 4}]},
+    {"cells": [{"column": 2, "span": 4}]},
+    {"cells": [{"column": 3, "span": 5}]}
+  ]
+}
+```
+
+The tinted Evidence label covers the first column in rows 1 and 2. Source and Assessment
+each use one label column and three value columns. The final row gives Comment one label
+column and a value cell spanning the other four.
 
 ## Summary, description and references
 
