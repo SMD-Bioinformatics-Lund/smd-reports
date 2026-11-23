@@ -35,7 +35,7 @@ body { margin: 0; color: #000; font: var(--body-size)/1.35 "Source Sans 3", sans
 .report-metadata { margin: 0 0 12px; padding: 0 0 3mm; }
 .report-metadata-heading { margin: 0; padding: 5px 7px; background: #e5e7eb; color: #000; font-size: 8.5pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; break-after: avoid; }
 table { width: 100%; max-width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 8.5pt; line-height: 1.18; }
-th, td { box-sizing: border-box; min-width: 0; padding: 3px 6px; vertical-align: top; overflow-wrap: anywhere; text-align: left; }
+th, td { box-sizing: border-box; min-width: 0; padding: 3px 6px; vertical-align: middle; overflow-wrap: anywhere; text-align: left; }
 table.report-patient-table { margin: 0; font-size: 8pt; line-height: 1.2; }
 .report-patient-table .metadata-label { width: 18%; }
 .report-patient-table th, .report-patient-table td { padding: 2px 5px; border: 1px solid var(--report-border); }
@@ -63,9 +63,15 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .detail-flow tr { display: table; width: 100%; table-layout: fixed; }
 .detail-flow th.report_variant_header { width: 100%; }
 .detail-flow tr + tr th, .detail-flow tr + tr td { border-top: 0; }
-.detail-flow tr.detail-wide-row { display: block; break-inside: auto; border: 1px solid var(--report-border); border-top: 0; }
-.detail-wide-row > th.report_key { display: block; float: left; width: var(--detail-label-width); border: 0; background: var(--tint); }
-.detail-wide-row > td.report_comment { display: block; width: auto; margin-left: var(--detail-label-width); border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
+.detail-flow tr.detail-wide-row {
+  display: table;
+  break-inside: auto;
+  border: 1px solid var(--report-border);
+  border-top: 0;
+  background: linear-gradient(to right, var(--tint) 0, var(--tint) var(--detail-label-width), #fff var(--detail-label-width), #fff 100%);
+}
+.detail-wide-row > th.report_key { width: var(--detail-label-width); border: 0; background: var(--tint); }
+.detail-wide-row > td.report_comment { width: auto; border: 0; border-left: 1px solid var(--report-border); break-inside: auto; }
 .plain { white-space: pre-wrap; }
 .results_summary { padding: 8px 10px; border: 1px solid #e9dfc4; border-left: 3px solid #bda15b; background: #fff9e8; color: #000; font-size: 10pt; line-height: 1.4; }
 .results_summary table { width: auto; max-width: 100%; table-layout: auto; border-collapse: collapse; margin: 3px 0; background: #fff; color: #000; font-size: 8pt; line-height: 1.2; break-inside: auto; }
@@ -96,7 +102,8 @@ figure { margin: 6px 0; }
 figure img { max-width: 100%; height: auto; }
 figcaption { font-size: 8pt; color: #555; }
 tr { break-inside: avoid; }
-.variant_table tr.keep-with-next { break-after: avoid; }
+.variant_table tr.keep-with-next, .grid-table tr.keep-with-next { break-after: avoid; }
+.grid-table.grid-with-row-spans { break-inside: auto; }
 thead { display: table-header-group; }
 p, li { orphans: 3; widows: 3; }
 .report-page-header, .report-page-footer, .report-page-number-footer { display: none; }
@@ -138,7 +145,6 @@ p, li { orphans: 3; widows: 3; }
 /* JSON columns and grid spans determine the content layout. */
 .cell-highlight, .variant_table td.cell-highlight { background: #ffffe0; }
 .cell-plain { white-space: pre-wrap; }
-.grid-table th.report_variant_header { text-align: center; }
 .grid-table .report_key { width: auto; }
 .grid-table .detail-wide-row > .report_comment { width: auto; }
 
@@ -153,7 +159,9 @@ p, li { orphans: 3; widows: 3; }
 .compact-cell code { font-family: inherit; }
 .variant_table tr.row-highlight > td { background: #ffe6e6; }
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
-.report-badge { display: inline-block; max-width: 100%; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; font-weight: 600; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; vertical-align: baseline; }
+.report-badge { display: inline-block; max-width: 100%; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; font-weight: 600; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; vertical-align: middle; }
+td:has(> .report-badge:only-child) { text-align: center; }
+.report-badge[data-tier] { font-size: 0.82em; }
 .report-badge-circle, .report-badge-square { min-width: 1.5em; padding: .4em .25em; box-sizing: content-box; text-align: center; }
 .report-badge-circle { border-radius: 50%; }
 .report-badge-square { border-radius: 0; }
@@ -163,7 +171,7 @@ p, li { orphans: 3; widows: 3; }
 .report-table-figure > .table-caption { margin: 6px 0 3px; color: #000; font-size: var(--body-size); font-weight: 600; line-height: 1.2; text-align: left; break-after: avoid; }
 .report-table-figure > table { margin-top: 0; }
 .variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: var(--reference-size); line-height: 1.2; }
-.variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
+.variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; }
 
 
 .compact-table.compact-single-row { width: var(--compact-natural-width); }

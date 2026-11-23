@@ -368,6 +368,7 @@ All translated label lists must have the same length. An options index must refe
 declared column. Rows with too few or too many values are rejected.
 With no rows, a `table` displays `empty_text` in a semibold cell spanning all columns.
 The column headings follow the table's `show_header` setting.
+Table content is centered vertically, including in merged cells.
 
 | Column option | Default | Accepted value and effect |
 | --- | --- | --- |
@@ -451,7 +452,8 @@ the selected language, including formatted booleans. Blank and null values are n
 Badges use semibold text, preserve
 literal labels even in Markdown columns, and wrap within narrow cells. Circle and square
 badges suit short labels such as `I` or `III`. Longer labels may expand or wrap to stay
-readable. See [badge examples](json-inputs.md#optional-badges).
+readable. Standalone badges are centered within their cells. See
+[badge examples](json-inputs.md#optional-badges).
 
 ## Compact tables
 
@@ -524,7 +526,7 @@ Each grid row contains:
 
 | Field | Default | Accepted value and effect |
 | --- | --- | --- |
-| `cells` | Required | Nonempty list of grid-cell objects |
+| `cells` | Required | List of grid-cell objects. Use an empty list when spans from earlier rows fill the row. |
 | `hide_if_empty` | `false` | Hide the row when every referenced value is null or empty |
 
 Each grid cell contains:
@@ -534,11 +536,13 @@ Each grid cell contains:
 | `column` | Required | Integer index, at least 0 and below the data column count |
 | `mode` | `pair` | `pair`, `inline`, `value`, or `label` |
 | `span` | `2` | Positive integer; total width of this cell in grid units |
+| `row_span` | `1` | Positive integer; number of layout rows occupied, including the starting row |
 | `label_span` | `1` | Positive integer; label width in `pair` mode; must be less than `span` |
 | `label` | `null` | Text or null; overrides the column's label |
 
-Cell spans in each layout row must sum to `grid_columns` exactly. A pair renders separate
-label and value cells. Inline mode renders a bold label and value together; value mode
+Every layout row must fill `grid_columns`, counting cells that continue from earlier rows.
+Rows that start or continue a vertical span cannot use `hide_if_empty`. A pair renders
+separate label and value cells. In pair mode, `row_span` applies to both cells. Inline mode renders a bold label and value together; value mode
 omits the label; label mode shows only the label. `label_span` is ignored outside pair mode.
 Zero and false count as visible for empty-row suppression. See
 [grid examples](json-inputs.md#grouped-detail-grids).

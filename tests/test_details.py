@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from smd_reports import ReportRenderer
+from smd_reports import ReportLoader, ReportRenderer
 
 
 @pytest.mark.parametrize("application", ["coyote3", "genexus", "cll_genie", "pgx"])
@@ -163,3 +163,62 @@ def test_grid_hide_if_empty_preserves_zero_and_false(payloads, load):
     html = ReportRenderer().render_html(load(data))
     assert ">0</td>" in html and ">Nej</td>" in html
     assert ">Empty</th>" not in html
+
+
+def test_finding_grid_renders_vertical_and_horizontal_spans(payloads, load):
+    weasyprint = pytest.importorskip("weasyprint")
+    from smd_reports.rendering import _offline_url_fetcher
+
+    data = payloads["custom"]
+    section = next(section for section in data["sections"] if section["key"] == "evidence-details")
+    data["sections"] = [section]
+    report = load(data)
+    renderer = ReportRenderer()
+    html = renderer.render_html(report)
+    assert 'colspan="1" rowspan="2" class="report_key' in html
+    assert 'colspan="4" class="var_report_val' in html
+    assert renderer.render_html(ReportLoader().loads(report.model_dump_json())) == html
+
+    document = weasyprint.HTML(string=html, url_fetcher=_offline_url_fetcher()).render()
+    cells = {
+        "".join(box.element.itertext()): box
+        for page in document.pages
+        for box in page._page_box.descendants()
+        if type(box).__name__ == "TableCellBox"
+    }
+    assert cells["Evidence"].rowspan == 2
+    assert cells["Example source"].colspan == cells["Reviewed"].colspan == 3
+    assert cells["Example source"].position_x == cells["Reviewed"].position_x
+    assert cells["Evidence"].border_height() == pytest.approx(
+        cells["Source"].border_height() + cells["Assessment"].border_height()
+    )
+    assert cells["Comment"].border_height() > cells["Source"].border_height()
+    for key in ("Comment", "Evidence"):
+        assert tuple(cells[key].style["background_color"].coordinates) == pytest.approx(
+            (1, 248 / 255, 245 / 255)
+        )
+
+
+@pytest.mark.parametrize(
+    "change,message",
+    [
+        ("overflow", "row_span extends beyond"),
+        ("overlap", "overlaps an existing row span"),
+        ("hidden", "cannot use hide_if_empty"),
+    ],
+)
+def test_finding_grid_rejects_invalid_row_spans(payloads, load, change, message):
+    data = payloads["custom"]
+    section = next(section for section in data["sections"] if section["key"] == "evidence-details")
+    if change == "overflow":
+        section["layout"][0]["cells"][0]["row_span"] = 4
+    elif change == "overlap":
+        section["layout"][0]["cells"].reverse()
+        section["layout"][1]["cells"][0]["span"] = 5
+        # Keep the continuing cell away from the first grid column.
+        section["layout"][0]["cells"][0]["span"] = 2
+        section["layout"][0]["cells"].append({"column": 3, "span": 2})
+    else:
+        section["layout"][1]["hide_if_empty"] = True
+    with pytest.raises(ValidationError, match=message):
+        load(data)

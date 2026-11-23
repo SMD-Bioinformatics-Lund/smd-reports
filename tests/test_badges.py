@@ -196,10 +196,10 @@ def test_badge_shape_defaults_and_per_value_overrides_round_trip(payloads, load,
     html = renderer.render_html(report)
     assert html.count('class="report-badge report-badge-circle"') == 2
     assert (
-        'class="report-badge report-badge-square" style="background-color: #ae8540; color: #ffffff;'
-        in html
+        'class="report-badge report-badge-square" data-tier="tier2" '
+        'style="background-color: #ae8540; color: #ffffff;' in html
     )
-    assert 'class="report-badge" style="background-color: #4f7d9f;' in html
+    assert 'class="report-badge" data-tier="tier3" style="background-color: #4f7d9f;' in html
     assert html.count(">Other</span>") == 0
     restored = ReportLoader().loads(report.model_dump_json())
     assert renderer.render_html(restored) == html
@@ -223,6 +223,17 @@ def test_short_tier_badges_render_with_equal_dimensions_in_print(payloads, load,
     assert badge.border_width() == pytest.approx(badge.border_height())
     radius = badge.style["border_top_left_radius"][0]
     assert radius.value == (50 if shape == "circle" else 0)
+    cell = next(
+        box
+        for page in rendered.pages
+        for box in page._page_box.descendants()
+        if type(box).__name__ == "TableCellBox" and badge in box.descendants()
+    )
+    assert cell.style["vertical_align"] == "middle"
+    assert badge.style["font_size"] == pytest.approx(cell.style["font_size"] * 0.82)
+    assert badge.position_x + badge.border_width() / 2 == pytest.approx(
+        cell.position_x + cell.border_width() / 2
+    )
 
 
 @pytest.mark.parametrize("shape", ["circle", "square"])

@@ -55,8 +55,7 @@
     {
       "kind": "table",
       "key": "risk-classification",
-      "style": "reference",
-      "caption": {"en": "Table 1: Risk classification example", "sv": "Tabell 1: Exempel på riskklassificering"},
+      "heading": {"en": "Risk classification", "sv": "Riskklassificering"},
       "columns": {
         "en": ["Lymph node status", "ROR interval", "Risk classification"],
         "sv": ["Körtelstatus", "ROR-intervall", "Riskklassificering"]

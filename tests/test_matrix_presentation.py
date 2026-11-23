@@ -127,7 +127,7 @@ def test_print_full_width_detail_labels_use_theme_tint(payloads, load, preset, k
         box
         for page in rendered.pages
         for box in page._page_box.descendants()
-        if type(box).__name__ == "BlockBox"
+        if type(box).__name__ == "TableCellBox"
         and box.element_tag == "th"
         and box.element.get("class") == "report_key"
     ]

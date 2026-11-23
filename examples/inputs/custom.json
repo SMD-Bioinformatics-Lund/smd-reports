@@ -205,6 +205,21 @@
       }
     },
     {
+      "kind": "grid",
+      "key": "evidence-details",
+      "record_heading": "Example finding",
+      "grid_columns": 5,
+      "columns": {"en": ["Evidence", "Source", "Assessment", "Comment"]},
+      "rows": [
+        [null, "Example source", "Reviewed", "This comment demonstrates how longer finding text wraps inside a wide value cell. The background of the Comment label extends to the bottom of the row."]
+      ],
+      "layout": [
+        {"cells": [{"column": 0, "mode": "label", "span": 1, "row_span": 2}, {"column": 1, "span": 4}]},
+        {"cells": [{"column": 2, "span": 4}]},
+        {"cells": [{"column": 3, "span": 5}]}
+      ]
+    },
+    {
       "kind": "description",
       "key": "description",
       "format": "markdown",
