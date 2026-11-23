@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+
+- Add circle and square badges with white tier labels and configurable text colors.
+
 ## 0.6.0
 
 - Add Coyote4 DNA and RNA reports using the Coyote3 layout and colors.

@@ -131,9 +131,10 @@
         "5": {
           "width": 0.8,
           "badge": {
+            "shape": "circle",
             "values": {
               "I": "tier1",
-              "II": "tier2",
+              "II": {"preset": "tier2", "shape": "square"},
               "III": "tier3",
               "IV": "tier4"
             }
