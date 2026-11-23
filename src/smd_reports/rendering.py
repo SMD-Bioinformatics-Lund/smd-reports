@@ -113,10 +113,12 @@ def render_cell(context, value, column):
             badge_class = "report-badge"
             if style.shape in {"circle", "square"}:
                 badge_class += f" report-badge-{style.shape}"
+            tier = Markup(' data-tier="{}"').format(style.preset) if style.preset else ""
             return Markup(
-                '<span class="{}" style="background-color: {}; color: {};{}">{}</span>'
+                '<span class="{}"{} style="background-color: {}; color: {};{}">{}</span>'
             ).format(
                 badge_class,
+                tier,
                 background,
                 foreground,
                 " " + column.text_style if column.text_style else "",

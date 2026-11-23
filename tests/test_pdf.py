@@ -114,13 +114,23 @@ def test_long_detail_comment_continues_without_truncation(payloads, load, kind, 
             grid_columns=5, layout=[{"cells": [{"column": i, "span": 5}]} for i in range(3)]
         )
     data["sections"] = [section]
-    doc = pdf(load(data))
+    report = load(data)
+    doc = pdf(report)
     text = "\n".join(p.get_text() for p in doc)
     assert len(doc) > 2
     for i in range(100):
         assert text.count(f"PARAGRAPH-{i:03d}") == 1
     assert text.count("END-MARKER") == 1
     assert all(footer_images(p) for p in doc)
+    tint = ReportRenderer().themes[report.theme_name].tint
+    expected = tuple(int(tint[i : i + 2], 16) for i in (1, 3, 5))
+    for marker in ("PARAGRAPH-001", "PARAGRAPH-050", "PARAGRAPH-098"):
+        page = next(page for page in doc if page.search_for(marker))
+        (paragraph,) = page.search_for(marker)
+        y = round((paragraph.y0 + paragraph.y1) / 2)
+        x = round(paragraph.x0 - 20)
+        pixels = page.get_pixmap(clip=pymupdf.Rect(x, y, x + 1, y + 1))
+        assert pixels.pixel(0, 0) == pytest.approx(expected, abs=1)
 
 
 def test_cll_original_grouping_is_preserved_by_json_grid(reports):
