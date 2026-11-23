@@ -129,7 +129,7 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 Each report footer shows its name and the installed package version. When JSON includes
 `provenance.application_version`, the footer also shows that value next to the report name.
 For example, `"application_version": "3.1.2"` produces
-`Coyote3 DNA v3.1.2 | smd-reports v0.6.0`. Numeric versions get a leading `v`.
+`Coyote3 DNA v3.1.2 | smd-reports v0.6.1`. Numeric versions get a leading `v`.
 The package version identifies the shared template, preset defaults and built-in palettes.
 
 For custom palettes, set a theme name and an optional `revision`. The renderer records

@@ -154,6 +154,9 @@ p, li { orphans: 3; widows: 3; }
 .variant_table tr.row-highlight > td { background: #ffe6e6; }
 /* Badges retain their supplied label and can wrap inside narrow table cells. */
 .report-badge { display: inline-block; max-width: 100%; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; font-weight: 600; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; vertical-align: baseline; }
+.report-badge-circle, .report-badge-square { min-width: 1.5em; padding: .4em .25em; box-sizing: content-box; text-align: center; }
+.report-badge-circle { border-radius: 50%; }
+.report-badge-square { border-radius: 0; }
 
 /* Explicit table captions share typography independently of table width. */
 .report-table-figure { width: 100%; margin: 0; break-inside: auto; }

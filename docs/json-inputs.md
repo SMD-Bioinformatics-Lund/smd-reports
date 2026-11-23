@@ -378,20 +378,37 @@ the selected theme's heading color. Foreground text is automatically black or wh
 legibility. Custom colors must use six-digit hexadecimal notation (`#RRGGBB`). Choose a
 preset or a custom color, rather than combining both.
 
+Set `"shape": "circle"` or `"shape": "square"` inside `badge`. The default is
+`"rounded"`. Circle and square tier badges use white text and equal width and height
+for short labels. Set `"text_color": "#000000"` to use black instead, or supply
+another six-digit hex color. Longer text can expand or wrap within its cell.
+
 When rows require different styles, map their displayed values once:
 
 ```json
 {
   "columns": {"en": ["Tier", "CLL subset"]},
   "column_options": {
-    "0": {"badge": {"values": {"I": "tier1", "II": "tier2", "III": "tier3", "IV": "tier4"}}},
+    "0": {
+      "badge": {
+        "shape": "circle",
+        "values": {
+          "I": "tier1",
+          "II": {"preset": "tier2", "shape": "square", "text_color": "#000000"},
+          "III": "tier3",
+          "IV": "tier4"
+        }
+      }
+    },
     "1": {"badge": {"values": {"#2": {"color": "#4f7d9f"}}}}
   },
   "rows": [["I", "#2"], ["II", "#8"]]
 }
 ```
 
-The first row shows two badges; `#8` in the second row remains ordinary text. Mapping
+Tier I inherits the circle shape and uses white text. Tier II uses a square with black text.
+The first row shows two
+badges, and `#8` in the second row remains ordinary text. Mapping
 keys match the displayed text in the selected report language. Each entry accepts a tier
 name or an object with `preset`, `color`, or no properties for the theme default.
 Use either a whole-column style or a value mapping. Unlisted values retain normal column
