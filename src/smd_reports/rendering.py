@@ -281,7 +281,6 @@ def _compact_tables(report, theme):
             "width": sum(widths),
             "minimum_width": minimum_width,
             "css_class": f"compact-layout-{len(result)}",
-            "screen_fillers": [(-len(values)) % n for n in range(1, count + 1)],
         }
     return result
 

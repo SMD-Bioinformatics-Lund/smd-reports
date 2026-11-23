@@ -25,6 +25,25 @@ def test_named_presets_preserve_legacy_rendering_and_round_trip(payloads, load, 
     assert renderer.render_html(restored) == renderer.render_html(current)
 
 
+@pytest.mark.parametrize("analyte", ["dna", "rna"])
+def test_coyote4_reuses_coyote3_presentation_with_its_own_identity(payloads, load, analyte):
+    data = payloads[f"coyote3-{analyte}"]
+    coyote3 = load(data)
+    data["application"] = "coyote4"
+    coyote4 = load(data)
+    renderer = ReportRenderer()
+    assert coyote4.resolved_layout == coyote3.resolved_layout
+    assert coyote4.sections == coyote3.sections
+    old_theme = renderer.themes[coyote3.theme_name]
+    new_theme = renderer.themes[coyote4.theme_name]
+    assert new_theme.model_dump(exclude={"name"}) == old_theme.model_dump(exclude={"name"})
+    assert coyote4.template_name == f"Coyote4 {analyte.upper()}"
+    html = renderer.render_html(coyote4)
+    assert 'class="application-name">Coyote<span>4</span>' in html
+    assert f"{coyote4.template_name} · Template {coyote4.template_version}" in html
+    assert ReportLoader().schema(preset="coyote4")["properties"]["preset"]["const"] == "coyote4"
+
+
 @pytest.mark.parametrize(
     "language,name,heading",
     [("en", "Example tool", "Document details"), ("sv", "Exempelverktyg", "Dokumentinformation")],

@@ -9,6 +9,7 @@ columns and content are supplied by the JSON document.
 | --- | --- | --- |
 | `generic` | `examples/inputs/generic.json` | Neutral header, optional sample ID, translated tables and narrative |
 | `coyote3` | `examples/inputs/coyote3-dna.json` | Summary tables, a separate CNV overview page and finding cards; optional DNA/RNA heading |
+| `coyote4` | `examples/inputs/coyote4-dna.json` | Coyote3 layout and colors with Coyote4 branding and DNA/RNA template names |
 | `genexus` | `examples/inputs/genexus-en.json` | Compact finding fields, full-width comments and wrapping gene lists |
 | `cll_genie` | `examples/inputs/cll-genie-positive.json` | Grouped detail grids with column spans and conditional empty rows |
 | `pgx` | `examples/inputs/pgx.json` | Recommendations, highlighted variant rows and compact gene/haplotype tables |

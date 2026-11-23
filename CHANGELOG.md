@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.4
+
+- Add Coyote4 DNA and RNA templates at revision 0.1.0 using the Coyote3 layout and colors.
+- Keep column headings on empty result tables and show the semibold message in a single spanning cell.
+- End compact gene tables at the last gene, with columns aligned across rows.
+- Set report titles to 16 pt and sample IDs below the title to 12 pt.
+- Show a sample clinical indication in the Coyote3 DNA and RNA examples.
+
 ## 0.5.3
 
 - Keep single-row gene lists at their measured width while retaining full-width multi-row panels.

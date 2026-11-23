@@ -30,7 +30,7 @@ it does not change the report input format. Unknown JSON fields are rejected.
 | `title` | Required | Text; the document title |
 | `report` | Required | [Report identity](#report-identity-and-metadata) object |
 | `language` | `sv` | `en` or `sv`; selects interface labels and supplied translations |
-| `preset` | `null` | `generic`, `coyote3`, `genexus`, `cll_genie` or `pgx`; supplies presentation defaults |
+| `preset` | `null` | `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie` or `pgx`; supplies presentation defaults |
 | `application` | `generic` | Legacy preset selector; the same five choices |
 | `theme` | `null` | Nonempty built-in or registered theme name; overrides the preset's theme |
 | `layout` | `{}` | [Layout overrides](#layout) |
@@ -143,6 +143,7 @@ The theme name matches the preset name. All presets show the colored header rule
 | --- | --- | --- | --- |
 | `generic` | `center` | Empty | None |
 | `coyote3` | `branded` | Coyote + 3 | None |
+| `coyote4` | `branded` | Coyote + 4 | None |
 | `genexus` | `center` | Empty | `repeat_title`, `black_title`, `metadata_borders` |
 | `cll_genie` | `branded` | CLL Genie | None |
 | `pgx` | `center` | Empty | None |
@@ -151,7 +152,7 @@ The theme name matches the preset name. All presets show the colored header rule
 Generic metadata uses `Report information` and its document label is `Report`.
 The other presets use `Sample information` and `Analysis report`, respectively.
 
-These labels use English source text and the selected report language. Coyote3's `dna`
+These labels use English source text and the selected report language. The Coyote3 and Coyote4 `dna`
 and `rna` analytes identify independently tracked template revisions and appear in its
 footer template name. Other analyte strings still appear in the document label.
 
@@ -364,6 +365,8 @@ have narrower Markdown support, and badge labels are always literal text.
 
 All translated label lists must have the same length. An options index must reference a
 declared column. Rows with too few or too many values are rejected.
+With no rows, a `table` displays `empty_text` in a semibold cell spanning all columns.
+The column headings follow the table's `show_header` setting.
 
 | Column option | Default | Accepted value and effect |
 | --- | --- | --- |
@@ -455,10 +458,9 @@ padding and borders. The available page width determines how many columns fit; `
 can set a lower maximum. All cells have equal widths, and items fill rows from left to right.
 
 A list that fits on one row uses only its measured width. For example, `CALR`, `JAK2`
-and `MPL` appear as three small adjacent cells. Multi-row panels fill the available width,
-with empty bordered cells completing the final row. These empty cells are presentation-only
-and are excluded from the report data and exported JSON. Captions span the report width
-independently of the table's width.
+and `MPL` appear as three small adjacent cells. Multi-row panels use the available width
+to size their columns. The last row ends at the final item, with each cell aligned to the
+columns above. Captions span the report width independently of the table's width.
 
 Null, empty and whitespace-only items are omitted. Supplied order and repeated values
 are preserved. Browser tables reduce their column count as space narrows, without horizontal
@@ -558,13 +560,13 @@ See [SVG compatibility](branding.md#self-contained-svg).
 
 ## Theme registration
 
-Built-in themes are `generic`, `coyote3`, `genexus`, `cll_genie` and `pgx`.
+Built-in themes are `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie` and `pgx`.
 Their colors are listed below; all values are six-digit hexadecimal strings.
 
 | Theme | Heading | Accent | Tint | Rule end |
 | --- | --- | --- | --- | --- |
 | `generic` | `#435365` | `#64748B` | `#f3f5f7` | `#aab4c0` |
-| `coyote3` | `#665271` | `#a58ab8` | `#f4eff8` | `#d9b18a` |
+| `coyote3`, `coyote4` | `#665271` | `#a58ab8` | `#f4eff8` | `#d9b18a` |
 | `genexus` | `#3c6585` | `#3c6585` | `#f0f6fb` | `#91b5cd` |
 | `cll_genie` | `#7B4925` | `#DF7849` | `#FFF8F5` | `#dca37b` |
 | `pgx` | `#176B68` | `#278780` | `#edf7f5` | `#9dcac0` |

@@ -1,8 +1,8 @@
 {
   "application": "coyote3",
   "title": {
-    "en": "RNA Analysis Report",
-    "sv": "RNA-analysrapport"
+    "en": "RNA Analysis Report – Suspected myeloid neoplasm",
+    "sv": "RNA-analysrapport – Misstänkt myeloisk neoplasi"
   },
   "language": "sv",
   "report": {
@@ -45,8 +45,8 @@
           "sv": "Frågeställning"
         },
         "value": {
-          "en": "Synthetic analysis",
-          "sv": "Syntetisk analys"
+          "en": "Suspected myeloid neoplasm",
+          "sv": "Misstänkt myeloisk neoplasi"
         }
       },
       {
@@ -99,6 +99,15 @@
   "analyte": "rna",
   "sections": [
     {
+      "kind": "text",
+      "key": "analysis-results",
+      "heading": {
+        "en": "Analysis results – Suspected myeloid neoplasm",
+        "sv": "Analysresultat – Misstänkt myeloisk neoplasi"
+      },
+      "text": ""
+    },
+    {
       "key": "fusions",
       "page_break_before": false,
       "kind": "table",
@@ -130,8 +139,8 @@
       },
       "format": "markdown",
       "heading": {
-        "en": "Conclusion",
-        "sv": "Slutsats"
+        "en": "Conclusion – Suspected myeloid neoplasm",
+        "sv": "Slutsats – Misstänkt myeloisk neoplasi"
       }
     },
     {

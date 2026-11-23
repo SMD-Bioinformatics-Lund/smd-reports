@@ -59,12 +59,13 @@ def test_captions_are_shared_localized_literal_and_visible_when_empty(payloads, 
     )
     assert ">Independent heading</h2>" in html
     assert ">Tabell 2: Förklaring av klassificering</figcaption>" in html
+    assert html.count('aria-labelledby="reference-table-caption"') == 1
+    assert "<thead>" not in html
     if empty:
-        assert html.count('class="empty"') == 2
+        assert html.count('class="empty"') == 1
+        assert '<td class="empty-table-message" colspan="2">' in html
     else:
         assert html.count('aria-labelledby="genes-table-caption"') == 1
-        assert html.count('aria-labelledby="reference-table-caption"') == 1
-        assert "<thead>" not in html
     restored = ReportLoader().loads(document.model_dump_json())
     assert ReportRenderer().render_html(restored) == html
 
@@ -99,6 +100,31 @@ def test_caption_escaping(payloads, load):
     html = ReportRenderer().render_html(report(payloads, load, [definition]))
     assert "<script>" not in html
     assert "&lt;script&gt;" in html
+
+
+def test_empty_result_table_keeps_headers_and_spans_all_columns_in_pdf(payloads, load):
+    weasyprint = pytest.importorskip("weasyprint")
+    definition = {
+        "kind": "table",
+        "key": "variants",
+        "columns": {"sv": ["Gen", "Mutation", "Variantfrekvens", "Klassificering"]},
+        "rows": [],
+        "empty_text": "Inga detekterade mutationer",
+    }
+    document = report(payloads, load, [definition])
+    html = ReportRenderer().render_html(document)
+    rendered = weasyprint.HTML(string=html, url_fetcher=_offline_url_fetcher()).render()
+    cells = [
+        box
+        for page in rendered.pages
+        for box in page._page_box.descendants()
+        if type(box).__name__ == "TableCellBox"
+        and box.element.get("class") == "empty-table-message"
+    ]
+    assert len(cells) == 1
+    assert cells[0].colspan == 4
+    assert cells[0].style["font_weight"] == 600
+    assert all(f'<th scope="col">{label}</th>' in html for label in definition["columns"]["sv"])
 
 
 @pytest.mark.parametrize("show_header", [False, True])

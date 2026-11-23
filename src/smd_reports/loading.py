@@ -13,7 +13,7 @@ from .presets import PRESETS
 
 logger = logging.getLogger(__name__)
 
-APPLICATIONS = ("generic", "coyote3", "genexus", "cll_genie", "pgx")
+APPLICATIONS = ("generic", "coyote3", "coyote4", "genexus", "cll_genie", "pgx")
 
 
 def unique_object(pairs):
@@ -193,7 +193,7 @@ class ReportLoader:
         if any(value is not None and value not in PRESETS for value in (application, preset)):
             logger.error("Report schema export failed: unknown preset")
             raise ReportInputError(
-                "Unknown preset. Choose generic, coyote3, genexus, cll_genie or pgx."
+                "Unknown preset. Choose generic, coyote3, coyote4, genexus, cll_genie or pgx."
             )
         result = Report.model_json_schema()
         if application is not None:

@@ -4,7 +4,7 @@ See the [configuration reference](configuration.md) for every supported field, d
 allowed value and cross-field constraint. This guide provides worked examples.
 
 Reports use one JSON document format. Themes, layout settings and sections can be selected
-independently. Omit `preset` for neutral defaults, or select `generic`, `coyote3`, `genexus`,
+independently. Omit `preset` for neutral defaults, or select `generic`, `coyote3`, `coyote4`, `genexus`,
 `cll_genie` or `pgx` for a predefined combination. The legacy `application` selector remains supported.
 
 ```json
@@ -441,8 +441,7 @@ There is no separate column-header row.
 Place this section after an analysis description or another narrative section. Supply
 items in their display order; repeated values are retained. Item translations, zero and
 false use the same formatting rules as other report cells. Null, empty and whitespace-only
-values are omitted. Empty bordered cells complete the final row. They are presentation-only
-and do not change the supplied items or exported JSON.
+values are omitted. The final row ends at the last item.
 
 Column counts are calculated from the bundled font and the selected paper width. Whole
 items continue onto consecutive rows with shared borders and minimal vertical cell padding.

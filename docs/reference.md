@@ -61,5 +61,5 @@ or Markdown formatting for bold and italic text; see [column text styling](json-
 `CompactTableSection` uses `kind: "compact_table"`, an ordered `items` list, optional
 `columns` as a maximum, and plain-text or Markdown formatting. Single-row lists use their
 measured width; multi-row panels fill the available width with equal cells. Captions remain
-full width, and presentation-only empty cells complete the final row. Ordinary result tables
+full width. The final row ends at the last item. Ordinary result tables
 also accept `row_options` for individual row highlights. See the [JSON guide](json-inputs.md#compact-description-tables).

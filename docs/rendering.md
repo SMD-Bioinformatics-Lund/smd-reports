@@ -86,7 +86,7 @@ include both translations in JSON. See [translations](json-inputs.md#translation
 | Theme key | Colors |
 | --- | --- |
 | `generic` (default) | Slate |
-| `coyote3` | Purple/orange |
+| `coyote3`, `coyote4` | Purple/orange |
 | `genexus` | Blue |
 | `cll_genie` | Dark orange |
 | `pgx` | Teal |
@@ -124,23 +124,25 @@ comparing outputs. See [installation](installation.md) for PDF dependencies.
 ## Template and package versions
 
 Each report footer shows the template name, its revision and the installed package version,
-for example `Coyote3 DNA · Template 0.5.3 · smd-reports 0.5.3`.
+for example `Coyote3 DNA · Template 0.5.4 · smd-reports 0.5.4`.
 The footer label `Template` remains in English for every report language.
 
-A template revision identifies the package release in which that template last changed.
-Unchanged templates retain their previous revision. Coyote3 DNA and RNA revisions are
-tracked separately. The package version identifies the installed Python distribution,
-including rendering code and dependencies, so it may differ from a template revision.
+A template revision identifies a version of the report template. Unchanged templates retain
+their previous revision. Coyote3 and Coyote4 DNA and RNA revisions are tracked separately.
+Coyote4 DNA and RNA begin at template revision 0.1.0. The package version identifies the
+installed Python distribution, including rendering code and dependencies.
 Both values are supplied by the package and cannot be overridden in report JSON.
 
 | Template | Revision |
 | --- | --- |
-| Generic | 0.5.3 |
-| Coyote3 DNA | 0.5.3 |
-| Coyote3 RNA | 0.5.3 |
-| Genexus | 0.5.3 |
-| CLL Genie | 0.5.3 |
-| PGx | 0.5.3 |
+| Generic | 0.5.4 |
+| Coyote3 DNA | 0.5.4 |
+| Coyote3 RNA | 0.5.4 |
+| Coyote4 DNA | 0.1.0 |
+| Coyote4 RNA | 0.1.0 |
+| Genexus | 0.5.4 |
+| CLL Genie | 0.5.4 |
+| PGx | 0.5.4 |
 
 Inspect `report.template_name`, `report.template_version` and `report.rendering_metadata`
 from Python. A package release may update only the templates affected by its changes.

@@ -58,7 +58,7 @@ def test_browser_matrices_have_borders_and_no_horizontal_scroll(
                     }"""
                 )
                 cells = result["cells"]
-                assert len([cell for cell in cells if cell["text"].strip()]) == expected
+                assert len(cells) == expected
                 available = page.locator(f"#{key}").bounding_box()
                 if key == "large":
                     assert result["right"] == pytest.approx(
@@ -75,7 +75,11 @@ def test_browser_matrices_have_borders_and_no_horizontal_scroll(
                 rows = {}
                 for cell in cells:
                     rows.setdefault(round(cell["top"], 1), []).append(cell)
-                assert len({len(row) for row in rows.values()}) == 1
+                first_row = next(iter(rows.values()))
+                for row in rows.values():
+                    assert [cell["left"] for cell in row] == pytest.approx(
+                        [cell["left"] for cell in first_row[: len(row)]], abs=0.1
+                    )
                 expected_text = ["CALR", "JAK2", "MPL"] if key == "small" else genes
                 if key == "long":
                     expected_text = ["LONG-GENE-" * 10]
