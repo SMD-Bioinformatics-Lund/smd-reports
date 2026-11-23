@@ -3,20 +3,11 @@
 ![smd-reports logo](https://raw.githubusercontent.com/SMD-Bioinformatics-Lund/smd-reports/master/docs/assets/smd-reports-logo.svg)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://smd-reports.readthedocs.io/en/latest/installation/)
-[![Package version](https://img.shields.io/badge/package-0.5.3-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
+[![Package version](https://img.shields.io/badge/package-0.6.0-00897B?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/CHANGELOG.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/actions/workflows/quality.yml)
 [![Documentation](https://readthedocs.org/projects/smd-reports/badge/?version=latest&style=flat-square)](https://smd-reports.readthedocs.io/en/latest/)
 [![PDF renderer](https://img.shields.io/badge/PDF-WeasyPrint_70.0-D44A3A?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/)
 [![License](https://img.shields.io/badge/license-GPL--3.0--only-4C9A2A?style=flat-square)](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/LICENSE)
-
-Report template revisions:
-
-[![Generic template](https://img.shields.io/badge/Generic-0.5.3-64748B?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Coyote3 DNA template](https://img.shields.io/badge/Coyote3_DNA-0.5.3-665271?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Coyote3 RNA template](https://img.shields.io/badge/Coyote3_RNA-0.5.3-A58AB8?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![Genexus template](https://img.shields.io/badge/Genexus-0.5.3-3C6585?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![CLL Genie template](https://img.shields.io/badge/CLL_Genie-0.5.3-DF7849?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
-[![PGx template](https://img.shields.io/badge/PGx-0.5.3-176B68?style=flat-square)](https://smd-reports.readthedocs.io/en/latest/rendering/#template-and-package-versions)
 
 Render JSON reports as standalone HTML and PDF with shared layouts, configurable branding
 and Swedish/English labels. Select themes and layouts independently, or use a built-in preset.
@@ -120,6 +111,7 @@ Runnable synthetic examples and complete JSON inputs are in [examples/](https://
 | Generic | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/generic.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/generic.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/generic.json) |
 | Custom presentation | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/custom.json) |
 | Coyote3 | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote3.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote3.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/coyote3-dna.json) |
+| Coyote4 | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote4.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/coyote4.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/coyote4-dna.json) |
 | Genexus | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/genexus.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/genexus.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/genexus-en.json) |
 | CLL Genie | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/cll-genie.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/cll-genie.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/cll-genie-positive.json) |
 | PGxModule | [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/pgx.html) | [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/pgx.pdf) | [JSON](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/pgx.json) |

@@ -5,10 +5,9 @@ html { color-scheme: light; }
 /* Fit the same measured cells to the browser's available content width. */
 .compact-matrix { container-type: inline-size; }
 .compact-table { display: grid; grid-auto-rows: 1fr; grid-template-columns: repeat(var(--compact-columns, 1), minmax(0, 1fr)); border-top: 1px solid var(--report-border); border-left: 1px solid var(--report-border); }
-.compact-table colgroup, .compact-table .compact-empty { display: none; }
+.compact-table colgroup { display: none; }
 .compact-table tbody, .compact-table tr { display: contents; }
 .compact-table .compact-cell { display: flex; justify-content: center; align-items: center; border: 0; border-right: 1px solid var(--report-border); border-bottom: 1px solid var(--report-border); }
-.compact-table .compact-empty, .compact-screen-fillers .compact-cell { display: none; }
 
 /* Allow for browser font rounding while keeping short lists at their natural width. */
 .compact-table.compact-single-row { width: min(100%, calc(var(--compact-natural-width) * 1.03)); }

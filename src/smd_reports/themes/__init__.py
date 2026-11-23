@@ -14,6 +14,7 @@ class Theme(Model):
 
     Attributes:
         name: Registry key for the theme.
+        revision: Optional version of a custom theme.
         heading: Section-heading color.
         accent: Primary brand-rule color.
         tint: Table and metadata background color.
@@ -25,11 +26,12 @@ class Theme(Model):
         wordmark_suffix_color: Color of the optional product wordmark suffix.
     """
 
-    name: str
+    name: str = Field(min_length=1)
     heading: str
     accent: str
     tint: str
     rule_end: str
+    revision: str | None = Field(default=None, min_length=1)
     body_pt: float = Field(default=9.25, ge=8, le=12)
 
     wordmark_size_pt: float = Field(default=15, ge=8, le=24)
@@ -62,9 +64,11 @@ def default_themes() -> dict[str, Theme]:
     Returns:
         A mapping of preset names to fresh Theme instances.
     """
+    coyote_palette = ("#665271", "#a58ab8", "#f4eff8", "#d9b18a")
     palettes = {
         "generic": ("#435365", "#64748B", "#f3f5f7", "#aab4c0"),
-        "coyote3": ("#665271", "#a58ab8", "#f4eff8", "#d9b18a"),
+        "coyote3": coyote_palette,
+        "coyote4": coyote_palette,
         "genexus": ("#3c6585", "#3c6585", "#f0f6fb", "#91b5cd"),
         "cll_genie": ("#7B4925", "#DF7849", "#FFF8F5", "#dca37b"),
         "pgx": ("#176B68", "#278780", "#edf7f5", "#9dcac0"),
@@ -78,7 +82,7 @@ def default_themes() -> dict[str, Theme]:
             rule_end=p[3],
             **(
                 {"wordmark_size_pt": 16.5, "wordmark_weight": 400, "wordmark_spacing_px": 1.5}
-                if key == "coyote3"
+                if key in {"coyote3", "coyote4"}
                 else {}
             ),
         )
