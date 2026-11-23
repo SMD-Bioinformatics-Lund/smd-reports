@@ -430,6 +430,8 @@ the selected theme's heading color.
 | --- | --- | --- |
 | `preset` | `null` | `tier1`, `tier2`, `tier3`, `tier4`, or null |
 | `color` | `null` | Six-digit hexadecimal background color or null |
+| `shape` | `rounded` | `rounded`, `circle` or `square` |
+| `text_color` | `null` | Six-digit hexadecimal text color. Circle and square tier badges default to white. Other badges select black or white automatically. |
 | `values` | `{}` | Display-text keys mapped to tier names or style objects |
 
 | Tier preset | Background |
@@ -441,13 +443,15 @@ the selected theme's heading color.
 
 Use either a preset or custom color. A nonempty `values` map cannot be combined with a
 whole-column preset or color. Each map entry accepts a tier-name string or an object with
-`preset` or `color`; `{}` selects the theme default. Nested value maps are not supported.
+`preset`, `color`, `shape` or `text_color`. An empty object selects the theme color.
+Mapped values inherit the column's shape and text color and can override either.
 Unlisted values retain the column's normal formatting. Keys match the displayed text in
 the selected language, including formatted booleans. Blank and null values are not badged.
 
-Foreground is selected automatically as black or white. Badges use semibold text, preserve
-literal labels even in Markdown columns, and wrap within narrow cells. There are no
-custom foreground, badge font, icon or shape settings. See [badge examples](json-inputs.md#optional-badges).
+Badges use semibold text, preserve
+literal labels even in Markdown columns, and wrap within narrow cells. Circle and square
+badges suit short labels such as `I` or `III`. Longer labels may expand or wrap to stay
+readable. See [badge examples](json-inputs.md#optional-badges).
 
 ## Compact tables
 

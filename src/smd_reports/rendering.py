@@ -110,10 +110,17 @@ def render_cell(context, value, column):
         style = column.badge.style_for(text)
         if style is not None:
             background, foreground = badge_colors(style, context["theme"].heading)
+            badge_class = "report-badge"
+            if style.shape in {"circle", "square"}:
+                badge_class += f" report-badge-{style.shape}"
             return Markup(
-                '<span class="report-badge" style="background-color: {}; color: {};{}">{}</span>'
+                '<span class="{}" style="background-color: {}; color: {};{}">{}</span>'
             ).format(
-                background, foreground, " " + column.text_style if column.text_style else "", text
+                badge_class,
+                background,
+                foreground,
+                " " + column.text_style if column.text_style else "",
+                text,
             )
     return format_markdown(text) if column.format == "markdown" else Markup.escape(text)
 

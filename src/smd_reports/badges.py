@@ -8,6 +8,7 @@ from .errors import ReportInputError
 from .models import Model
 
 TierPreset = Literal["tier1", "tier2", "tier3", "tier4"]
+BadgeShape = Literal["rounded", "circle", "square"]
 TIER_COLORS = {
     "tier1": "#af6246",
     "tier2": "#ae8540",
@@ -22,10 +23,14 @@ class BadgeStyle(Model):
     Attributes:
         preset: Optional predefined tier color.
         color: Optional background color in six-digit hexadecimal notation.
+        shape: Optional badge shape. Defaults to the rounded style.
+        text_color: Optional foreground color in six-digit hexadecimal notation.
     """
 
     preset: TierPreset | None = None
     color: str | None = Field(default=None, pattern=r"^#[0-9a-fA-F]{6}$")
+    shape: BadgeShape | None = None
+    text_color: str | None = Field(default=None, pattern=r"^#[0-9a-fA-F]{6}$")
 
     @model_validator(mode="after")
     def single_color_source(self):
@@ -78,11 +83,20 @@ class BadgeOptions(BadgeStyle):
         if not self.values:
             return self
         selected = self.values.get(text)
-        return BadgeStyle(preset=selected) if isinstance(selected, str) else selected
+        if isinstance(selected, str):
+            return BadgeStyle(preset=selected, shape=self.shape, text_color=self.text_color)
+        if selected is None:
+            return None
+        return selected.model_copy(
+            update={
+                "shape": selected.shape or self.shape,
+                "text_color": selected.text_color or self.text_color,
+            }
+        )
 
 
 def badge_colors(style: BadgeStyle, theme_color: str) -> tuple[str, str]:
-    """Select a background and the more legible black or white foreground.
+    """Resolve a badge's background and foreground colors.
 
     Args:
         style: Validated color selection.
@@ -92,6 +106,10 @@ def badge_colors(style: BadgeStyle, theme_color: str) -> tuple[str, str]:
         Background and foreground colors in hexadecimal notation.
     """
     background = style.color or TIER_COLORS.get(style.preset, theme_color)
+    if style.text_color is not None:
+        return background, style.text_color
+    if style.preset is not None and style.shape in {"circle", "square"}:
+        return background, "#ffffff"
     channels = [int(background[index : index + 2], 16) / 255 for index in (1, 3, 5)]
     linear = [
         value / 12.92 if value <= 0.04045 else ((value + 0.055) / 1.055) ** 2.4

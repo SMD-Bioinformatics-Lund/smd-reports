@@ -117,7 +117,8 @@ def test_translations_escaping_and_scalar_values(payloads, load, language, text,
         {"color": "#abc"},
         {"color": "#123456;background:url(https://example.org)"},
         {"color": "url(file:///example)"},
-        {"text_color": "#ffffff"},
+        {"text_color": "red"},
+        {"shape": "triangle"},
         {"preset": "tier1", "color": "#123456"},
         {"values": {"I": "unknown"}},
         {"values": {"I": {"preset": "tier9"}}},
@@ -172,3 +173,81 @@ def test_badges_are_literal_and_unmatched_values_keep_markdown(payloads, load):
     assert ">**Reviewed**</span>" in html
     assert "<strong>Unlisted</strong>" in html
     assert "<strong>Reviewed</strong>" not in html
+
+
+@pytest.mark.parametrize("kind", ["table", "details", "grid"])
+def test_badge_shape_defaults_and_per_value_overrides_round_trip(payloads, load, kind):
+    report = badge_report(
+        payloads,
+        load,
+        kind,
+        {
+            "shape": "circle",
+            "values": {
+                "I": "tier1",
+                "II": {"preset": "tier2", "shape": "square"},
+                "III": {"preset": "tier3", "shape": "rounded"},
+                "IV": {"preset": "tier4"},
+            },
+        },
+        rows=[["I"], ["II"], ["III"], ["IV"], ["Other"]],
+    )
+    renderer = ReportRenderer()
+    html = renderer.render_html(report)
+    assert html.count('class="report-badge report-badge-circle"') == 2
+    assert (
+        'class="report-badge report-badge-square" style="background-color: #ae8540; color: #ffffff;'
+        in html
+    )
+    assert 'class="report-badge" style="background-color: #4f7d9f;' in html
+    assert html.count(">Other</span>") == 0
+    restored = ReportLoader().loads(report.model_dump_json())
+    assert renderer.render_html(restored) == html
+
+
+@pytest.mark.parametrize("shape", ["circle", "square"])
+def test_short_tier_badges_render_with_equal_dimensions_in_print(payloads, load, shape):
+    from smd_reports.rendering import _offline_url_fetcher
+
+    weasyprint = pytest.importorskip("weasyprint")
+    report = badge_report(payloads, load, badge={"preset": "tier3", "shape": shape}, rows=[["III"]])
+    html = ReportRenderer().render_html(report)
+    rendered = weasyprint.HTML(string=html, url_fetcher=_offline_url_fetcher()).render()
+    (badge,) = [
+        box
+        for page in rendered.pages
+        for box in page._page_box.descendants()
+        if type(box).__name__ == "InlineBlockBox"
+        and box.element.get("class") == f"report-badge report-badge-{shape}"
+    ]
+    assert badge.border_width() == pytest.approx(badge.border_height())
+    radius = badge.style["border_top_left_radius"][0]
+    assert radius.value == (50 if shape == "circle" else 0)
+
+
+@pytest.mark.parametrize("shape", ["circle", "square"])
+def test_shaped_tier_badge_defaults_and_accepts_custom_text_color(shape):
+    assert badge_colors(BadgeStyle(preset="tier2", shape=shape), "#123456") == (
+        "#ae8540",
+        "#ffffff",
+    )
+    assert badge_colors(
+        BadgeStyle(preset="tier2", shape=shape, text_color="#112233"), "#123456"
+    ) == ("#ae8540", "#112233")
+
+
+def test_badge_map_inherits_and_overrides_text_color(payloads, load):
+    report = badge_report(
+        payloads,
+        load,
+        badge={
+            "shape": "circle",
+            "text_color": "#112233",
+            "values": {"I": "tier1", "II": {"preset": "tier2", "text_color": "#223344"}},
+        },
+        rows=[["I"], ["II"]],
+    )
+    html = ReportRenderer().render_html(report)
+    assert 'background-color: #af6246; color: #112233;">I' in html
+    assert 'background-color: #ae8540; color: #223344;">II' in html
+    assert ReportLoader().loads(report.model_dump_json()) == report
