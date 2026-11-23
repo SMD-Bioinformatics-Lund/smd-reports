@@ -148,7 +148,7 @@ names fail the documentation check.
 ## Example reports
 
 JSON files in `examples/inputs/` are the source for the report examples. Regenerate the
-six versioned HTML/PDF previews after changing report appearance:
+HTML and PDF previews for every JSON example after changing report appearance:
 
 ```sh
 python examples/reports.py --previews --pdf --output examples/rendered

@@ -1,7 +1,28 @@
 {% set columns = section.render_columns %}
-{% if section.rows %}
 {% set weight = columns|sum(attribute='width') %}
 <table class="results variant_table{% if section.style == 'reference' %} reference-table{% endif %}{% if section.automatic_widths %} auto-columns{% endif %}"{% if section.caption is not none %} aria-labelledby="{{ anchors[section.key].caption }}"{% endif %}>{% if not section.automatic_widths %}<colgroup>{% for column in columns %}<col style="width: {{ column.width / weight * 100 }}%">{% endfor %}</colgroup>{% endif %}
 {% if section.show_header %}<thead><tr>{% for column in columns %}<th scope="col">{{ column.label|ui }}</th>{% endfor %}</tr></thead>{% endif %}<tbody>
-{% for row in section.rows %}{% set columns = section.columns_for(loop.index0) %}{% set options = section.row_options.get(loop.index0|string) %}<tr{% if options and options.highlight %} class="row-highlight"{% endif %}>{% for column in columns %}{% set value = row[loop.index0] %}<td class="{% if column.emphasis %}emphasis {% endif %}{% if column.highlight %}cell-highlight {% endif %}{% if column.format == 'plain' %}cell-plain{% endif %}"{% if column.text_style %} style="{{ column.text_style }}"{% endif %}>{{ value|cell(column) }}</td>{% endfor %}</tr>{% endfor %}
-</tbody></table>{% else %}<p class="empty">{{ section.empty_text|ui }}</p>{% endif %}
+{% set covered, keep_with_next = section.span_layout() %}
+{% for row in section.rows %}
+{% set row_index = loop.index0 %}
+{% set columns = section.columns_for(row_index) %}
+{% set options = section.row_options.get(row_index|string) %}
+{% set cell_options = section.cell_options.get(row_index|string, {}) %}
+{% set row_classes = [] %}
+{% if options and options.highlight %}{% set _ = row_classes.append('row-highlight') %}{% endif %}
+{% if row_index in keep_with_next %}{% set _ = row_classes.append('keep-with-next') %}{% endif %}
+<tr{% if row_classes %} class="{{ row_classes|join(' ') }}"{% endif %}>
+{% for column in columns %}
+{% set col_index = loop.index0 %}
+{% if (row_index, col_index) not in covered %}
+{% set cell = cell_options.get(col_index|string) %}
+<td class="{% if column.emphasis %}emphasis {% endif %}{% if column.highlight %}cell-highlight {% endif %}{% if column.format == 'plain' %}cell-plain{% endif %}"
+{%- if column.text_style %} style="{{ column.text_style }}"{% endif %}
+{%- if cell and cell.row_span and cell.row_span > 1 %} rowspan="{{ cell.row_span }}"{% endif %}
+{%- if cell and cell.col_span and cell.col_span > 1 %} colspan="{{ cell.col_span }}"{% endif %}>{{ row[col_index]|cell(column) }}</td>
+{% endif %}
+{% endfor %}
+</tr>
+{% endfor %}
+{% if not section.rows %}<tr><td class="empty-table-message" colspan="{{ columns|length }}">{{ section.empty_text|ui }}</td></tr>{% endif %}
+</tbody></table>

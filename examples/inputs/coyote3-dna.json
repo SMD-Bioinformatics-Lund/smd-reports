@@ -1,8 +1,8 @@
 {
   "application": "coyote3",
   "title": {
-    "en": "Molecular Genetics Report",
-    "sv": "Molekylärgenetisk analysrapport"
+    "en": "Molecular Genetics Report – Suspected myeloid neoplasm",
+    "sv": "Molekylärgenetisk analysrapport – Misstänkt myeloisk neoplasi"
   },
   "language": "sv",
   "report": {
@@ -45,8 +45,8 @@
           "sv": "Frågeställning"
         },
         "value": {
-          "en": "Synthetic analysis",
-          "sv": "Syntetisk analys"
+          "en": "Suspected myeloid neoplasm",
+          "sv": "Misstänkt myeloisk neoplasi"
         }
       },
       {
@@ -86,7 +86,7 @@
   },
   "provenance": {
     "application_name": "Coyote3",
-    "application_version": "DEMO",
+    "application_version": "3.1.2",
     "pipeline_name": "Example pipeline",
     "pipeline_version": "DEMO",
     "assay_name": "Example assay"
@@ -98,6 +98,15 @@
   },
   "analyte": "dna",
   "sections": [
+    {
+      "kind": "text",
+      "key": "analysis-results",
+      "heading": {
+        "en": "Analysis results – Suspected myeloid neoplasm",
+        "sv": "Analysresultat – Misstänkt myeloisk neoplasi"
+      },
+      "text": ""
+    },
     {
       "key": "snvs",
       "page_break_before": false,
@@ -163,8 +172,8 @@
         "sv": "Inga rapporterbara resultat"
       },
       "heading": {
-        "en": "Clinically relevant SNVs and small INDELs",
-        "sv": "Kliniskt relevanta SNVs och små INDELs"
+        "en": "Clinically relevant mutations (SNVs and small INDELs)",
+        "sv": "Kliniskt relevanta mutationer (SNVs och små INDELs)"
       }
     },
     {
@@ -249,8 +258,8 @@
       },
       "format": "markdown",
       "heading": {
-        "en": "Conclusion",
-        "sv": "Slutsats"
+        "en": "Conclusion – Suspected myeloid neoplasm",
+        "sv": "Slutsats – Misstänkt myeloisk neoplasi"
       }
     },
     {

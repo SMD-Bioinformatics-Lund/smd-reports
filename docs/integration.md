@@ -9,13 +9,20 @@ columns and content are supplied by the JSON document.
 | --- | --- | --- |
 | `generic` | `examples/inputs/generic.json` | Neutral header, optional sample ID, translated tables and narrative |
 | `coyote3` | `examples/inputs/coyote3-dna.json` | Summary tables, a separate CNV overview page and finding cards; optional DNA/RNA heading |
+| `coyote4` | `examples/inputs/coyote4-dna.json` | Coyote3 layout and colors with Coyote4 branding and DNA/RNA template names |
 | `genexus` | `examples/inputs/genexus-en.json` | Compact finding fields, full-width comments and wrapping gene lists |
 | `cll_genie` | `examples/inputs/cll-genie-positive.json` | Grouped detail grids with column spans and conditional empty rows |
 | `pgx` | `examples/inputs/pgx.json` | Recommendations, highlighted variant rows and compact gene/haplotype tables |
+| `breaxpress` | `examples/inputs/breaxpress.json` | Breast cancer expression results, a risk classification reference table and an analysis description |
 
 Browse the [example inputs](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/inputs)
 and [HTML/PDF previews](https://github.com/SMD-Bioinformatics-Lund/smd-reports/tree/master/examples/rendered).
-All previews use synthetic values and example artwork.
+All previews use synthetic values and example artwork. Each release tag includes the
+HTML and PDF examples for the report variants supported by that release.
+
+Breaxpress uses the shared report format with a sage green theme. The calling application
+supplies the subtype, sample-type warning and both ROR values. The reference table in
+the example uses demonstration categories.
 
 The Coyote3 DNA example places the genome-wide CNV profile on a separate page after the
 conclusion and before the detailed findings. The profile is an `image` section in the JSON;
@@ -43,7 +50,7 @@ and the standard column/row matrix for result tables.
 ## Independent presentation example
 
 The [custom JSON report](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/inputs/custom.json)
-selects the dark-orange theme and a branded header without an application preset.
+defines a custom dark-orange palette and selects a branded header without an application preset.
 Its [HTML](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.html)
 and [PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/master/examples/rendered/custom.pdf)
 use the same table, summary, description and footer components as the bundled presets.

@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-import json
 from datetime import datetime
-from functools import lru_cache
-from importlib.resources import files
 from math import isfinite
 from string import Formatter
 from typing import Annotated, Literal
@@ -18,16 +15,7 @@ from .errors import ReportInputError
 from .models import CellValue, FieldValue, ImageAsset, Language, LocalizedText, Model, SectionBase
 from .pages import PAGE_SIZES_MM, PageSize
 from .presets import PRESETS, HeaderStyle, PresetName
-
-
-@lru_cache(maxsize=1)
-def template_versions():
-    """Read and cache the installed template revision registry.
-
-    Returns:
-        A mapping of preset names to their template revision strings.
-    """
-    return json.loads(files("smd_reports").joinpath("themes/versions.json").read_text())
+from .themes import Theme
 
 
 class Branding(Model):
@@ -233,6 +221,16 @@ class CellOptions(Model):
     italic: bool | None = None
 
 
+class TableCellOptions(CellOptions):
+    """Typography and spans for a result or reference table cell."""
+
+    row_span: int | None = Field(default=None, ge=1, strict=True)
+    col_span: int | None = Field(default=None, ge=1, strict=True)
+
+
+CellIndex = Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")]
+
+
 class ColumnOptions(CellOptions):
     """Optional column widths, badges, text formatting and detail-card layout settings."""
 
@@ -268,10 +266,7 @@ class MatrixSection(SectionBase):
     column_options: dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], ColumnOptions] = (
         Field(default_factory=dict)
     )
-    cell_options: dict[
-        Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")],
-        dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], CellOptions],
-    ] = Field(default_factory=dict)
+    cell_options: dict[CellIndex, dict[CellIndex, CellOptions]] = Field(default_factory=dict)
     rows: list[list[CellValue]] = Field(default_factory=list)
     empty_text: LocalizedText = "No reportable results"
 
@@ -303,19 +298,21 @@ class MatrixSection(SectionBase):
         columns = self.render_columns
         for index, options in self.cell_options.get(str(row_index), {}).items():
             columns[int(index)] = columns[int(index)].model_copy(
-                update=options.model_dump(exclude_none=True)
+                update=options.model_dump(include={"font_weight", "italic"}, exclude_none=True)
             )
         return columns
 
     @field_serializer("cell_options")
-    def serialize_cell_options(self, value: dict[str, dict[str, CellOptions]]) -> dict:
-        """Omit inherited typography while preserving explicit cell resets.
+    def serialize_cell_options(
+        self, value: dict[str, dict[str, CellOptions | TableCellOptions]]
+    ) -> dict:
+        """Omit inherited values while preserving explicit cell settings.
 
         Args:
             value: Cell settings indexed by zero-based row and column positions.
 
         Returns:
-            The same indexes with only non-null typography settings.
+            The same indexes with only non-null cell settings.
         """
         return {
             row: {
@@ -386,6 +383,7 @@ class TableSection(MatrixSection):
     caption: LocalizedText | None = None
     style: Literal["default", "reference"] = "default"
     show_header: bool = True
+    cell_options: dict[CellIndex, dict[CellIndex, TableCellOptions]] = Field(default_factory=dict)
     row_options: dict[Annotated[str, Field(pattern=r"^(0|[1-9][0-9]*)$")], RowOptions] = Field(
         default_factory=dict
     )
@@ -397,18 +395,56 @@ class TableSection(MatrixSection):
             "width" in options.model_fields_set for options in self.column_options.values()
         )
 
+    def span_layout(self) -> tuple[set[tuple[int, int]], set[int]]:
+        """Resolve the positions occupied by spans and the affected row boundaries.
+
+        Returns:
+            Covered cell positions and rows that should stay with the following row.
+
+        Raises:
+            ReportInputError: Spans extend beyond the table, overlap, or cover data or options.
+        """
+        covered = set()
+        keep_with_next = set()
+        for row_key, cells in self.cell_options.items():
+            row = int(row_key)
+            for col_key, options in cells.items():
+                col = int(col_key)
+                row_end = row + (options.row_span or 1)
+                col_end = col + (options.col_span or 1)
+                if row_end > len(self.rows) or col_end > self.column_count:
+                    raise ReportInputError(
+                        f"Cell span at row {row}, column {col} exceeds the table"
+                    )
+                keep_with_next.update(range(row, row_end - 1))
+                for y in range(row, row_end):
+                    for x in range(col, col_end):
+                        if (y, x) == (row, col):
+                            continue
+                        if (y, x) in covered or str(x) in self.cell_options.get(str(y), {}):
+                            raise ReportInputError(
+                                f"Cell spans overlap or cover cell options at row {y}, column {x}"
+                            )
+                        if self.rows[y][x] is not None:
+                            raise ReportInputError(
+                                f"Covered cell at row {y}, column {x} must be null"
+                            )
+                        covered.add((y, x))
+        return covered, keep_with_next
+
     @model_validator(mode="after")
-    def valid_row_options(self):
-        """Require display options to reference an existing row.
+    def valid_table_options(self):
+        """Validate row options and table cell spans.
 
         Returns:
             The validated table section.
 
         Raises:
-            ValueError: An option references a row outside the supplied matrix.
+            ValueError: A row option or cell span is invalid.
         """
         if any(int(index) >= len(self.rows) for index in self.row_options):
             raise ReportInputError("Row options reference an undeclared row")
+        self.span_layout()
         return self
 
     @field_serializer("row_options")
@@ -571,7 +607,7 @@ class Report(Model):
     Attributes:
         application: Legacy preset selector; defaults to generic.
         preset: Optional named defaults for presentation.
-        theme: Optional independent theme registry key.
+        theme: Optional registry key or inline theme definition.
         layout: Independent header, title and metadata options.
         title: Literal or translated document title.
         language: Language used for interface labels and translations.
@@ -584,7 +620,7 @@ class Report(Model):
 
     application: PresetName = "generic"
     preset: PresetName | None = None
-    theme: str | None = Field(default=None, min_length=1)
+    theme: Annotated[str, Field(min_length=1)] | Theme | None = None
     layout: Layout = Field(default_factory=Layout)
     title: LocalizedText
     language: Language = "sv"
@@ -603,6 +639,8 @@ class Report(Model):
     @property
     def theme_name(self):
         """The explicit theme or the selected preset's default theme."""
+        if isinstance(self.theme, Theme):
+            return self.theme.name
         return self.theme or PRESETS[self.preset_name].theme
 
     @property
@@ -660,20 +698,20 @@ class Report(Model):
 
     @property
     def template_version(self):
-        """The installed template revision for the selected preset and analyte."""
-        revisions = template_versions()[self.preset_name]
-        return revisions.get(self.analyte, revisions.get("default", next(iter(revisions.values()))))
+        """The package version, retained as an alias for existing callers."""
+        from . import __version__
+
+        return __version__
 
     @property
     def rendering_metadata(self):
-        """The supplied context and automatically computed package/template versions."""
+        """The supplied context and installed package version."""
         from . import __version__
 
         return {
             **{key: value for key, value in self.provenance.model_dump().items() if value},
             "package_name": "smd-reports",
             "package_version": __version__,
-            "template_version": self.template_version,
         }
 
     @property

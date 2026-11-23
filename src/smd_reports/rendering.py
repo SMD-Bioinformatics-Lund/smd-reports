@@ -281,7 +281,6 @@ def _compact_tables(report, theme):
             "width": sum(widths),
             "minimum_width": minimum_width,
             "css_class": f"compact-layout-{len(result)}",
-            "screen_fillers": [(-len(values)) % n for n in range(1, count + 1)],
         }
     return result
 
@@ -449,12 +448,16 @@ class ReportRenderer:
             if not isinstance(report, Report):
                 raise TypeError("Supply a report returned by ReportLoader.load() or loads().")
             report = Report.model_validate(report.model_dump())
-            selected = theme or report.theme_name
+            if theme is None and isinstance(report.theme, Theme):
+                palette = report.theme
+            else:
+                selected = theme or report.theme_name
+                if selected not in self.themes:
+                    raise ReportInputError(
+                        "Unknown theme; choose a built-in theme or register it before rendering."
+                    )
+                palette = self.themes[selected]
             layout = report.resolved_layout
-            if selected not in self.themes:
-                raise ReportInputError(
-                    "Unknown theme; choose a built-in theme or register it before rendering."
-                )
             assets = files("smd_reports").joinpath("static")
             fonts = assets.joinpath("fonts.css").read_text(encoding="utf-8")
             artwork = [report.branding.center_logo]
@@ -469,14 +472,13 @@ class ReportRenderer:
             html = self.environment.get_template("clinical.html").render(
                 report=report,
                 layout=layout,
-                selected_theme=selected,
-                theme=self.themes[selected],
+                theme=palette,
                 css=assets.joinpath("report.css").read_text(encoding="utf-8"),
                 screen_css=assets.joinpath("screen.css").read_text(encoding="utf-8"),
                 anchors=_section_anchors(report),
                 fonts=fonts,
                 svg_fonts=svg_font_css(artwork, fonts),
-                compact_tables=_compact_tables(report, self.themes[selected]),
+                compact_tables=_compact_tables(report, palette),
             )
         except (TemplateError, OSError) as exc:
             logger.error("Report HTML rendering failed")

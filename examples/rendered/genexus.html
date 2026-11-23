@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NGS Analysis Report - DEMO-REPORT-001</title>
 <meta name="smd-reports:generated-at" content="2026-01-01T12:00:00+00:00">
-<meta name="smd-reports:application_name" content="Genexus"><meta name="smd-reports:application_version" content="DEMO"><meta name="smd-reports:pipeline_name" content="Example pipeline"><meta name="smd-reports:pipeline_version" content="DEMO"><meta name="smd-reports:assay_name" content="Example assay"><meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.5.3"><meta name="smd-reports:template_version" content="0.5.3"><meta name="smd-reports:theme" content="genexus">
+<meta name="smd-reports:application_name" content="Genexus"><meta name="smd-reports:application_version" content="DEMO"><meta name="smd-reports:pipeline_name" content="Example pipeline"><meta name="smd-reports:pipeline_version" content="DEMO"><meta name="smd-reports:assay_name" content="Example assay"><meta name="smd-reports:package_name" content="smd-reports"><meta name="smd-reports:package_version" content="0.6.0"><meta name="smd-reports:theme" content="genexus">
 <style>/* Source Sans 3, Adobe. SIL Open Font License: SourceSans3-LICENSE.md. */
 @font-face {
   font-family: "Source Sans 3";
@@ -81,16 +81,16 @@ body { margin: 0; color: #000; font: var(--body-size)/1.35 "Source Sans 3", sans
 .report-center-phone svg { vertical-align: middle; }
 .report-document-heading { margin: 0 0 12px; break-inside: avoid; break-after: avoid; }
 .report-document-label { margin: 0 0 3px; color: var(--heading); font-size: 8pt; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
-.report-document-heading h1 { margin: 0 0 4px; color: #2f3038; font-size: 18pt; font-weight: 600; line-height: 1.12; letter-spacing: -.015em; }
-.report-sample-reference { margin: 0; color: #000; font-size: 10pt; }
+.report-document-heading h1 { margin: 0 0 4px; color: #2f3038; font-size: 16pt; font-weight: 600; line-height: 1.12; letter-spacing: -.015em; }
+.report-sample-reference { margin: 0; color: #000; font-size: 12pt; }
 .report-metadata { margin: 0 0 12px; padding: 0 0 3mm; }
-.report-metadata-heading { margin: 0; padding: 5px 7px; background: var(--tint); color: #000; font-size: 8.5pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; break-after: avoid; }
+.report-metadata-heading { margin: 0; padding: 5px 7px; background: #e5e7eb; color: #000; font-size: 8.5pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; break-after: avoid; }
 table { width: 100%; max-width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 8.5pt; line-height: 1.18; }
 th, td { box-sizing: border-box; min-width: 0; padding: 3px 6px; vertical-align: top; overflow-wrap: anywhere; text-align: left; }
 table.report-patient-table { margin: 0; font-size: 8pt; line-height: 1.2; }
 .report-patient-table .metadata-label { width: 18%; }
 .report-patient-table th, .report-patient-table td { padding: 2px 5px; border: 1px solid var(--report-border); }
-.report-patient-table th { color: #000; background: var(--tint); font-size: 7.5pt; font-weight: 400; }
+.report-patient-table th { color: #000; background: #f3f4f6; font-size: 7.5pt; font-weight: 400; }
 .report-patient-table td { color: #000; background: #fff; font-weight: 400; }
 h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--heading); font-size: 11pt; font-weight: 600; line-height: 1.2; break-after: avoid; }
 .variant_table.auto-columns { table-layout: auto; }
@@ -98,6 +98,7 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .variant_table th, .variant_table td { padding: 4px 10px; border: 0; border-bottom: 1px solid var(--report-border); font-size: 8.5pt; }
 .variant_table th { background: var(--tint); color: #000; border-top: 1px solid var(--report-border); font-weight: 600; }
 .variant_table tbody td { background: #fff; }
+.variant_table .empty-table-message { font-weight: 600; }
 .emphasis { font-weight: 600; }
 .finding-detail { margin: 6px 0 12px; }
 .report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
@@ -133,11 +134,20 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .report-description .markdown > :first-child { margin-top: 0; }
 .markdown p:first-child { margin-top: 0; }
 .markdown p:last-child { margin-bottom: 0; }
-.empty { margin: 4px 0 7px; padding: 4px 7px; border-left: 2px solid #d7d0dc; background: #fafafa; color: #000; font-size: 9.5pt; }
+.empty {
+  margin: 4px 0 7px;
+  padding: 4px 7px;
+  border-left: 3px solid #6b7280;
+  background: #f3f4f6;
+  color: #000;
+  font-size: 9.5pt;
+  font-weight: 600;
+}
 figure { margin: 6px 0; }
 figure img { max-width: 100%; height: auto; }
 figcaption { font-size: 8pt; color: #555; }
 tr { break-inside: avoid; }
+.variant_table tr.keep-with-next { break-after: avoid; }
 thead { display: table-header-group; }
 p, li { orphans: 3; widows: 3; }
 .report-page-header, .report-page-footer, .report-page-number-footer { display: none; }
@@ -203,7 +213,6 @@ p, li { orphans: 3; widows: 3; }
 .variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: var(--reference-size); line-height: 1.2; }
 .variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
 
-.compact-screen-fillers { display: none; }
 
 .compact-table.compact-single-row { width: var(--compact-natural-width); }
 
@@ -220,10 +229,9 @@ html { color-scheme: light; }
 /* Fit the same measured cells to the browser's available content width. */
 .compact-matrix { container-type: inline-size; }
 .compact-table { display: grid; grid-auto-rows: 1fr; grid-template-columns: repeat(var(--compact-columns, 1), minmax(0, 1fr)); border-top: 1px solid var(--report-border); border-left: 1px solid var(--report-border); }
-.compact-table colgroup, .compact-table .compact-empty { display: none; }
+.compact-table colgroup { display: none; }
 .compact-table tbody, .compact-table tr { display: contents; }
 .compact-table .compact-cell { display: flex; justify-content: center; align-items: center; border: 0; border-right: 1px solid var(--report-border); border-bottom: 1px solid var(--report-border); }
-.compact-table .compact-empty, .compact-screen-fillers .compact-cell { display: none; }
 
 /* Allow for browser font rounding while keeping short lists at their natural width. */
 .compact-table.compact-single-row { width: min(100%, calc(var(--compact-natural-width) * 1.03)); }
@@ -231,68 +239,52 @@ html { color-scheme: light; }
 .compact-layout-0 { font-size: min(var(--compact-size), calc((100cqw - 8px) * 0.2406201550387597)); }
 @container (min-width: 42.78125px) {
 .compact-layout-0 { --compact-columns: 1; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
 }
 @container (min-width: 84.5625px) {
 .compact-layout-0 { --compact-columns: 2; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+1) { display: flex; }}
+}
 @container (min-width: 126.34375px) {
 .compact-layout-0 { --compact-columns: 3; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+2) { display: flex; }}
+}
 @container (min-width: 168.125px) {
 .compact-layout-0 { --compact-columns: 4; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+1) { display: flex; }}
+}
 @container (min-width: 209.90625px) {
 .compact-layout-0 { --compact-columns: 5; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+2) { display: flex; }}
+}
 @container (min-width: 251.6875px) {
 .compact-layout-0 { --compact-columns: 6; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+5) { display: flex; }}
+}
 @container (min-width: 293.46875px) {
 .compact-layout-0 { --compact-columns: 7; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+6) { display: flex; }}
+}
 @container (min-width: 335.25px) {
 .compact-layout-0 { --compact-columns: 8; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+5) { display: flex; }}
+}
 @container (min-width: 377.03125px) {
 .compact-layout-0 { --compact-columns: 9; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+2) { display: flex; }}
+}
 @container (min-width: 418.8125px) {
 .compact-layout-0 { --compact-columns: 10; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+7) { display: flex; }}
+}
 @container (min-width: 460.59375px) {
 .compact-layout-0 { --compact-columns: 11; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+1) { display: flex; }}
+}
 @container (min-width: 502.375px) {
 .compact-layout-0 { --compact-columns: 12; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+5) { display: flex; }}
+}
 @container (min-width: 544.15625px) {
 .compact-layout-0 { --compact-columns: 13; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+9) { display: flex; }}
+}
 @container (min-width: 585.9375px) {
 .compact-layout-0 { --compact-columns: 14; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+13) { display: flex; }}
+}
 @container (min-width: 627.71875px) {
 .compact-layout-0 { --compact-columns: 15; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+2) { display: flex; }}
+}
 @container (min-width: 669.5px) {
 .compact-layout-0 { --compact-columns: 16; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(n) { display: none; }
-.compact-layout-0 .compact-screen-fillers .compact-cell:nth-child(-n+5) { display: flex; }}
+}
 </style></head>
 <body class="report-genexus header-center repeat-title black-title bordered-metadata"><div class="page">
 <div class="report-page-header"><header class="report-brand-header">
@@ -307,7 +299,7 @@ html { color-scheme: light; }
 <tr><th scope="row">Patient name</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personal identity number</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td><th scope="row">Sample ID</th><td>SYNTHETIC-001</td></tr><tr><th scope="row">Sample type</th><td>&lt;SAMPLE_TYPE&gt;</td><th scope="row">Registration date</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Clinical question</th><td>Synthetic analysis</td></tr><tr><th scope="row">Analysis method</th><td>NGS - synthetic demonstration</td><th scope="row">Analysis performed by</th><td>Example Diagnostics Center</td><th scope="row">Assay</th><td>Demonstration panel</td></tr><tr><th scope="row">Run</th><td>SYNTHETIC-RUN</td><th scope="row">Generated at</th><td>2026-01-01</td><th scope="row">Generated by</th><td>Demo User</td></tr><tr><th scope="row">Report ID</th><td colspan="5">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <div class="report-page-footer">
 <img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div>
-<div class="report-page-number-footer"><span class="template-version">Genexus · Template 0.5.3 · smd-reports 0.5.3</span><span class="page-number"></span></div>
+<div class="report-page-number-footer"><span class="template-version">Genexus DEMO | smd-reports v0.6.0</span><span class="page-number"></span></div>
 <div class="report-screen-brand"><header class="report-brand-header">
 <div class="report-center-brand"><div class="report-center-lockup"><div class="report-center-contact">
 <span>Example Diagnostics Center</span><span>Molecular diagnostics</span><span class="report-center-address">Example address 1</span><span class="report-center-phone"><svg width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z" fill="none" stroke="#656670" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> 000-000000</span><span>demo@example.org</span></div><div class="report-center-logo-cell"><img class="center-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iOTAiIHZpZXdCb3g9IjAgMCAxMjAgOTAiPgo8dGl0bGU+RXhhbXBsZSBjZW50ZXIgbG9nbzwvdGl0bGU+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSIxMTgiIGhlaWdodD0iODgiIHJ4PSI4IiBmaWxsPSIjZjNmNmY3IiBzdHJva2U9IiM2ODdkODYiLz4KPHRleHQgeD0iNjAiIHk9IjQyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzM1NDk1MiI+RVhBTVBMRTwvdGV4dD4KPHRleHQgeD0iNjAiIHk9IjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzM1NDk1MiI+Q0VOVEVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example Diagnostics Center"></div></div></div>
@@ -322,16 +314,46 @@ html { color-scheme: light; }
 <tr><th scope="row">Patient name</th><td>&lt;PATIENT_NAME&gt;</td><th scope="row">Personal identity number</th><td>&lt;PERSONAL_IDENTITY_NUMBER&gt;</td></tr><tr><th scope="row">Sample ID</th><td>SYNTHETIC-001</td><th scope="row">Sample type</th><td>&lt;SAMPLE_TYPE&gt;</td></tr><tr><th scope="row">Registration date</th><td>&lt;REGISTRATION_DATE&gt;</td><th scope="row">Clinical question</th><td>Synthetic analysis</td></tr><tr><th scope="row">Analysis method</th><td>NGS - synthetic demonstration</td><th scope="row">Analysis performed by</th><td>Example Diagnostics Center</td></tr><tr><th scope="row">Assay</th><td>Demonstration panel</td><th scope="row">Run</th><td>SYNTHETIC-RUN</td></tr><tr><th scope="row">Generated at</th><td>2026-01-01</td><th scope="row">Generated by</th><td>Demo User</td></tr><tr><th scope="row">Report ID</th><td colspan="3">DEMO-REPORT-001</td></tr></tbody></table></section></div>
 <section id="snvs" class="section">
 <h2 class="report_header">Clinically relevant SNVs and small INDELs</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Gene</th><th scope="col">HGVS protein</th><th scope="col">VAF (%)</th><th scope="col">Hotspot</th><th scope="col">Classification</th></tr></thead><tbody>
-<tr><td class="cell-plain">BRAF</td><td class="cell-plain">p.Val600Glu</td><td class="cell-plain">24</td><td class="cell-plain">Yes</td><td class="cell-plain">Reviewed synthetic classification</td></tr><tr><td class="cell-plain">EXAMPLE2</td><td class="cell-plain">p.(Example34del)</td><td class="cell-plain">18</td><td class="cell-plain">No</td><td class="cell-plain">Reviewed synthetic classification</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">BRAF</td>
+<td class="cell-plain">p.Val600Glu</td>
+<td class="cell-plain">24</td>
+<td class="cell-plain">Yes</td>
+<td class="cell-plain">Reviewed synthetic classification</td>
+</tr>
+<tr>
+<td class="cell-plain">EXAMPLE2</td>
+<td class="cell-plain">p.(Example34del)</td>
+<td class="cell-plain">18</td>
+<td class="cell-plain">No</td>
+<td class="cell-plain">Reviewed synthetic classification</td>
+</tr>
+</tbody></table></section>
 <section id="cnvs" class="section">
 <h2 class="report_header">Copy-number alterations</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Gene</th><th scope="col">Copy number</th><th scope="col">Classification</th></tr></thead><tbody>
-<tr><td class="cell-plain">EXAMPLE1</td><td class="cell-plain">6</td><td class="cell-plain">Reviewed synthetic classification</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">EXAMPLE1</td>
+<td class="cell-plain">6</td>
+<td class="cell-plain">Reviewed synthetic classification</td>
+</tr>
+</tbody></table></section>
 <section id="fusions" class="section">
 <h2 class="report_header">Fusions</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Genes (exons)</th><th scope="col">Locus</th><th scope="col">Classification</th></tr></thead><tbody>
-<tr><td class="cell-plain">EML4(13)::ALK(20)</td><td class="cell-plain">chr2:42400000;chr2:29400000</td><td class="cell-plain">Reviewed synthetic classification</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">EML4(13)::ALK(20)</td>
+<td class="cell-plain">chr2:42400000;chr2:29400000</td>
+<td class="cell-plain">Reviewed synthetic classification</td>
+</tr>
+</tbody></table></section>
 <section id="others" class="section">
 <h2 class="report_header">Other clinically relevant findings</h2><table class="results variant_table auto-columns"><thead><tr><th scope="col">Gene</th><th scope="col">Source type</th><th scope="col">Variant class</th><th scope="col">Classification</th></tr></thead><tbody>
-<tr><td class="cell-plain">EXAMPLE3</td><td class="cell-plain">Imbalance</td><td class="cell-plain">RNA</td><td class="cell-plain">Reviewed synthetic classification</td></tr></tbody></table></section>
+<tr>
+<td class="cell-plain">EXAMPLE3</td>
+<td class="cell-plain">Imbalance</td>
+<td class="cell-plain">RNA</td>
+<td class="cell-plain">Reviewed synthetic classification</td>
+</tr>
+</tbody></table></section>
 <section id="summary" class="section report-summary">
 <h2 class="report_header">Conclusion</h2><div class="results_summary markdown"><p>Reviewed synthetic conclusion. For demonstration only.</p>
 <table>
@@ -408,8 +430,7 @@ html { color-scheme: light; }
 <div class="compact-matrix">
 <table class="compact-table compact-layout-0" aria-labelledby="covered-genes-table-caption">
 <colgroup><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"><col style="width: 6.25%"></colgroup>
-<tbody><tr><td class="compact-cell"><span class="compact-value">ABL1</span></td><td class="compact-cell"><span class="compact-value">AKT1</span></td><td class="compact-cell"><span class="compact-value">ALK</span></td><td class="compact-cell"><span class="compact-value">APC</span></td><td class="compact-cell"><span class="compact-value">AR</span></td><td class="compact-cell"><span class="compact-value">ARID1A</span></td><td class="compact-cell"><span class="compact-value">ATM</span></td><td class="compact-cell"><span class="compact-value">ATR</span></td><td class="compact-cell"><span class="compact-value">BRAF</span></td><td class="compact-cell"><span class="compact-value">BRCA1</span></td><td class="compact-cell"><span class="compact-value">BRCA2</span></td><td class="compact-cell"><span class="compact-value">CDH1</span></td><td class="compact-cell"><span class="compact-value">CDK4</span></td><td class="compact-cell"><span class="compact-value">CDK6</span></td><td class="compact-cell"><span class="compact-value">CDKN2A</span></td><td class="compact-cell"><span class="compact-value">CHEK2</span></td></tr><tr><td class="compact-cell"><span class="compact-value">CREBBP</span></td><td class="compact-cell"><span class="compact-value">CTNNB1</span></td><td class="compact-cell"><span class="compact-value">DDR2</span></td><td class="compact-cell"><span class="compact-value">EGFR</span></td><td class="compact-cell"><span class="compact-value">ERBB2</span></td><td class="compact-cell"><span class="compact-value">ERBB3</span></td><td class="compact-cell"><span class="compact-value">ESR1</span></td><td class="compact-cell"><span class="compact-value">EZH2</span></td><td class="compact-cell"><span class="compact-value">FBXW7</span></td><td class="compact-cell"><span class="compact-value">FGFR1</span></td><td class="compact-cell"><span class="compact-value">FGFR2</span></td><td class="compact-cell"><span class="compact-value">FGFR3</span></td><td class="compact-cell"><span class="compact-value">FLT3</span></td><td class="compact-cell"><span class="compact-value">GATA3</span></td><td class="compact-cell"><span class="compact-value">HRAS</span></td><td class="compact-cell"><span class="compact-value">IDH1</span></td></tr><tr><td class="compact-cell"><span class="compact-value">IDH2</span></td><td class="compact-cell"><span class="compact-value">JAK2</span></td><td class="compact-cell"><span class="compact-value">KIT</span></td><td class="compact-cell"><span class="compact-value">KRAS</span></td><td class="compact-cell"><span class="compact-value">MAP2K1</span></td><td class="compact-cell"><span class="compact-value">MET</span></td><td class="compact-cell"><span class="compact-value">MTOR</span></td><td class="compact-cell"><span class="compact-value">MYC</span></td><td class="compact-cell"><span class="compact-value">SMARCB1</span></td><td class="compact-cell"><span class="compact-value">TP53</span></td><td class="compact-cell"><span class="compact-value">PTEN</span></td><td class="compact-cell compact-empty" aria-hidden="true"></td><td class="compact-cell compact-empty" aria-hidden="true"></td><td class="compact-cell compact-empty" aria-hidden="true"></td><td class="compact-cell compact-empty" aria-hidden="true"></td><td class="compact-cell compact-empty" aria-hidden="true"></td></tr><tr class="compact-screen-fillers" aria-hidden="true"><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td><td class="compact-cell compact-filler"></td></tr>
-</tbody></table>
+<tbody><tr><td class="compact-cell"><span class="compact-value">ABL1</span></td><td class="compact-cell"><span class="compact-value">AKT1</span></td><td class="compact-cell"><span class="compact-value">ALK</span></td><td class="compact-cell"><span class="compact-value">APC</span></td><td class="compact-cell"><span class="compact-value">AR</span></td><td class="compact-cell"><span class="compact-value">ARID1A</span></td><td class="compact-cell"><span class="compact-value">ATM</span></td><td class="compact-cell"><span class="compact-value">ATR</span></td><td class="compact-cell"><span class="compact-value">BRAF</span></td><td class="compact-cell"><span class="compact-value">BRCA1</span></td><td class="compact-cell"><span class="compact-value">BRCA2</span></td><td class="compact-cell"><span class="compact-value">CDH1</span></td><td class="compact-cell"><span class="compact-value">CDK4</span></td><td class="compact-cell"><span class="compact-value">CDK6</span></td><td class="compact-cell"><span class="compact-value">CDKN2A</span></td><td class="compact-cell"><span class="compact-value">CHEK2</span></td></tr><tr><td class="compact-cell"><span class="compact-value">CREBBP</span></td><td class="compact-cell"><span class="compact-value">CTNNB1</span></td><td class="compact-cell"><span class="compact-value">DDR2</span></td><td class="compact-cell"><span class="compact-value">EGFR</span></td><td class="compact-cell"><span class="compact-value">ERBB2</span></td><td class="compact-cell"><span class="compact-value">ERBB3</span></td><td class="compact-cell"><span class="compact-value">ESR1</span></td><td class="compact-cell"><span class="compact-value">EZH2</span></td><td class="compact-cell"><span class="compact-value">FBXW7</span></td><td class="compact-cell"><span class="compact-value">FGFR1</span></td><td class="compact-cell"><span class="compact-value">FGFR2</span></td><td class="compact-cell"><span class="compact-value">FGFR3</span></td><td class="compact-cell"><span class="compact-value">FLT3</span></td><td class="compact-cell"><span class="compact-value">GATA3</span></td><td class="compact-cell"><span class="compact-value">HRAS</span></td><td class="compact-cell"><span class="compact-value">IDH1</span></td></tr><tr><td class="compact-cell"><span class="compact-value">IDH2</span></td><td class="compact-cell"><span class="compact-value">JAK2</span></td><td class="compact-cell"><span class="compact-value">KIT</span></td><td class="compact-cell"><span class="compact-value">KRAS</span></td><td class="compact-cell"><span class="compact-value">MAP2K1</span></td><td class="compact-cell"><span class="compact-value">MET</span></td><td class="compact-cell"><span class="compact-value">MTOR</span></td><td class="compact-cell"><span class="compact-value">MYC</span></td><td class="compact-cell"><span class="compact-value">SMARCB1</span></td><td class="compact-cell"><span class="compact-value">TP53</span></td><td class="compact-cell"><span class="compact-value">PTEN</span></td></tr></tbody></table>
 </div>
 </figure></section>
 <section id="classification-description" class="section">
@@ -421,5 +442,5 @@ html { color-scheme: light; }
 </ol></div>
 </section>
 </main>
-<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">Genexus · Template 0.5.3 · smd-reports 0.5.3</span></footer>
+<footer class="screen-footer"><div><img class="accreditation" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTE2IiB2aWV3Qm94PSIwIDAgMTAwIDExNiI+Cjx0aXRsZT5FeGFtcGxlIGFjY3JlZGl0YXRpb24gcGxhY2Vob2xkZXI8L3RpdGxlPgo8cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iOTYiIGhlaWdodD0iMTEyIiByeD0iNSIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjNjY2NjY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzYiIHI9IjIxIiBmaWxsPSIjZjJmMmYyIiBzdHJva2U9IiM2NjY2NjYiLz4KPHBhdGggZD0iTTUwIDIyIDY0IDM2IDUwIDUwIDM2IDM2WiIgZmlsbD0iIzc3Nzc3NyIvPgo8dGV4dCB4PSI1MCIgeT0iNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNDQ0NDQ0Ij5FWEFNUExFPC90ZXh0Pgo8dGV4dCB4PSI1MCIgeT0iOTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPkFDQ1JFRElUQVRJT048L3RleHQ+Cjx0ZXh0IHg9IjUwIiB5PSIxMDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjkiIGZpbGw9IiM0NDQ0NDQiPlBMQUNFSE9MREVSPC90ZXh0Pgo8L3N2Zz4K" alt="Example accreditation placeholder"></div><span class="template-version">Genexus DEMO | smd-reports v0.6.0</span></footer>
 </div></body></html>

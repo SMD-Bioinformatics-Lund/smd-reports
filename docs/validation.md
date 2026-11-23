@@ -42,7 +42,7 @@ python examples/reports.py --previews --pdf --output examples/rendered
 python scripts/visual_review.py examples/rendered
 ```
 
-These commands regenerate the six example reports, render PDF pages as images,
+These commands regenerate the previews from every example JSON input, render PDF pages as images,
 and record page sizes, image hashes and rendering versions under `.artifacts/`.
 Use `--baseline PATH` to compare with an existing capture. Inspect wrapping, page breaks,
 headers and footers when a rendering change affects the previews.

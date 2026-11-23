@@ -18,7 +18,7 @@ from smd_reports import ReportLoader, ReportRenderer
         (["C7orf55-LUC7L2", "A", "BRAF"] * 21, 15),
     ],
 )
-def test_print_matrix_uses_fitted_width_and_rectangular_cells(payloads, load, items, maximum):
+def test_print_matrix_uses_fitted_width_without_empty_cells(payloads, load, items, maximum):
     pytest.importorskip("weasyprint")
     from weasyprint import HTML
 
@@ -60,7 +60,7 @@ def test_print_matrix_uses_fitted_width_and_rectangular_cells(payloads, load, it
     else:
         assert layout["width"] == pytest.approx(178 * 96 / 25.4 - 1)
     assert count <= maximum
-    assert len(cells) == ((len(items) + count - 1) // count) * count
+    assert len(cells) == len(items)
     assert max(c.border_width() for c in cells) == pytest.approx(
         min(c.border_width() for c in cells), abs=0.01
     )
@@ -77,20 +77,19 @@ def test_print_matrix_uses_fitted_width_and_rectangular_cells(payloads, load, it
             getattr(cell, f"border_{edge}_width") > 0 for edge in ["top", "right", "bottom", "left"]
         )
         lines = [box for box in cell.descendants() if type(box).__name__ == "LineBox"]
-        if "compact-empty" in cell.element.get("class", ""):
-            assert cell.element.get("aria-hidden") == "true" and not lines
-        else:
-            assert len(lines) == 1 and lines[0].width <= cell.width
-            content.append(
-                "".join(
-                    box.text for box in lines[0].descendants() if type(box).__name__ == "TextBox"
-                )
-            )
+        assert len(lines) == 1 and lines[0].width <= cell.width
+        content.append(
+            "".join(box.text for box in lines[0].descendants() if type(box).__name__ == "TextBox")
+        )
     assert content == items
-    assert {len(row) for row in rows.values()} == {count}
+    assert [len(row) for row in rows.values()] == [
+        min(count, len(items) - offset) for offset in range(0, len(items), count)
+    ]
+    first_row = next(iter(rows.values()))
     for row in rows.values():
-        right = row[-1].position_x + row[-1].border_width()
-        assert right - row[0].position_x == pytest.approx(layout["width"], abs=1)
+        assert [cell.position_x for cell in row] == pytest.approx(
+            [cell.position_x for cell in first_row[: len(row)]], abs=0.1
+        )
 
 
 @pytest.mark.parametrize("preset", ["coyote3-dna", "coyote3-rna"])
@@ -137,3 +136,26 @@ def test_print_full_width_detail_labels_use_theme_tint(payloads, load, preset, k
         tuple(box.style["background_color"].coordinates) == pytest.approx(expected)
         for box in labels
     )
+
+
+@pytest.mark.parametrize("name", ["coyote4-dna", "genexus-en"])
+def test_patient_table_uses_neutral_colors_on_each_pdf_page(reports, name):
+    pymupdf = pytest.importorskip("pymupdf")
+    pytest.importorskip("weasyprint")
+    report = reports[name]
+    renderer = ReportRenderer()
+    tint = renderer.themes[report.theme_name].tint
+    tint_rgb = tuple(int(tint[offset : offset + 2], 16) for offset in (1, 3, 5))
+    pdf = renderer.render_pdf(report)
+    with pymupdf.open(stream=pdf, filetype="pdf") as document:
+        assert len(document) > 1
+        palettes = [
+            {
+                tuple(round(channel * 255) for channel in drawing["fill"])
+                for drawing in page.get_drawings()
+                if drawing.get("fill")
+            }
+            for page in document
+        ]
+    assert all({(229, 231, 235), (243, 244, 246)} <= palette for palette in palettes)
+    assert any(tint_rgb in palette for palette in palettes)

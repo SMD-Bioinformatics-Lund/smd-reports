@@ -15,8 +15,8 @@ lists all report, section, theme and command-line settings.
 Loading and rendering return values without saving output files. The document returned
 by a loader supports `model_dump_json(indent=2)` for portable JSON export.
 Its `preset_name`, `theme_name` and `resolved_layout` properties expose the effective settings.
-`template_name` and `template_version` identify the installed preset revision;
-`rendering_metadata` includes the installed package version.
+`template_name` identifies the report format. `rendering_metadata` includes the installed
+package version. For compatibility, `template_version` is an alias for the package version.
 
 ## Exceptions
 
@@ -50,8 +50,8 @@ hex strings. Optional `body_pt` defaults to 9.25 and accepts 8–12. See [render
 
 The [JSON guide](json-inputs.md) documents the input fields. `schema()` exports their
 machine-readable definitions, including table/detail row matrices, wrapping item tables, grouped grids, paper
-sizes, text blocks and images. `report.rendering_metadata` exposes automatically computed
-package/template versions alongside the supplied provenance context.
+sizes, text blocks and images. `report.rendering_metadata` includes
+the installed package version alongside the supplied provenance context.
 
 Table, detail and grid sections use `columns` with `en` and/or `sv` label lists. Optional
 `column_options` controls widths, formatting and optional badges by zero-based column index. Both are
@@ -61,5 +61,5 @@ or Markdown formatting for bold and italic text; see [column text styling](json-
 `CompactTableSection` uses `kind: "compact_table"`, an ordered `items` list, optional
 `columns` as a maximum, and plain-text or Markdown formatting. Single-row lists use their
 measured width; multi-row panels fill the available width with equal cells. Captions remain
-full width, and presentation-only empty cells complete the final row. Ordinary result tables
+full width. The final row ends at the last item. Ordinary result tables
 also accept `row_options` for individual row highlights. See the [JSON guide](json-inputs.md#compact-description-tables).

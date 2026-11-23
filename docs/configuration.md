@@ -30,9 +30,9 @@ it does not change the report input format. Unknown JSON fields are rejected.
 | `title` | Required | Text; the document title |
 | `report` | Required | [Report identity](#report-identity-and-metadata) object |
 | `language` | `sv` | `en` or `sv`; selects interface labels and supplied translations |
-| `preset` | `null` | `generic`, `coyote3`, `genexus`, `cll_genie` or `pgx`; supplies presentation defaults |
+| `preset` | `null` | `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie`, `pgx` or `breaxpress`; supplies presentation defaults |
 | `application` | `generic` | Legacy preset selector; the same five choices |
-| `theme` | `null` | Nonempty built-in or registered theme name; overrides the preset's theme |
+| `theme` | `null` | Registered theme name or inline theme object; overrides the preset's theme |
 | `layout` | `{}` | [Layout overrides](#layout) |
 | `analyte` | `""` | Free-text label, rendered uppercase before the document label |
 | `branding` | `{}` | [Product, center and accreditation branding](#branding) |
@@ -143,17 +143,19 @@ The theme name matches the preset name. All presets show the colored header rule
 | --- | --- | --- | --- |
 | `generic` | `center` | Empty | None |
 | `coyote3` | `branded` | Coyote + 3 | None |
+| `coyote4` | `branded` | Coyote + 4 | None |
 | `genexus` | `center` | Empty | `repeat_title`, `black_title`, `metadata_borders` |
 | `cll_genie` | `branded` | CLL Genie | None |
 | `pgx` | `center` | Empty | None |
+| `breaxpress` | `branded` | Breaxpress | None |
 
 `repeat_title`, `black_title` and `metadata_borders` default to false except for Genexus.
 Generic metadata uses `Report information` and its document label is `Report`.
 The other presets use `Sample information` and `Analysis report`, respectively.
 
-These labels use English source text and the selected report language. Coyote3's `dna`
-and `rna` analytes identify independently tracked template revisions and appear in its
-footer template name. Other analyte strings still appear in the document label.
+These labels use English source text and the selected report language. The Coyote3 and Coyote4 `dna`
+and `rna` analytes identify variants and appear in the
+footer report name. Other analyte strings still appear in the document label.
 
 ## Layout
 
@@ -252,12 +254,12 @@ All fields default to `""` and accept strings:
 | Field | Meaning |
 | --- | --- |
 | `application_name` | Originating application |
-| `application_version` | Application version |
+| `application_version` | Application version shown beside the report name in the footer |
 | `pipeline_name` | Pipeline name |
 | `pipeline_version` | Pipeline version |
 | `assay_name` | Assay name |
 
-The package supplies `package_name`, `package_version` and `template_version` automatically
+The package supplies `package_name` and `package_version` automatically
 when rendering. Do not send those fields, `schema_version`, or other version keys in the
 report JSON. Inspect `report.rendering_metadata` for the computed values. The actual theme
 key is recorded separately as HTML metadata. See [version metadata](rendering.md#template-and-package-versions).
@@ -359,11 +361,13 @@ have narrower Markdown support, and badge labels are always literal text.
 | `columns` | Required | Object containing nonempty `en` and/or `sv` label lists |
 | `rows` | `[]` | List of row lists, with one cell value per declared column |
 | `column_options` | `{}` | Column-index keys mapped to the display options below |
-| `cell_options` | `{}` | Row-index keys mapped to column-index keys and typography overrides |
+| `cell_options` | `{}` | Row-index keys mapped to column-index keys and cell options |
 | `empty_text` | `No reportable results` | Text; displayed when no rows are supplied |
 
 All translated label lists must have the same length. An options index must reference a
 declared column. Rows with too few or too many values are rejected.
+With no rows, a `table` displays `empty_text` in a semibold cell spanning all columns.
+The column headings follow the table's `show_header` setting.
 
 | Column option | Default | Accepted value and effect |
 | --- | --- | --- |
@@ -408,6 +412,13 @@ Each row option has `highlight: false` by default; setting it true applies a pal
 background in the default table style. Reference tables retain white cell backgrounds.
 The row index must exist. Pink row highlighting takes precedence over yellow
 column highlighting in that row. Badges retain their own background colors. See [row highlighting](json-inputs.md#row-highlighting).
+
+For result and reference tables, `cell_options` also accepts `row_span` and `col_span`
+as positive integers. Each option applies to the cell at the supplied row and column.
+The span starts at that cell and extends down, across, or both. Keep every row the
+same length as the header and use JSON `null` in positions covered by the span. The
+renderer skips those positions. Spans must fit within the table, and covered positions
+cannot contain data or their own options. See [spanning cells](json-inputs.md#spanning-table-cells).
 
 ## Badges
 
@@ -455,10 +466,9 @@ padding and borders. The available page width determines how many columns fit; `
 can set a lower maximum. All cells have equal widths, and items fill rows from left to right.
 
 A list that fits on one row uses only its measured width. For example, `CALR`, `JAK2`
-and `MPL` appear as three small adjacent cells. Multi-row panels fill the available width,
-with empty bordered cells completing the final row. These empty cells are presentation-only
-and are excluded from the report data and exported JSON. Captions span the report width
-independently of the table's width.
+and `MPL` appear as three small adjacent cells. Multi-row panels use the available width
+to size their columns. The last row ends at the final item, with each cell aligned to the
+columns above. Captions span the report width independently of the table's width.
 
 Null, empty and whitespace-only items are omitted. Supplied order and repeated values
 are preserved. Browser tables reduce their column count as space narrows, without horizontal
@@ -558,25 +568,27 @@ See [SVG compatibility](branding.md#self-contained-svg).
 
 ## Theme registration
 
-Built-in themes are `generic`, `coyote3`, `genexus`, `cll_genie` and `pgx`.
+Built-in themes are `generic`, `coyote3`, `coyote4`, `genexus`, `cll_genie`, `pgx` and `breaxpress`.
 Their colors are listed below; all values are six-digit hexadecimal strings.
 
 | Theme | Heading | Accent | Tint | Rule end |
 | --- | --- | --- | --- | --- |
 | `generic` | `#435365` | `#64748B` | `#f3f5f7` | `#aab4c0` |
-| `coyote3` | `#665271` | `#a58ab8` | `#f4eff8` | `#d9b18a` |
+| `coyote3`, `coyote4` | `#665271` | `#a58ab8` | `#f4eff8` | `#d9b18a` |
 | `genexus` | `#3c6585` | `#3c6585` | `#f0f6fb` | `#91b5cd` |
 | `cll_genie` | `#7B4925` | `#DF7849` | `#FFF8F5` | `#dca37b` |
 | `pgx` | `#176B68` | `#278780` | `#edf7f5` | `#9dcac0` |
+| `breaxpress` | `#376c59` | `#6d9e89` | `#eaf3ee` | `#a6c7b5` |
 
-For a custom theme, create `Theme(...)` and register it on the renderer:
+Define a custom palette directly in JSON or register a Python `Theme`:
 
 | Theme field | Default | Accepted value and effect |
 | --- | --- | --- |
-| `name` | Required | Unique registry key |
+| `name` | Required | Theme identifier, used as a registry key for registered themes |
+| `revision` | `null` | Optional custom theme revision for rendering metadata |
 | `heading` | Required | Section-heading, product-name and default badge color |
 | `accent` | Required | Start color of the header separator |
-| `tint` | Required | Table and metadata background tint |
+| `tint` | Required | Analysis table and detail label background tint |
 | `rule_end` | Required | End color of the header separator |
 | `body_pt` | `9.25` | Number, 8–12 points |
 | `wordmark_size_pt` | `15` | Number, 8–24 points |
@@ -584,10 +596,25 @@ For a custom theme, create `Theme(...)` and register it on the renderer:
 | `wordmark_spacing_px` | `2.4` | Number, 0–5 CSS pixels |
 | `wordmark_suffix_color` | `#c47b4c` | Suffix color |
 
-Coyote3's built-in wordmark overrides size to 16.5 pt, weight to 400 and spacing to 1.5 px.
-The other built-in themes use the table's typography defaults. Body and wordmark settings
-are theme properties, not report JSON fields. JSON `theme` selects a registered name;
-inline theme objects are not supported. Existing names cannot be replaced by registration.
+The Coyote3 and Coyote4 wordmarks override size to 16.5 pt, weight to 400 and spacing to 1.5 px.
+Other built-in themes use the table's typography defaults. To define a palette for one
+report, supply a `theme` object. Both the CLI and Python renderer accept this format.
+
+```json
+{
+  "theme": {
+    "name": "example-lab",
+    "revision": "1.0",
+    "heading": "#176B68",
+    "accent": "#278780",
+    "tint": "#EDF7F5",
+    "rule_end": "#9DCAC0"
+  }
+}
+```
+
+To reuse a named Python theme across reports, register it on the renderer. A name can be
+registered once per renderer.
 
 ```python
 from smd_reports import ReportLoader, ReportRenderer, Theme
@@ -682,7 +709,7 @@ The schema describes field types, optional values, enums and numeric bounds. Cro
 rules such as row lengths, grid span totals and available page space are also checked by
 the loader. Schema export needs no report data or PDF runtime. Inspect
 `report.preset_name`, `report.theme_name`, `report.resolved_layout`, `report.template_name`
-and `report.template_version` for resolved settings and installed revisions.
+and `report.rendering_metadata` for resolved settings and the installed package version.
 
 ## Explicit table captions and reference tables
 

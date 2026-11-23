@@ -30,16 +30,16 @@ body { margin: 0; color: #000; font: var(--body-size)/1.35 "Source Sans 3", sans
 .report-center-phone svg { vertical-align: middle; }
 .report-document-heading { margin: 0 0 12px; break-inside: avoid; break-after: avoid; }
 .report-document-label { margin: 0 0 3px; color: var(--heading); font-size: 8pt; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
-.report-document-heading h1 { margin: 0 0 4px; color: #2f3038; font-size: 18pt; font-weight: 600; line-height: 1.12; letter-spacing: -.015em; }
-.report-sample-reference { margin: 0; color: #000; font-size: 10pt; }
+.report-document-heading h1 { margin: 0 0 4px; color: #2f3038; font-size: 16pt; font-weight: 600; line-height: 1.12; letter-spacing: -.015em; }
+.report-sample-reference { margin: 0; color: #000; font-size: 12pt; }
 .report-metadata { margin: 0 0 12px; padding: 0 0 3mm; }
-.report-metadata-heading { margin: 0; padding: 5px 7px; background: var(--tint); color: #000; font-size: 8.5pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; break-after: avoid; }
+.report-metadata-heading { margin: 0; padding: 5px 7px; background: #e5e7eb; color: #000; font-size: 8.5pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; break-after: avoid; }
 table { width: 100%; max-width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 8.5pt; line-height: 1.18; }
 th, td { box-sizing: border-box; min-width: 0; padding: 3px 6px; vertical-align: top; overflow-wrap: anywhere; text-align: left; }
 table.report-patient-table { margin: 0; font-size: 8pt; line-height: 1.2; }
 .report-patient-table .metadata-label { width: 18%; }
 .report-patient-table th, .report-patient-table td { padding: 2px 5px; border: 1px solid var(--report-border); }
-.report-patient-table th { color: #000; background: var(--tint); font-size: 7.5pt; font-weight: 400; }
+.report-patient-table th { color: #000; background: #f3f4f6; font-size: 7.5pt; font-weight: 400; }
 .report-patient-table td { color: #000; background: #fff; font-weight: 400; }
 h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--heading); font-size: 11pt; font-weight: 600; line-height: 1.2; break-after: avoid; }
 .variant_table.auto-columns { table-layout: auto; }
@@ -47,6 +47,7 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .variant_table th, .variant_table td { padding: 4px 10px; border: 0; border-bottom: 1px solid var(--report-border); font-size: 8.5pt; }
 .variant_table th { background: var(--tint); color: #000; border-top: 1px solid var(--report-border); font-weight: 600; }
 .variant_table tbody td { background: #fff; }
+.variant_table .empty-table-message { font-weight: 600; }
 .emphasis { font-weight: 600; }
 .finding-detail { margin: 6px 0 12px; }
 .report_variant { border: 1px solid var(--report-border); break-inside: avoid; }
@@ -82,11 +83,20 @@ h2.report_header { margin: 13px 0 5px; padding: 0; border: 0; color: var(--headi
 .report-description .markdown > :first-child { margin-top: 0; }
 .markdown p:first-child { margin-top: 0; }
 .markdown p:last-child { margin-bottom: 0; }
-.empty { margin: 4px 0 7px; padding: 4px 7px; border-left: 2px solid #d7d0dc; background: #fafafa; color: #000; font-size: 9.5pt; }
+.empty {
+  margin: 4px 0 7px;
+  padding: 4px 7px;
+  border-left: 3px solid #6b7280;
+  background: #f3f4f6;
+  color: #000;
+  font-size: 9.5pt;
+  font-weight: 600;
+}
 figure { margin: 6px 0; }
 figure img { max-width: 100%; height: auto; }
 figcaption { font-size: 8pt; color: #555; }
 tr { break-inside: avoid; }
+.variant_table tr.keep-with-next { break-after: avoid; }
 thead { display: table-header-group; }
 p, li { orphans: 3; widows: 3; }
 .report-page-header, .report-page-footer, .report-page-number-footer { display: none; }
@@ -152,6 +162,5 @@ p, li { orphans: 3; widows: 3; }
 .variant_table.reference-table { border: 1px solid var(--report-border); background: #fff; color: #000; font-size: var(--reference-size); line-height: 1.2; }
 .variant_table.reference-table tr > th, .variant_table.reference-table tr > td { padding: 2px 4px; border: 1px solid var(--report-border); background: #fff; color: #000; font-size: inherit; line-height: 1.2; text-align: left; vertical-align: top; }
 
-.compact-screen-fillers { display: none; }
 
 .compact-table.compact-single-row { width: var(--compact-natural-width); }
