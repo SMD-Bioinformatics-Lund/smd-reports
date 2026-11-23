@@ -136,3 +136,26 @@ def test_print_full_width_detail_labels_use_theme_tint(payloads, load, preset, k
         tuple(box.style["background_color"].coordinates) == pytest.approx(expected)
         for box in labels
     )
+
+
+@pytest.mark.parametrize("name", ["coyote4-dna", "genexus-en"])
+def test_patient_table_uses_neutral_colors_on_each_pdf_page(reports, name):
+    pymupdf = pytest.importorskip("pymupdf")
+    pytest.importorskip("weasyprint")
+    report = reports[name]
+    renderer = ReportRenderer()
+    tint = renderer.themes[report.theme_name].tint
+    tint_rgb = tuple(int(tint[offset : offset + 2], 16) for offset in (1, 3, 5))
+    pdf = renderer.render_pdf(report)
+    with pymupdf.open(stream=pdf, filetype="pdf") as document:
+        assert len(document) > 1
+        palettes = [
+            {
+                tuple(round(channel * 255) for channel in drawing["fill"])
+                for drawing in page.get_drawings()
+                if drawing.get("fill")
+            }
+            for page in document
+        ]
+    assert all({(229, 231, 235), (243, 244, 246)} <= palette for palette in palettes)
+    assert any(tint_rgb in palette for palette in palettes)

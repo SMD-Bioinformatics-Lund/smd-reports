@@ -17,7 +17,7 @@ class Theme(Model):
         revision: Optional version of a custom theme.
         heading: Section-heading color.
         accent: Primary brand-rule color.
-        tint: Table and metadata background color.
+        tint: Analysis table and detail label background color.
         rule_end: Secondary brand-rule color.
         body_pt: Body type size in points.
         wordmark_size_pt: Product wordmark type size in points.
@@ -72,6 +72,7 @@ def default_themes() -> dict[str, Theme]:
         "genexus": ("#3c6585", "#3c6585", "#f0f6fb", "#91b5cd"),
         "cll_genie": ("#7B4925", "#DF7849", "#FFF8F5", "#dca37b"),
         "pgx": ("#176B68", "#278780", "#edf7f5", "#9dcac0"),
+        "breaxpress": ("#376c59", "#6d9e89", "#eaf3ee", "#a6c7b5"),
     }
     return {
         key: Theme(

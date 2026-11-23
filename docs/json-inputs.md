@@ -5,7 +5,7 @@ allowed value and cross-field constraint. This guide provides worked examples.
 
 Reports use one JSON document format. Themes, layout settings and sections can be selected
 independently. Omit `preset` for neutral defaults, or select `generic`, `coyote3`, `coyote4`, `genexus`,
-`cll_genie` or `pgx` for a predefined combination. The legacy `application` selector remains supported.
+`cll_genie`, `pgx` or `breaxpress` for a predefined combination. The legacy `application` selector remains supported.
 
 ```json
 {
@@ -419,6 +419,131 @@ Result tables accept `row_options`, indexed by zero-based row position:
 `highlight: true` gives every cell in the selected row a pale pink background. Other
 rows keep their normal styling. Row indexes must refer to supplied rows; unknown display
 options fail validation. Highlight settings are preserved in portable JSON.
+
+### Spanning table cells
+
+Use `cell_options` to set `row_span` (down) and `col_span` (across) in result or
+reference tables. The first key is the zero-based data row and the second is the
+zero-based column. The column-header row is separate from the data and is not counted.
+
+Keep every data row the same length as the header. Use `null` for positions covered
+by another cell and omit cell options at those positions. A span includes its starting
+cell and cannot overlap another span or extend outside the table. The previews below
+show the cell layout. The report applies the selected preset and table style.
+
+#### Breaxpress: one label across three rows
+
+The first cell in data row 2 starts a three-row span. Only the first column is merged,
+so each interval and category still has its own cell. This example uses the neutral
+`reference` table style.
+
+```json
+{
+  "preset": "breaxpress",
+  "language": "en",
+  "title": "Expression analysis example",
+  "report": {"report_id": "DEMO-001", "generated_at": "2026-01-01T12:00:00Z"},
+  "sections": [
+    {
+      "kind": "table",
+      "key": "risk-groups",
+      "style": "reference",
+      "columns": {"en": ["Group", "Interval", "Category"]},
+      "rows": [
+        ["Group A", "Range A", "Category A"],
+        ["Group B", "Range B", "Category B"],
+        [null, "Range C", "Category C"],
+        [null, "Range D", "Category D"]
+      ],
+      "cell_options": {"1": {"0": {"row_span": 3}}}
+    }
+  ]
+}
+```
+
+<table>
+  <caption>Breaxpress table layout</caption>
+  <thead><tr><th scope="col">Group</th><th scope="col">Interval</th><th scope="col">Category</th></tr></thead>
+  <tbody>
+    <tr><td>Group A</td><td>Range A</td><td>Category A</td></tr>
+    <tr><td rowspan="3">Group B</td><td>Range B</td><td>Category B</td></tr>
+    <tr><td>Range C</td><td>Category C</td></tr>
+    <tr><td>Range D</td><td>Category D</td></tr>
+  </tbody>
+</table>
+
+#### Genexus: a note across two columns
+
+The second cell in data row 2 spans columns 2 and 3. The first column still contains
+its own label.
+
+```json
+{
+  "preset": "genexus",
+  "language": "en",
+  "title": "Sequencing metrics example",
+  "report": {"report_id": "DEMO-002", "generated_at": "2026-01-01T12:00:00Z"},
+  "sections": [
+    {
+      "kind": "table",
+      "key": "metrics",
+      "columns": {"en": ["Item", "Value", "Unit"]},
+      "rows": [
+        ["Read count", 12000, "reads"],
+        ["Note", "Synthetic counts for demonstration", null]
+      ],
+      "cell_options": {"1": {"1": {"col_span": 2}}}
+    }
+  ]
+}
+```
+
+<table>
+  <caption>Genexus table layout</caption>
+  <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Unit</th></tr></thead>
+  <tbody>
+    <tr><td>Read count</td><td>12000</td><td>reads</td></tr>
+    <tr><td>Note</td><td colspan="2">Synthetic counts for demonstration</td></tr>
+  </tbody>
+</table>
+
+#### Coyote4 DNA: a cell spanning rows and columns
+
+Use both fields at the same position to merge a rectangle. Here, the first cell spans
+data rows 1 and 2 and columns 1 and 2. Column 3 has a separate status cell on each row.
+
+```json
+{
+  "preset": "coyote4",
+  "analyte": "dna",
+  "language": "en",
+  "title": "Panel review example",
+  "report": {"report_id": "DEMO-003", "generated_at": "2026-01-01T12:00:00Z"},
+  "sections": [
+    {
+      "kind": "table",
+      "key": "panel-review",
+      "columns": {"en": ["Panel", "Scope", "Status"]},
+      "rows": [
+        ["Shared panel and scope", null, "Review A"],
+        [null, null, "Review B"],
+        ["Panel B", "Scope B", "Review C"]
+      ],
+      "cell_options": {"0": {"0": {"row_span": 2, "col_span": 2}}}
+    }
+  ]
+}
+```
+
+<table>
+  <caption>Coyote4 DNA table layout</caption>
+  <thead><tr><th scope="col">Panel</th><th scope="col">Scope</th><th scope="col">Status</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="2" colspan="2">Shared panel and scope</td><td>Review A</td></tr>
+    <tr><td>Review B</td></tr>
+    <tr><td>Panel B</td><td>Scope B</td><td>Review C</td></tr>
+  </tbody>
+</table>
 
 ## Compact description tables
 

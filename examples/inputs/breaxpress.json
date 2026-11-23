@@ -1,0 +1,106 @@
+{
+  "preset": "breaxpress",
+  "title": {
+    "en": "Breast cancer expression analysis report",
+    "sv": "Analysrapport för expressionsdiagnostik vid bröstcancer"
+  },
+  "analyte": "rna",
+  "language": "sv",
+  "report": {
+    "report_id": "BREAX-DEMO-001",
+    "sample_id": "SYNTHETIC-001",
+    "generated_at": "2026-01-01T12:00:00Z",
+    "author": "Demo User",
+    "fields": [
+      {"label": {"en": "Patient name", "sv": "Patientnamn"}, "value": "<PATIENT_NAME>"},
+      {
+        "label": {"en": "Personal identity number", "sv": "Personnummer"},
+        "value": "<PERSONAL_IDENTITY_NUMBER>"
+      },
+      {
+        "label": {"en": "Registration date", "sv": "Registreringsdatum"},
+        "value": "<REGISTRATION_DATE>"
+      },
+      {"label": {"en": "Sample type", "sv": "Provtyp"}, "value": "RNA"},
+      {
+        "label": {"en": "Analysis method", "sv": "Analysmetod"},
+        "value": {"en": "RNA sequencing (example)", "sv": "RNA-sekvensering (exempel)"}
+      }
+    ]
+  },
+  "branding": {
+    "organization": "Example Diagnostics Center",
+    "application_logo": "../assets/application-example.svg",
+    "center_logo": "../assets/center-example.svg"
+  },
+  "provenance": {"application_name": "Breaxpress", "application_version": "DEMO"},
+  "sections": [
+    {
+      "kind": "table",
+      "key": "expression-results",
+      "heading": {"en": "Analysis results", "sv": "Analysresultat"},
+      "columns": {
+        "en": ["Subtype (four classes)", "Sample-type warning", "ROR (tumor ≤ 20 mm)", "ROR (tumor > 20 mm)"],
+        "sv": ["Subtyp (fyra klasser)", "Provtypsvarning", "ROR (tumör ≤ 20 mm)", "ROR (tumör > 20 mm)"]
+      },
+      "rows": [
+        [
+          {"en": "Example subtype", "sv": "Exempelsubtyp"},
+          {"en": "Example warning", "sv": "Exempelvarning"},
+          42,
+          47
+        ]
+      ]
+    },
+    {
+      "kind": "table",
+      "key": "risk-classification",
+      "style": "reference",
+      "caption": {"en": "Table 1: Risk classification example", "sv": "Tabell 1: Exempel på riskklassificering"},
+      "columns": {
+        "en": ["Lymph node status", "ROR interval", "Risk classification"],
+        "sv": ["Körtelstatus", "ROR-intervall", "Riskklassificering"]
+      },
+      "cell_options": {
+        "0": {"0": {"row_span": 2}},
+        "2": {"0": {"row_span": 2}},
+        "4": {"0": {"col_span": 3}}
+      },
+      "rows": [
+        [
+          {"en": "Node-negative", "sv": "Lymfkörtelnegativ"},
+          {"en": "Example interval A", "sv": "Exempelintervall A"},
+          {"en": "Example category A", "sv": "Exempelkategori A"}
+        ],
+        [
+          null,
+          {"en": "Example interval B", "sv": "Exempelintervall B"},
+          {"en": "Example category B", "sv": "Exempelkategori B"}
+        ],
+        [
+          {"en": "Node-positive", "sv": "Lymfkörtelpositiv"},
+          {"en": "Example interval C", "sv": "Exempelintervall C"},
+          {"en": "Example category C", "sv": "Exempelkategori C"}
+        ],
+        [
+          null,
+          {"en": "Example interval D", "sv": "Exempelintervall D"},
+          {"en": "Example category D", "sv": "Exempelkategori D"}
+        ],
+        [
+          {"en": "Illustrative categories for a synthetic report.", "sv": "Exempelkategorier för en syntetisk rapport."},
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "kind": "description",
+      "key": "analysis-description",
+      "text": {
+        "en": "This synthetic report illustrates how RNA expression results and recurrence scores appear in a report. The values and classifications are for demonstration only.",
+        "sv": "Den här syntetiska rapporten visar hur resultat från RNA-expressionsanalys och återfallspoäng presenteras. Värdena och klassificeringarna är endast exempel."
+      }
+    }
+  ]
+}

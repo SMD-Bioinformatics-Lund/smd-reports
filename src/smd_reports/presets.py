@@ -3,7 +3,7 @@
 from dataclasses import dataclass, replace
 from typing import Literal
 
-PresetName = Literal["generic", "coyote3", "coyote4", "genexus", "cll_genie", "pgx"]
+PresetName = Literal["generic", "coyote3", "coyote4", "genexus", "cll_genie", "pgx", "breaxpress"]
 HeaderStyle = Literal["center", "branded"]
 
 
@@ -41,4 +41,5 @@ PRESETS = {
         "Genexus", "genexus", repeat_title=True, black_title=True, metadata_borders=True
     ),
     "pgx": Preset("PGx", "pgx"),
+    "breaxpress": Preset("Breaxpress", "breaxpress", "Breaxpress", header="branded"),
 }

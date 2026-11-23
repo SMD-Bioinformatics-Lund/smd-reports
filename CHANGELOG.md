@@ -3,7 +3,10 @@
 ## 0.6.0
 
 - Add Coyote4 DNA and RNA reports using the Coyote3 layout and colors.
+- Add the Breaxpress preset and sage green theme, and generate previews for every example input.
+- Support row and column spans in result and reference tables.
 - Show the report name, optional application version and package version in every footer.
+- Use neutral gray for patient and report information across all themes.
 - Accept inline JSON themes with an optional revision recorded in report metadata.
 - Keep column headings on empty result tables and show the semibold message in a single spanning cell.
 - End compact gene tables at the last gene, with columns aligned across rows.
