@@ -1,6 +1,7 @@
 """Release version progression, changelog content, tag ancestry and workflow guards."""
 
 import importlib.util
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -203,20 +204,28 @@ def test_package_version_rejects_invalid_declarations_without_import(source):
         release.package_version(source)
 
 
-def test_release_checks_are_part_of_required_branch_flow_job():
+@pytest.fixture
+def branch_flow_job():
     import yaml
 
     root = Path(__file__).parents[1]
     workflow = yaml.load(
         (root / ".github/workflows/pr-target.yml").read_text(), Loader=yaml.BaseLoader
     )
-    job = workflow["jobs"]["branch-flow"]
+    return workflow["jobs"]["branch-flow"]
+
+
+def test_release_checks_are_part_of_required_branch_flow_job(branch_flow_job):
+    import yaml
+
+    root = Path(__file__).parents[1]
+    job = branch_flow_job
     assert job["env"]["BASE_SHA"] == "${{ github.event.pull_request.base.sha }}"
     check = next(
         step for step in job["steps"] if step.get("name") == "Check release version and changelog"
     )
     assert check["if"] == "github.base_ref == 'master'"
-    assert check["run"] == 'python scripts/check_release.py --base-ref "$BASE_SHA"'
+    assert 'python scripts/check_release.py --base-ref "$BASE_SHA"' in check["run"]
     checkout = next(
         step for step in job["steps"] if step.get("uses", "").startswith("actions/checkout@")
     )
@@ -226,3 +235,49 @@ def test_release_checks_are_part_of_required_branch_flow_job():
         (root / ".github/workflows/release.yml").read_text(), Loader=yaml.BaseLoader
     )
     assert any("--check-git" in step.get("run", "") for step in publish["jobs"]["build"]["steps"])
+
+
+@pytest.mark.skipif(shutil.which("bash") is None, reason="Bash is required for workflow checks")
+@pytest.mark.parametrize(
+    ("paths", "docs_only"),
+    [
+        (["docs/guide.md"], True),
+        (["mkdocs.yml"], True),
+        (["docs/guide.md", ".github/workflows/pr-target.yml", "tests/test_release.py"], True),
+        ([".github/workflows/pr-target.yml", "tests/test_release.py"], False),
+        (["docs/guide.md", "src/smd_reports/__init__.py"], False),
+        (["docs/guide.md", "pyproject.toml"], False),
+        (["docs/guide.md", ".github/workflows/release.yml"], False),
+    ],
+)
+def test_documentation_promotion_keeps_package_release_checks(
+    repository, branch_flow_job, paths, docs_only
+):
+    root, git = repository
+    script = root / "scripts/check_release.py"
+    script.parent.mkdir()
+    script.write_text("import sys\nprint(f'Checking release against {sys.argv[-1]}')\n")
+    git("add", ".")
+    git("commit", "-m", "Add release checker")
+    base = git("rev-parse", "HEAD")
+    for name in paths:
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("updated\n")
+    git("add", ".")
+    git("commit", "-m", "Update repository")
+    check = next(
+        step
+        for step in branch_flow_job["steps"]
+        if step.get("name") == "Check release version and changelog"
+    )
+    output = subprocess.check_output(
+        ["bash", "-e", "-c", check["run"]],
+        cwd=root,
+        env={**os.environ, "BASE_SHA": base},
+        text=True,
+    ).strip()
+    if docs_only:
+        assert output == "Documentation promotion uses the current package version."
+    else:
+        assert output == f"Checking release against {base}"
