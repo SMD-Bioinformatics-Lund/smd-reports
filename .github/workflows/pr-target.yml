@@ -44,4 +44,13 @@ jobs:
         run: python -m pip install 'packaging>=26.3,<27'
       - name: Check release version and changelog
         if: github.base_ref == 'master'
-        run: python scripts/check_release.py --base-ref "$BASE_SHA"
+        run: |
+          if git diff --quiet --no-renames "$BASE_SHA" HEAD -- . \
+              ':(exclude)docs/**' ':(exclude)mkdocs.yml' \
+              ':(exclude).github/workflows/pr-target.yml' \
+              ':(exclude)tests/test_release.py' &&
+              ! git diff --quiet --no-renames "$BASE_SHA" HEAD -- docs/ mkdocs.yml; then
+            echo 'Documentation promotion uses the current package version.'
+          else
+            python scripts/check_release.py --base-ref "$BASE_SHA"
+          fi

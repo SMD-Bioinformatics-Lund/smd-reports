@@ -40,7 +40,12 @@ Set `page_break_before: true` on any other section for an additional break.
 
 Use `presentation.header_height_mm` and `footer_height_mm` to adjust reserved print space.
 Genexus repeats the report title in its header. The accreditation logo, when enabled,
-appears opposite the template and package versions and page number.
+appears opposite the report name, package version and page number.
+
+Table content is vertically centered in HTML and PDF, including in merged cells.
+Finding-grid headings align to the left. Finding labels retain the theme tint across
+the full cell beside long comments. Standalone badges are centered in their cells,
+and tier badges use a smaller font than other badges.
 
 ## Page size
 
