@@ -769,6 +769,19 @@ The tinted Evidence label covers the first column in rows 1 and 2. Source and As
 each use one label column and three value columns. The final row gives Comment one label
 column and a value cell spanning the other four.
 
+<table>
+  <caption>Finding grid layout</caption>
+  <thead><tr><th colspan="5">Example finding</th></tr></thead>
+  <tbody>
+    <tr><th rowspan="2" scope="rowgroup">Evidence</th><th scope="row">Source</th><td colspan="3">Example source</td></tr>
+    <tr><th scope="row">Assessment</th><td colspan="3">Reviewed</td></tr>
+    <tr><th scope="row">Comment</th><td colspan="4">Example comment</td></tr>
+  </tbody>
+</table>
+
+See the [rendered example PDF](https://github.com/SMD-Bioinformatics-Lund/smd-reports/blob/v0.7.0/examples/rendered/custom.pdf)
+for the themed heading and label cells.
+
 ## Summary, description and references
 
 These sections are text objects with `heading`, `format` and `text`:
