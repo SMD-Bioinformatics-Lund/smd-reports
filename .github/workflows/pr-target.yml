@@ -47,7 +47,8 @@ jobs:
         run: |
           if git diff --quiet --no-renames "$BASE_SHA" HEAD -- . \
               ':(exclude)docs/**' ':(exclude)mkdocs.yml' \
-              ':(exclude).github/workflows/pr-target.yml' &&
+              ':(exclude).github/workflows/pr-target.yml' \
+              ':(exclude)tests/test_release.py' &&
               ! git diff --quiet --no-renames "$BASE_SHA" HEAD -- docs/ mkdocs.yml; then
             echo 'Documentation promotion uses the current package version.'
           else
